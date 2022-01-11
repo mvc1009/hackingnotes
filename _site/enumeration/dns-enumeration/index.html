@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>DNS Enumeration | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="DNS Enumeration" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The Domain Name System (DNS) is on of the most critical systems on the Internet and is a distributed database responsible for translating user-friendly domain names into IP addresses." />
+<meta property="og:description" content="The Domain Name System (DNS) is on of the most critical systems on the Internet and is a distributed database responsible for translating user-friendly domain names into IP addresses." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/enumeration/dns-enumeration/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/enumeration/dns-enumeration/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"The Domain Name System (DNS) is on of the most critical systems on the Internet and is a distributed database responsible for translating user-friendly domain names into IP addresses.","url":"http://0.0.0.0:4000/hackingnotes/enumeration/dns-enumeration/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"DNS Enumeration","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Enumeration</h2>
+				<h3>DNS Enumeration</h3>
+			</div>
+			<article class="content">
+				<p>The Domain Name System (DNS) is on of the most critical systems on the Internet and is a distributed database responsible for translating user-friendly domain names into IP addresses.</p>
+
+<h1 id="interacting-with-dns-servers">Interacting with DNS servers</h1>
+
+<p>DNS queries produce listintgs calles Resource Records. This is a representation of Resource Records:</p>
+
+<p><img src="/hackingnotes/images/table_dnstypes.png" alt="Table of DNS Record Types " /></p>
+
+<h2 id="dns-lookup">DNS Lookup</h2>
+
+<p>A <strong>DNS lookup</strong> is the simplest query a DNS server can receive. Its asks the DNS to resolve a given hostname.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup [Domain]
+dig [Domain]
+host [DOMAIN]
+</code></pre></div></div>
+
+<p>Once we retrieved all the IP addresses corresponding to the domains, we need to consider two things:</p>
+
+<ul>
+  <li><strong>Is this IP address hosting only that given domain?</strong></li>
+</ul>
+
+<p>It is possible that more than one domain is configured on the same IP address, even if a PTR record is not set. This is also typical in corporate networks where multiple subdomains run on the same web server. First thing to try is <strong>reverse lookup</strong> and the second is <strong>search</strong> on <strong>google</strong> or <strong>bing</strong>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bing&gt; ip:[IP]
+</code></pre></div></div>
+
+<ul>
+  <li>Who does this IP address belongs to?</li>
+</ul>
+
+<p>To search the owner of an IP address we can use <a href="https://whois.arin.net">whois.arin.net</a> or one of the WHOIS tools seen earlier</p>
+
+<p>In order to collect the highest number of domains and subdomain related to the target organization, we can use different techniques:</p>
+
+<ul>
+  <li>DNS Lookup</li>
+  <li>MX Lookup</li>
+  <li>Zone transfers</li>
+</ul>
+
+<h2 id="reverse-dns-lookup">Reverse DNS Lookup</h2>
+
+<p>With <strong>Reverse DNS Lookup</strong>, we will recieve the IP address associated to a given domain name. This process queries for DNS pointer records (PTR).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup -type=PTR [IP]
+dig [Domain] PTR
+</code></pre></div></div>
+
+<p>or use online tools:</p>
+
+<ul>
+  <li><a href="https://network-tools.com/nslookup/">https://network-tools.com/nslookup/</a></li>
+</ul>
+
+<h2 id="mail-exchange-lookup">Mail Exchange Lookup</h2>
+
+<p>With <strong>MX(Mail Exchange) lookup</strong>, we retrieve a list of servers responsible for delivering emails for that domain:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup -type=MX [Domain]
+dig [Domain] MX
+</code></pre></div></div>
+
+<p>or use online tools:</p>
+
+<ul>
+  <li><a href="https://www.dnsqueries.com/">https://www.dnsqueries.com/</a></li>
+  <li><a href="https://www.mxtoolbox.com/">https://www.mxtoolbox.com/</a></li>
+</ul>
+
+<h2 id="zone-transfers">Zone Transfers</h2>
+
+<p><strong>Zone transfers</strong> are usually a misconfiguration of the remote DNS server. They should be enabled only for trusted IP addresses. Whe zone transfers are enabled, we can enumerate the entire DNS record for that zone. This includes all the sub domains <strong>(A records).</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup -type=NS [Domain]
+dig [Domain] NS
+host -t ns [Domain]
+</code></pre></div></div>
+
+<p>There are usually  two name servers. Take note of both of them an run the next command to show all A records:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nslookup -query=AXFR [Domain] [Nameserver]
+dig axfr [Nameserver] [Domain]
+host -l [Domain] [Nameserver]
+dnsrecon -d [Domain] -axfr
+</code></pre></div></div>
+
+<p>Another technique to discover A records if Zone transfers are well configured is to <strong>bruteforce</strong> them with a most common subdomain names:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fierce -dns [Domain] -dnsserver [Nameserver] -f [Wordlist]
+dnsmap [Domain]
+dnsrecon -d [Domain] -D [Wordlist] -t brt
+</code></pre></div></div>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

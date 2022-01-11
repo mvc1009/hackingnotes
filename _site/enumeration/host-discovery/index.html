@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Host Discovery | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Host Discovery" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="When we have our pool of IP addresses, we have to identify the devices and the roles played by each IP in the target organization." />
+<meta property="og:description" content="When we have our pool of IP addresses, we have to identify the devices and the roles played by each IP in the target organization." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/enumeration/host-discovery/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/enumeration/host-discovery/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"When we have our pool of IP addresses, we have to identify the devices and the roles played by each IP in the target organization.","url":"http://0.0.0.0:4000/hackingnotes/enumeration/host-discovery/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Host Discovery","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item current"><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Enumeration</h2>
+				<h3>Host Discovery</h3>
+			</div>
+			<article class="content">
+				<p>When we have our pool of IP addresses, we have to identify the devices and the roles played by each IP in the target organization.</p>
+
+<h1 id="live-hosts">Live Hosts</h1>
+
+<p>There are different methods that one can use to identify live hosts.</p>
+
+<h2 id="icmp-ping-sweep">ICMP Ping Sweep</h2>
+
+<p>The most common is the <strong>ICMP ping sweep.</strong> It consists of ICMP ECHO requests sent to multiple hosts. If a given host is alive, it will return an ICMP ECHO reply.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fping -a -g [IP-Range]/[Mask]
+
+nmap -sn [IP-Range]/[Mask] -oG ping-sweep.nmap
+grep "Up" ping-sweep.nmap | cut -d " " -f 2
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: For internal Audits, when a host reply a ping shown by fping and doesn’t reply for nmap command this could be a <strong>router</strong> or <strong>switch.</strong></p>
+</blockquote>
+
+<p>Other technic to detect live hosts with ICMP Ping sweep is with this script:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="k">for </span>i <span class="k">in</span> <span class="k">$(</span><span class="nb">seq </span>1 255<span class="k">)</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">timeout </span>1 bash <span class="nt">-c</span> <span class="s2">"ping -c 1 10.10.10.</span><span class="nv">$i</span><span class="s2">"</span> <span class="o">&gt;</span> /dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"10.10.10.</span><span class="nv">$i</span><span class="s2"> - Active"</span> &amp;
+<span class="k">done</span><span class="p">;</span> <span class="nb">wait</span>
+</code></pre></div></div>
+
+<h2 id="most-common-ports">Most common ports</h2>
+
+<p>The second technique is doing a most common port scanner with the following ports:</p>
+
+<ul>
+  <li>22 - SSH</li>
+  <li>80 - HTTP</li>
+  <li>443 - HTTPS</li>
+  <li>445 - SMB</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p 22,445,80,443 [IP-Range]/[Mask]
+</code></pre></div></div>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

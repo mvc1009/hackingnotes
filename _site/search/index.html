@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Search | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Search" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Notes for an ethical hacker." />
+<meta property="og:description" content="Notes for an ethical hacker." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/search/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/search/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Notes for an ethical hacker.","url":"http://0.0.0.0:4000/hackingnotes/search/","@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Search","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Hacking Notes</h2>
+				<h3>Search</h3>
+			</div>
+			<article class="content">
+				<p><span id="search-process">Loading</span> results <span id="search-query-container" style="display: none;">for "<strong id="search-query"></strong>"</span></p>
+<ul id="search-results"></ul>
+
+<script>
+	window.data = {
+		
+			
+				
+					
+					
+
+					"enumeration-dns-enumeration": {
+						"id": "enumeration-dns-enumeration",
+						"title": "DNS Enumeration",
+						"category": "",
+						"url": " /enumeration/dns-enumeration/",
+						"content": "The Domain Name System (DNS) is on of the most critical systems on the Internet and is a distributed database responsible for translating user-friendly domain names into IP addresses. Interacting with DNS servers DNS queries produce listintgs calles Resource Records. This is a representation of Resource Records: DNS Lookup A DNS lookup is the simplest query a DNS server can receive. Its asks the DNS to resolve a given hostname. nslookup [Domain] dig [Domain] host [DOMAIN] Once we retrieved all the IP addresses corresponding to the domains, we need to consider two things: Is this IP address hosting only that given domain? It is possible that more than one domain is configured on the same IP address, even if a PTR record is not set. This is also typical in corporate networks where multiple subdomains run on the same web server. First thing to try is reverse lookup and the second is search on google or bing: bing&gt; ip:[IP] Who does this IP address belongs to? To search the owner of an IP address we can use whois.arin.net or one of the WHOIS tools seen earlier In order to collect the highest number of domains and subdomain related to the target organization, we can use different techniques: DNS Lookup MX Lookup Zone transfers Reverse DNS Lookup With Reverse DNS Lookup, we will recieve the IP address associated to a given domain name. This process queries for DNS pointer records (PTR). nslookup -type=PTR [IP] dig [Domain] PTR or use online tools: https: network-tools.com nslookup Mail Exchange Lookup With MX(Mail Exchange) lookup, we retrieve a list of servers responsible for delivering emails for that domain: nslookup -type=MX [Domain] dig [Domain] MX or use online tools: https: www.dnsqueries.com https: www.mxtoolbox.com Zone Transfers Zone transfers are usually a misconfiguration of the remote DNS server. They should be enabled only for trusted IP addresses. Whe zone transfers are enabled, we can enumerate the entire DNS record for that zone. This includes all the sub domains (A records). nslookup -type=NS [Domain] dig [Domain] NS host -t ns [Domain] There are usually two name servers. Take note of both of them an run the next command to show all A records: nslookup -query=AXFR [Domain] [Nameserver] dig axfr [Nameserver] [Domain] host -l [Domain] [Nameserver] dnsrecon -d [Domain] -axfr Another technique to discover A records if Zone transfers are well configured is to bruteforce them with a most common subdomain names: fierce -dns [Domain] -dnsserver [Nameserver] -f [Wordlist] dnsmap [Domain] dnsrecon -d [Domain] -D [Wordlist] -t brt"
+					}
+
+					
+				
+			
+		
+			
+				
+					,
+					
+
+					"enumeration-host-discovery": {
+						"id": "enumeration-host-discovery",
+						"title": "Host Discovery",
+						"category": "",
+						"url": " /enumeration/host-discovery/",
+						"content": "When we have our pool of IP addresses, we have to identify the devices and the roles played by each IP in the target organization. Live Hosts There are different methods that one can use to identify live hosts. ICMP Ping Sweep The most common is the ICMP ping sweep. It consists of ICMP ECHO requests sent to multiple hosts. If a given host is alive, it will return an ICMP ECHO reply. fping -a -g [IP-Range] [Mask] nmap -sn [IP-Range] [Mask] -oG ping-sweep.nmap grep \"Up\" ping-sweep.nmap | cut -d \" \" -f 2 Note: For internal Audits, when a host reply a ping shown by fping and doesn’t reply for nmap command this could be a router or switch. Other technic to detect live hosts with ICMP Ping sweep is with this script: #! bin bash for i in $(seq 1 255); do timeout 1 bash -c \"ping -c 1 10.10.10.$i\" &gt; dev null &amp;&amp; echo \"10.10.10.$i - Active\" &amp; done; wait Most common ports The second technique is doing a most common port scanner with the following ports: 22 - SSH 80 - HTTP 443 - HTTPS 445 - SMB nmap -p 22,445,80,443 [IP-Range] [Mask]"
+					}
+
+					
+				
+			
+		
+			
+				
+					,
+					
+
+					"enumeration-os-discovery": {
+						"id": "enumeration-os-discovery",
+						"title": "OS Discovery",
+						"category": "",
+						"url": " /enumeration/os-discovery/",
+						"content": "Some tips to discover the operative system that runs on the target machine. TTL The default values of TTL on a ICMP packet, shown in the following table, can help us to identify the operative system: Operative System TTL Windows 128 Linux 64 Solaris AIX 254 OpenBSD 255 FreeBSD 5.0 64 FreeBSD 3.4, 4.0 255 Cisco 254 The following example is for a Linux device: ❯ ping localhost PING localhost(localhost (::1)) 56 data bytes 64 bytes from localhost (::1): icmp_seq=1 ttl=64 time=0.053 ms 64 bytes from localhost (::1): icmp_seq=2 ttl=64 time=0.051 ms"
+					}
+
+					
+				
+			
+		
+			
+				
+					,
+					
+
+					"enumeration-port-scanning": {
+						"id": "enumeration-port-scanning",
+						"title": "Port Scanning",
+						"category": "",
+						"url": " /enumeration/port-scanning/",
+						"content": "The best option to identify Ports, Protocols, and Services (PPS) on a targetwould be to scan all ports (65535) of the remote system. TCP Scanning Nmap Simply Scan nmap -p- --open T5 -v -n IP nmap --top-ports 5000 --open -T5 -v -n IP Complex Scan nmap -sV -A -p PORTS IP Masscan Masscan is the fastest port scanner, it can scan the whole internet in 6 minutes. sudo masscan -p[PORTS] [IP MASK] --rate=1000 -e [IFACE] --router-ip [GATEWAY] Bash Port Scanner This one is created by @s4vitar: #! bin bash # Usage . portScanner.sh IP trap ctrl_c INT function ctrl_c(){ echo -e \"\\n\\n[*] Exiting....\\n\" tput cnorm; exit 0 } for port in $(seq 1 65535);do timeout 1 bash -c \"echo '' &lt; dev tcp $1 $port\" 2&gt; dev null &amp;&amp; echo \"Port $port - OPEN\" &amp; done; wait tput cnorm UDP Scanning Pentesters often forgot to scan for open UDP ports, although UDP scanning can be unrealiable, there are plenty of attack vectors lurking behind open UDP ports. sudo nmap -sU IP Hint: You can launch a syn scan and udp scan at same time: sudo nmap -sS -sU IP"
+					}
+
+					
+				
+			
+		
+			
+				
+					,
+					
+
+					"enumeration-waf-evasion": {
+						"id": "enumeration-waf-evasion",
+						"title": "WAF Evasion",
+						"category": "",
+						"url": " /enumeration/waf-evasion/",
+						"content": "In this section I will explain techniques to found the original IP of the hosted webapp. SSL Certificates First we need to look inside the SSL Certificate of the webapp in order to find the fingerprint (SHA256) With censys you can search different hosted webpages with the same SSL fingerprint, so these are from the same company. https: censys.io certificates Once you obtained the different domains or IPs that have the same fingerprint try to discover the IPs and play with the Host HTTP header. curl -kv https: 190.12.34.42 It’s common that the companies buys a range of IPs, so you should need to check more parent IPs. curl -kv https: 190.12.34.40 curl -kv https: 190.12.34.41 curl -kv https: 190.12.34.43 curl -kv https: 190.12.34.44 curl -kv https: 190.12.34.45 curl -kv https: 190.12.34.46 DNS History Some times the companies put a WAF on a web application, but they don’t configure it properly and any source IP instead of only the WAF can request the server. So we can check the DNS history with viewdnsinfo to search the old IP. https: viewdns.info iphistory Finally with suip.biz we can check which apps are hosted on a server. https: suip.biz ?act=hostmap Via SMTP Functionalities SMTP headers can reveal a lot of value information. If a SMTP functionality is found on the web appliaction try to send a mail to a known recipient to check these headers in order to find the real webserver IP. Bypassing blacklisting WAFs The whitelisting mode is prone to false positives, which is the reason it is very common to find WAFs deployed in blacklisting mode rather than whitelisting mode. The blacklisting mode is a collection of well-known attacks. WAF producers put together a list of rules to protect a web application against various attack vectors that are used to exploit the most common vulnerabilities. So we can use different payloads to bypass some filters. Cross-Site Scripting (XSS) Instead of using alert('xss') or alert(1) we can choose a better option: prompt('xss') prompt(8) confirm('xss') confirm(8) alert( xss .source) window[ alert .source](8) Instead of using alert(document.cookie) we can use: with(document)alert(cookie) alert(document['cookie']) alert(document[ cookie .source]) alert(document[ coo .source+ kie .source]) Instead of using &lt;img src=x onerror=alert(1);&gt; we can use: &lt;svg onload=alert(1)&gt; &lt;video src=x onerror=alert(1);&gt; &lt;audio src=x onerror=alert(1);&gt; Instead of javascript:alert(document.cookie) we can use: data:text html:base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4= Blind SQL Injection (Blind SQLi) Instead of using ' or 1=1 we can use: ' or 6=6 ' or 0x47=0x47 or char(32)='' or 6 is not null Instead of UNION SELECT we can use: UNION ALL SELECT Directoy Traversal Instead of using etc passwd we can use: too .. etc far .. passwd etc passwd etc ignore .. passwd etc passwd....... Web Shell Instead of using c99.php , r57.php , shell.aspx , cmd.jsp, CmdAsp.asp we can use: augh.php WAF Detection and Fingerprinting WAF systems leave several footprints of their presence, which allow us to detect which WAF is in place. wafw00f is a tool that can detect up to 20 different WAF products. wafw00f www.example.com Also it can be possible to detect the WAF vendor with a nmap script. nmap --script=http-waf-fingerprint www.imperva.com -p 80 Cookie Values Some WAF systems reveal their presence through cookies. WAF Vendor Cookies Citrix Netscaler n_saf, citrix_ns_id or NSC_ F5 BIG-IP ASM ^TS[a-zA-Z0-9]{3,6} Barracuda barra_counter_session and BNI__BARRACUDA_LB_COOKIE Header Rewrite Some WAFs rewrite the HTTP headers. Usually modify the Server header. Original Request HTTP 1.1 200 OK Date: Mon, 7 Apr 2014 10:10:50 GMT Server: Apache (Unix) Content-Type: text html Content-Length: 2506 Modified Request HTTP 1.1 404 Not Found Date: Mon, 7 Apr 2014 10:11:06 GMT Server: Netscape-Enterprise 6.1 Content-Type: text html; Content-Length: 158"
+					}
+
+					
+				
+			
+		
+	};
+</script>
+<script src="/hackingnotes/scripts/lunr.min.js"></script>
+<script src="/hackingnotes/scripts/search.js"></script>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

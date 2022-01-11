@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Port Scanning | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Port Scanning" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The best option to identify Ports, Protocols, and Services (PPS) on a targetwould be to scan all ports (65535) of the remote system." />
+<meta property="og:description" content="The best option to identify Ports, Protocols, and Services (PPS) on a targetwould be to scan all ports (65535) of the remote system." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/enumeration/port-scanning/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/enumeration/port-scanning/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"The best option to identify Ports, Protocols, and Services (PPS) on a targetwould be to scan all ports (65535) of the remote system.","url":"http://0.0.0.0:4000/hackingnotes/enumeration/port-scanning/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Port Scanning","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Enumeration</h2>
+				<h3>Port Scanning</h3>
+			</div>
+			<article class="content">
+				<p>The best option to identify Ports, Protocols, and Services (PPS) on a targetwould be to scan all ports (65535) of the remote system.</p>
+
+<h1 id="tcp-scanning">TCP Scanning</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<ul>
+  <li>Simply Scan</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p- --open T5 -v -n IP
+nmap --top-ports 5000 --open -T5 -v -n IP
+</code></pre></div></div>
+
+<ul>
+  <li>Complex Scan</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -sV -A -p PORTS IP
+</code></pre></div></div>
+
+<h2 id="masscan">Masscan</h2>
+
+<p>Masscan is the fastest port scanner, it can scan the whole internet in 6 minutes.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo masscan -p[PORTS] [IP/MASK] --rate=1000 -e [IFACE] --router-ip [GATEWAY]
+</code></pre></div></div>
+
+<h2 id="bash-port-scanner">Bash Port Scanner</h2>
+
+<p>This one is created by <a href="https://www.youtube.com/channel/UCNHWpNqiM8yOQcHXtsluD7Q">@s4vitar</a>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c"># Usage ./portScanner.sh IP</span>
+
+<span class="nb">trap </span>ctrl_c INT
+<span class="k">function </span>ctrl_c<span class="o">(){</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">[*] Exiting....</span><span class="se">\n</span><span class="s2">"</span>
+  tput cnorm<span class="p">;</span> <span class="nb">exit </span>0
+<span class="o">}</span>
+<span class="k">for </span>port <span class="k">in</span> <span class="k">$(</span><span class="nb">seq </span>1 65535<span class="k">)</span><span class="p">;</span><span class="k">do
+  </span><span class="nb">timeout </span>1 bash <span class="nt">-c</span> <span class="s2">"echo '' &lt; /dev/tcp/</span><span class="nv">$1</span><span class="s2">/</span><span class="nv">$port</span><span class="s2">"</span> 2&gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"Port </span><span class="nv">$port</span><span class="s2"> - OPEN"</span> &amp;
+<span class="k">done</span><span class="p">;</span> <span class="nb">wait
+</span>tput cnorm
+</code></pre></div></div>
+
+<h1 id="udp-scanning">UDP Scanning</h1>
+
+<p>Pentesters often forgot to scan for open UDP ports, although UDP scanning can be unrealiable, there are plenty of attack vectors lurking behind open UDP ports.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo nmap -sU IP
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Hint:</strong> You can launch a syn scan and udp scan at same time: <code class="highlighter-rouge">sudo nmap -sS -sU IP</code></p>
+</blockquote>
+
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

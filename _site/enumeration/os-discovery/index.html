@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>OS Discovery | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="OS Discovery" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Some tips to discover the operative system that runs on the target machine." />
+<meta property="og:description" content="Some tips to discover the operative system that runs on the target machine." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/enumeration/os-discovery/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/enumeration/os-discovery/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Some tips to discover the operative system that runs on the target machine.","url":"http://0.0.0.0:4000/hackingnotes/enumeration/os-discovery/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"OS Discovery","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Enumeration</h2>
+				<h3>OS Discovery</h3>
+			</div>
+			<article class="content">
+				<p>Some tips to discover the operative system that runs on the target machine.</p>
+
+<h1 id="ttl">TTL</h1>
+
+<p>The default values of TTL on a ICMP packet, shown in the following table, can help us to identify the operative system:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operative System</th>
+      <th style="text-align: left">TTL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Windows</td>
+      <td style="text-align: left">128</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Linux</td>
+      <td style="text-align: left">64</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Solaris / AIX</td>
+      <td style="text-align: left">254</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">OpenBSD</td>
+      <td style="text-align: left">255</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FreeBSD 5.0</td>
+      <td style="text-align: left">64</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FreeBSD 3.4, 4.0</td>
+      <td style="text-align: left">255</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cisco</td>
+      <td style="text-align: left">254</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following example is for a <strong>Linux</strong> device:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ping localhost
+PING localhost(localhost (::1)) 56 data bytes
+64 bytes from localhost (::1): icmp_seq=1 ttl=64 time=0.053 ms
+64 bytes from localhost (::1): icmp_seq=2 ttl=64 time=0.051 ms
+</code></pre></div></div>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>
