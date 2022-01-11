@@ -2,8 +2,8 @@
 # Site
 
 title: Hacking Notes
-url: "https://mvc1009.github.io/hackingnotes/"
-baseurl:
+#url: "https://mvc1009.github.io/hackingnotes/"
+#baseurl:
 google_analytics_key:
 show_full_navigation: true
 
