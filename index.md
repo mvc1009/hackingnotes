@@ -1,38 +1,24 @@
 ---
-title: Welcome
+title: What is this?
 ---
 
-This is the **Edition** template from [CloudCannon](http://cloudcannon.com/).
-**Edition** is perfect for documenting your product, application or service.
-It's populated with example content to give you some ideas.
+These are notes for a student who started his professional career as a hacker and could be useful for someone else.
 
-ChatApp is a fictional chat application for sending messages and media to others.
-Teams and friend groups would use ChatApp to stay up to date if it existed.
+# What is this?
 
-> [Sign up](http://example.com/signup) or learn more about ChatApp at [example.com](http://example.com/).
+## Upcoming… 🔜
 
-### Getting Started
+I haven't discovered the wheel yet, so I put all finds together to easily find during my pentests. As I find new environments during my large learning process, I will update the list with these finds.
 
-Getting a message sent is quick and easy with ChatApp:
+![](images/boy-crying.jpg)
 
-1. Sign up for an account
-2. Add your friends from their email addresses
-3. Type a message or send a photo
+If you want you can invite me a coffee!
 
-> Feel free to send us a message at [feedback@example.com](mailto:feedback@example.com) with your feedback.
+[Buy me a coffee!](https://www.buymeacoffee.com/mvc1009)
 
-### Features
 
-Explore more of ChatApp by reading about our features:
+![](images/buymeacoffe.png)
 
-#### Media
+Also you can donate me **Ethereum**: 
 
-Send images, videos and other media to people. Sources include your computer, phone and Facebook.
-
-#### Contact Syncing
-
-Sync your contact list with your phone and/or Facebook contacts. Never lose your contacts between devices again!
-
-#### Devices
-
-ChatApp is available everywhere. Find out how to set it up on your all your devices.
+![0x733780b4436501f1025e989d1882c41062ab51D0](images/eth_address.png)
