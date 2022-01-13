@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Information Gathering | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Information Gathering" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Information Gathering is the act of gathering different kinds of informationagainst the targeted victim or system." />
+<meta property="og:description" content="Information Gathering is the act of gathering different kinds of informationagainst the targeted victim or system." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/reconnaissance/information-gathering/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/reconnaissance/information-gathering/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Information Gathering is the act of gathering different kinds of informationagainst the targeted victim or system.","url":"http://0.0.0.0:4000/hackingnotes/reconnaissance/information-gathering/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Information Gathering","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item current"><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Reconnaissance</h2>
+				<h3>Information Gathering</h3>
+			</div>
+			<article class="content">
+				<p>Information Gathering is the act of gathering different kinds of informationagainst the targeted victim or system.</p>
+
+<p>There are two types of information gathering, <strong>passive</strong> or OSINT (Open Source INTelligence) information gathering which means gathering as much information about our target wihout exposing our presence, and <strong>active</strong> information gathering which techniques interact directly with the target system.</p>
+
+<h1 id="passive-information-gathering-osint">Passive Information Gathering (OSINT)</h1>
+
+<p>Is a technique to gather information without any interaction with the target. There are many tools that are listed in OSINT Framework.</p>
+
+<h2 id="osint-framework">OSINT Framework</h2>
+
+<p>The OSINT Framework includes information gathering tools and websites in one central location. Some tools listed in the framework cover more disciplines than information security.</p>
+
+<p><img src="/hackingnotes/images/osint.png" alt="OSINT Framework" /></p>
+
+<ul>
+  <li><a href="https://osintframework.com/">https://osintframework.com/</a></li>
+</ul>
+
+<h2 id="search-engines">Search Engines</h2>
+
+<p>Google offers the opportunity to perform advanced search queries using special operators:</p>
+
+<p><code class="highlighter-rouge">AND, OR, +, -, ""</code></p>
+
+<p>And this is some examples of queries:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Query Type</th>
+      <th>Google Dork</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cache</td>
+      <td>cache:www.example.com</td>
+    </tr>
+    <tr>
+      <td>Link</td>
+      <td>link:www.example.com</td>
+    </tr>
+    <tr>
+      <td>Site</td>
+      <td>site:www.website.com</td>
+    </tr>
+    <tr>
+      <td>Filetype</td>
+      <td>filetype:pdf</td>
+    </tr>
+    <tr>
+      <td>Title</td>
+      <td>intitle:index.of</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="harvesting">Harvesting</h1>
+
+<p>Harversting is extract information from documents and files. We can find information such as emails, workers and so on. theHarvester is a tool that automates this working</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>theharvester -d example.com -b google
+theharvester -d example.com -b linkedin
+</code></pre></div></div>
+
+<h2 id="social-media">Social Media</h2>
+
+<p>The spread of social networks has made information gathering extremely important and effective. With the help of social media, a pentester can esaily gather employee’s personal informacion such as phone numbers, addresses, history and CV.</p>
+
+<p>We want to collect the following information about the employees:</p>
+
+<ul>
+  <li>Age</li>
+  <li>Phone Number</li>
+  <li>Addresses</li>
+  <li>Occupation</li>
+  <li>Business</li>
+  <li>Interests</li>
+  <li>Email Addresses</li>
+  <li>Website Owned</li>
+  <li>Related Documents</li>
+  <li>Financial Info</li>
+</ul>
+
+<h1 id="infrastructures">Infrastructures</h1>
+
+<p>The main goal here is to retrieve data such as:</p>
+
+<ul>
+  <li>Domains</li>
+  <li>Netblocks or IP addresses</li>
+  <li>Mail servers</li>
+  <li>ISP’s used (Internet Server Provider)</li>
+  <li>Any other technical information</li>
+</ul>
+
+<h2 id="domains-and-subdomains">Domains and subdomains</h2>
+
+<p>Given a domain, the first source for information is <a href="https://tools.ietf.org/html/rfc3912">WHOIS</a>. There are a lot of online tools that allow you top use WHOIS:</p>
+
+<ul>
+  <li><a href="https://who.is">http://who.is</a></li>
+  <li><a href="https://whois.domaintools.com">http://whois.domaintools.com</a></li>
+  <li><a href="https://www.betterwhois.com">https://www.betterwhois.com/</a></li>
+  <li><a href="https://searchdns.netcraft.com">https://searchdns.netcraft.com/</a></li>
+</ul>
+
+<p>There are some tools that search subdomains like <code class="highlighter-rouge">amass</code> or <code class="highlighter-rouge">sublist3r</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sublist3r -d [Domain]
+amass enum -d example.com
+</code></pre></div></div>
+
+<p><strong>Nmmapper</strong> is an online tool that finds a lots of subdomains:</p>
+
+<ul>
+  <li><a href="https://www.nmmapper.com/sys/tools/subdomainfinder/">https://www.nmmapper.com/sys/tools/subdomainfinder/</a></li>
+</ul>
+
+<p>The following user guide helps us a lot to inspect some awesome queries.</p>
+
+<ul>
+  <li><a href="https://github.com/OWASP/Amass/blob/master/doc/user_guide.md">https://github.com/OWASP/Amass/blob/master/doc/user_guide.md</a></li>
+</ul>
+
+<h2 id="recon-ng">Recon-ng</h2>
+
+<p>Recon-ng is a moduled-base framework for web-based information gathering. Recon-ng displays the results of a module to the terminal but it also stores them in a database.</p>
+
+<h3 id="searching-modules">Searching Modules</h3>
+
+<p>We can add modules from the recon-ng with marketplace.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>marketplace search &lt;MODULE&gt;
+marketplace info &lt;MODULE&gt;
+marketplace install &lt;MODULE&gt;
+</code></pre></div></div>
+
+<h3 id="using-modules">Using Modules</h3>
+
+<p>We need to load the module before using it:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>marketplace load &lt;MODULE&gt;
+info
+options set &lt;OPTION&gt; &lt;VALUE&gt;
+</code></pre></div></div>
+
+<h3 id="display-results">Display results</h3>
+
+<p>We can display some different results, since hosts to vulnerabilities.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>show #To see all posibilities of displaying
+show &lt;SELECTION&gt;
+</code></pre></div></div>
+
+<h3 id="best-recon-ng-modules">Best Recon-ng Modules</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>recon/domains-hosts/google_site_web #Search subdomains on Google with Google Dorks
+recon/hosts-hosts/resolve #Update hosts table with the DNS resolution
+</code></pre></div></div>
+
+<h2 id="shodan">Shodan</h2>
+
+<p>As we gather information on our target, it is important to remember that traditional websites are just one part of the internet. <a href="https://www.shodan.io">Shodan </a>is a search engine that crawls devices connected to the internet.</p>
+
+<p><img src="/hackingnotes/images/shodan.png" alt="Shodan search." /></p>
+
+<p>The following repository gives us some examples of what we can do with this brilliant tool</p>
+
+<ul>
+  <li><a href="https://github.com/jakejarvis/awesome-shodan-queries">https://github.com/jakejarvis/awesome-shodan-queries</a></li>
+</ul>
+
+<h1 id="open-source-code">Open-Source Code</h1>
+
+<p>One such of interesting information are open-source projects and online code repositories, such as GitHub, GitLab and SourceForge.</p>
+
+<h2 id="gitleaks">GitLeaks</h2>
+
+<p>Gitleaks is a SAST tool for detecting hardcoded secrets like passwords, api keys, and tokens in git repos. Gitleaks is an <strong>easy-to-use, all-in-one solution</strong> for finding secrets, past or present, in your code.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gitleaks --repo-url=https://github.com/my-insecure/repo -v
+</code></pre></div></div>
+<ul>
+  <li><a href="https://github.com/zricethezav/gitleaks">https://github.com/zricethezav/gitleaks</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>
