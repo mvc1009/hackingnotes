@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Hacking AWS | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Hacking AWS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Amazon Web Services is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs." />
+<meta property="og:description" content="Amazon Web Services is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/other/hacking-aws/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/other/hacking-aws/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Amazon Web Services is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs.","url":"http://0.0.0.0:4000/hackingnotes/other/hacking-aws/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Hacking AWS","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item current"><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Other</h2>
+				<h3>Hacking AWS</h3>
+			</div>
+			<article class="content">
+				<p>Amazon Web Services is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs.</p>
+
+<h1 id="s3-buckets">S3 Buckets</h1>
+
+<p>Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web.</p>
+
+<h2 id="aws-configuration">AWS Configuration</h2>
+
+<p>You can get your credential here <a href="https://console.aws.amazon.com/iam/home?#/security\_credential">https://console.aws.amazon.com/iam/home?#/security_credential</a> but you need an aws account, free tier account : <a href="https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free\_np/">https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free_np/</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws configure --profile &lt;PROFILE_NAME&gt;
+AWSAccessKeyId= &lt;AccessKeyID&gt;
+AWSSecretKey= &lt;SecretKey&gt;
+Default Region Name= &lt;Region&gt;
+Default Output Format = &lt;json or text&gt;
+</code></pre></div></div>
+
+<p>Or you can configure by default:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws configure
+</code></pre></div></div>
+
+<h2 id="search-for-s3-buckets">Search for S3 Buckets</h2>
+
+<p>We need to identify if the service running is a s3.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://s3.amazonaws.com/[bucket_name]/
+http://[bucket_name].s3.amazonaws.com/
+</code></pre></div></div>
+
+<p>You can get the region of a bucket with a dig and nslookup:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ dig flaws.cloud
+;; ANSWER SECTION:
+flaws.cloud.    5    IN    A    52.218.192.11
+
+$ nslookup 52.218.192.11
+Non-authoritative answer:
+11.192.218.52.in-addr.arpa name = s3-website-us-west-2.amazonaws.com.
+</code></pre></div></div>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>We will use <code class="highlighter-rouge">aws-cli</code> tool</p>
+
+<ul>
+  <li>Use <code class="highlighter-rouge">--no-sign-request</code> for check Everyones permissions</li>
+  <li>Use <code class="highlighter-rouge">--profile &lt;PROFILE_NAME&gt;</code> to indicate the previous configuration profile.</li>
+</ul>
+
+<h3 id="search-buckets-inside-the-same-host">Search Buckets inside the same host:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 ls --endpoint-url http://s3.DOMAIN.COM/ --no-sign-request
+</code></pre></div></div>
+
+<h3 id="list-content-of-a-bucket">List content of a bucket:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 ls s3://BUCKET-NAME --endpoint-url http://s3.DOMAIN.COM/ --no-sign-request
+</code></pre></div></div>
+
+<h3 id="copy-content">Copy content:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 cp /tmp/FILE s3://BUCKET-NAME --endpoint-url http://s3.DOMAIN.COM/ --no-sign-request
+</code></pre></div></div>
+
+<h1 id="dynamodb">DynamoDB</h1>
+
+<p>Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale. It’s a fully managed, multi-region, multi-active, durable database with built-in security, backup and restore, and in-memory caching for internet-scale applications.</p>
+
+<h2 id="list-tables">List tables</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws dynamodb list-tables --endpoint-url http://s3.DOMAIN.COM/
+{
+    "TableNames": [
+        "TABLENAME"
+    ]
+}
+</code></pre></div></div>
+
+<h2 id="get-table-content">Get Table Content</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws dynamodb scan --table-name TABLENAME --endpoint-url http://s3.DOMAIN.COM/
+{
+    "Items": [
+        {
+            "password": {
+                "S": "PWD@#1@#"
+            },
+            "username": {
+                "S": "USER3"
+            }
+        },
+        {
+            "password": {
+                "S": "PWD!"
+            },
+            "username": {
+                "S": "USER2"
+            }
+        },
+        {
+            "password": {
+                "S": "PWD"
+            },
+            "username": {
+                "S": "USER1"
+            }
+        }
+    ],
+    "Count": 3,
+    "ScannedCount": 3,
+    "ConsumedCapacity": null
+}
+</code></pre></div></div>
+
+<h2 id="create-table">Create Table</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws dynamodb create-table --table-name TABLENAME--attribute-definitions AttributeName=title,AttributeType=S AttributeName=data,AttributeType=S --key-schema AttributeName=title,KeyType=HASH AttributeName=data,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://s3.DOMAIN.COM/
+</code></pre></div></div>
+
+<h2 id="create-item">Create Item</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws dynamodb update-item --table-name TABLENAME--key file://FILE.json --endpoint-url http://s3.DOMAIN.COM/
+
+# where FILE.json is:
+
+{
+    "title": {"S": "TITLECONTENT"},
+    "data": {"S": "DATACONTENT"}
+}
+</code></pre></div></div>
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-web/buckets/aws-s3">https://book.hacktricks.xyz/pentesting/pentesting-web/buckets/aws-s3</a></li>
+  <li><a href="https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html">https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

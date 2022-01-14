@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PORT 80/tcp, 443/tcp - HTTP Server | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="PORT 80/tcp, 443/tcp - HTTP Server" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="It is a brief methodology to use in front of web applications." />
+<meta property="og:description" content="It is a brief methodology to use in front of web applications." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/services/http/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/services/http/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"It is a brief methodology to use in front of web applications.","url":"http://0.0.0.0:4000/hackingnotes/services/http/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"PORT 80/tcp, 443/tcp - HTTP Server","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Services</h2>
+				<h3>PORT 80/tcp, 443/tcp - HTTP Server</h3>
+			</div>
+			<article class="content">
+				<p>It is a brief methodology to use in front of web applications.</p>
+
+<h1 id="scanning">Scanning</h1>
+
+<p>First of all we need to scan the ports and use some enumerating tools such as <code class="highlighter-rouge">nmap</code>, <code class="highlighter-rouge">nikto</code> or <code class="highlighter-rouge">davtest</code>.</p>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>Search for vulns:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p 80,443 -sV -sC --script=http-vuln* 10.10.10.10
+</code></pre></div></div>
+
+<p>Search for info:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p 80,443 -sV -sC 10.10.10.10
+</code></pre></div></div>
+
+<h2 id="nikto">Nikto</h2>
+
+<p>Nikto is a free software command-line vulnerability scanner that scans webservers for dangerous files/CGIs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nikto -host 10.10.10.10:80
+</code></pre></div></div>
+
+<h2 id="davtest">Davtest</h2>
+
+<p>DAVTest tests WebDAV enabled servers by uploading test executable files, and then (optionally) uploading files which allow for command execution or other actions directly on the target.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>davtest --url http://10.10.10.10
+</code></pre></div></div>
+
+<h1 id="fuzzing">Fuzzing</h1>
+
+<p>In the world of cybersecurity, <strong>fuzz</strong> testing (or <strong>fuzzing</strong>) is an automated software testing technique that attempts to find hackable software bugs by randomly feeding invalid and unexpected inputs and data into a computer program in order to find coding errors and security loopholes.</p>
+
+<p>This technique is also used to discover new web content such as directories, files or parameters. There are many different tools that could help us to do fuzzing in web applications (wfuzz, ffuf, dirb, dirbuster…). But I’m going to use wfuzz and ffuf.</p>
+
+<h2 id="directory-fuzzing">Directory Fuzzing</h2>
+
+<p>Wordlist:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/share/wordlist/dirbuster/directory-list-2.3-medium.txt
+/usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+/usr/share/seclists/Discovery/Web-Content/raft-medium-words.txt
+
+#IIS Server
+/usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt
+/usr/share/seclists/Discovery/Web-Content/raft-medium-words-lowercase.txt
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: <em>IIS server</em> is <strong>non-case sensitive</strong></p>
+</blockquote>
+
+<p>Command:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster dir -w wordlists.txt -x 'asp,aspx,html' -b 404 -u http://SEVER_IP:PORT/
+ffuf -w wordlists.txt:FUZZ -e .php,.html-.aspx -u http://SERVER_IP:PORT/FUZZ -recursion -recursion-depth 1
+dirb http://SERVER_IP:PORT
+wfuzz -Z -c -w wordlists.txt -z list,-.asp-.aspx-.html --hc 404 http://SERVER_IP:PORT/FUZZFUZ2Z
+</code></pre></div></div>
+
+<h2 id="vhost-fuzzing">Vhost Fuzzing</h2>
+
+<p>Wordlists:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+/usr/share/seclists/Discovery/DNS/shubs-subdomains.txt
+</code></pre></div></div>
+
+<p>Command for different hosts:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffuf -w /opt/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://FUZZ.example.com/
+</code></pre></div></div>
+
+<p>Command for the same host:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wfuzz -Z -c -w /usr/share/seclists/Discovery/DNS/shubs-subdomains.txt -H "Host: FUZZ.example.com" --hh &lt;length&gt; http://ip-addr
+</code></pre></div></div>
+
+<h2 id="parameter-fuzzing">Parameter Fuzzing</h2>
+
+<p>Wordlist:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/SecLists/Discovery/Web-Content/burp-parameter-names.txt
+</code></pre></div></div>
+
+<h3 id="get">GET</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffuf -w /opt/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u http://example.com/admin/admin.php?FUZZ=key -fs xxx
+</code></pre></div></div>
+
+<h3 id="post">POST</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ffuf -w /opt/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u http://example.com/admin/admin.php -X POST -d 'FUZZ=key' -H 'Content-Type: application/x-www-form-urlencoded' -fs xxx
+</code></pre></div></div>
+
+<h1 id="default-installation-routes">Default Installation Routes</h1>
+
+<p>These are some default installation routes of Linux and Windows webservers.</p>
+
+<h2 id="linux">Linux</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/www/html/
+</code></pre></div></div>
+
+<h2 id="windows">Windows</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\xampp\htdocs\
+C:\inetpub\wwwroot\
+</code></pre></div></div>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

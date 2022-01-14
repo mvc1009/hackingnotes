@@ -112,7 +112,7 @@ or 6 is not null
 UNION ALL SELECT
 ```
 
-## Directoy Traversal
+## Directory Traversal
 
 * Instead of using `/etc/passwd` we can use:
 ```

