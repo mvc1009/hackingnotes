@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -298,6 +300,8 @@
 <p><code class="highlighter-rouge">Get-Help</code> displays information about a cmdlet. To get help about a particular command, run the following:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-Help cmdlet
+Get-Help cmdlet -Full
+Get-Help cmdlet -Examples
 </code></pre></div></div>
 
 <blockquote>
@@ -352,6 +356,19 @@ Verb-Noun | Where-Object {$_.PropertyName -operator Value}
 <p>May you need to sort the output of a cmdlet in order to extract the information more efficiently. You can do this with <code class="highlighter-rouge">Sort-Object</code> cmdlet.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Verb-Noun | Sort-Object
+</code></pre></div></div>
+
+<h1 id="importing-modules">Importing modules</h1>
+
+<p>It is also posible to import our self modules.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module &lt;modulepath&gt;.ps1
+. ./&lt;modulepath&gt;.ps1
+</code></pre></div></div>
+
+<p>Onced imported we can list all commands that we previously imported.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-Command -Module &lt;modulename&gt;
 </code></pre></div></div>
 
 			</article>

@@ -6,17 +6,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>PORT 3389/tcp - RDP | Hacking Notes</title>
+<title>Domain Enumeration | Hacking Notes</title>
 <meta name="generator" content="Jekyll v3.8.4" />
-<meta property="og:title" content="PORT 3389/tcp - RDP" />
+<meta property="og:title" content="Domain Enumeration" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Introduction" />
-<meta property="og:description" content="Introduction" />
-<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/services/rdp/" />
-<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/services/rdp/" />
+<meta name="description" content="In order to obtain information about our target domain we need to enumerate it. There are several ways to enumerate the domain with some kali tools, but in this section we are going to use PowerShell and the .NET framework." />
+<meta property="og:description" content="In order to obtain information about our target domain we need to enumerate it. There are several ways to enumerate the domain with some kali tools, but in this section we are going to use PowerShell and the .NET framework." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/domain-enumeration/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/domain-enumeration/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Introduction","url":"http://0.0.0.0:4000/hackingnotes/services/rdp/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"PORT 3389/tcp - RDP","@context":"http://schema.org"}</script>
+{"description":"In order to obtain information about our target domain we need to enumerate it. There are several ways to enumerate the domain with some kali tools, but in this section we are going to use PowerShell and the .NET framework.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-enumeration/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Enumeration","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -54,12 +54,12 @@
 				<ul>
 					
 					
-						<li class="nav-item top-level ">
+						<li class="nav-item top-level current">
 							
 							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
 							<ul>
 								
-									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
+									<li class="nav-item current"><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -180,7 +180,7 @@
 							</ul>
 						</li>
 					
-						<li class="nav-item top-level current">
+						<li class="nav-item top-level ">
 							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
@@ -209,7 +209,7 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/services/mysql/">PORT 3306/tcp - MySQL Server</a></li>
 								
-									<li class="nav-item current"><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
+									<li class="nav-item "><a href="/hackingnotes/services/rdp/">PORT 3389/tcp - RDP</a></li>
 								
 							</ul>
 						</li>
@@ -267,78 +267,151 @@
 
 		<section class="main">
 			<div class="page-header">
-				<h2>Services</h2>
-				<h3>PORT 3389/tcp - RDP</h3>
+				<h2>Active Directory</h2>
+				<h3>Domain Enumeration</h3>
 			</div>
 			<article class="content">
-				<h1 id="introduction">Introduction</h1>
-
-<p>Remote Desktop Protocol is a proprietary protocol developed by Microsoft which provides a user with a graphical interface to connect to another computer over a network connection. The user employs RDP client software for this purpose, while the other computer must run RDP server software</p>
-
-<p><img src="/hackingnotes/images/rdp.png" alt="" /></p>
-
-<h1 id="enumeration">Enumeration</h1>
-
-<p>With nmap we can enumerate the service a little bit, and obtain information such as the DOMAIN or the HOSTNAME. Also checks available encryption and DoS vulnerabilities.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -sV --script "rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info" -p 3389 &lt;ip-addr&gt;
-</code></pre></div></div>
-
-<h2 id="checking-credentials">Checking Credentials</h2>
-
-<p>With <code class="highlighter-rouge">rdp_check</code> we can check credentials.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rdp_check &lt;domain&gt;/&lt;username&gt;:&lt;password&gt;@&lt;ip-addr&gt;
-</code></pre></div></div>
-
-<h1 id="connect-via-rdp">Connect via RDP</h1>
-
-<h2 id="rdesktop">rdesktop</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rdesktop &lt;ip-addr&gt;
-rdesktop -u &lt;user&gt; -p &lt;password&gt;&lt;ip-addr&gt;
-rdesktop -d &lt;domain&gt; -u &lt;user&gt; -p &lt;password&gt; &lt;ip-addr&gt;
-</code></pre></div></div>
-
-<h2 id="xfreerdp">xfreerdp</h2>
-
-<p><strong>xfreerdp</strong> is an X11 Remote Desktop Protocol (RDP) client which is part of the FreeRDP project. An RDP server is built-in to many editions of Windows. Alternative servers included xrdp and VRDP (VirtualBox).</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xfreerdp /d:&lt;domain&gt; /u:&lt;user&gt; /p:&lt;password&gt; /v:10.10.10.10
-xfreerdp /u:&lt;user&gt; /p:&lt;password&gt; /v:10.10.10.10
-</code></pre></div></div>
-
-<p>Connect RDP via pass the hash.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xfreerdp /u:&lt;user&gt; /pth:e3071bcf8c3ad25c891a8898f56aa62b /v:10.10.10.10
-</code></pre></div></div>
-
-<p>Other configurations.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/workarea                        Full Window
-+clipboard                       Enable shared clipboard
-/drive:share,/mnt/folder        Create a Shared folder
-</code></pre></div></div>
-
-<h1 id="post-exploitation">Post Exploitation</h1>
-
-<p>With <code class="highlighter-rouge">mimikatz</code> is possible to obtain the current sessions and connect it. Check section **<code class="highlighter-rouge">Hijacking RDP Session</code> ** to more info.</p>
+				<p>In order to obtain information about our target domain we need to enumerate it. There are several ways to enumerate the domain with some kali tools, but in this section we are going to use PowerShell and the .NET framework.</p>
 
 <ul>
-  <li><a href="../../transfering-files/get-credentials/">Get Credentials</a></li>
+  <li>Domain Class:</li>
 </ul>
 
-<h1 id="enable-rdp">Enable RDP</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ADClass = [System.DirectoryServices.ActiveDirectory.Domain]
+$ADClass::GetCurrentDomain()
+</code></pre></div></div>
+<p>Exists multiple scripts to enumerate the domain.</p>
 
-<p>When we fully compromised the server we can enable RDP.</p>
+<ul>
+  <li>PowerView.ps1: <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1">https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1</a></li>
+  <li>AD Module: <a href="https://github.com/samratashok/ADModule">https://github.com/samratashok/ADModule</a></li>
+</ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+<h2 id="importing-the-module">Importing the module</h2>
+
+<ul>
+  <li>PowerView</li>
+</ul>
+
+<p>First of all the module needs to be imported. Normally is not detected by AV, in case of detection, AMSI will need be evaded.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\PowerView.ps1
+. .\PowerView.ps1
 </code></pre></div></div>
 
-<p>And add the user or group to the Remote Desktop Users group.</p>
+<ul>
+  <li>ADModule</li>
+</ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net localgroup “remote desktop users” user  /add
+<p>Its important to import first a <code class="highlighter-rouge">.dll</code> file if RSAT is not installed on the machine.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Microsoft.ActiveDirectory.Management.dll
+Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 </code></pre></div></div>
+
+<h2 id="current-domain">Current Domain</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomain
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="another-domain">Another Domain</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain -Domain corp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomain -Identity corp.local
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="domain-sid">Domain SID</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainSID
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+We can find the SID inside the <code class="highlighter-rouge">Get-ADDomain</code> output.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Get-ADDomain).DomainSID
+</code></pre></div></div>
+
+<h2 id="domain-policy">Domain Policy</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainPolicy
+(Get-DomainPolicy)."system access"
+(Get-DomainPolicy -Domain corp.local)."system access"
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="domain-controllers">Domain Controllers</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomainController
+Get-NetDomainController -Domain corp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomainController
+Get-ADDomainController -DomainName corp.local
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="list-users--properties--attributes">List Users &amp; Properties / Attributes</h2>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser
+Get-NetUser -Username &lt;user&gt;
+Get-UserProperty
+Get-UserProperty -Properties pwdlastset
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADUser -Filter * -Properties *
+Get-ADUser -Identity &lt;username&gt; -Properties *
+Get-ADUser -Filter * -Properties * | select -First 1 | Get-Member -MemberType *Property | select Name
+Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromFileTime($_.pwdlastset)}}
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note:</strong> Some sysadmins paste the password on the description field.</p>
+</blockquote>
+
+<h2 id="search-a-particular-string-in-userss-attributes">Search a particular string in users’s attributes</h2>
+
+<p>Valuable info can be found in user’s attributes such as description.</p>
+
+<ul>
+  <li>PowerView
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-UserField -SearchField Description -SearchTerm "built"
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADUser -Filter 'Description -like "*built*"' -Properties Description | select name,Description
+</code></pre></div>    </div>
+  </li>
+</ul>
 
 			</article>
 		</section>

