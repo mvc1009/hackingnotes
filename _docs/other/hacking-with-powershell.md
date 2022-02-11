@@ -30,6 +30,8 @@ Common verbs used are the[ following ones:](https://docs.microsoft.com/en-us/pow
 
 ```
 Get-Help cmdlet
+Get-Help cmdlet -Full
+Get-Help cmdlet -Examples
 ```
 
 > **Note**: To show some examples execute **Get-Help cmdlet -Examples**
@@ -82,4 +84,19 @@ May you need to sort the output of a cmdlet in order to extract the information 
 
 ```
 Verb-Noun | Sort-Object
+```
+
+# Importing modules
+
+It is also posible to import our self modules.
+
+```
+Import-Module <modulepath>.ps1
+. ./<modulepath>.ps1
+```
+
+Onced imported we can list all commands that we previously imported.
+
+```
+Get-Command -Module <modulename>
 ```
