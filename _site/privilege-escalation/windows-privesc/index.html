@@ -278,8 +278,23 @@
 <p>There are some scripts that could help us in order to escalate privilege on Linux systems. These are two examples:</p>
 
 <ul>
-  <li><strong>PowerUp.ps1:</strong> <a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc">https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc</a></li>
-  <li><strong>WinPEAS:</strong> <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS">https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS</a> ****</li>
+  <li><strong>PowerUp.ps1:</strong> <a href="https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc">https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-AllChecks
+</code></pre></div>    </div>
+  </li>
+  <li><strong>WinPEAS:</strong> <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS">https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\WinPEAS.exe
+.\WinPEAS.bat
+</code></pre></div>    </div>
+  </li>
+  <li><strong>BeRoot</strong>: <a href="https://github.com/AlessandroZ/BeRoot">https://github.com/AlessandroZ/BeRoot</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\beRoot.exe
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Privesc</strong>: <a href="https://github.com/enjoiz/Privesc">https://github.com/enjoiz/Privesc</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-PrivEsc
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <blockquote>
@@ -515,7 +530,13 @@ NTSTATUS: 00000000, WinError: 0
 
 <p>If we can put our executable in one of the paths that it is checked before the real route, when we restart the service we will obtain a shell.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wmic service get name,pathname,displayname,startmode | findstr /i auto | findstr /i /v "C:\Windows\\" | findstr /i /v """
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wmic service get name,pathname,displayname,startmode | findstr /i auto | findstr /i /v "C:\Windows\\" | findstr /i /v '"'
+Get-WmiObject -Class win32_service | select pathname
+</code></pre></div></div>
+
+<p>With <code class="highlighter-rouge">PowerUp</code> we can list services with unquoted paths and a space in their name.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ServiceUnquoted -Verbose
 </code></pre></div></div>
 
 <p>We need to ensure that the service is running by <code class="highlighter-rouge">LocalSystem</code>:</p>
@@ -573,6 +594,15 @@ reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallEle
 wmic service list brief
 sc query
 Get-Service
+</code></pre></div></div>
+
+<p>With <code class="highlighter-rouge">PowerUp</code> we can get the services where the current user can write to its binary path or change arguments to the binary.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ModifiableServiceFile -Verbose
+</code></pre></div></div>
+<p>We can also chec the services whose configuration the current user can modify.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ModifiableService -Verbose
 </code></pre></div></div>
 
 <p>Sometimes services are pointing to writeable folders:</p>

@@ -11,7 +11,22 @@ Privilege Escalation usually involves going from a lower permission to a higher 
 There are some scripts that could help us in order to escalate privilege on Linux systems. These are two examples:
 
 * **PowerUp.ps1:** [https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc](https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc)
-* **WinPEAS:** [https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS) \*\*\*\*
+```
+Invoke-AllChecks
+```
+* **WinPEAS:** [https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS)
+```
+.\WinPEAS.exe
+.\WinPEAS.bat
+```
+* **BeRoot**: [https://github.com/AlessandroZ/BeRoot](https://github.com/AlessandroZ/BeRoot)
+```
+.\beRoot.exe
+```
+* **Privesc**: [https://github.com/enjoiz/Privesc](https://github.com/enjoiz/Privesc)
+```
+Invoke-PrivEsc
+```
 
 > **Info**: [https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993)
 
@@ -238,7 +253,14 @@ Every Windows service has his access route to the executable. If this route is *
 If we can put our executable in one of the paths that it is checked before the real route, when we restart the service we will obtain a shell.
 
 ```
-wmic service get name,pathname,displayname,startmode | findstr /i auto | findstr /i /v "C:\Windows\\" | findstr /i /v """
+wmic service get name,pathname,displayname,startmode | findstr /i auto | findstr /i /v "C:\Windows\\" | findstr /i /v '"'
+Get-WmiObject -Class win32_service | select pathname
+```
+
+With `PowerUp` we can list services with unquoted paths and a space in their name.
+
+```powershell
+Get-ServiceUnquoted -Verbose
 ```
 
 We need to ensure that the service is running by `LocalSystem`:
@@ -267,6 +289,7 @@ Finally we need to restart the service to gain access to system:
 sc stop <service>
 sc start <service>
 ```
+
 
 # Always Install Elevated
 
@@ -300,6 +323,17 @@ net start
 wmic service list brief
 sc query
 Get-Service
+```
+
+With `PowerUp` we can get the services where the current user can write to its binary path or change arguments to the binary.
+
+```powershell
+Get-ModifiableServiceFile -Verbose
+```
+We can also chec the services whose configuration the current user can modify.
+
+```powershell
+Get-ModifiableService -Verbose
 ```
 
 Sometimes services are pointing to writeable folders:

@@ -287,7 +287,7 @@
   <li><strong>AD Module</strong>: <a href="https://github.com/samratashok/ADModule">https://github.com/samratashok/ADModule</a></li>
 </ul>
 
-<h2 id="importing-the-module">Importing the module</h2>
+<h1 id="importing-the-module">Importing the module</h1>
 
 <ul>
   <li>PowerView</li>
@@ -309,7 +309,7 @@
 Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 </code></pre></div></div>
 
-<h2 id="current-domain">Current Domain</h2>
+<h1 id="current-domain">Current Domain</h1>
 
 <ul>
   <li>PowerView
@@ -322,7 +322,7 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
   </li>
 </ul>
 
-<h2 id="another-domain">Another Domain</h2>
+<h1 id="another-domain">Another Domain</h1>
 
 <ul>
   <li>PowerView
@@ -335,7 +335,7 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
   </li>
 </ul>
 
-<h2 id="domain-sid">Domain SID</h2>
+<h1 id="domain-sid">Domain SID</h1>
 
 <ul>
   <li>PowerView
@@ -349,7 +349,7 @@ We can find the SID inside the <code class="highlighter-rouge">Get-ADDomain</cod
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-ADDomain</span><span class="o">)</span>.DomainSID
 </code></pre></div></div>
 
-<h2 id="domain-policy">Domain Policy</h2>
+<h1 id="domain-policy">Domain Policy</h1>
 
 <ul>
   <li>PowerView
@@ -360,7 +360,7 @@ We can find the SID inside the <code class="highlighter-rouge">Get-ADDomain</cod
   </li>
 </ul>
 
-<h2 id="domain-controllers">Domain Controllers</h2>
+<h1 id="domain-controllers">Domain Controllers</h1>
 
 <ul>
   <li>PowerView
@@ -375,7 +375,7 @@ Get-ADDomainController</span> -DomainName corp.local
   </li>
 </ul>
 
-<h2 id="users--their-properties--attributes">Users &amp; their Properties / Attributes</h2>
+<h1 id="users--their-properties--attributes">Users &amp; their Properties / Attributes</h1>
 
 <ul>
   <li>PowerView
@@ -398,7 +398,7 @@ Get-UserProperty -Properties pwdlastset
   <p><strong>Note:</strong> Some sysadmins paste the password on the description field.</p>
 </blockquote>
 
-<h3 id="search-a-particular-string-in-userss-attributes">Search a particular string in users’s attributes</h3>
+<h2 id="search-a-particular-string-in-userss-attributes">Search a particular string in users’s attributes</h2>
 
 <p>Valuable info can be found in user’s attributes such as description.</p>
 
@@ -413,7 +413,7 @@ Get-UserProperty -Properties pwdlastset
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="s1">'Description -like "*built*"'</span> -Properties Description | <span class="nb">select </span>name,Description
 </code></pre></div></div>
 
-<h2 id="computers-in-the-domain">Computers in the domain</h2>
+<h1 id="computers-in-the-domain">Computers in the domain</h1>
 
 <ul>
   <li>PowerView
@@ -432,7 +432,7 @@ Get-NetComputer -FullData
   </li>
 </ul>
 
-<h2 id="domain-groups">Domain Groups</h2>
+<h1 id="domain-groups">Domain Groups</h1>
 
 <ul>
   <li>PowerView
@@ -464,7 +464,7 @@ Get-NetGroup -FullData
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADGroup</span> -Filter <span class="s1">'Name -like "*admin*"'</span> | <span class="nb">select </span>Name
 </code></pre></div></div>
 
-<h3 id="find-memberships">Find memberships</h3>
+<h2 id="find-memberships">Find memberships</h2>
 
 <ul>
   <li>PowerView
@@ -479,7 +479,7 @@ Get-NetGroup -UserName <span class="s2">"username"</span>
   </li>
 </ul>
 
-<h2 id="local-groups">Local Groups</h2>
+<h1 id="local-groups">Local Groups</h1>
 
 <p>To do that task needs administrator privs on non-dc machines.</p>
 
@@ -496,7 +496,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups -Recurse
 </code></pre></div></div>
 
-<h2 id="logged-users-user-has-a-session-on">Logged Users (User has a session on)</h2>
+<h1 id="logged-users-user-has-a-session-on">Logged Users (User has a session on)</h1>
 
 <p>Like local groups to do that task needs administrator privs on non-dc machines.</p>
 
@@ -516,9 +516,9 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-LastLoggedOn -ComputerName filesrv1.corp.local
 </code></pre></div></div>
 
-<h2 id="find-important-targets">Find important targets</h2>
+<h1 id="find-important-targets">Find important targets</h1>
 
-<h3 id="shares">Shares</h3>
+<h2 id="shares">Shares</h2>
 
 <ul>
   <li>PowerView
@@ -527,7 +527,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
   </li>
 </ul>
 
-<h3 id="sensitive-files">Sensitive Files</h3>
+<h2 id="sensitive-files">Sensitive Files</h2>
 
 <ul>
   <li>PowerView
@@ -536,7 +536,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
   </li>
 </ul>
 
-<h3 id="file-servers">File servers</h3>
+<h2 id="file-servers">File servers</h2>
 
 <ul>
   <li>PowerView
@@ -545,7 +545,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
   </li>
 </ul>
 
-<h2 id="group-policy-gpo">Group Policy (GPO)</h2>
+<h1 id="group-policy-gpo">Group Policy (GPO)</h1>
 
 <p>Group Policy provides the ability to manage configuration and changes easily and centrally in active directory.</p>
 
@@ -567,7 +567,7 @@ Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
   </li>
 </ul>
 
-<h3 id="users-on-localgroups">Users on Localgroups</h3>
+<h2 id="users-on-localgroups">Users on Localgroups</h2>
 
 <p>We can also get users which are in a local group of a machine using GPO.</p>
 
@@ -587,7 +587,7 @@ Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
   </li>
 </ul>
 
-<h2 id="organization-unit-ou">Organization Unit (OU)</h2>
+<h1 id="organization-unit-ou">Organization Unit (OU)</h1>
 
 <ul>
   <li>PowerView:
@@ -613,7 +613,7 @@ Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
   </li>
 </ul>
 
-<h2 id="access-control-model-acl">Access Control Model (ACL)</h2>
+<h1 id="access-control-model-acl">Access Control Model (ACL)</h1>
 
 <p>Enables control on the ability of a process to access objects and other resources in active diectory based on:</p>
 
@@ -656,7 +656,7 @@ Get-PathAcl -Path <span class="s2">"\\dc01.corp.local\sysvol"</span>
   </li>
 </ul>
 
-<h2 id="domain-trusts">Domain Trusts</h2>
+<h1 id="domain-trusts">Domain Trusts</h1>
 
 <p>In an active directory environment, trust is a relationship between two domains or forests which allows users of one domain or forest to access resources in the other domain or forest.</p>
 
@@ -664,7 +664,7 @@ Get-PathAcl -Path <span class="s2">"\\dc01.corp.local\sysvol"</span>
 
 <p>Trusted Domain Objects (TDOs) the trust relationship in a domain.</p>
 
-<h3 id="directions-of-trust">Directions of Trust</h3>
+<h2 id="directions-of-trust">Directions of Trust</h2>
 
 <p>Exist diferent directions of Trust:</p>
 
@@ -684,7 +684,7 @@ Get-PathAcl -Path <span class="s2">"\\dc01.corp.local\sysvol"</span>
 
 <p><img src="/hackingnotes/images/two-way-trust.png" alt="Two-Way-Trust" /></p>
 
-<h3 id="trust-transitivity">Trust Transitivity</h3>
+<h2 id="trust-transitivity">Trust Transitivity</h2>
 
 <p>Exist different types of transitivity on a domain:</p>
 
@@ -773,7 +773,7 @@ Get-ADTrust</span> -Identity es.lab.corp.local
   </li>
 </ul>
 
-<h2 id="forest-mapping">Forest Mapping</h2>
+<h1 id="forest-mapping">Forest Mapping</h1>
 
 <p>We can get details about a forest:</p>
 
@@ -832,9 +832,9 @@ Get-NetForestTrust -Forest extcorp.local
   </li>
 </ul>
 
-<h2 id="user-hunting">User Hunting</h2>
+<h1 id="user-hunting">User Hunting</h1>
 
-<h3 id="local-admin-check">Local Admin Check</h3>
+<h2 id="local-admin-check">Local Admin Check</h2>
 
 <p>Find all machines on the current domain where the current user has local admin access.</p>
 
@@ -860,7 +860,7 @@ Find-WMILocalAdminAccess -ComputerFile .\computers.txt -Verbose
   <p><strong>NOTE</strong>: WMI needs ADMIN PRIV to work, so if we get an error is that the user has not enough privileges.</p>
 </blockquote>
 
-<h3 id="get-local-admins-local-admin-priv-needed">Get Local Admins (Local Admin Priv. needed)</h3>
+<h2 id="get-local-admins-local-admin-priv-needed">Get Local Admins (Local Admin Priv. needed)</h2>
 
 <p>We can find local admins on all machines of the domain but we need administrator privileges on non-dc machines.</p>
 
@@ -875,7 +875,7 @@ Find-WMILocalAdminAccess -ComputerFile .\computers.txt -Verbose
   </li>
 </ul>
 
-<h3 id="machines-where-a-usergroup-has-session">Machines where a User/Group has session</h3>
+<h2 id="machines-where-a-usergroup-has-session">Machines where a User/Group has session</h2>
 
 <p>We can find computers where a domain admin or another specified user or group has an active session:</p>
 
@@ -910,13 +910,42 @@ Invoke-UserHunter -UserName <span class="s2">"john.brown"</span>
 </ul>
 
 <blockquote>
-  <p><strong>DEFENSE NOTE</strong>: 
+  <p><strong>BlueTeam NOTE</strong>: 
 <code class="highlighter-rouge">Netcease.ps1</code> is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.
 <a href="https://github.com/p0w3rsh3ll/NetCease">https://github.com/p0w3rsh3ll/NetCease</a>.</p>
 
   <p>The binary net.exe uses SAMR protocol, exists another script which hardens a server.
 <a href="https://vulners.com/n0where/N0WHERE:139229">https://vulners.com/n0where/N0WHERE:139229</a></p>
 </blockquote>
+
+<h1 id="bloodhound">BloodHound</h1>
+
+<p>Provides GUI for AD entities and relationships for the data collected by its ingestors (SharpHound.ps1).</p>
+
+<p><a href="https://github.com/BloodHoundAD/BloodHound">https://github.com/BloodHoundAD/BloodHound</a></p>
+
+<p>First we need to run ingestors on a machine in order to collect data.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>. .\SharpHound.ps1
+Invoke-BloodHound -CollectionMethod All -Verbose
+</code></pre></div></div>
+<p>Sometimes BloodHound miss to check the sessions so we can execute it manually.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-BloodHound -CollectionMethod LoggedOn -Verbose
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: Remember that we can append the invoke command at the end of the file an executed it out of memory with <code class="highlighter-rouge">iex (iwr ...)</code></p>
+</blockquote>
+
+<blockquote>
+  <p><strong>RedTeam NOTE</strong>: We can avoid detections like <strong>ATA</strong> with:
+<code class="highlighter-rouge">Invoke-BloodHound -CollectionMethod All -ExcludeDC</code></p>
+</blockquote>
+
+<p>After execution download the <code class="highlighter-rouge">.zip</code> file and drop to <code class="highlighter-rouge">BloodHound</code> in order to import it.</p>
+
+<p><img src="/hackingnotes/images/bloodhound.png" alt="BloodHound" /></p>
 
 			</article>
 		</section>

