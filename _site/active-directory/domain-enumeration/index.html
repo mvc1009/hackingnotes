@@ -553,7 +553,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
   <li>PowerView
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGPO
 Get-NetGPO -ComputerName machine01.corp.local
-Get-NetGP OGroup
+Get-NetGPO <span class="nb">Group</span>
 </code></pre></div>    </div>
   </li>
   <li>ADModule
@@ -565,13 +565,358 @@ Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
 <code class="highlighter-rouge">gpresult /R /V</code></p>
     </blockquote>
   </li>
-  <li>PowerView
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div>    </div>
-  </li>
-  <li>ADModule
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div>    </div>
+</ul>
+
+<h3 id="users-on-localgroups">Users on Localgroups</h3>
+
+<p>We can also get users which are in a local group of a machine using GPO.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-GPOComputerAdmin -Computer machine01.corp.local
+</code></pre></div>    </div>
   </li>
 </ul>
+
+<p>Or we can find machines where a user is member of a specific group.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-GPOLocation -UserName &lt;user&gt; -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="organization-unit-ou">Organization Unit (OU)</h2>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetOU -FullData
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADOrganizationalUnit</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>To read which GPO is aplied to each OU, use the <code class="highlighter-rouge">gplink</code> value extracted from <code class="highlighter-rouge">Get-NetOU</code>.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGPO -GPOname <span class="s1">'{FD2B3AF5-356B-ADE4-98C1F4EF8081}'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-GPO -Guid FD2B3AF5-356B-ADE4-98C1F4EF8081
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="access-control-model-acl">Access Control Model (ACL)</h2>
+
+<p>Enables control on the ability of a process to access objects and other resources in active diectory based on:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* **Access Tokens**: Security context of a process which contains the identity and privileges of a user.
+* **Security Descriptors**: SID of the owner , Discretionary ACL (DACL) and System ACL (SACL).
+</code></pre></div></div>
+
+<p>It’s a list of Access Control Entities (ACE) which corresponds to an individual permission or audits access. Determines who has permission and what can be done on an object.</p>
+
+<p>Exists two types:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* **DACL**: Defines the permissions trustees a user or group have on an object.
+* **SACL**: Logs sucess and failure audit messages when an object is accessed.
+</code></pre></div></div>
+
+<p>ACLs are vital to security architecture of Active Directory.</p>
+
+<p>We can list the ACLs associated to a specified object, with a specified prefix, specified LDAP search or to specific path.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ObjectAcl -SamAccountName &lt;username&gt; -ResolveGUIDs
+Get-ObjectAcl -ADSprefix <span class="s1">'CN=Administrator,CN=Users'</span> -Verbose
+Get-ObjectAcl -ADSpath <span class="s2">"LDAP://CN=Domain Admins,CN=Users,DC=corp,DC=local"</span> -ResolveGUIDS -Verbose
+Get-PathAcl -Path <span class="s2">"\\dc01.corp.local\sysvol"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-Acl</span> <span class="s1">'AD:\CN=Administrator,CN=Users,DC=corp,DC=local'</span><span class="o">)</span>.Access
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>PowerView has a module named <code class="highlighter-rouge">ACLScanner</code> that finds interesting ACL such as ACL that are modified or ones which determines where and which object we can modify.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ACLScanner -ResolveGUIDs
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="domain-trusts">Domain Trusts</h2>
+
+<p>In an active directory environment, trust is a relationship between two domains or forests which allows users of one domain or forest to access resources in the other domain or forest.</p>
+
+<p>Trust can be automatic for example parent-child, same forest, etc… or established manually.</p>
+
+<p>Trusted Domain Objects (TDOs) the trust relationship in a domain.</p>
+
+<h3 id="directions-of-trust">Directions of Trust</h3>
+
+<p>Exist diferent directions of Trust:</p>
+
+<ul>
+  <li><strong>One-Way Trust</strong>:</li>
+</ul>
+
+<p>It is unidirectional. Users in the trusted domain can access resources in the trusting domain but not backwards.</p>
+
+<p><img src="/hackingnotes/images/one-way-trust.png" alt="One-Way-Trust" /></p>
+
+<ul>
+  <li><strong>Two-Way Trust</strong>:</li>
+</ul>
+
+<p>It is bidirectional. Users of both domains can access resources in the other domain</p>
+
+<p><img src="/hackingnotes/images/two-way-trust.png" alt="Two-Way-Trust" /></p>
+
+<h3 id="trust-transitivity">Trust Transitivity</h3>
+
+<p>Exist different types of transitivity on a domain:</p>
+
+<ul>
+  <li><strong>Transitive</strong>:</li>
+</ul>
+
+<p>Transitivie is a property of trust which means that the trust can be extended to etablish trust relationships with other domains.</p>
+
+<p>All the default intra-forest trust relationships such as Tree-Root or Parent-Child between domains within a same forest are transitive Two-Way trusts.</p>
+
+<p><img src="/hackingnotes/images/trust-transitive.png" alt="Trust Transitive" /></p>
+
+<p>Means that Domain A trusts Domain B and Domain B trusts Domain C so Domain A also trusts Domain C in a Two-Way Trust direction.</p>
+
+<ul>
+  <li><strong>Nontransitive</strong>:</li>
+</ul>
+
+<p>Nontransitive means that the trust can not be extended to other domains in the forest, we can find it on a two-way or one-way.</p>
+
+<p>This is the default trust called external trust between two domains in different forests, when forests do not have a trust relationship.</p>
+
+<h2 id="type-of-trusts">Type of Trusts</h2>
+
+<p>There are many types of trusts:</p>
+
+<h3 id="default--automatic-trusts">Default / Automatic Trusts</h3>
+
+<ul>
+  <li><strong>Parent-Child</strong>:</li>
+</ul>
+
+<p>It is created automatically between the new domain an the domain that precedes it (parent-child trust) in the namespace hierarchy, whenever a domain is added in a tree.</p>
+
+<p>For example lab.corp.local is a child of corp.local. Always the trust is in a two-way transitive.</p>
+
+<ul>
+  <li><strong>Tree-Root</strong>:</li>
+</ul>
+
+<p>It is created automatically between whenever a new domain tree is added to a forest root.</p>
+
+<p>The trust is always two-way transitive.</p>
+
+<p><img src="/hackingnotes/images/domain-trusts.png" alt="Domain Trusts" /></p>
+
+<h3 id="shortcut-trust">Shortcut Trust</h3>
+
+<p>The shortcut trust is used to reduce access times in a complex trust scenarios. We can found it in a one-way or two-way transitive form.</p>
+
+<p><img src="/hackingnotes/images/shortcut-trust.png" alt="Shortcut Trusts" /></p>
+
+<h3 id="external-trusts">External Trusts</h3>
+
+<p>An external trust gives the opportunity of trust between two domains in different forests which do not have any trust relationship. Can be one-way or two-way and is nontransitive.</p>
+
+<p><img src="/hackingnotes/images/external-trust.png" alt="External Trusts" /></p>
+
+<h3 id="forest-trust">Forest Trust</h3>
+
+<p>Forest trust is a trust between forest root domains. Cannot be extended to a third forest so has no implicit trust.</p>
+
+<p>Can be one-way or two-way and transitive or nontransitive.</p>
+
+<p><img src="/hackingnotes/images/forest-trust.png" alt="Forest Trusts" /></p>
+
+<blockquote>
+  <p><strong>Note</strong>: In case of nonsensitvie Forest 1 would not have any type of trust relationship with Forest 3.</p>
+</blockquote>
+
+<h2 id="domain-trust-mapping">Domain Trust Mapping</h2>
+
+<p>We can get a list of all domain trusts for a domain.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomainTrust
+Get-NetDomainTrust -Domain es.lab.corp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADTrust
+Get-ADTrust</span> -Identity es.lab.corp.local
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="forest-mapping">Forest Mapping</h2>
+
+<p>We can get details about a forest:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetForest
+Get-NetForest -Forest extcorp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADForest
+Get-ADForest</span> -Identity extcorp.local
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can get all domains in a forest:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetForestDomain
+Get-NetForestDomain -Forest extcorp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-ADForest</span><span class="o">)</span>.Domains
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can get all global catalogs of a forest:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetForestCatalog
+Get-NetForestCatalog -Forest extcorp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADForest</span> | <span class="nb">select</span> -ExpandProperty GlobalCatalogs
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can get the map trusts of a forest:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetForestTrust
+Get-NetForestTrust -Forest extcorp.local
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADTrust</span> -Filter <span class="s1">'msDS-TrustForestTrustInfo -ne "$null"'</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="user-hunting">User Hunting</h2>
+
+<h3 id="local-admin-check">Local Admin Check</h3>
+
+<p>Find all machines on the current domain where the current user has local admin access.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-LocalAdminAccess -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: This function queries the domain controller for a list of computers <code class="highlighter-rouge">Get-NetComputer</code> and then use multi-threaded <code class="highlighter-rouge">Invoke-CheckLocalAdminAccess</code> on each machine.
+<strong>MAKE A LOT OF NOISE</strong></p>
+</blockquote>
+
+<p>In case <code class="highlighter-rouge">Find-LocalAdminAccess</code> is blocked you can use:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Find-WMILocalAdminAccess.ps1
+Find-WMILocalAdminAccess -ComputerName machine01.corp.local
+Find-WMILocalAdminAccess -ComputerFile .\computers.txt -Verbose
+</code></pre></div></div>
+<blockquote>
+  <p><strong>NOTE</strong>: WMI needs ADMIN PRIV to work, so if we get an error is that the user has not enough privileges.</p>
+</blockquote>
+
+<h3 id="get-local-admins-local-admin-priv-needed">Get Local Admins (Local Admin Priv. needed)</h3>
+
+<p>We can find local admins on all machines of the domain but we need administrator privileges on non-dc machines.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-EnumerateLocalAdmin -Verbose
+</code></pre></div>    </div>
+    <blockquote>
+      <p><strong>Note</strong>: This function queries the DC fo a list of computers <code class="highlighter-rouge">Get-NetComputer</code> an then use multi-threaded <code class="highlighter-rouge">Get-NetLocalGroup</code> on each machine.
+<strong>MAKE A LOT OF NOISE</strong></p>
+    </blockquote>
+  </li>
+</ul>
+
+<h3 id="machines-where-a-usergroup-has-session">Machines where a User/Group has session</h3>
+
+<p>We can find computers where a domain admin or another specified user or group has an active session:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-UserHunter
+Invoke-UserHunter -GroupName <span class="s2">"RDPUsers"</span>
+Invoke-UserHunter -UserName <span class="s2">"john.brown"</span>
+</code></pre></div>    </div>
+    <blockquote>
+      <p><strong>Note</strong>: This function queries the DC for members of a given group using <code class="highlighter-rouge">Get-NetGroupMember</code>, gets a list of computers with <code class="highlighter-rouge">Get-NetComputer</code> and list sessions and logged users with <code class="highlighter-rouge">Get-NetSession</code> and <code class="highlighter-rouge">Get-NetLoggedon</code> from each machine.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>We can also confirm the admin access with:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-UserHunter -CheckAcces
+</code></pre></div>    </div>
+    <p>We can also find with <code class="highlighter-rouge">Invoke-UserHunter</code> where a domain admin is logged-in.</p>
+  </li>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-UserHunter -Stealth
+</code></pre></div>    </div>
+    <blockquote>
+      <p><strong>Note</strong>: This option queries the DC for members of the given group using <code class="highlighter-rouge">Get-NetGroupMember</code>, gets a list of <em>only of high traffic servers such as DC, File Servers and Distributed File Servers</em> for less traffic generation and list sessions and logged on users with <code class="highlighter-rouge">Get-NetSession</code> and <code class="highlighter-rouge">Get-NetLoggedon</code>.
+<strong>MAKE NOISE</strong></p>
+    </blockquote>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>DEFENSE NOTE</strong>: 
+<code class="highlighter-rouge">Netcease.ps1</code> is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.
+<a href="https://github.com/p0w3rsh3ll/NetCease">https://github.com/p0w3rsh3ll/NetCease</a>.</p>
+
+  <p>The binary net.exe uses SAMR protocol, exists another script which hardens a server.
+<a href="https://vulners.com/n0where/N0WHERE:139229">https://vulners.com/n0where/N0WHERE:139229</a></p>
+</blockquote>
 
 			</article>
 		</section>
