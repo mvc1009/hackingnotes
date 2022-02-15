@@ -118,7 +118,7 @@ Usage:
 
 We can check the windows version by using `winver` command (GUI needed).
 
-![winver command](/hackingontes/images/winver.png)
+![winver command](/hackingnotes/images/winver.png)
 
 * [https://www.exploit-db.com/exploits/47684](https://www.exploit-db.com/exploits/47684)
 
@@ -211,7 +211,7 @@ I modified the following project: [https://github.com/tandasat/ExploitCapcom](ht
 
 Modify the line 410 of `ExpliotCapCom.cpp` and compile it.
 
-![ExploitCapcom.cpp](/hackingontes/images/exploitcapcom.png)
+![ExploitCapcom.cpp](/hackingnotes/images/exploitcapcom.png)
 
 Create the exploit.exe payload with msfvenom:
 

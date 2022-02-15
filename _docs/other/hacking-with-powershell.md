@@ -28,7 +28,7 @@ Common verbs used are the[ following ones:](https://docs.microsoft.com/en-us/pow
 
 `Get-Help` displays information about a cmdlet. To get help about a particular command, run the following:
 
-```
+```powershell
 Get-Help cmdlet
 Get-Help cmdlet -Full
 Get-Help cmdlet -Examples
@@ -51,7 +51,7 @@ If we want to actually maniputare the output, we need to figure out a few things
 
 To pas the output to another cmdlet like bash scripting is with the Pipeline "\|".
 
-```
+```powershell
 Verb-Noun | Get-Member -MemberType Equals
 ```
 
@@ -59,7 +59,7 @@ Verb-Noun | Get-Member -MemberType Equals
 
 One way of manipulating objects is pulling out the properties from the output of a cmdlet and creating a new object. This is done using the `Select-Object` cmdlet.
 
-```
+```powershell
 Get-ChildItem | Select-Object -Property Mode, Name
 ```
 
@@ -67,7 +67,7 @@ Get-ChildItem | Select-Object -Property Mode, Name
 
 When retrieving output objects, you may want to select objects that match a very specific value. You can do that using the `Where-Object`.
 
-```
+```powershell
 Verb-Noun | Where-Object -Property PropertyName -operator Value
 Verb-Noun | Where-Object {$_.PropertyName -operator Value}
 ```
@@ -82,7 +82,7 @@ This are the[ following operators](https://docs.microsoft.com/en-us/powershell/m
 
 May you need to sort the output of a cmdlet in order to extract the information more efficiently. You can do this with `Sort-Object` cmdlet.
 
-```
+```powershell
 Verb-Noun | Sort-Object
 ```
 
@@ -90,13 +90,13 @@ Verb-Noun | Sort-Object
 
 It is also posible to import our self modules.
 
-```
+```powershell
 Import-Module <modulepath>.ps1
 . ./<modulepath>.ps1
 ```
 
 Onced imported we can list all commands that we previously imported.
 
-```
+```powershell
 Get-Command -Module <modulename>
 ```

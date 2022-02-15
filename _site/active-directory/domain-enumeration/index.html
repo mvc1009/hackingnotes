@@ -277,14 +277,14 @@
   <li>Domain Class:</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ADClass = [System.DirectoryServices.ActiveDirectory.Domain]
-$ADClass::GetCurrentDomain()
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ADClass</span> <span class="o">=</span> <span class="o">[</span>System.DirectoryServices.ActiveDirectory.Domain]
+<span class="nv">$ADClass</span>::GetCurrentDomain<span class="o">()</span>
 </code></pre></div></div>
 <p>Exists multiple scripts to enumerate the domain.</p>
 
 <ul>
-  <li>PowerView.ps1: <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1">https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1</a></li>
-  <li>AD Module: <a href="https://github.com/samratashok/ADModule">https://github.com/samratashok/ADModule</a></li>
+  <li><strong>PowerView.ps1</strong>: <a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1">https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1</a></li>
+  <li><strong>AD Module</strong>: <a href="https://github.com/samratashok/ADModule">https://github.com/samratashok/ADModule</a></li>
 </ul>
 
 <h2 id="importing-the-module">Importing the module</h2>
@@ -295,8 +295,8 @@ $ADClass::GetCurrentDomain()
 
 <p>First of all the module needs to be imported. Normally is not detected by AV, in case of detection, AMSI will need be evaded.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\PowerView.ps1
-. .\PowerView.ps1
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\PowerView.ps1
+<span class="nb">.</span> .\PowerView.ps1
 </code></pre></div></div>
 
 <ul>
@@ -305,7 +305,7 @@ $ADClass::GetCurrentDomain()
 
 <p>Its important to import first a <code class="highlighter-rouge">.dll</code> file if RSAT is not installed on the machine.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Microsoft.ActiveDirectory.Management.dll
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Microsoft.ActiveDirectory.Management.dll
 Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 </code></pre></div></div>
 
@@ -313,11 +313,11 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain
 </code></pre></div>    </div>
   </li>
   <li>ADModule
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomain
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADDomain</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -326,11 +326,11 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain -Domain corp.local
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomain -Domain corp.local
 </code></pre></div>    </div>
   </li>
   <li>ADModule
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomain -Identity corp.local
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADDomain</span> -Identity corp.local
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -339,23 +339,23 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainSID
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainSID
 </code></pre></div>    </div>
   </li>
   <li>ADModule
 We can find the SID inside the <code class="highlighter-rouge">Get-ADDomain</code> output.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Get-ADDomain).DomainSID
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-ADDomain</span><span class="o">)</span>.DomainSID
 </code></pre></div></div>
 
 <h2 id="domain-policy">Domain Policy</h2>
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainPolicy
-(Get-DomainPolicy)."system access"
-(Get-DomainPolicy -Domain corp.local)."system access"
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainPolicy
+<span class="o">(</span>Get-DomainPolicy<span class="o">)</span>.<span class="s2">"system access"</span>
+<span class="o">(</span>Get-DomainPolicy -Domain corp.local<span class="o">)</span>.<span class="s2">"system access"</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -364,32 +364,32 @@ We can find the SID inside the <code class="highlighter-rouge">Get-ADDomain</cod
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomainController
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetDomainController
 Get-NetDomainController -Domain corp.local
 </code></pre></div>    </div>
   </li>
   <li>ADModule
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADDomainController
-Get-ADDomainController -DomainName corp.local
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADDomainController
+Get-ADDomainController</span> -DomainName corp.local
 </code></pre></div>    </div>
   </li>
 </ul>
 
-<h2 id="list-users--properties--attributes">List Users &amp; Properties / Attributes</h2>
+<h2 id="users--their-properties--attributes">Users &amp; their Properties / Attributes</h2>
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser
 Get-NetUser -Username &lt;user&gt;
 Get-UserProperty
 Get-UserProperty -Properties pwdlastset
 </code></pre></div>    </div>
   </li>
   <li>ADModule
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADUser -Filter * -Properties *
-Get-ADUser -Identity &lt;username&gt; -Properties *
-Get-ADUser -Filter * -Properties * | select -First 1 | Get-Member -MemberType *Property | select Name
-Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromFileTime($_.pwdlastset)}}
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span>
+<span class="nb">Get-ADUser</span> -Identity &lt;username&gt; -Properties <span class="k">*</span>
+<span class="nb">Get-ADUser</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span> | <span class="nb">select</span> -First 1 | <span class="nb">Get-Member</span> -MemberType <span class="k">*</span>Property | <span class="nb">select </span>Name
+<span class="nb">Get-ADUser</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span> | <span class="nb">select </span>name,@<span class="o">{</span><span class="nv">expression</span><span class="o">={[</span>datetime]::fromFileTime<span class="o">(</span><span class="nv">$_</span>.pwdlastset<span class="o">)}}</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -398,18 +398,178 @@ Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromF
   <p><strong>Note:</strong> Some sysadmins paste the password on the description field.</p>
 </blockquote>
 
-<h2 id="search-a-particular-string-in-userss-attributes">Search a particular string in users’s attributes</h2>
+<h3 id="search-a-particular-string-in-userss-attributes">Search a particular string in users’s attributes</h3>
 
 <p>Valuable info can be found in user’s attributes such as description.</p>
 
 <ul>
   <li>PowerView
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-UserField -SearchField Description -SearchTerm "built"
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-UserField -SearchField Description -SearchTerm <span class="s2">"built"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="s1">'Description -like "*built*"'</span> -Properties Description | <span class="nb">select </span>name,Description
+</code></pre></div></div>
+
+<h2 id="computers-in-the-domain">Computers in the domain</h2>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetComputer
+Get-NetComputer -OperatingSystem <span class="s2">"*Server 2016*"</span>
+Get-NetComputer -Ping
+Get-NetComputer -FullData
 </code></pre></div>    </div>
   </li>
   <li>ADModule
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADUser -Filter 'Description -like "*built*"' -Properties Description | select name,Description
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADComputer</span> -Filter <span class="k">*</span> | <span class="nb">select </span>Name
+<span class="nb">Get-ADComputer</span> -Filter <span class="s1">'OperatingSystem -like "*Server 2016*"'</span> -Properties OperatingSystem | <span class="nb">select </span>Name,OperatingSystem
+<span class="nb">Get-ADComputer</span> -Filter <span class="k">*</span> -Properties DNSHostname | %<span class="o">{</span><span class="nb">Test-Connection</span> -Count 1 -ComputerName <span class="nv">$_</span>.DNSHostName<span class="o">}</span>
+<span class="nb">Get-ADComputer</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span>
 </code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="domain-groups">Domain Groups</h2>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGroup
+Get-NetGroup -Domain &lt;targetdomain&gt;
+Get-NetGroup -FullData
+</code></pre></div>    </div>
+    <blockquote>
+      <p><strong>Note</strong>: It is also possible search for all groups containing a word:</p>
+    </blockquote>
+  </li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGroup <span class="k">*</span>admin<span class="k">*</span>
+</code></pre></div></div>
+
+<ul>
+  <li>ADModule
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADGroup</span> -Filter <span class="k">*</span> | <span class="nb">select </span>Name
+<span class="nb">Get-ADGroup</span> -Filter <span class="k">*</span> -Properties <span class="k">*</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: It is also possible search for all groups containing a word:</p>
+</blockquote>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADGroup</span> -Filter <span class="s1">'Name -like "*admin*"'</span> | <span class="nb">select </span>Name
+</code></pre></div></div>
+
+<h3 id="find-memberships">Find memberships</h3>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGroupMember -GroupName <span class="s2">"Domain Admins"</span> -Recurse
+Get-NetGroup -UserName <span class="s2">"username"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADGroupMember</span> -Identity <span class="s2">"Domain Admins"</span> -Recursive
+<span class="nb">Get-ADPrincipalGroupMembership</span> -Identity username
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="local-groups">Local Groups</h2>
+
+<p>To do that task needs administrator privs on non-dc machines.</p>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetLocalGroup -ComputerName dc01.corp.local -ListGroups
+Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>The following command shows the members of all the local groups on a machine.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups -Recurse
+</code></pre></div></div>
+
+<h2 id="logged-users-user-has-a-session-on">Logged Users (User has a session on)</h2>
+
+<p>Like local groups to do that task needs administrator privs on non-dc machines.</p>
+
+<ul>
+  <li>PowerView</li>
+</ul>
+
+<p>Get actively logged users on a computer <em>(needs local admin rights on the target)</em></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetLoggedon -ComputerName filesrv1.corp.local
+</code></pre></div></div>
+
+<p>Get locally logged users on a computer <em>(needs remote registry on the target (by default))</em></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-LoggedonLocal -ComputerName filesrv1.corp.local
+</code></pre></div></div>
+
+<p>Get the last logged user on a computer <em>(needs local admin rights and remote registry on the target (by default))</em></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-LastLoggedOn -ComputerName filesrv1.corp.local
+</code></pre></div></div>
+
+<h2 id="find-important-targets">Find important targets</h2>
+
+<h3 id="shares">Shares</h3>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ShareFinder -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="sensitive-files">Sensitive Files</h3>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-FileFinder -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="file-servers">File servers</h3>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetFileServer
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="group-policy-gpo">Group Policy (GPO)</h2>
+
+<p>Group Policy provides the ability to manage configuration and changes easily and centrally in active directory.</p>
+
+<ul>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGPO
+Get-NetGPO -ComputerName machine01.corp.local
+Get-NetGP OGroup
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-GPO -All
+Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
+</code></pre></div>    </div>
+    <blockquote>
+      <p><strong>NOTE:</strong> We can get more infomration with:
+<code class="highlighter-rouge">gpresult /R /V</code></p>
+    </blockquote>
+  </li>
+  <li>PowerView
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div>    </div>
+  </li>
+  <li>ADModule
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div>    </div>
   </li>
 </ul>
 

