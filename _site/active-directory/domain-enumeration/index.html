@@ -565,8 +565,9 @@ Get-NetGPO <span class="nb">Group</span>
 Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html
 </code></pre></div>    </div>
     <blockquote>
-      <p><strong>NOTE:</strong> We can get more infomration with:
-<code class="highlighter-rouge">gpresult /R /V</code></p>
+      <p><strong>NOTE:</strong> We can get more infomration with:</p>
+
+      <p><code class="highlighter-rouge">gpresult /R /V</code></p>
     </blockquote>
   </li>
 </ul>
@@ -873,8 +874,9 @@ Find-WMILocalAdminAccess -ComputerFile .\computers.txt -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-EnumerateLocalAdmin -Verbose
 </code></pre></div>    </div>
     <blockquote>
-      <p><strong>Note</strong>: This function queries the DC fo a list of computers <code class="highlighter-rouge">Get-NetComputer</code> an then use multi-threaded <code class="highlighter-rouge">Get-NetLocalGroup</code> on each machine.
-<strong>MAKE A LOT OF NOISE</strong></p>
+      <p><strong>Note</strong>: This function queries the DC fo a list of computers <code class="highlighter-rouge">Get-NetComputer</code> an then use multi-threaded <code class="highlighter-rouge">Get-NetLocalGroup</code> on each machine.</p>
+
+      <p><strong>MAKE A LOT OF NOISE</strong></p>
     </blockquote>
   </li>
 </ul>
@@ -907,14 +909,15 @@ Invoke-UserHunter -UserName <span class="s2">"john.brown"</span>
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-UserHunter -Stealth
 </code></pre></div>    </div>
     <blockquote>
-      <p><strong>Note</strong>: This option queries the DC for members of the given group using <code class="highlighter-rouge">Get-NetGroupMember</code>, gets a list of <em>only of high traffic servers such as DC, File Servers and Distributed File Servers</em> for less traffic generation and list sessions and logged on users with <code class="highlighter-rouge">Get-NetSession</code> and <code class="highlighter-rouge">Get-NetLoggedon</code>.
-<strong>MAKE NOISE</strong></p>
+      <p><strong>Note</strong>: This option queries the DC for members of the given group using <code class="highlighter-rouge">Get-NetGroupMember</code>, gets a list of <em>only of high traffic servers such as DC, File Servers and Distributed File Servers</em> for less traffic generation and list sessions and logged on users with <code class="highlighter-rouge">Get-NetSession</code> and <code class="highlighter-rouge">Get-NetLoggedon</code>.</p>
+
+      <p><strong>MAKE NOISE</strong></p>
     </blockquote>
   </li>
 </ul>
 
 <blockquote>
-  <p><strong>BlueTeam NOTE</strong>: 
+  <p><strong>BlueTeam Note</strong>: 
 <code class="highlighter-rouge">Netcease.ps1</code> is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.
 <a href="https://github.com/p0w3rsh3ll/NetCease">https://github.com/p0w3rsh3ll/NetCease</a>.</p>
 
@@ -943,8 +946,9 @@ Invoke-BloodHound -CollectionMethod All -Verbose
 </blockquote>
 
 <blockquote>
-  <p><strong>RedTeam NOTE</strong>: We can avoid detections like <strong>ATA</strong> with:
-<code class="highlighter-rouge">Invoke-BloodHound -CollectionMethod All -ExcludeDC</code></p>
+  <p><strong>RedTeam Note</strong>: We can avoid detections like <strong>ATA</strong> with:</p>
+
+  <p><code class="highlighter-rouge">Invoke-BloodHound -CollectionMethod All -ExcludeDC</code></p>
 </blockquote>
 
 <p>After execution download the <code class="highlighter-rouge">.zip</code> file and drop to <code class="highlighter-rouge">BloodHound</code> in order to import it.</p>
