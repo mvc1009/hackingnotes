@@ -659,6 +659,7 @@ Get-PathAcl -Path <span class="s2">"\\dc01.corp.local\sysvol"</span>
 <ul>
   <li>PowerView:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ACLScanner -ResolveGUIDs
+Invoke-ACLScanner -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReferenceName -match <span class="s2">"RDPUsers"</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
 </ul>
