@@ -352,7 +352,7 @@ mdk3 &lt;IFACE&gt; d -w blacklist.txt -c 1
 
 <h2 id="filtering-the-capture">Filtering the capture</h2>
 
-<p>When we are trying to capture a handshake, maybe we are capturing a lot of packets, so we just need to filter that. (EAPOL -&gt; Handshakes) (wlan.fc.type_subtype==0x08 are Beacons) (wlan.fc.type_subtype==0x05 are Probe Response)</p>
+<p>When we are trying to capture a handshake, maybe we are capturing a lot of packets, so we just need to filter that. <code class="highlighter-rouge">(EAPOL -&gt; Handshakes) (wlan.fc.type_subtype==0x08 are Beacons) (wlan.fc.type\_subtype==0x05 are Probe Response)</code></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tshark -r Capture-01.cap -Y "wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol" -F pcap 2&gt;/dev/null
 tshark -r Capture-01.cap -Y "wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol"  -w filteredCapture -F pcap 2&gt;/dev/null

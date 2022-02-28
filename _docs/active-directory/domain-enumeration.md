@@ -15,11 +15,11 @@ $ADClass::GetCurrentDomain()
 Exists multiple scripts to enumerate the domain.
 
 * **PowerView.ps1**: [https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
-* **AD Module**: [https://github.com/samratashok/ADModule](https://github.com/samratashok/ADModule)
+* **ADModule**: [https://github.com/samratashok/ADModule](https://github.com/samratashok/ADModule)
 
 # Importing the module
 
-*  PowerView
+*  PowerView:
 
 First of all the module needs to be imported. Normally is not detected by AV, in case of detection, AMSI will need be evaded.
 
@@ -28,7 +28,7 @@ Import-Module .\PowerView.ps1
 . .\PowerView.ps1
 ```
 
-* ADModule
+* ADModule:
 
 Its important to import first a `.dll` file if RSAT is not installed on the machine.
 
@@ -39,36 +39,37 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 
 # Current Domain
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetDomain
 ```
 
-* ADModule
+* ADModule:
 ```powershell
 Get-ADDomain
 ```
 
 # Another Domain
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetDomain -Domain corp.local
 ```
 
-* ADModule
+* ADModule:
 ```powershell
 Get-ADDomain -Identity corp.local
 ```
 
 # Domain SID
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-DomainSID
 ```
 
-* ADModule
+* ADModule:
+
 We can find the SID inside the `Get-ADDomain` output.
 
 ```powershell
@@ -77,7 +78,7 @@ We can find the SID inside the `Get-ADDomain` output.
 
 # Domain Policy
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-DomainPolicy
 (Get-DomainPolicy)."system access"
@@ -86,12 +87,12 @@ Get-DomainPolicy
 
 # Domain Controllers
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetDomainController
 Get-NetDomainController -Domain corp.local
 ```
-* ADModule
+* ADModule:
 ```powershell
 Get-ADDomainController
 Get-ADDomainController -DomainName corp.local
@@ -121,20 +122,19 @@ Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromF
 
 Valuable info can be found in user's attributes such as description.
 
-*  PowerView
+*  PowerView:
 ```powershell
 Find-UserField -SearchField Description -SearchTerm "built"
 ```
 
-*  ADModule
-
+*  ADModule:
 ```powershell
 Get-ADUser -Filter 'Description -like "*built*"' -Properties Description | select name,Description
 ```
 
 # Computers in the domain
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetComputer
 Get-NetComputer -OperatingSystem "*Server 2016*"
@@ -142,7 +142,7 @@ Get-NetComputer -Ping
 Get-NetComputer -FullData
 ```
 
-*  ADModule
+*  ADModule:
 ```powershell
 Get-ADComputer -Filter * | select Name
 Get-ADComputer -Filter 'OperatingSystem -like "*Server 2016*"' -Properties OperatingSystem | select Name,OperatingSystem
@@ -152,7 +152,7 @@ Get-ADComputer -Filter * -Properties *
 
 # Domain Groups
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetGroup
 Get-NetGroup -Domain <targetdomain>
@@ -164,7 +164,7 @@ Get-NetGroup -FullData
 Get-NetGroup *admin*
 ```
 
-*  ADModule
+*  ADModule:
 ```powershell
 Get-ADGroup -Filter * | select Name
 Get-ADGroup -Filter * -Properties *
@@ -178,13 +178,13 @@ Get-ADGroup -Filter 'Name -like "*admin*"' | select Name
 
 ## Find memberships
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetGroupMember -GroupName "Domain Admins" -Recurse
 Get-NetGroup -UserName "username"
 ```
 
-*  ADModule
+*  ADModule:
 ```powershell
 Get-ADGroupMember -Identity "Domain Admins" -Recursive
 Get-ADPrincipalGroupMembership -Identity username
@@ -194,7 +194,7 @@ Get-ADPrincipalGroupMembership -Identity username
 
 To do that task needs administrator privs on non-dc machines.
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetLocalGroup -ComputerName dc01.corp.local -ListGroups
 Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups
@@ -211,7 +211,7 @@ Get-NetLocalGroup -ComputerName filesrv1.corp.local -ListGroups -Recurse
 Like local groups to do that task needs administrator privs on non-dc machines.
 
 
-*  PowerView
+*  PowerView:
 
 Get actively logged users on a computer _(needs local admin rights on the target)_
 ```powershell
@@ -232,21 +232,21 @@ Get-LastLoggedOn -ComputerName filesrv1.corp.local
 
 ## Shares
 
-*  PowerView
+*  PowerView:
 ```powershell
 Invoke-ShareFinder -Verbose
 ```
 
 ## Sensitive Files
 
-*  PowerView
+*  PowerView:
 ```powershell
 Invoke-FileFinder -Verbose
 ```
 
 ## File servers
 
-* PowerView
+* PowerView:
 ```powershell
 Get-NetFileServer
 ```
@@ -256,14 +256,14 @@ Get-NetFileServer
 Group Policy provides the ability to manage configuration and changes easily and centrally in active directory.
 
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetGPO
 Get-NetGPO -ComputerName machine01.corp.local
 Get-NetGPO Group
 ```
 
-*  ADModule
+*  ADModule:
 ```powershell
 Get-GPO -All
 Get-GPResultantSetOfPolicy -ReportType Html -Path c:\windows\temp\report.html

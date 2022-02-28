@@ -88,7 +88,7 @@ pyrit -r Capture-01.cap analyze
 
 ## Filtering the capture
 
-When we are trying to capture a handshake, maybe we are capturing a lot of packets, so we just need to filter that. (EAPOL -> Handshakes) (wlan.fc.type\_subtype==0x08 are Beacons) (wlan.fc.type\_subtype==0x05 are Probe Response)
+When we are trying to capture a handshake, maybe we are capturing a lot of packets, so we just need to filter that. `(EAPOL -> Handshakes) (wlan.fc.type_subtype==0x08 are Beacons) (wlan.fc.type\_subtype==0x05 are Probe Response)`
 
 ```
 tshark -r Capture-01.cap -Y "wlan.fc.type_subtype==0x08 || wlan.fc.type_subtype==0x05 || eapol" -F pcap 2>/dev/null

