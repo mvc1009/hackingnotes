@@ -572,13 +572,13 @@ mimikatz# !-
 
 <p>All local logons on the domain controller are logged to <code class="highlighter-rouge">C:\Windows\system32\kiwissp.log</code>.</p>
 
-<h1 id="using-acls">Using ACLs</h1>
+<h1 id="using-acls-adminsdholder">Using ACLs (AdminSDHolder)</h1>
 
 <p>Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the <code class="highlighter-rouge">protected groups</code>.</p>
 
 <p>Security Descriptor Propagator (SDPROP) runs every hour and compares the ACL of protected groups and members with the ACL of AdminSDHolder and any differences are overwritten on the object ACL.</p>
 
-<p>Lis of protected groups and how can be abused some of them can log on locally to the domain controller:</p>
+<p>List of protected groups and how can be abused some of them can log on locally to the domain controller:</p>
 
 <ul>
   <li><strong>Account Operators</strong>: Can modify nesteg groups.</li>

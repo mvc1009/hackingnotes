@@ -257,13 +257,13 @@ Invoke-Mimikatz -Command '"misc::memssp"'
 
 All local logons on the domain controller are logged to `C:\Windows\system32\kiwissp.log`.
 
-# Using ACLs
+# Using ACLs (AdminSDHolder)
 
 Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the `protected groups`.
 
 Security Descriptor Propagator (SDPROP) runs every hour and compares the ACL of protected groups and members with the ACL of AdminSDHolder and any differences are overwritten on the object ACL.
 
-Lis of protected groups and how can be abused some of them can log on locally to the domain controller:
+List of protected groups and how can be abused some of them can log on locally to the domain controller:
 
 * **Account Operators**: Can modify nesteg groups.
 * **Bakup Operators**: Backup GPO, edit ato add SID of controller account to a privileged gorup and restore.
