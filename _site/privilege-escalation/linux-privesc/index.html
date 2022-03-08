@@ -328,6 +328,8 @@ gcc <span class="nt">-march</span><span class="o">=</span>i686 <span class="nt">
 
 <h2 id="dirtypipe---linux-kernel--58">DirtyPipe - Linux Kernel &lt;= 5.8</h2>
 
+<p><code class="highlighter-rouge">DirtyPipe</code> allows overwriting data in arbitrary read-only files that leverages to a privilege escalation due to unprivileged process can inject code into root processes. It is similar to <code class="highlighter-rouge">DirtyC0w</code>.</p>
+
 <p>Download the exploit from the following repository <a href="https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh">https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh</a>. Compile it:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc exploit.c <span class="nt">-o</span> dirtypipe
@@ -373,6 +375,8 @@ gcc <span class="nt">-march</span><span class="o">=</span>i686 <span class="nt">
 </ul>
 
 <h2 id="dirtyc0w---linux-kernel-2622--39">DirtyC0w - Linux Kernel 2.6.22 &lt; 3.9</h2>
+
+<p><code class="highlighter-rouge">DirtyPipe</code> allows overwriting data in arbitrary read-only files that leverages to a privilege escalation.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-pthread</span> dirty.c <span class="nt">-o</span> dirty <span class="nt">-lcrypt</span>
 </code></pre></div></div>

@@ -51,6 +51,8 @@ chmod u+x executablename
 
 ## DirtyPipe - Linux Kernel <= 5.8
 
+`DirtyPipe` allows overwriting data in arbitrary read-only files that leverages to a privilege escalation due to unprivileged process can inject code into root processes. It is similar to `DirtyC0w`.
+
 Download the exploit from the following repository [https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh](https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit/blob/main/compile.sh). Compile it:
 
 ```bash
@@ -96,6 +98,8 @@ uid=0(root) gid=0(root) groups=0(root),33(www-data)
 * [https://www.exploit-db.com/exploits/45010](https://www.exploit-db.com/exploits/45010)
 
 ## DirtyC0w - Linux Kernel 2.6.22 < 3.9
+
+`DirtyPipe` allows overwriting data in arbitrary read-only files that leverages to a privilege escalation.
 
 ```bash
 gcc -pthread dirty.c -o dirty -lcrypt
