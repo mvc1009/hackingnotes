@@ -4,6 +4,20 @@ category: Services
 order: 12
 ---
 
+# Syntax
+
+```
+show databases;
+use database;
+
+show tables;
+select * from table;
+select column from table;
+
+select @@version;
+select user();
+```
+
 # Privilege Escalation
 
 Once we have a database user, some configuration is needed to be checked.

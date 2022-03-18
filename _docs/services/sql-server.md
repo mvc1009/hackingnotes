@@ -8,6 +8,16 @@ order: 10
 
 Microsoft SQL Server is a relational database management system developed by Microsoft. As a database server, it is a software product with the primary function of storing and retrieving data as requested by other software applications—which may run either on the same computer or on another computer across a network.
 
+# Syntax
+
+```
+select CURRENT_USER
+select name from master..sysdatabases
+select name from music..sysobjects  WHERE xtype = 'U'
+select name from syscolumns WHERE id = (SELECT id FROM sysobjects WHERE name = 'users')
+select user, password from users
+```
+
 # RCE With Credentials
 
 ## sqsh
