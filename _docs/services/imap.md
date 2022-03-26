@@ -1,7 +1,7 @@
 ---
 title: PORT 143/tcp, 993/tcp - IMAP
 category: Services
-order: 6
+order: 7
 ---
 
 # Internet Message Access Protocol (IMAP)

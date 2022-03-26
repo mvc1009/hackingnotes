@@ -1,7 +1,7 @@
 ---
 title: PORT 1100/tcp - Java RMI
 category: Services
-order: 9
+order: 10
 ---
 
 The Java Remote Method Invocation, or Java RMI, is a mechanism that allows an object that exists in one Java virtual machine to access and call methods that are contained in another one.

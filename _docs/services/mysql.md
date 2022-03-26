@@ -1,7 +1,7 @@
 ---
 title: PORT 3306/tcp - MySQL Server
 category: Services
-order: 12
+order: 13
 ---
 
 # Syntax

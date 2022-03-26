@@ -1,7 +1,7 @@
 ---
 title: PORT 53/tcp - DNS
 category: Services
-order: 3
+order: 4
 ---
 
 The Domain Name System (DNS) is the phonebook of the Internet. Humans access information online through domain names, like nytimes.com or espn.com.
