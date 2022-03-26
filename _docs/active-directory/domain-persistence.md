@@ -67,6 +67,17 @@ ls \\dc01.corp.local\c$
 ```
 > **Note**: A shell via WMI can not be obtained, so do not use PowerShell Remote.
 
+## Mitigation
+
+While creating a golden ticket the attacker creates some events in logs:
+
+* Event ID **4624**: Account Logon
+* Event ID **4672**: Admin Logon
+
+```powershell
+Get-WinEvent -FilterHashtable @{Logname='Security';ID=4672} -MaxEvents 1 | Format-List -Property *
+```
+
 [https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets](https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets)
 
 [https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket](https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket)
@@ -165,6 +176,19 @@ We can dump DC database using DCSync by crafting a silver ticket with the `LDAP`
 Invoke-Mimikatz -Command '"lsadump::dcsync /dc:dc01.corp.local /domain:corp.local /user:krbtgt"'
 ```
 
+## Mitigation
+
+While creating a silver ticket the attacker creates some events in logs:
+
+* Event ID **4624**: Account Logon
+* Event ID **4634**: Account Logoff
+* Event ID **4672**: Admin Logon
+
+```powershell
+Get-WinEvent -FilterHashtable @{Logname='Security';ID=4672} -MaxEvents 1 | Format-List -Property *
+```
+> **RedTeam Note**: Silver Ticket is very hard to be detected.
+
 # Skeleton Key
 
 Skeleton Key is a persistence technique where it is possible to patch a Domain Controller (lsass process) so that it allows access as any user with a single password. The attack was discovered by Dell Secureworks used in a malware named the Skeleton Key Malware.
@@ -197,6 +221,35 @@ mimikatz# !-
 ```
 
 The DC can not be patched twice.
+
+## Mitigation
+
+We can detect the Skeleton Key attack looking the events in logs.
+
+* System Event ID **7045**: A service was installed in the system
+* Security Event ID **4673**: Sensitive Privilege Use
+* Event ID **4611**: A trusted logon process has been registered with the Local Security Authority
+
+```powershell
+Get-WinEvent -FilterHashtable @{Logname='System';ID=7045} | ?{$_.message -like "*Kernel Mode Driver*"}
+
+# Not recommended, detects only stock mimidrv
+Get-WinEvent -FilterHashtable @{Logname='System';ID=7045} | ?{$_.message -like "*Kernel Mode Driver*"} -and $_.message -like "*mimidrv*"}
+```
+
+> **RedTeam Note**: This attack is very noisy.
+
+We can also mitigate that running `lsass.exe` as a protected process that forces the attacker to load a kernel mode driver.
+
+```powershell
+Net-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\ -Name RunAsPPL -Value 1 -Verbose
+```
+
+Verify after a reboot:
+
+```powershell
+Get-WmiEvent -FilterHashtable @{Logname='System';ID=12} | ?{$_.message -like "*protected process*"}
+```
 
 # Directory Services Restore Mode (DSRM)
 
@@ -232,6 +285,17 @@ New-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminL
 Invoke-Mimikatz -Command '"sekurlsa::pth /domain:dc01 /user:Administrator /ntlm:a9b30e5b0dc865eadcea9411e4ade72d /run:powershell.exe'
 ls \\dc01\c$
 ```
+
+## Mitigation
+
+Look the logs:
+
+* Event ID **4657**: Audit creation/change of `HKLM:\System\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior`
+
+```powershell
+Get-WinEvent -FilterHashtable @{Logname='System';ID=4657} | ?{$_.message -like "*Kernel Mode Driver*"}
+```
+
 # Custom Security Support Provider (SSP)
 
 A security support provider is a dll which provides ways for an application to obtain an authenticated connection. Some SSP packages by microsoft are NTLM, kerberos, CredSSP...
@@ -256,6 +320,16 @@ Invoke-Mimikatz -Command '"misc::memssp"'
 ```
 
 All local logons on the domain controller are logged to `C:\Windows\system32\kiwissp.log`.
+
+## Mitigation
+
+Look the logs:
+
+* Event ID **4657**: Audit creation/change of `HKLM:\System\CurrentControlSet\Control\Lsa\SecurityPackages`
+
+```powershell
+Get-WinEvent -FilterHashtable @{Logname='System';ID=4657} | ?{$_.message -like "*Kernel Mode Driver*"}
+```
 
 # Using ACLs (AdminSDHolder)
 

@@ -14,6 +14,8 @@ The Kerberos session ticket as known as `TGS` has a server portion which is encr
 
 > **Note**: Service accounts are many times ignored. Password are rarely changed and have privileged access.
 
+> **RedTeam Note**: Thousands of tickets are requests, is too hard of being detected.
+
 
 ### Getting the TGS
 
@@ -63,6 +65,28 @@ To crack the ticket with hascat exists a script to export it to a hashcat format
 ```
 haschat -a 0 -m 13100 wordlist.txt ticket.txt
 ```
+
+### Mitigation
+
+Since a lot of tickets are requested, we can see the logs in order to find all the kerberos tickets requests:
+
+* Security Event ID **4769**: A Kerberos ticket was requested
+
+```powershell
+Get-WmiEvent -FilterHashtable @{Logname='Security';ID=4769} -MaxEvents 1000 |
+?{$_.Mesage.split("`n")[8] -ne 'krbtgt' -and
+$_.Message.split("`n")[8] -ne '*$' -and
+$_.Message.split("`n")[3] -notlike '*$@*' -and
+$_.Message.split("`n")[18] -like '*0x0*' -and
+$_.Message.split("`n")[17] -like '*0x17*'} | select - ExpandProperty message
+```
+
+To prevent from kerberoasting attacks we have the following recommendations:
+
+* Service Account Passwords should be hard to guess (greater than 25 characteres)
+* Use Managed Service ACcounts (Automatic change of password periodically and deltegated SPN Management)
+* Try to not run a service as a Domain Admin account.
+
 
 ## AS-REP Roasting
 
@@ -243,7 +267,12 @@ Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL
 
 > **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
 
+## Mitigation
 
+It is recommended to:
+
+* Limit DA/Admin logins to specific servers.
+* Set `Account is sensitive and cannot be delegated` flag for privileged accounts.
 # DNSAdmins
 
 It is possible for the members of the **DNSAdmins** group to load arbitrary DLL with the privileges of dns.exe which is `NT AUTHORITY\SYSTEM`.
