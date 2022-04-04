@@ -4,7 +4,12 @@ category: Active Directory
 order: 98
 ---
 
-In this section some detection, defense tools and security advisors are going to be discussed.
+In this section some detection, defense tools and security advisors are going to be discussed. It is recommended to protect and limit domain admins:
+
+* Reduce the number of Domain Admins.
+* Do not allow or limit the login of DAs to any other machine rather than the Domain Controllers.
+* Try to never run a service with a Domain Admin.
+* Set `Account is sensitive and cannot be delegated` for Domain Admins.
 
 # Windows Defender
 
