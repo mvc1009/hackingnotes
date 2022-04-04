@@ -572,6 +572,11 @@ Invoke-UserHunter -Stealth
 >
 > **MAKE NOISE**
 
+> **RedTeam Note**: To prevent of beeing detected by the Microsoft ATA (Advanced Thread Analytics) that analyzes the traffic of the DC, use a list of computers and remove the DC from it.
+>
+> `Get-NetComputer`
+> `Invoke-UserHunter -ComputerFile hosts.txt`
+
 
 > **BlueTeam Note**: 
 > `Netcease.ps1` is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.

