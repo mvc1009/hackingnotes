@@ -1,5 +1,5 @@
 ---
-title: Securing Active Directory
+title: Hardening Active Directory
 category: Active Directory
 order: 98
 ---
@@ -39,7 +39,7 @@ To activate this protection set to 1 the value of `RunAsPPL`:
 ```
 reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA /v RunAsPPL
 
-reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA /v RunAsPPL /t REG_DWORD /d `
+reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA /v RunAsPPL /t REG_DWORD /d 1
 ```
 This LSA protection can be bypass using mimikatz `mimidrv.sys` driver:
 
