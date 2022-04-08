@@ -39,7 +39,17 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 
 # Current Domain
 
-*  PowerView:
+* PowerShell:
+```powershell
+$env:USERDNSDOMAIN
+
+# Identify current user domain
+(Get-ADDomain).DNSRoot
+
+# Identify current computer domain
+(Get-WmiObject Win32_ComputerSystem).Domain
+```
+* PowerView:
 ```powershell
 Get-NetDomain
 ```
@@ -74,6 +84,7 @@ We can find the SID inside the `Get-ADDomain` output.
 
 ```powershell
 (Get-ADDomain).DomainSID
+Get-ADDomain | select DNSRoot,NetBIOSName,DomainSID
 ```
 
 # Domain Policy
@@ -367,6 +378,10 @@ Exist diferent directions of Trust:
 
 It is unidirectional. Users in the trusted domain can access resources in the trusting domain but not backwards.
 
+	* **Outgoing trust**: Allows users of the other domain access to your domain.
+
+	* **Incoming trust**: Allows users of your domain to access the other domain.
+
 ![One-Way-Trust](/hackingnotes/images/one-way-trust.png)
 
 * **Two-Way Trust**:
@@ -431,6 +446,8 @@ An external trust gives the opportunity of trust between two domains in differen
 
 ### Forest Trust
 
+A trust is a connection from a domain to another. Not a physical network connection, but a kind of authentication/authorization connection. You may be able to reach computers on the network that are in others domains, but you cannot log in on those computers with your user of this domain. That is what a trust allows you to do.
+
 Forest trust is a trust between forest root domains. Cannot be extended to a third forest so has no implicit trust.
 
 Can be one-way or two-way and transitive or nontransitive.
@@ -454,8 +471,14 @@ Get-NetDomainTrust -Domain es.lab.corp.local
 Get-ADTrust
 Get-ADTrust -Identity es.lab.corp.local
 ```
+* Other:
+```
+nltest /domain_trusts
+```
 
 # Forest Mapping
+
+A Forest is like a tree of domains (domain and subdomains) and the name of the forest is the name as the root domain of the tree.
 
 We can get details about a forest:
 
@@ -508,6 +531,27 @@ Get-NetForestTrust -Forest extcorp.local
 ```powershell
 Get-ADTrust -Filter 'msDS-TrustForestTrustInfo -ne "$null"'
 ```
+
+## Functional Modes
+
+As well as Windows computers, domains/forest can also have their own "version", that is called functional mode. Depending on the mode of the domain/forest, new characteristics can be used.
+
+The modes are named based on the minimum Windows Server operative system required to work with them. There are the following functional modes:
+
+* Windows2000
+* Windows2000MixedDomains
+* Windows2003
+* Windows2008
+* Windows2008R2
+* Windows2012
+* Windows2012R2
+* Windows2016
+
+* ADModule:
+```powershell
+(Get-ADForest).ForestMode
+```
+Then if, for example, you find a domain/forest with `Windows2012` mode, you can know that all the Domain Controllers are at least Windows Server 2012. You must be aware of the mode in order to use some characteristics of the domain, for example, the Protected Users group requires a Windows2012R2 mode.
 
 # User Hunting 
 
