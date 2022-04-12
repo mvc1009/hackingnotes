@@ -1,7 +1,7 @@
 ---
 title: Lateral Movement
 category: Active Directory
-order: 2
+order: 3
 ---
 
 # PowerShell Remoting
@@ -112,7 +112,7 @@ Or we can execute locally loaded functions.
 Invoke-Command -Session $sess -ScriptBlock {function:Invoke-Mimikatz -DumpCreds}
 ```
 
-# Over-Pass-the-Hash
+# Over-Pass-the-Hash / Pass-The-Key
 
 Abusing kerberos functionality we can execute commands as another user by only knowing the NTLM hash.
 

@@ -1,7 +1,7 @@
 ---
 title: Domain Enumeration
 category: Active Directory
-order: 1
+order: 2
 ---
 
 In order to obtain information about our target domain we need to enumerate it. There are several ways to enumerate the domain with some kali tools, but in this section we are going to use PowerShell and the .NET framework.
@@ -362,101 +362,7 @@ Invoke-ACLScanner -ResolveGUIDs
 Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentityReferenceName -match "RDPUsers"}
 ```
 
-# Domain Trusts
-
-In an active directory environment, trust is a relationship between two domains or forests which allows users of one domain or forest to access resources in the other domain or forest.
-
-Trust can be automatic for example parent-child, same forest, etc... or established manually.
-
-Trusted Domain Objects (TDOs) the trust relationship in a domain.
-
-## Directions of Trust
-
-Exist diferent directions of Trust:
-
-* **One-Way Trust**:
-
-It is unidirectional. Users in the trusted domain can access resources in the trusting domain but not backwards.
-
-	* **Outgoing trust**: Allows users of the other domain access to your domain.
-
-	* **Incoming trust**: Allows users of your domain to access the other domain.
-
-![One-Way-Trust](/hackingnotes/images/one-way-trust.png)
-
-* **Two-Way Trust**:
-
-It is bidirectional. Users of both domains can access resources in the other domain
-
-![Two-Way-Trust](/hackingnotes/images/two-way-trust.png)
-
-## Trust Transitivity
-
-Exist different types of transitivity on a domain:
-
-* **Transitive**:
-
-Transitivie is a property of trust which means that the trust can be extended to etablish trust relationships with other domains.
-
-All the default intra-forest trust relationships such as Tree-Root or Parent-Child between domains within a same forest are transitive Two-Way trusts.
-
-![Trust Transitive](/hackingnotes/images/trust-transitive.png)
-
-Means that Domain A trusts Domain B and Domain B trusts Domain C so Domain A also trusts Domain C in a Two-Way Trust direction.
-
-
-* **Nontransitive**:
-
-Nontransitive means that the trust can not be extended to other domains in the forest, we can find it on a two-way or one-way.
-
-This is the default trust called external trust between two domains in different forests, when forests do not have a trust relationship.
-
-## Type of Trusts
-
-There are many types of trusts:
-
-### Default / Automatic Trusts
-
-* **Parent-Child**:
-
-It is created automatically between the new domain an the domain that precedes it (parent-child trust) in the namespace hierarchy, whenever a domain is added in a tree.
-
-For example lab.corp.local is a child of corp.local. Always the trust is in a two-way transitive.
-
-
-* **Tree-Root**:
-
-It is created automatically between whenever a new domain tree is added to a forest root.
-
-The trust is always two-way transitive.
-
-![Domain Trusts](/hackingnotes/images/domain-trusts.png)
-
-### Shortcut Trust
-
-The shortcut trust is used to reduce access times in a complex trust scenarios. We can found it in a one-way or two-way transitive form.
-
-![Shortcut Trusts](/hackingnotes/images/shortcut-trust.png)
-
-### External Trusts
-
-An external trust gives the opportunity of trust between two domains in different forests which do not have any trust relationship. Can be one-way or two-way and is nontransitive.
-
-![External Trusts](/hackingnotes/images/external-trust.png)
-
-### Forest Trust
-
-A trust is a connection from a domain to another. Not a physical network connection, but a kind of authentication/authorization connection. You may be able to reach computers on the network that are in others domains, but you cannot log in on those computers with your user of this domain. That is what a trust allows you to do.
-
-Forest trust is a trust between forest root domains. Cannot be extended to a third forest so has no implicit trust.
-
-Can be one-way or two-way and transitive or nontransitive.
-
-![Forest Trusts](/hackingnotes/images/forest-trust.png)
-
-> **Note**: In case of nonsensitvie Forest 1 would not have any type of trust relationship with Forest 3.
-
-## Domain Trust Mapping
+# Domain Trust Mapping
 
 We can get a list of all domain trusts for a domain.
 
@@ -531,27 +437,6 @@ Get-NetForestTrust -Forest extcorp.local
 ```powershell
 Get-ADTrust -Filter 'msDS-TrustForestTrustInfo -ne "$null"'
 ```
-
-## Functional Modes
-
-As well as Windows computers, domains/forest can also have their own "version", that is called functional mode. Depending on the mode of the domain/forest, new characteristics can be used.
-
-The modes are named based on the minimum Windows Server operative system required to work with them. There are the following functional modes:
-
-* Windows2000
-* Windows2000MixedDomains
-* Windows2003
-* Windows2008
-* Windows2008R2
-* Windows2012
-* Windows2012R2
-* Windows2016
-
-* ADModule:
-```powershell
-(Get-ADForest).ForestMode
-```
-Then if, for example, you find a domain/forest with `Windows2012` mode, you can know that all the Domain Controllers are at least Windows Server 2012. You must be aware of the mode in order to use some characteristics of the domain, for example, the Protected Users group requires a Windows2012R2 mode.
 
 # User Hunting 
 

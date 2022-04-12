@@ -1,7 +1,7 @@
 ---
 title: Domain Privilege Escalation
 category: Active Directory
-order: 4
+order: 5
 ---
 
 Lets talk about some attacks to carry out a domain privilege escalation in order to obtain a Domain Controller.

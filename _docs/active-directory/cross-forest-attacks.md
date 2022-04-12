@@ -1,10 +1,18 @@
 ---
 title: Cross Forest Attacks
 category: Active Directory
-order: 5
+order: 6
 ---
 
 In this section we are going to abuse trusts between forests.
+
+# Trust Key
+
+Technically, when you use a trust, there is a communication between the domain controller of your domain and the domain controller of the target domain (or of an intermediary domain).
+
+How communication is made varies depending of the protocol that is being used (which could be NTLM, Kerberos, etc), but in any case, the domain controllers needs to share a key to keep the communications secure. This key is known as the trust key and it's created when the trust is established.
+
+When a trust is created, a trust account is created in the domain database as if it were an user (with the name finished in $). The trust key is then stored as if it was the password of the trust user (in the NT hash and Kerberos keys).
 
 # Across Forest using Trust Tickets
 
