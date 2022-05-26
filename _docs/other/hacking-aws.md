@@ -28,6 +28,10 @@ aws configure
 
 Amazon Elastic Compute Cloud (Amazon EC2) provides secure and resizable computing capacity in the AWS cloud. Using Amazon  EC2  eliminates  the need  to invest in hardware up front, so you can develop and deploy applications faster. To resume an EC2 is a virtual machine. SSH keys are created when started to connect to linux devices, for windows it uses RDP. Exists security groups to handle open ports and allowed IPs.
 
+```
+aws ec2 describe-instances
+```
+
 # STS
 
 AWS Security Token Service (STS) enables you to request temporary, limited-privileges credentials for AWS IAM users or for users that you authenticate.
@@ -41,6 +45,24 @@ $ aws sts get-caller-identity
     "Account": "19xxxxxxxxxx",
     "Arn": "arn:aws:sts::19xxxxxxxxxx:assumed-role/webserver/i-xxxxxxxxxxxxxxxxx"
 }
+```
+## Get Key Info
+
+```
+aws sts get-session-token
+```
+# IAM
+
+AWS Identity and Access Management (IAM) is a web service for securely controlling access to AWS services. With IAM, you can centrally manage users, security credentials such as access keys, and permissions that control which AWS resources users and applications can access.
+```
+aws iam get-account-password-policy
+aws iam list-users
+aws iam list-roles
+aws iam list-access-keys --user-name <user>
+aws iam create-access-key --user-name <user>
+aws iam list-attached-user-policies --user-name <user>
+aws iam get-policy
+aws iam get-policy-version
 ```
 
 # SSM
