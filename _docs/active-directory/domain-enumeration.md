@@ -43,10 +43,10 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 ```powershell
 $env:USERDNSDOMAIN
 
-# Identify current user domain
+- Identify current user domain
 (Get-ADDomain).DNSRoot
 
-# Identify current computer domain
+- Identify current computer domain
 (Get-WmiObject Win32_ComputerSystem).Domain
 ```
 * PowerView:
@@ -79,7 +79,6 @@ Get-DomainSID
 ```
 
 * ADModule:
-
 We can find the SID inside the `Get-ADDomain` output.
 
 ```powershell
@@ -111,7 +110,7 @@ Get-ADDomainController -DomainName corp.local
 
 # Users & their Properties / Attributes
 
-*  PowerView
+*  PowerView:
 ```powershell
 Get-NetUser
 Get-NetUser -Username <user>
@@ -119,7 +118,7 @@ Get-UserProperty
 Get-UserProperty -Properties pwdlastset
 ```
 
-* ADModule
+* ADModule:
 ```powershell
 Get-ADUser -Filter * -Properties *
 Get-ADUser -Identity <username> -Properties *
