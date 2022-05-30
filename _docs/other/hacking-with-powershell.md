@@ -74,6 +74,7 @@ Verb-Noun | Where-Object {$_.PropertyName -operator Value}
 
 This are the[ following operators](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/where-object?view=powershell-6):
 
+* **-like**: Contains but not exact.
 * **-contains**: Exact match for the specified value.
 * **-eq:** Equals to.
 * **-gt:** Greater than.

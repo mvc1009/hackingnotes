@@ -15,7 +15,7 @@ An Active Directory is installed on **Windows Servers**. Let's see their items.
 > **Note**: Be careful with *Clock Skew*, Kerberos uses a synchronous process because use datetime to hash the tickets. Maybe you need to synchronize your date on your system with the DC.
 >
 > On Linux:
-> `ntpdate -u <DC_IP>`
+> `rdate -n <DC_IP>`
 
 # Domain
 
