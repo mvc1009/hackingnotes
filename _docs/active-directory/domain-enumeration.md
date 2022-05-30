@@ -49,6 +49,7 @@ $env:USERDNSDOMAIN
 # Identify current computer domain
 (Get-WmiObject Win32_ComputerSystem).Domain
 ```
+
 * PowerView:
 ```powershell
 Get-NetDomain
