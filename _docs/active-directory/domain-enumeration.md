@@ -43,10 +43,10 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 ```powershell
 $env:USERDNSDOMAIN
 
-- Identify current user domain
+# Identify current user domain
 (Get-ADDomain).DNSRoot
 
-- Identify current computer domain
+# Identify current computer domain
 (Get-WmiObject Win32_ComputerSystem).Domain
 ```
 * PowerView:
