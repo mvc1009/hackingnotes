@@ -12,6 +12,11 @@ Active Directory allows this by maintaining a centralized database where all the
 
 An Active Directory is installed on **Windows Servers**. Let's see their items.
 
+> **Note**: Be careful with *Clock Skew*, Kerberos uses a synchronous process because use datetime to hash the tickets. Maybe you need to synchronize your date on your system with the DC.
+>
+> On Linux:
+> `ntpdate -u <DC_IP>`
+
 # Domain
 
 We usually known an Active Directory as a **Domain**. A domain is a set of connected computers that shares an active directory database which is managed by the central servers called **Domain Controllers (DC)**.

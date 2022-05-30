@@ -42,11 +42,14 @@ Import-Module .\ActiveDirectory\ActiveDirectory.psd1
 * PowerShell:
 ```powershell
 $env:USERDNSDOMAIN
+```
 
-# Identify current user domain
+Identify current user domain
+```powershell
 (Get-ADDomain).DNSRoot
-
-# Identify current computer domain
+```
+Identify current computer domain
+```powershell
 (Get-WmiObject Win32_ComputerSystem).Domain
 ```
 
