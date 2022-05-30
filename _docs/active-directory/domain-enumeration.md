@@ -455,7 +455,7 @@ Find-LocalAdminAccess -Verbose
 > **Note**: This function queries the domain controller for a list of computers `Get-NetComputer` and then use multi-threaded `Invoke-CheckLocalAdminAccess` on each machine.
 > **MAKE A LOT OF NOISE**
 
-In case `Find-LocalAdminAccess` is blocked you can use:
+In case `Find-PSRemotingLocalAdminAccess.ps1` is blocked you can use:
 
 ```powershell
 Import-Module .\Find-WMILocalAdminAccess.ps1
