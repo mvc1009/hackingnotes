@@ -12,6 +12,16 @@ Once a machine is compromised, we need to jump to others in order to find more v
 
 You can get a elevated shell (`NT AUTHORITY\SYSTEM`) on the remote server if the credentials of the user administrator are used to authenticate (default setting).
 
+## Using Credentials
+
+We can use other credentials:
+```
+$user='WORKGROUP\User'; 
+$pass='passwd';
+$cred = (New-Object System.Management.Automation.PSCredential $user,(ConvertTo-SecureString $pass -AsPlainText -Force))
+```
+And use it with the parameter `-Credential`
+
 ## Creating a Session
 
 There are two types of PowerShell Remoting:
@@ -20,6 +30,7 @@ There are two types of PowerShell Remoting:
 
 ```powershell
 Enter-PSSession -ComputerName machine01.corp.local
+Enter-PSSession -ComputerName machine01.corp.local -Credential $cred
 ```
 We can also first create the session and append to it later.
 
