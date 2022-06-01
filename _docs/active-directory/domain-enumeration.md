@@ -15,7 +15,7 @@ $ADClass::GetCurrentDomain()
 Exists multiple scripts to enumerate the domain.
 
 * **PowerView.ps1**: [https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
-* **ADModule**: [https://github.com/samratashok/ADModule](https://github.com/samratashok/ADModule)
+* **ADModule**: [https://docs.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps](https://docs.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps)
 
 # Importing the module
 
