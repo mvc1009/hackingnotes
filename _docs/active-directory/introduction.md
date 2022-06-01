@@ -216,6 +216,21 @@ When this trust is created, a trust account is created in the domain database. T
 
 
 
+# Methodology
+
+
+## After pwning a Machine
+
+1. `Invoke-Mimikatz` for dumping secrets.
+2. Look for interesting internal files.
+
+## After pwning a User
+
+1. Find where the user has local admin privileges. `Find-WMILocalAdminAccess.ps1`
+2. Find new shares. `Invoke-ShareFinder -ExcludeStandard`
+3. Check ACLs for the User. `Get-ObjectAcl -ResolveGUIDs | ?{$_.IdentityReference "*USER*"}`
+4. Check ACL for the Groups where the user is member. `Get-ObjectAcl -ResolveGUIDs | ?{$_.IdentityReference "*GROUP*"}`
+5. Find new MSSQL Access. `Import-Module PowerUpSql.psd1; Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded -Verbose`
 
 # References
 

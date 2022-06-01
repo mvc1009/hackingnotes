@@ -55,8 +55,10 @@ A fantastic tool to abuse MSSQL is `PowerUpSQLl`:
 
 * [https://github.com/NetSPI/PowerUpSQL](https://github.com/NetSPI/PowerUpSQL)
 ```powershell
-Import-Module .\PowerUpSQL.ps1
+Import-Module .\PowerUpSQL.psd1
 ```
+
+> **Note**: Important! Write `Import-Module` and import which have **PSD1** extension.
 
 We can discover SQL servers:
 

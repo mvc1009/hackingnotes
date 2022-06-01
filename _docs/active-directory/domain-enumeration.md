@@ -327,6 +327,13 @@ Get-NetGPO -GPOname '{FD2B3AF5-356B-ADE4-98C1F4EF8081}'
 Get-GPO -Guid FD2B3AF5-356B-ADE4-98C1F4EF8081
 ```
 
+To know which computers are inside a OU:
+
+* PowerView:
+```powershell
+Get-NetOU -OUName Students | %{Get-NetComputer -ADSPath $_}
+```
+
 # Access Control Model (ACL)
 
 Enables control on the ability of a process to access objects and other resources in active diectory based on: 
