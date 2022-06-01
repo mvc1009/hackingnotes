@@ -495,6 +495,7 @@ With psexec we can spawn a new shell with system.
 ```powershell
 ./PsExec.exe /s /i /accepteula powershell.exe
 ```
+![PsExec](/hackingnotes/images/psexec.png)
 
 > **Note**: It spawn a new shell
 

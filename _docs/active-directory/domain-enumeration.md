@@ -249,6 +249,7 @@ Get-LastLoggedOn -ComputerName filesrv1.corp.local
 *  PowerView:
 ```powershell
 Invoke-ShareFinder -Verbose
+Invoke-ShareFinder -ExcludeStandard
 ```
 
 ## Sensitive Files

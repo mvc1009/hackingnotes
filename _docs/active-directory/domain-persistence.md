@@ -73,6 +73,11 @@ ls \\dc01.corp.local\c$
 ```
 > **Note**: A shell via WMI can not be obtained, so do not use PowerShell Remote.
 
+![Golden Ticket](/hackingnotes/images/golden_ticket_psremoting.png)
+
+In order to execute commands we can do a dcsync attack and once obtained the hash do a over-pass-the-hash.
+
+
 ## Mitigation
 
 While creating a golden ticket the attacker creates some events in logs:
