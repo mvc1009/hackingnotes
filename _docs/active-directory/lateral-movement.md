@@ -52,29 +52,6 @@ Invoke-Command -ComputerName machine01.corp.local -FilePath .\file.ps1
 
 > **RedTeam Note**: Since admin privs are needed is a useful tool to check if the user has admin privs on the target machine.
 
-### PowerShell Constrained Language Mode ByPass
-
-By default PowerShell Remote run the script in a `ConstrainedLanguage` mode so we can not run some cmdlets which are considered to be unsafe. To check the type of language run the following command:
-
-```powershell
-$ExecutionContext.SessionState.LanguageMode
-```
-Enabling constrained language mode, that dows not allow powershell execute complex ataccks such as mimikatz.
-
-```powershell
-[Environment]::SetEnvironmentVariable(‘__PSLockdownPolicy‘, ‘4’, ‘Machine‘)
-```
-However, if you have access to the system and enough privileges to change environment variables, you can bypass it by removing the variable `__PSLockdownPolicy` and re-spawning another PowerShell instance.
-
-#### PowerShell Downgrade
-
-If PowerShell 2.0 is installed we can bypass it via spawning a PowerShell 2.0 instance.
-
-```powershell
-powershell -version 2
-```
-[https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass](https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass)
-
 ## Execute locally loaded funcitons on the remote machine
 
 We can execute locally loaded function on the remote machine.

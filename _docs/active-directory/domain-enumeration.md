@@ -334,19 +334,19 @@ To know which computers are inside a OU:
 Get-NetOU -OUName Students | %{Get-NetComputer -ADSPath $_}
 ```
 
-# Access Control Model (ACL)
+# Access Control List (ACL)
 
 Enables control on the ability of a process to access objects and other resources in active diectory based on: 
 	
-	* **Access Tokens**: Security context of a process which contains the identity and privileges of a user.
-	* **Security Descriptors**: SID of the owner , Discretionary ACL (DACL) and System ACL (SACL).
+* **Access Tokens**: Security context of a process which contains the identity and privileges of a user.
+* **Security Descriptors**: SID of the owner , Discretionary ACL (DACL) and System ACL (SACL).
 
 It's a list of Access Control Entities (ACE) which corresponds to an individual permission or audits access. Determines who has permission and what can be done on an object. 
 
 Exists two types:
 
-	* **DACL**: Defines the permissions trustees a user or group have on an object.
-	* **SACL**: Logs sucess and failure audit messages when an object is accessed.
+* **DACL**: Defines the permissions trustees a user or group have on an object.
+* **SACL**: Logs sucess and failure audit messages when an object is accessed.
 
 ACLs are vital to security architecture of Active Directory.
 
@@ -519,8 +519,14 @@ Invoke-UserHunter -Stealth
 
 
 > **BlueTeam Note**: 
-> `Netcease.ps1` is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group.
+> `Netcease.ps1` is a script which change permission on the NetSessionEnum by removing permission to Authenticated Users group. This Script should be executed on the DC.
 > [https://github.com/p0w3rsh3ll/NetCease](https://github.com/p0w3rsh3ll/NetCease).
+>
+> To revert the effect:
+> `.\Netcease.ps1 -Revert`
+>
+> After any modfification we need to restart the server:
+> `Restart-Service -Name Server -Force`
 >
 > The binary net.exe uses SAMR protocol, exists another script which hardens a server.
 > [https://vulners.com/n0where/N0WHERE:139229](https://vulners.com/n0where/N0WHERE:139229)

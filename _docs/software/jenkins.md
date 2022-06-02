@@ -52,6 +52,7 @@ manager:manager
 manager:reganam
 manager:password
 manager:jenkins
+builduser:builduser
 ```
 
 In new versions the password is randomized at installation. We can find the initial password here:
