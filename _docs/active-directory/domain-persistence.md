@@ -158,7 +158,8 @@ This table shows the available services:
 |             PowerShell Remoting            | HOST HTTP  And Maybe: WSMAN RPCSS |
 |                    WinRM                   |    HOST HTTP  And Maybe: WINRM    |
 |               Scheduled Tasks              |                HOST               |
-|        Windows File Sharing, PsExec        |                CIFS               |
+|        Windows File Sharing                |                CIFS               |
+|                PsExec                      |              CIFS HOST            |
 | LDAP operations, DCSync                    | LDAP                              |
 | Windows Remote Server Administration Tools | RPCSS LDAP CIFS                   |
 | Golden Tickets                             | krbtgt                            |
@@ -191,7 +192,7 @@ wmic dc01.corp.local list full /format:list
 
 ## PsExec
 
-To run commands on other machine with `PsExec` we just need to create a ticket for `CIFS` service.
+To run commands on other machine with `PsExec` we just need to create a ticket for `CIFS` and `HOST` service.
 
 ```powershell
 .\PsExec.exe -accepteula \\dc01.corp.local cmd
