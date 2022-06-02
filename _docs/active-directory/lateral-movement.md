@@ -22,6 +22,8 @@ $cred = (New-Object System.Management.Automation.PSCredential $user,(ConvertTo-S
 ```
 And use it with the parameter `-Credential`
 
+> **Note**: If password is not declared a prompt will be shown in order to enter manually.
+
 ## Creating a Session
 
 There are two types of PowerShell Remoting:
@@ -31,6 +33,7 @@ There are two types of PowerShell Remoting:
 ```powershell
 Enter-PSSession -ComputerName machine01.corp.local
 Enter-PSSession -ComputerName machine01.corp.local -Credential $cred
+Enter-PSSession -ComputerName machine01.corp.local -Credential corp\user
 ```
 We can also first create the session and append to it later.
 

