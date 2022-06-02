@@ -13,7 +13,7 @@ order: 1
 
 ## After pwning a User
 
-1. Find where the user has local admin privileges. `Find-WMILocalAdminAccess.ps1`
+1. Find where the user has local admin privileges. `Find-WMILocalAdminAccess.ps1` and `Invoke-UserHunter -CheckAccess`
 2. Find new shares. `Invoke-ShareFinder -ExcludeStandard`
 3. Check ACLs for the User. `Get-ObjectAcl -ResolveGUIDs | ?{$_.IdentityReference "*USER*"}`
 4. Check ACL for the Groups where the user is member. `Get-ObjectAcl -ResolveGUIDs | ?{$_.IdentityReference "*GROUP*"}`

@@ -337,12 +337,11 @@ With `PowerUp` we can get the services where the current user can write to its b
 ```powershell
 Get-ModifiableServiceFile -Verbose
 ```
-We can also chec the services whose configuration the current user can modify.
+We can also check the services whose configuration the current user can modify.
 
 ```powershell
 Get-ModifiableService -Verbose
 ```
-
 Sometimes services are pointing to writeable folders:
 
 ## Writeable Folders

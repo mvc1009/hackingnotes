@@ -315,6 +315,7 @@ It is recommended to:
 
 * Limit DA/Admin logins to specific servers.
 * Set `Account is sensitive and cannot be delegated` flag for privileged accounts.
+
 # DNSAdmins
 
 It is possible for the members of the **DNSAdmins** group to load arbitrary DLL with the privileges of dns.exe which is `NT AUTHORITY\SYSTEM`.
