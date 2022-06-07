@@ -379,7 +379,7 @@ Look the logs:
 Get-WinEvent -FilterHashtable @{Logname='System';ID=4657} | ?{$_.message -like "*Kernel Mode Driver*"}
 ```
 
-# Using ACLs (AdminSDHolder)
+# AdminSDHolder
 
 Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the `protected groups`.
 
@@ -469,7 +469,7 @@ Set-DomainUserPassword -Identity user2 -AccountPassword (ConvertTo-SecureString 
 ```powershell
 Set-ADACcountPassword -Identity user2 -NewPassword (ConvertTo-SecureString "Password123!" -AsPlainText -Force) -Verbose
 ```
-
+# ACLs Rights Abuse
 
 ## Abusing FullControl ACL in domain root
 
