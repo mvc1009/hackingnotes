@@ -531,7 +531,7 @@ It is a very useful backdoor mechanism but administrative privileges are require
 
 Security Descriptor Definition Language defines the format which is used to describe a security descriptor. SDDL uses ACE strings for DACL and SACL.
 
-`ace\_type;ace\_flags;rights;object_guid;inherit\_object\_guid;account\_sid`
+`ace_type;ace_flags;rights;object_guid;inherit_object_guid;account_sid`
 
 ACE for built-in administrators for WMI namespaces
 
