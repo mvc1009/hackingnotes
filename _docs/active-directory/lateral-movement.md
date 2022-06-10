@@ -83,6 +83,14 @@ $sess = New-PSSession -ComputerName server1
 Invoke-Command -Session $sess -ScriptBlock {$proc = Get-Process}
 Invoke-Command -Session $sess -ScriptBlock {$proc.Name}
 ```
+## Transfering files
+
+We can also transfer files with PSRemoting and `Copy-Item`
+```
+$sess = New-PSSession -ComputerName server1
+Copy-Item C:\Windows\remote_file.txt C:\Windows\local_file.txt -FromSession $sess
+Copy-Item C:\Windows\local_file.txt C:\Windows\remote_file.txt -ToSession $sess
+```
 
 # Dump credentials
 

