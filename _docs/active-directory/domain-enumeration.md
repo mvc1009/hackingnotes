@@ -118,6 +118,7 @@ Get-ADDomainController -DomainName corp.local
 ```powershell
 Get-NetUser
 Get-NetUser -Username <user>
+Get-NetUser -SPN
 Get-UserProperty
 Get-UserProperty -Properties pwdlastset
 ```
@@ -131,6 +132,8 @@ Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromF
 ```
 
 > **Note:** Some sysadmins paste the password on the description field.
+
+> **Note:** Service accounts stores the password on the LSAS in clear text.
 
 ## Search a particular string in users's attributes
 
