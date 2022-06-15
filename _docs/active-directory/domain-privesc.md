@@ -544,8 +544,11 @@ Invoke-Mimikatz -Command '"kerberos::golden /user:DCORP-DC$ /domain:dollarcorp.m
 > **RedTeam Notes:** Avoid suspicious logs adding
 >
 > `/groups:516`
+>
 > `/sids:S-1-5-21-280534878-1496970234-700767426-516,S-1-5-9`
 >
+>
 > S-1-5-21-280534878-1496970234-700767426-516 - Domain Controllers
+>
 > S-1-5-9 - Enterprise Domain Controllers
 
