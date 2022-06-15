@@ -221,11 +221,20 @@ Can be one-way or two-way and transitive or nontransitive.
 
 ## Trust Key
 
-When you use a trust, there is a communication between the DC of your domain andd the DC of the target domain. How communication is made varies depending of the protocol that is being used but in any case, the DCs needs to share a key to keep the communications secure.
+Technically, when you use a trust, there is a communication between the domain controller of your domain and the domain controller of the target domain (or of an intermediary domain).
 
-This key is known as the trust key and it's created when the trust is established.
+How communication is made varies depending of the protocol that is being used (which could be NTLM, Kerberos, etc), but in any case, the domain controllers needs to share a key to keep the communications secure. This key is known as the trust key and it's created when the trust is established.
 
-When this trust is created, a trust account is created in the domain database. The trust key is stored as if it was the password of the trust user.
+When a trust is created, a trust account is created in the domain database as if it were an user (with the name finished in $). The trust key is then stored as if it was the password of the trust user (in the NT hash and Kerberos keys).
+
+A trust ticket is a key which a DC of the other forest uses to decrypt the TGT presented by the attacker. That is the only check. We are going to execute a similar attack such as golden ticket but using the *trust ticket* instead of the _krbtgt_ hash.
+
+To list the Trust tickets we can use mimikatz:
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::trust /patch"'
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:dcorp\mcorp$"'
+```
 
 # Users
 

