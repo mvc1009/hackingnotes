@@ -534,6 +534,17 @@ Invoke-UserHunter -Stealth
 > The binary net.exe uses SAMR protocol, exists another script which hardens a server.
 > [https://vulners.com/n0where/N0WHERE:139229](https://vulners.com/n0where/N0WHERE:139229)
 
+# SQLServers
+
+We can provide a list of all SQL servers which have a SPN register on the domain controller.
+
+* PowerUPSql
+```powershell
+Get-SQLInstanceDomain
+```
+
+> **Note**: This not mean that is a SQL Server running or listening, that means htat there are a MSSQL on a SPN.
+
 # BloodHound
 
 Provides GUI for AD entities and relationships for the data collected by its ingestors (SharpHound.ps1).

