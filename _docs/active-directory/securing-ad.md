@@ -12,7 +12,7 @@ In this section some detection, defense tools and security advisors are going to
 It is recommended to protect and limit domain admins:
 
 * Reduce the number of Domain Admins.
-* Do not allow or limit the login of DAs to any other machine rather than the Domain Controllers.
+* Do not allow or limit the login of DAs to any other machine rather than the Domain Controllers. In case of need it, ensure that there are no other local machine on the target.
 * Try to never run a service with a Domain Admin (Service Accounts passwords are stored in LSAS and no protections are setted).
 * Set `Account is sensitive and cannot be delegated` for Domain Admins.
 
@@ -119,6 +119,152 @@ More info in:
 
 * [https://docs.microsoft.com/es-es/windows/security/identity-protection/credential-guard/credential-guard-manage](https://docs.microsoft.com/es-es/windows/security/identity-protection/credential-guard/credential-guard-manage)
 
+# AppLocker
+
+AppLocker is a Windows Defender functionallity which helps you control which apps and files users can run. These include executable files, scripts, Windows Installer files, dynamic-link libraries (DLLs), packaged apps, and packaged app installers.
+
+AppLocker can help you:
+
+* Define rules based on file attributes that persist across app updates, such as the publisher name (derived from the digital signature), product name, file name, and file version. You can also create rules based on the file path and hash.
+* Assign a rule to a security group or an individual user.
+* Create exceptions to rules. For example, you can create a rule that allows all users to run all Windows binaries, except the Registry Editor (regedit.exe).
+* Use audit-only mode to deploy the policy and understand its impact before enforcing it.
+* Create rules on a staging server, test them, then export them to your production environment and import them into a Group Policy Object.
+* Simplify creating and managing AppLocker rules by using Windows PowerShell.
+
+
+# Powershell 5.1
+
+Upgrade to Windows PowerShell 5.1, this offers multiple security controls which certainly increase the costs to attacker.
+
+## Whitelisting
+
+Use Application Control Policies (Applocker) and Device Guard to restrict PowerShell scripts. If Applocker is configured in "Allow mode" for scripts, Powershell 5 automatically uses the Constrained Language Mode.
+
+### Bypass Whitelisting
+
+If PowerShell is blocked, `.NET` code can use `System.Management.Automation` NameSpace to load PowerShell functionality.
+
+```powershell
+C:\Windows\Microsoft.NET\Framework\v4.0.30319>msbuild.exe pshell.xml
+```
+
+## Enhanced Logging
+
+Enhanced Logging allows BlueTeams to have a very in-depth look of an attacker's activities if he is using PowerShell.
+
+Warning level script block logging only for a known list of suspicious commands. A large number of logs for script block logging is created. Even more if invocation of script blocks is logged.
+
+A huge number of logs when module logging is enabled.
+
+### Script Block Logging
+
+Set `EnableSciptBlockLogging` to `1` in the following registry:
+
+```
+HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
+```
+
+PowerShell v5 onwards logs (Warning level Event ID 4104) some suspicious script blocks automatically based on a list of suspicious commands.
+
+* [https://github.com/PowerShell/PowerShell/blob/v6.0.0-alpha.18/src/System.Management.Automation/engine/runtime/CompiledScriptBlock.cs#L1612-L1660](https://github.com/PowerShell/PowerShell/blob/v6.0.0-alpha.18/src/System.Management.Automation/engine/runtime/CompiledScriptBlock.cs#L1612-L1660)
+
+It also records the original obfuscated code as well decoded and deobfuscated code.
+
+### Module Logging
+
+Available since PowerShell v3, module logging logs pipeline execution and command execution events.
+
+Can be enabled using GPO, use `*` to log all modules:
+```
+Administrative Templates -> Windows Components -> Windows PowerShell -> Turn on Module Logging
+```
+
+We can also modify the registry. Set `EnableModuleLogging` to `1`:
+
+```
+HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\PowerShell\ModuleLogging
+```
+
+And create a key `*` and set it to `*` for all modules.
+
+```
+HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames
+```
+
+### Bypass Script Block Logging
+
+Script Block logging can be bypassed on the current session without admin rights by disabing it from the Group Policy Cache.
+
+```powershell
+$GroupPolicyField=[ref].Assembly.GetType('System.Management.Automation.Utils')."GetFie`ld"('cachedGroupPolicySettings','N'+'onPublic,Static')If($GroupPolicyField) {$GroupPolicyCache=$GroupPolicyField.GetValue($null)If($GroupPolicyCache['ScriptB'+'lockLogging']) {$GroupPolicyCache['ScriptB'+'lockLogging']['EnableScriptB'+'lockLogging']=0$GroupPolicyCache['ScriptB'+'lockLogging']['EnableScriptBlockInvocationLogging']=0}$val=[System.Collections.Generic.Dictionary[string,System.Object]]::new()$val.Add('EnableScriptB'+'lockLogging',0)$val.Add('EnableScriptB'+'lockInvocationLogging',0)$GroupPolicyCache['HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\PowerShell\ScriptB'+'lockLogging']=$val}
+
+```
+* [https://cobbr.io/ScriptBlock-Logging-Bypass.html](https://cobbr.io/ScriptBlock-Logging-Bypass.html)
+
+### Unload Warning Level Script Block Logging
+
+Recall that the Warning level script block logging which is enabled by default uses a lis of known bad words.
+
+Turns out the logging can be bypassed for the current session without admin rights by setting the list of signatures field in the ScriptBlock class to `null`.
+
+```powershell
+# The bypass
+[ScriptBlock]."GetFiel`d"('signatures','N'+'onPublic,Static').SetValue($null,(New-ObjectCollections.Generic.HashSet[string]))
+
+# To use a base64 encoded payload script with the bypass
+[ScriptBlock]."GetFiel`d"('signatures','N'+'onPublic,Static').SetValue($null,(New-ObjectCollections.Generic.HashSet[string]));[Text.Encoding]::Unicode.GetString([Convert]::FromBase64String('IgA8AE0AeQAgAHMAdQBzAHAAaQBjAGkAbwB1AHMAIABOAG8AbgBQAHUAYgBsAGkAYwAgAHAAYQB5AGwAbwBhAGQAPgAiAA=='))|iex
+```
+
+## System-Wide Transcription
+
+Enables transciption (console logging) for everything which uses PowerShell engine such as powershell.exe, PowerShell ISE, custom hosts, .NET dll, msbuild, installutil, etc...
+
+Can be enabled using Group Policy (GPO). By default transcripts are saved in the user's "My Documents" directory.
+
+```
+Administrative Templates -> Windows Components -> Windows Powershell -> Turn on PowerShell Transcription
+```
+
+Set `EnableTranscripting` to `1` in the following registry:
+
+```
+HKLM:\Software\Policies\Microsoft\Windows\PowerShell\Transcription
+```
+
+The transcripts are written as text files and can quicly grow in size because the command output is also recorded. It is always recommended to forward the transcirpts to a log system to avoid tampering and running out of disk space.
+
+> **Note**: Too many logs in an enterprise level network. Enabling Transcripts on a DC breaks the Active Directory Administartrion Centre GUI application.
+
+## AMSI
+
+AMSI (AntiMalware Scan Interface) provides the registered antivirus access to contents of a script before execution.
+
+This allows detection of malicious scripts regardless of input method such as disk, encodedcommand, in-memory.
+
+Enabled by-default on Windows 10 and supported by Windows Defender.
+
+> **Note**: AMSI has no detection mechanism. It is dependent on the signature based detection by the registered antivirus.
+
+## Constrained Language
+
+Language mode in PoweShell is used to control access to different elements for a PowerShell session.
+
+In the constrained language mode, all Windows cmdlets and elements are allowed but allows only limited types. For examples, Add-Type, Win32APIs, COM objects are not allowed.
+
+Intended to work with Applocker in Allow mode or UMCI (Device Guard User Mode Code Integrity). When Allow mode is set for scripts in Applocker, the Constrained Language mode kicks-in by itself.
+
+> **Note**: Not easy to implement enterprise-wide.
+
+
+## JEA (Just Enough Administration)
+
+JEA (Just Enough Administration) provides role based access control for PowerShell based remote delegated administration. With JEA non-admin users can connect remotely to machines for doing specific tasks.
+
+Focused more on securing privileged access than solving a problem introduced with PowerShell unlike others discussed for far.
+
+JEA endpoints have PowerShell transcription and logging enabled.
+
 # Device Guard
 
 _Device Guard_ or _Windows Defender Device Guard_ is a group of features designed to harden a system agains malware attacks. Its focus in preventing malicious code from running by ensuring only known good code can run.
@@ -218,3 +364,6 @@ Enhanced Security Admin Environment (ESAE) is a dedicated administrative fores f
 The amdinistrative forest is also called the **Red Forest**. Administrative users in a production forest are used as standard non-privileged users in the administrative forest.
 
 Selective authentication to the Red Forest enables stricter security controls and logon of users from non-administrative forests.
+
+
+# Deception (Decoy)

