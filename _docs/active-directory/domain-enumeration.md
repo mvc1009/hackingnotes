@@ -117,6 +117,7 @@ Get-ADDomainController -DomainName corp.local
 *  PowerView:
 ```powershell
 Get-NetUser
+Get-NetUser -Domain corp.local
 Get-NetUser -Username <user>
 Get-NetUser -SPN
 Get-UserProperty
@@ -126,6 +127,7 @@ Get-UserProperty -Properties pwdlastset
 * ADModule:
 ```powershell
 Get-ADUser -Filter * -Properties *
+Get-ADUser -Server corp.local -Filter * -Properties *
 Get-ADUser -Identity <username> -Properties *
 Get-ADUser -Filter * -Properties * | select -First 1 | Get-Member -MemberType *Property | select Name
 Get-ADUser -Filter * -Properties * | select name,@{expression={[datetime]::fromFileTime($_.pwdlastset)}}
