@@ -37,7 +37,7 @@ More info in:
 
 # LSA Protection
 
-In Windows 8.1 and later microsoft has provided addition protection for the LSA to prevent untrusted processess from being able to read its memory or inject code. This will prevent `mimikatz` `sekurlsa::logonpasswords` for working properly.
+In Windows 8.1 and later microsoft has provided addition protection for the LSA to prevent untrusted processes from being able to read its memory or inject code. This will prevent `mimikatz` `sekurlsa::logonpasswords` for working properly.
 
 To activate this protection set to 1 the value of `RunAsPPL`:
 
