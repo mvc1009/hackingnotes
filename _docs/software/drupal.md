@@ -4,6 +4,14 @@ category: Software
 order: 2
 ---
 
+# Enumeration
+
+We can obtain the server version on the next resource:
+
+```
+https://target.com/core/install.php
+```
+
 # Drupalgeddon (<7.58, <8.5.1, <8.46, <8.3.9) - CVE-2018-7600
 
 All version of drupal lower than 7.58 are vulnerable to RCE.
