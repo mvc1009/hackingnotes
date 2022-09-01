@@ -1,12 +1,10 @@
 ---
-title: Basics
+title: Introduction
 category: Red Team
 order: 1
 ---
 
-# Introduction
-
-## Red Team
+# Red Team
 
 **Red Teaming** is the process of using tactics, techniques and procedures (TTPs) to emulate a real-world threat, with the goal of measuting the effectiveness of the people, processes and technologies used to defend an environment.
 
@@ -49,4 +47,3 @@ It is important to have a backup plan in the event access if a assume breach is 
 A compromise could be to revert to an assumed breach if the red team has not gained access in the first 25% of engagement timeframe.
 
 This is critical because **red team assessments are more about detection and response, rather than prevention**, so those portions of the assessment are more important than trying to "prove" a breach can happen in the first place.
-
