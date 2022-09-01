@@ -211,7 +211,7 @@ home many times each second.
 Specify a jitter value (0-99) to force Beacon to randomly modify its sleep time.
 ```
 
-> **Note**: Parameters wrapped in [ ] are mandatory, whilst those in < > are optional although the default value maybe in not the best option.
+> **Note**: Parameters wrapped in `[ ]` are mandatory, whilst those in `< >` are optional although the default value maybe in not the best option.
 
 
 
