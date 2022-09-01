@@ -39,7 +39,7 @@ The server run on a **supported Linux** systems. To start the team server, execu
 ```
 Once started we can launch the client and connect with the password used.
 
-![](/hackingnotes/images/cobaltstike-login.png)
+![](/hackingnotes/images/cobaltstrike-login.png)
 
 Verify the server's fingerprint before connecting.
 
@@ -58,7 +58,7 @@ There are two types:
 
 In order to create a listener go to `Cobalt Strike -> Listeners` and click the button `Add`.
 
-![](/hackingnotes/images/cobaltstike-listener.png)
+![](/hackingnotes/images/cobaltstrike-listener.png)
 
 
 # Payloads
@@ -77,13 +77,13 @@ Cobalt Strike can generate both staged and stageless payloads. On GUI if we see 
 
 Go to `Attacks -> Packages -> Windows Executable`:
 
-![](/hackingnotes/images/cobaltstike-staged.png)
+![](/hackingnotes/images/cobaltstrike-staged.png)
 
 ## Stageless Payloads
 
 Go to `Attacks -> Packages -> Windows Executable (S)`:
 
-![](/hackingnotes/images/cobaltstike-stageless.png)
+![](/hackingnotes/images/cobaltstrike-stageless.png)
 
 > **OPSEC Note**: The use of 64-bit payloads on 64-bit Operating Systems is preferable to using 32-bit payloads on 64-bit Operating Systems.
 
@@ -92,7 +92,7 @@ Go to `Attacks -> Packages -> Windows Executable (S)`:
 
 To interact click on Interact with rigth-click:
 
-![](/hackingnotes/images/cobaltstike-interact.png)
+![](/hackingnotes/images/cobaltstrike-interact.png)
 
 
 To get a list of available commands type `help`.
