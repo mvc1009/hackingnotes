@@ -38,7 +38,7 @@ HTA files has the `.hta` extension.
 
 # Checking the architecture and executing powershell payload
 
-```
+```html
 <html>
   <head>
     <title>Hello World</title>
