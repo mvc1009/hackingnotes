@@ -6,6 +6,13 @@ order: 99
 
 # Without Credentials
 
+## Password Spraying
+
+Password spraying is an effective technique for discovering weak passwords that users are notorious for using. Patterns such as MonthYear (August2022), SeasonYear (Summer2022) and DayDate (Tuesday6) are very common.
+
+Another pattern too common is the name of the company and the year (Corp2022)
+
+
 ## LLMNR / NetBIOS Poisoning
 
 We can grab some hashed credentials if LLMNR protocol is enabled.

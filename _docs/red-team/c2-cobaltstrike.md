@@ -227,3 +227,11 @@ beacon> sleep 5
 
 > **OPSEC Note**: Set a fast check-in can increase the chance of detection, it is also recommended to use a jitter which randomize the check-in time by a given percentage.
 
+
+# Hosting Files
+
+Cobalt Strike allows us to host files in his web server. Go to `Attacks -> Web Drive-by -> Host File`.
+
+
+IMAGNE
+
