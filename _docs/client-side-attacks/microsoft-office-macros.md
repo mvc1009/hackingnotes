@@ -38,5 +38,3 @@ Sub AutoOpen()
 
 End Sub
 ```
-
->
