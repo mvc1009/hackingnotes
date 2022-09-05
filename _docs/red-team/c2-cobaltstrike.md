@@ -227,6 +227,13 @@ beacon> sleep 5
 
 > **OPSEC Note**: Set a fast check-in can increase the chance of detection, it is also recommended to use a jitter which randomize the check-in time by a given percentage.
 
+## Execute Assembly
+
+The `execute-assembly` command allows the beacon to run `.NET` executables directly from memory.
+
+```
+beacon> execute-assembly C:\Tools\Tool.exe
+```
 
 # Hosting Files
 
