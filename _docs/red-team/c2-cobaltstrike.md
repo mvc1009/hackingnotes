@@ -240,5 +240,4 @@ beacon> execute-assembly C:\Tools\Tool.exe
 Cobalt Strike allows us to host files in his web server. Go to `Attacks -> Web Drive-by -> Host File`.
 
 
-IMAGNE
-
+![](/hackingnotes/images/cobaltstrike-hostfile.png)
