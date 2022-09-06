@@ -36,7 +36,9 @@ Common userland persistence methods are:
 
 The Windows Task Scheduler allows us to create tasks that execute on a pre-determined trigger. That trigger could be a day, when users logon, when the computer goes idle, when its locked and more over.
 
-> **Note**: It must use `Unicode` enconding  rather than `UTF8` or `ASCII`
+In order to avoid problems of quotations in the IEX cradle, we can encode it in base64 and use the `-EncodedCommand` or `-enc` parameter.
+
+> **Note**: Use `Unicode` enconding instead of `UTF8` or `ASCII` at base64 conversion.
 
 In PowerShell:
 
