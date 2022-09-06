@@ -36,9 +36,16 @@ We just need to compile our assemblie on a version with the same CLR of the targ
 
 `Seatbelt` is a .NET application written in C# that makes various checks.
 
-
 ```
 beacon> execute-assembly C:\Tools\Seatbelt\Seatbelt\bin\Debug\Seatbelt.exe -group=system
 ```
+* [https://github.com/GhostPack/Seatbelt](https://github.com/GhostPack/Seatbelt)
 
 > **Note**: The source code should be compiled with the .NET CLR version of the target.
+
+
+With the parameter `-group=user` we can enumerate the user's environment.
+
+```
+beacon> execute-assembly C:\Tools\Seatbelt\Seatbelt\bin\Debug\Seatbelt.exe -group=user
+```

