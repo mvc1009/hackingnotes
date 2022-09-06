@@ -13,6 +13,12 @@ VBA is not all that different from VBScript, so it's not too difficult to use th
 
 > **Note**: The file must be saved in `.doc` format due inside `.docx` files cannot save macros.
 
+To create a macro go to `View -> Macros` and create one.
+
+![Macro](/hackingnotes/images/macro-create.png)
+
+> **Note**: It's important to select the document in order to save the macro inside.
+
 ```
 Sub AutoOpen()
 
