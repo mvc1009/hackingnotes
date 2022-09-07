@@ -30,3 +30,12 @@ An unquoted service path is where the path to the service binary is not wrapped 
 beacon> run wmic service get name,pathname
 ```
 > **Note**: Standard users cannot stop, restart or start services by default, so you would usually need to wait for a computer reboot.
+
+
+# Always Install Elevated
+
+This policy allows standard users to install applications that require access to directories and registry keys that they may not usually have permission to change. This is equivalent to granting full administrative rights and even though Microsoft strongly discourages its use, it can still be found.
+
+> **Note**: When this MSI is eventually installed, it will appear as an installed program on the target. Change properties such as `Author` and `Manufacturer`.
+
+

