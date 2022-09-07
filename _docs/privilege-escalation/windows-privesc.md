@@ -269,10 +269,11 @@ We need to ensure that the service is running by `LocalSystem`:
 sc qc <service>
 Get-Service
 ```
-Once we've found the binaries that are vulnerable to unquoted service path, we need to find where we have permissions to write, for that work we can use `icacls`:
+Once we've found the binaries that are vulnerable to unquoted service path, we need to find where we have permissions to write, for that work we can use `icacls` or `Get-Acl` in PowerShell:
 
 ```
 icacls "C:\Porgram Files"
+Get-Acl -Path "C:\Program Files"
 ```
 
 > **Info**: We need to find some with **write** permissions **(W)**
@@ -342,6 +343,16 @@ We can also check the services whose configuration the current user can modify.
 ```powershell
 Get-ModifiableService -Verbose
 ```
+
+There are another Powershell script that dig a little deeper and print which service rights we have.
+
+* [https://rohnspowershellblog.wordpress.com/2013/03/19/viewing-service-acls/](https://rohnspowershellblog.wordpress.com/2013/03/19/viewing-service-acls/)
+
+```
+. .\Get-ServiceAcl.ps1
+Get-ServiceAcl -Name service-name | select -ExpandProperty Access
+```
+
 Sometimes services are pointing to writeable folders:
 
 ## Writeable Folders

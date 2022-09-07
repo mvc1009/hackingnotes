@@ -104,6 +104,8 @@ After that a chain on beacons will be created.
 
 ![](/hackingnotes/images/cobaltstrike-listener-tcp-chain.png)
 
+> **Note**: `Beacon TCP` binding in localhost are recommended to privilege escalations.
+
 ### Beacon SMB
 
 While creating the beacon we only need to select the pipename that will be used.
