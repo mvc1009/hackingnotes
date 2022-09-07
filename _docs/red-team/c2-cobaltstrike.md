@@ -60,6 +60,81 @@ In order to create a listener go to `Cobalt Strike -> Listeners` and click the b
 
 ![](/hackingnotes/images/cobaltstrike-listener.png)
 
+## Peer-to-Peer (P2P) listeners
+
+Peer-to-Peer (P2P) listeners allow Beacons to link their communications together to form a chain. The P2P types in Cobalt Strike are TCP and SMB.
+
+Link beacon is specially useful when it comes to pivoting, and other situation where you need to spawn an additional beacon payload.
+
+> **Note**: Help to keep the number of direct outbound connections.
+
+We can create a P2P listener by selecting `Beacon SMB` or `Beacon TCP` payload.
+
+If executing a P2P payload on a target manually, it won't appear in the UI until the `link` (for SMB Beacons) or `connect` (for TCP Beacons) command is used. You can also `unlink` P2P Beacons and then use `link` again from another Beacon to reorganise the chain.
+
+Commands such as `spawn`, `spanwas`, `inject` and `jump` can be use with these payloads.
+
+There are **no limit** of chain connections.
+
+### Beacon TCP
+
+While creating the beacon we need to select the port where the target machine will listen and if we want that the target bind to localhost or in all interfaces.
+
+![](/hackingnotes/images/cobaltstrike-listener-tcp-chain.png)
+
+Once executed the payload for a `Beacon TCP` a listener will be launched waiting to a connection. In order to spawn the beacon we need to connect to it with the command `connect`.
+
+Usage of command `connect`:
+```
+beacon> help connect
+Use: connect [target]
+     connect [target] [port]
+
+Connect to a TCP Beacon and re-establish control of it. All requests for 
+connected Beacon will go through this Beacon.
+
+Use 'unlink' to disconnect from a TCP Beacon.
+```
+So we just need to select the host and the port.
+
+```
+beacon> connect 10.10.10.10 4444
+```
+After that a chain on beacons will be created.
+
+![](/hackingnotes/images/cobaltstrike-listener-tcp-chain.png)
+
+### Beacon SMB
+
+
+![](/hackingnotes/images/cobaltstrike-listener-p2p.png)
+
+Same as TCP the beacon will listen to a connection. In that case we need to link namepipes with `link` command.
+
+We can list them with:
+
+```
+ls \\.\pipe\
+```
+
+Usage of `link` command:
+
+```
+beacon> help link
+Use: link [target] [pipe]
+     link [target]
+
+Connect to an SMB Beacon and re-establish control of it. All requests for 
+connected Beacon will go through this Beacon. Specify an explicit [pipe]
+to link to that pipename. The default pipe from the current profile is
+used otherwise.
+```
+
+So we just have to select the target and the chosen namepipe in the listener creation.
+
+```
+beacon> link 10.10.10.10 \\10.10.10.10\pipe\interprocess_28
+```
 
 # Payloads
 
