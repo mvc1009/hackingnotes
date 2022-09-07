@@ -106,10 +106,11 @@ After that a chain on beacons will be created.
 
 ### Beacon SMB
 
+While creating the beacon we only need to select the pipename that will be used.
 
 ![](/hackingnotes/images/cobaltstrike-listener-p2p.png)
 
-Same as TCP the beacon will listen to a connection. In that case we need to link namepipes with `link` command.
+Same as TCP the beacon will listen to a connection. In that case we need to link pipenames with `link` command.
 
 We can list them with:
 
@@ -130,7 +131,7 @@ to link to that pipename. The default pipe from the current profile is
 used otherwise.
 ```
 
-So we just have to select the target and the chosen namepipe in the listener creation.
+So we just have to select the target and the chosen pipename in the listener creation.
 
 ```
 beacon> link 10.10.10.10 \\10.10.10.10\pipe\interprocess_28
