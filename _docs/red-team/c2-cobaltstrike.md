@@ -74,7 +74,7 @@ If executing a P2P payload on a target manually, it won't appear in the UI until
 
 Commands such as `spawn`, `spanwas`, `inject` and `jump` can be use with these payloads.
 
-There are **no limit** of chain connections.
+There are **no limit** of chain connections but if any of the middle beacons gets disconnected, all the child beacons would be disconnected, but we can `link` or `connect` another time.
 
 ### Beacon TCP
 
@@ -136,6 +136,7 @@ So we just have to select the target and the chosen pipename in the listener cre
 ```
 beacon> link 10.10.10.10 \\10.10.10.10\pipe\interprocess_28
 ```
+We can also use `link` command again to reorganize the chain after getting disconnected.
 
 # Payloads
 
