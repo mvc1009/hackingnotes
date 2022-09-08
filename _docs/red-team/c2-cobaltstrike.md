@@ -140,6 +140,8 @@ beacon> link 10.10.10.10 \\10.10.10.10\pipe\interprocess_28
 ```
 We can also use `link` command again to reorganize the chain after getting disconnected.
 
+> **Notes**: When moving laterally between targets, the SMB protocol is used extensively in a Windows environment, so this traffic blends in very well.
+
 # Payloads
 
 There are two types of payloads:

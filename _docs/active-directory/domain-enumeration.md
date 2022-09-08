@@ -16,6 +16,9 @@ Exists multiple scripts to enumerate the domain.
 
 * **PowerView.ps1**: [https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
 * **ADModule**: [https://docs.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps](https://docs.microsoft.com/en-us/powershell/module/activedirectory/?view=windowsserver2022-ps)
+* **SharpView**: [https://github.com/tevora-threat/SharpView](https://github.com/tevora-threat/SharpView)
+* **ADSearch**: [https://github.com/tomcarver16/ADSearch](https://github.com/tomcarver16/ADSearch)
+
 
 # Importing the module
 
@@ -489,6 +492,14 @@ Invoke-EnumerateLocalAdmin -Verbose
 >
 > **MAKE A LOT OF NOISE**
 
+## Sessions opened on a machine
+
+Returns session information for a computer where `CName` is the source IP.
+
+* PowerView Dev:
+```powershell
+Get-NetSession -ComputerName dc01.corp.local | select CName, UserName
+```
 ## Machines where a User/Group has session
 
 We can find computers where a domain admin or another specified user or group has an active session:
@@ -559,6 +570,29 @@ First we need to run ingestors on a machine in order to collect data.
 . .\SharpHound.ps1
 Invoke-BloodHound -CollectionMethod All -Verbose
 ```
+
+SharpHound has a number of different collection methods (all documented on the repository):
+
+
+* **Default**: Performs group membership collection, domain trust collection, local group collection, session collection, ACL collection, object property collection, and SPN target collection
+* **Group**: Performs group membership collection
+* **LocalAdmin**: Performs local admin collection
+* **RDP**: Performs Remote Desktop Users collection
+* **DCOM**: Performs Distributed COM Users collection
+* **PSRemote**: Performs Remote Management Users collection
+* **GPOLocalGroup**: Performs local admin collection using Group Policy Objects
+* **Session**: Performs session collection
+* **ComputerOnly**: Performs local admin, RDP, DCOM and session collection
+* **LoggedOn**: Performs privileged session collection (requires admin rights on target systems)
+* **Trusts**: Performs domain trust enumeration
+* **ACL**: Performs collection of ACLs
+* **Container**: Performs collection of Containers
+* **DcOnly**: Performs collection using LDAP only. Includes Group, Trusts, ACL, ObjectProps, Container, and GPOLocalGroup.
+* **ObjectProps**: Performs Object Properties collection for properties such as LastLogon or PwdLastSet
+* **All**: Performs all Collection Methods except GPOLocalGroup.
+
+
+
 Sometimes BloodHound miss to check the sessions so we can execute it manually.
 
 ```
@@ -574,3 +608,29 @@ Invoke-BloodHound -CollectionMethod LoggedOn -Verbose
 After execution download the `.zip` file and drop to `BloodHound` in order to import it.
 
 ![BloodHound](/hackingnotes/images/bloodhound.png)
+
+> **OPSEC Alert**: Running collections method such as `LocalAdmin`, `RDP`, `DCOM`, `PSRemote` and `LoggedOn` will allow SharpHound to enumerate every single computer in the domain.
+>
+> Collecting this information is useful to BloodHound and without it you may see fewer paths.
+
+To use on LDAP queries we can use `DcOnly` collection method.
+
+```
+Invoke-BloodHound -CollectionMethod DcOnly
+```
+
+## Raw queries
+
+Executing raw queries is useful for finding nodes that have particular properties or to help specific attack paths.
+
+* Query all users that have `Service Principal Name (SPN)` set.
+
+```
+MATCH (u:User {hasspn:true}) RETURN u
+```
+
+* Query all computers that are `AllowedToDelegate`.
+
+```
+MATCH (c:Computer, (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
+```
