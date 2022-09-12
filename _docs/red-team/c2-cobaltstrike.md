@@ -1,6 +1,6 @@
 ---
 title: C2 - Cobalt Strike
-category: Red Team
+category: 00 Red Team
 order: 3
 ---
 

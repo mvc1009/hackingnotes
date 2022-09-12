@@ -1,6 +1,6 @@
 ---
 title: Host Reconnaissance
-category: Red Team
+category: 00 Red Team
 order: 4
 ---
 

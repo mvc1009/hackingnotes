@@ -1,6 +1,6 @@
 ---
 title: Host Persistence
-category: Red Team
+category: 00 Red Team
 order: 5
 ---
 

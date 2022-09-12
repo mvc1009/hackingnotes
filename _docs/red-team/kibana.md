@@ -1,6 +1,6 @@
 ---
 title: Kibana - The Security App
-category: Red Team
+category: 00 Red Team
 order: 8
 ---
 
@@ -63,4 +63,12 @@ We can look for process create event where `WmiPrvSE` is the parent.
 
 ```
 event.module: sysmon and event.type : process_start and process.parent.name : WmiPrvSE.exe
+```
+
+# Distributed Component Object Model (DCOM)
+
+Processes started via DCOM may also be seen where the parent is `svchost.exe` which is started with the command line `-k DcomLaunch`.
+
+```
+
 ```
