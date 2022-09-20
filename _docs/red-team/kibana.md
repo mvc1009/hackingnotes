@@ -72,3 +72,50 @@ Processes started via DCOM may also be seen where the parent is `svchost.exe` wh
 ```
 
 ```
+
+# Make Token
+
+The `make_token` module of C2 create a token in order to impersonate a user with their credentials.
+
+The user of `make_token` generates the even `4624: An account was successfully logged on`. This event is very common in Windows domain, but can be narrowed down by filtering on the `Logon Type`.
+
+`make_token` uses `LOGON32_LOGON_NEW_CREDENTIALS` which is type `9`.
+
+```
+event.code: 4624 and winlog.event_data.LogonType: 9
+```
+
+# Spawn
+
+Like `make_token` this will generate the follwing alert `4624: An account was successfully logged on`. but with the logon type 2 `LOGON32_LOGON_INTERACTIVE`.
+
+```
+event.type: process_start and process.name: rundll32.exe
+```
+
+
+# Pass The Hash
+
+Sysmon will record the pass the hash technique with the event of a process creation for `cmd.exe` including the command line arguments `echo 1cbe909fe8a > \\.\pipe\16ca6d`.
+
+This unsual pattern can be searched with:
+
+```
+event.module: sysmon and event.type: process_start and process.name: cmd.exe and process.command_line: *\\\\.\\pipe\\*
+```
+
+It will also generate a `4624` event with the logon type `9`.
+
+```
+event.code: 4624 and winlog.logon.id: 0xe6d64
+```
+
+# Over Pass The Hash
+
+When a TGT is requested and `4768: A Kerberos authentication ticket (TGT) was requested` event is created.
+
+By default windows uses `AES256 (0X12)` as KeyType but if no AESKeys is used during the attack a `4768` with `RC4-HMAC (0x17)` as KeyType is generated.
+
+```
+event.code: 4768 and winlog.event_data.TicketEncryptionType: 0x17
+```
