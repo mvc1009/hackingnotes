@@ -1,6 +1,6 @@
 ---
 title: Credentials & User Impersonation
-category: 00 Red Team
+category: Red Team
 order: 8
 ---
 

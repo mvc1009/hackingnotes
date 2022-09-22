@@ -1,6 +1,6 @@
 ---
 title: Host Privilege Escalation
-category: 00 Red Team
+category: Red Team
 order: 6
 ---
 

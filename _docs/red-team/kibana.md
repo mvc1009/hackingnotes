@@ -1,6 +1,6 @@
 ---
 title: Kibana - The Security App
-category: 00 Red Team
+category: Red Team
 order: 8
 ---
 
