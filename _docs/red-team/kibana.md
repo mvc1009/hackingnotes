@@ -4,7 +4,7 @@ category: Red Team
 order: 8
 ---
 
-# PowerShell
+# PowerShell Remoting
 
 Search for Powershell Remoting (egress network)
 
@@ -118,4 +118,22 @@ By default windows uses `AES256 (0X12)` as KeyType but if no AESKeys is used dur
 
 ```
 event.code: 4768 and winlog.event_data.TicketEncryptionType: 0x17
+```
+
+# Kerberoasting
+
+Every time a TGS is requested a windows event `4769 - A Kerberos service ticket was requested` is generated.
+
+Be careful while doing kerberoasting, it could be some HONEYPOTS.
+
+```
+event.code: 4769 and winlog.event_data.ServiceName : svc_honey
+```
+
+# AS-REP Roasting
+
+AS-REP Roasting with Rubeus will generate a 4768 with an encryption type of 0x17 and preauth type of 0.  There is no `/opsec` option to AS-REP Roast with a high encryption type and even if there was, it would make the hash much harder to crack.
+
+```
+event.code: 4768 
 ```

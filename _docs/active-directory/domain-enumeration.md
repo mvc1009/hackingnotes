@@ -628,9 +628,19 @@ Executing raw queries is useful for finding nodes that have particular propertie
 ```
 MATCH (u:User {hasspn:true}) RETURN u
 ```
+* Query all users that have `Do not require Kerberos preauthenticaion` set.
 
+```
+MATCH (u:User {dontreqpreauth:true}) RETURN u
+```
 * Query all computers that are `AllowedToDelegate`.
 
 ```
 MATCH (c:Computer, (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
+```
+
+* Query all computers with `Unconstrained Delegation`.
+
+```
+MATCH (c:Computer {unconstraineddelegation:true}) RETURN c
 ```
