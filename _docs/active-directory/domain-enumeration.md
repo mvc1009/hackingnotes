@@ -644,3 +644,15 @@ MATCH (c:Computer, (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
 ```
 MATCH (c:Computer {unconstraineddelegation:true}) RETURN c
 ```
+
+* Query all computers with `Constrained Delegation`.
+
+```
+MATCH (c:Computer), (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
+```
+
+* Query all users with `Constrained Delegation`.
+
+```
+MATCH (u:User), (t:Computer), p=((u)-[:AllowedToDelegate]->(t)) RETURN p
+``

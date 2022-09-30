@@ -93,6 +93,8 @@ beacon> execute-assembly C:\Tools\SharPersist\SharPersist\bin\Debug\SharPersist.
 [*] INFO: SHA256 Hash of LNK file: B34647F8D8B7CE28C1F0DA3FF444D9B7244C41370B88061472933B2607A169BC
 ```
 
+> **Note**: In `System` context this tecnhique does not work.
+
 ## HKCU / HKLM Registry Autoruns
 
 AutoRun values in HKCU and HKLM allow applications to start on boot. You commonly see these to start native and 3rd party applications such as software updaters, download assistants, driver utilities and so on.
