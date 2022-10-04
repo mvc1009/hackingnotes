@@ -137,3 +137,23 @@ AS-REP Roasting with Rubeus will generate a 4768 with an encryption type of 0x17
 ```
 event.code: 4768 
 ```
+
+# AD CS Abuse
+
+When a certificate request is made, the CA generates a `4886 - Certificate Services received a certificate request`.
+
+```
+event.code: 4886
+```
+
+If the request is successful, and a certificate issued, the CA generates a `4887 - Certificate Services approved a certificate request and issued a certificate`.
+
+```
+event.code: 4887
+```
+
+The template name is not logged and neither is the subject alternate name. There is practically no indication which are malicious requests. The defender would have to go to the CA itself and lookup the certificate by way of the `Request ID`.
+
+Finally when a TGT is requested, the DC generates a `4768 event`.
+
+> **Note**: Not easy to correlate.
