@@ -106,6 +106,18 @@ After that a chain on beacons will be created.
 
 > **Note**: `Beacon TCP` binding in localhost are recommended to privilege escalations.
 
+It may become necessary to open ports on the Windows Firewall to facilitate lateral movement.
+
+* Add rule:
+
+```
+netsh advfirewall firewall add rule name="Allow 4444" dir=in action=allow protocol=TCP localport=4444
+```
+* Delete rule:
+
+```
+netsh advfirewall firewall delete rule name="Allow 4444" protocol=TCP localport=4444
+```
 ### Beacon SMB
 
 While creating the beacon we only need to select the pipename that will be used.
@@ -141,6 +153,21 @@ beacon> link 10.10.10.10 \\10.10.10.10\pipe\interprocess_28
 We can also use `link` command again to reorganize the chain after getting disconnected.
 
 > **Notes**: When moving laterally between targets, the SMB protocol is used extensively in a Windows environment, so this traffic blends in very well.
+
+
+## Pivot Listeners
+
+Pivot Listeners are another type of P2P listener that currently only uses `TCP`. It works in the opposite direction to the regular TCP listener.
+
+When a beacon is spawned a Beacon payload that uses the TCP listener, that beacon acts as a TCP server and waits for an incoming connection from an existing beacon. Pivot Listeners are not created via the Listeners menu, but are bound to individual beacons.
+
+This existing beacon will bind a port and listen for incoming connections acting as a TCP Server, and a Beacon payload that uses the pivot listener will act as the TCP client.
+
+It is very usefull in scenarios where you don't know when the target will actually execute the payload and therefore when you need issue the `connect` command.
+
+To start a Pivot Listener right-click on an existing Beacon and select `Pivoting->Listener`.
+
+Once started, your selected port will be bound on that machine.
 
 # Payloads
 

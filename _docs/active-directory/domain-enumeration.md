@@ -655,4 +655,10 @@ MATCH (c:Computer), (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
 
 ```
 MATCH (u:User), (t:Computer), p=((u)-[:AllowedToDelegate]->(t)) RETURN p
-``
+```
+
+* Query all Principals with GenericWrite over GPOs.
+
+```
+MATCH (gr:Group), (gp:GPO), p=((gr)-[:GenericWrite]->(gp)) RETURN p
+```
