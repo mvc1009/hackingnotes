@@ -12,14 +12,29 @@ A SOCKS (Secure Socket) Proxy exchanges network packets between a client and a s
 
 It's very useful when we need to leverage with others toolsets that are only available in linux such as impacket.
 
+> **Note**: The port will binding on the Team Server.
+
 To start a socks proxy we can use:
 
+* SOCKS4:
 ```
 beacon> socks [port]
 ```
-> **Note**: The port will binding on the Team Server.
+* SOCKS5 with password:
+```
+beacon> socks [post] socks5 disableNoAuth [socks_user] [socks_password] enableLogging
+```
 
-Finally we can access it with `proxychains`.
+Finally we can access it with `proxychains`, but first we need to configure `/etc/proxychains.conf` file.
+
+* SOCKS4:
+```
+socks4 127.0.0.1 [port]
+```
+* SOCKS5 with password:
+```
+socks5 127.0.0.1 [port] [socks_user] [socks_password]
+```
 
 ```
 proxychains -q [command] [arguments]

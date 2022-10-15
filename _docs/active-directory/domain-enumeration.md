@@ -61,6 +61,11 @@ Identify current computer domain
 Get-NetDomain
 ```
 
+* PowerView (dev):
+```powershell
+Get-Domain
+```
+
 * ADModule:
 ```powershell
 Get-ADDomain
@@ -71,6 +76,11 @@ Get-ADDomain
 *  PowerView:
 ```powershell
 Get-NetDomain -Domain corp.local
+```
+
+* PowerView (dev):
+```powershell
+Get-Domain -Identity corp.local
 ```
 
 * ADModule:
@@ -101,6 +111,10 @@ Get-DomainPolicy
 (Get-DomainPolicy)."system access"
 (Get-DomainPolicy -Domain corp.local)."system access"
 ```
+* PowerView (dev):
+```powershell
+Get-DomainPolicyData | select -ExpandProperty SystemAccess
+```
 
 # Domain Controllers
 
@@ -109,6 +123,13 @@ Get-DomainPolicy
 Get-NetDomainController
 Get-NetDomainController -Domain corp.local
 ```
+
+* PowerView (dev):
+```powershell
+Get-DomainController
+Get-DomainController -Domain corp.local
+```
+
 * ADModule:
 ```powershell
 Get-ADDomainController
@@ -125,6 +146,13 @@ Get-NetUser -Username <user>
 Get-NetUser -SPN
 Get-UserProperty
 Get-UserProperty -Properties pwdlastset
+```
+
+* PowerView (dev):
+```powershell
+Get-DomainUser
+Get-DomainUser -Identity <user>
+Get-DomainUser -Properties pwdlastset
 ```
 
 * ADModule:
@@ -164,6 +192,12 @@ Get-NetComputer -Ping
 Get-NetComputer -FullData
 ```
 
+* PowerView (dev):
+```powershell
+Get-DomainComputer
+Get-DomainComputer -Properties DnsHostName
+```
+
 *  ADModule:
 ```powershell
 Get-ADComputer -Filter * | select Name
@@ -186,6 +220,12 @@ Get-NetGroup -FullData
 Get-NetGroup *admin*
 ```
 
+* PowerView (dev):
+```powershell
+Get-DomainGroup
+Get-Domain | where Name -like "*Admins*"
+```
+
 *  ADModule:
 ```powershell
 Get-ADGroup -Filter * | select Name
@@ -204,6 +244,11 @@ Get-ADGroup -Filter 'Name -like "*admin*"' | select Name
 ```powershell
 Get-NetGroupMember -GroupName "Domain Admins" -Recurse
 Get-NetGroup -UserName "username"
+```
+
+* PowerView (dev):
+```powershell
+Get-DomainGroupMember -Identity "Domain Admins"
 ```
 
 *  ADModule:
@@ -286,6 +331,12 @@ Get-NetGPO -ComputerName machine01.corp.local
 Get-NetGPO Group
 ```
 
+* PowerView (dev):
+```powershell
+Get-DomainGPO
+Get-DomainGPO -Properties DisplayName
+```
+
 *  ADModule:
 ```powershell
 Get-GPO -All
@@ -304,11 +355,21 @@ We can also get users which are in a local group of a machine using GPO.
 Find-GPOComputerAdmin -Computer machine01.corp.local
 ```
 
+* PowerView (dev):
+```powershell
+Get-DomainGPOLocalGroup | select GPODisplayName, GroupName
+```
+
 Or we can find machines where a user is member of a specific group.
 
 * PowerView:
 ```powershell
 Find-GPOLocation -UserName <user> -Verbose
+```
+
+* PowerView (dev):
+```powershell
+Get-DomainGPOUserLocalGroupMapping -LocalGroup Administrators | select objectName, GPODisplayName, ContainerName, ComputerName | fl
 ```
 
 # Organization Unit (OU)
@@ -317,7 +378,10 @@ Find-GPOLocation -UserName <user> -Verbose
 ```powershell
 Get-NetOU -FullData
 ```
-
+* PowerView (dev):
+```powershell
+Get-DomainOU
+```
 * ADModule:
 ```powershell
 Get-ADOrganizationalUnit -Filter * -Properties *
@@ -340,6 +404,10 @@ To know which computers are inside a OU:
 * PowerView:
 ```powershell
 Get-NetOU -OUName Students | %{Get-NetComputer -ADSPath $_}
+```
+* PowerView (dev):
+```powershell
+Get-DomainOU "Servers" | %{Get-DomainComputer -SearchBase $_.distinguishedname -properties name}
 ```
 
 # Access Control List (ACL)
@@ -389,6 +457,11 @@ We can get a list of all domain trusts for a domain.
 ```powershell
 Get-NetDomainTrust
 Get-NetDomainTrust -Domain es.lab.corp.local
+```
+
+* PowerView (dev):
+```powershell
+Get-DomainTrust
 ```
 
 * ADModule:

