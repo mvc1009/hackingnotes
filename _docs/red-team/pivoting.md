@@ -48,6 +48,9 @@ It is also possible to tunnel Windows GUI apps using `proxifier`.
 
 With Proxifier we can specify which application we want to tunneling.
 
+> **Note**: To use Windows authentication via a proxy, the application needs to be launched as a user from the target domain.
+>
+> `runas /netonly /user:CORP\user C:\Tools\program.exe`
 
 # Port Forwarding
 
@@ -75,6 +78,11 @@ beacon> rportfw stop 8080
 beacon> rportfwd_local 443 127.0.0.1 443
 [+] started reverse port forward on 443 to mvc1009 -> 127.0.0.1:443
 ```
+
+> **Alert**: Be careful, you must create an allow rule before running a reverse port forward.
+>
+> `beacon> powershell New-NetFirewallRule -DisplayName "Test Rule" -Profile Domain -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8080`
+> `beacon> powershell Remove-NetFirewallRule -DisplayName "Test Rule"`
 
 # NTLM Relaying
 
