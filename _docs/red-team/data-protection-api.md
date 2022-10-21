@@ -13,15 +13,7 @@ DPAPI is used by the Windows Credential Manager to sotre saved secrets such as R
 
 The credential manager blobs are stored in user's `AppData` directory.
 
-```
-beacon> ls C:\Users\user\AppData\Local\Microsoft\Credentials
-
- Size     Type    Last Modified         Name
- ----     ----    -------------         ----
- 372b     fil     02/25/2021 13:07:38   9D54C839752B38B233E5D56FDD7891A7
- 10kb     fil     02/21/2021 11:49:40   DFBE70A7E5CC19A398EBF1B96859CE5D
-```
-With `vaultcmd` tool we can also list them.
+With `vaultcmd` tool we can list them.
 
 ```
 beacon> run vaultcmd /listcreds:"Windows Credentials" /all
@@ -40,6 +32,19 @@ Or with mimikatz.
 ```
 beacon> mimikatz vault::list
 ```
+
+The masterkey with which the blobs have been encrypted are stored encryppted in the following path.
+
+```
+beacon> ls C:\Users\user\AppData\Local\Microsoft\Credentials
+
+ Size     Type    Last Modified         Name
+ ----     ----    -------------         ----
+ 372b     fil     02/25/2021 13:07:38   9D54C839752B38B233E5D56FDD7891A7
+ 10kb     fil     02/21/2021 11:49:40   DFBE70A7E5CC19A398EBF1B96859CE5D
+```
+
+> **Note**: Each user including system has their independent blob. Remember to list vaults with all the contexts.
 
 ## Decrypt the credentials
 

