@@ -4,7 +4,7 @@ category: Active Directory
 order: 8
 ---
 
-Active Directory Certificate Services (AD CS) is a server role taht allows you to build a public key infrastructure (PKI). Which can provide public key cryptography, digital certificates and digital signature capabilities.
+Active Directory Certificate Services (AD CS) is a server role that allows you to build a public key infrastructure (PKI). Which can provide public key cryptography, digital certificates and digital signature capabilities.
 
 Some practical applicatios include Secure/Multipurpose Internet Mail Extensions(S/MIME), secure wireless networks, VPNs, IPSec, Encrypting File System (EFS), smart card logon and SSL/TLS.
 
@@ -41,7 +41,7 @@ We will see in te output the `Root CAs` and the `Enrollment CAs`, in addition to
 If a pincipal that you control had `WriteOwner`, `WriteDacl`, `WriteProperty`, `Owner` or `Enrollment Rights` and the CA is configured with `ENROLLEE_SUPPLIES_SUBJECT` and `Client Authentication`, we will be able to request a certificate for any user of the domain an use it to autenticate to the domain.
 
 ```powershell
-.\Certify.exe /ca:dc.corp.local\ca-1 /template:TemplateName /altname:Administrator
+.\Certify.exe request /ca:dc.corp.local\ca-1 /template:TemplateName /altname:Administrator
 ```
 
 Copy the whole certificate including the private key and save it to `cert.pem`. Then with `openssl` we can convert it to `pfx` format.

