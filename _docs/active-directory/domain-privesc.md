@@ -640,6 +640,21 @@ Group Policy is the central repository in a forest or domain that controls the c
 
 By default, only Domain Admins can create GPOs and link them to OUs but it´s common practice to delegate those rights to other teams.
 
+### Modifying an existing GPO
+
+This query will return any GPO in the domain, where a 4-digit RID has WriteProperty, WriteDacl or WriteOwner. Filtering on a 4-digit RID is a quick way to eliminate the default 512, 519, etc results.
+
+```powershell
+Get-DomainGPO | Get-DomainObjectAcl -ResolveGUIDs | ? { $_.ActiveDirectoryRights -match "CreateChild|WriteProperty|WriteDacl|WriteOwner" -and $_.SecurityIdentifier -match "S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}" } | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl
+```
+We can resolve the ObjectDN with:
+
+```powershell
+Get-DomainGPO -Name "{AD7EE1ED-CDC8-4994-AE0F-50BA8B264829}" -Properties DisplayName
+```
+
+### Create and Link a GPO to a OU
+
 * SIDs of principals that can create new GPOs (PowerView-dev)
 
 ```powershell
@@ -653,16 +668,7 @@ Get-DomainObjectAcl -SearchBase "CN=Policies,CN=System,DC=corp,DC=local" -Resolv
 
 If we can create new GPOs and link it to a OU, we can access to those servers.
 
-This query will return any GPO in the domain, where a 4-digit RID has WriteProperty, WriteDacl or WriteOwner. Filtering on a 4-digit RID is a quick way to eliminate the default 512, 519, etc results.
 
-```powershell
-Get-DomainGPO | Get-DomainObjectAcl -ResolveGUIDs | ? { $_.ActiveDirectoryRights -match "WriteProperty|WriteDacl|WriteOwner" -and $_.SecurityIdentifier -match "S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}" } | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl
-```
-We can resolve the ObjectDN with:
-
-```powershell
-Get-DomainGPO -Name "{AD7EE1ED-CDC8-4994-AE0F-50BA8B264829}" -Properties DisplayName
-```
 ## Remote Server Administration Tools (RSAT)
 
 RSAT is a management component provided by Microsoft to help manage components in a domain. The GroupPolicy module has several cmdlets that can be used for administering GPOs.

