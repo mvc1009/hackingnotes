@@ -139,6 +139,10 @@ beacon> rev2self
 [+] host called home, sent: 20 bytes
 ```
 
+> **Note** We can also login as Local User:
+>
+> `beacon> make_token .\lapsadmin password`
+
 # Extracting Kerberos Tickets
 
 Instead of craft a TGT we can retrieve it directly from memory.

