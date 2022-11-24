@@ -709,7 +709,7 @@ MATCH (u:User {dontreqpreauth:true}) RETURN u
 * Query all computers that are `AllowedToDelegate`.
 
 ```
-MATCH (c:Computer, (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
+MATCH (c:Computer), (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
 ```
 
 * Query all computers with `Unconstrained Delegation`.
