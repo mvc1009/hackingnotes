@@ -305,11 +305,22 @@ Invoke-ShareFinder -Verbose
 Invoke-ShareFinder -ExcludeStandard
 ```
 
+* PowerView (dev):
+```powershell
+Find-DomainShare
+Find-DomainShare -CheckShareAccess
+```
+
 ## Sensitive Files
 
 *  PowerView:
 ```powershell
 Invoke-FileFinder -Verbose
+```
+
+* PowerView (dev):
+```powershell
+Find-InterestingDomainShareFile -Include *.doc*, *.xls*, *.csv, *.ppt*
 ```
 
 ## File servers
