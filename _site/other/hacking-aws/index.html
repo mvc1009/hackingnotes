@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -283,11 +341,7 @@
 			<article class="content">
 				<p>Amazon Web Services is a subsidiary of Amazon providing on-demand cloud computing platforms and APIs.</p>
 
-<h1 id="s3-buckets">S3 Buckets</h1>
-
-<p>Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web.</p>
-
-<h2 id="aws-configuration">AWS Configuration</h2>
+<h1 id="awscli-configuration">AWSCLI Configuration</h1>
 
 <p>You can get your credential here <a href="https://console.aws.amazon.com/iam/home?#/security\_credential">https://console.aws.amazon.com/iam/home?#/security_credential</a> but you need an aws account, free tier account : <a href="https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free\_np/">https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free_np/</a></p>
 
@@ -298,10 +352,168 @@ Default Region Name= &lt;Region&gt;
 Default Output Format = &lt;json or text&gt;
 </code></pre></div></div>
 
-<p>Or you can configure by default:</p>
+<p>Or you can configure the default one stored in <code class="highlighter-rouge">~/.aws/credentials</code>:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws configure
 </code></pre></div></div>
+
+<h1 id="ec2">EC2</h1>
+
+<p>Amazon Elastic Compute Cloud (Amazon EC2) provides secure and resizable computing capacity in the AWS cloud. Using Amazon  EC2  eliminates  the need  to invest in hardware up front, so you can develop and deploy applications faster. To resume an EC2 is a virtual machine. SSH keys are created when started to connect to linux devices, for windows it uses RDP. Exists security groups to handle open ports and allowed IPs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws ec2 describe-instances
+</code></pre></div></div>
+
+<h1 id="sts">STS</h1>
+
+<p>AWS Security Token Service (STS) enables you to request temporary, limited-privileges credentials for AWS IAM users or for users that you authenticate.</p>
+
+<h2 id="identify-the-token">Identify the token</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws sts get-caller-identity
+{
+    "UserId": "AROAxxxxxxxxxxxxxxxxx:i-xxxxxxxxxxxxxxxxx",
+    "Account": "19xxxxxxxxxx",
+    "Arn": "arn:aws:sts::19xxxxxxxxxx:assumed-role/webserver/i-xxxxxxxxxxxxxxxxx"
+}
+</code></pre></div></div>
+<h2 id="get-key-info">Get Key Info</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws sts get-session-token
+</code></pre></div></div>
+<h1 id="iam">IAM</h1>
+
+<p>AWS Identity and Access Management (IAM) is a web service for securely controlling access to AWS services. With IAM, you can centrally manage users, security credentials such as access keys, and permissions that control which AWS resources users and applications can access.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws iam get-account-password-policy
+aws iam list-users
+aws iam list-roles
+aws iam list-access-keys --user-name &lt;user&gt;
+aws iam create-access-key --user-name &lt;user&gt;
+aws iam list-attached-user-policies --user-name &lt;user&gt;
+aws iam get-policy
+aws iam get-policy-version
+</code></pre></div></div>
+
+<h1 id="ssm">SSM</h1>
+
+<p>AWS System Manager is a collection of capabilities that helps you automate management tasks such as collecting system inverntory, applying OS patches, automating the creation of AMIs. Systems Manager lets you remotely and securely manage the configuration of your managed instances.</p>
+
+<p>A managed instance is any EC2 instance or any on-premise server or VM.</p>
+
+<h2 id="check-instances-are-accepted-for-executing-commands">Check instances are accepted for executing commands</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws ssm describe-instance-information --output text --query "InstanceInformationList[*]"
+1.2.3.4       example-1234567890.eu-west-1.elb.amazonaws.com 172.10.1.100    i-xxxxxxxxxxxxxxxxx     False   2021-02-05T13:37:00.000000+01:00        Online  Amazon Linux AMI        Linux   2020.01 EC2Instance
+</code></pre></div></div>
+
+<h2 id="send-command">Send Command</h2>
+
+<p>Copy the <code class="highlighter-rouge">CommandId</code> of the output for later usage.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws ssm send-command --document-name "AWS-RunShellScript" --comment "RCE test: whoami" --targets "Key=instanceids,Values=[instanceid]" --parameters 'commands=whoami'
+{
+    "Command": {
+        "CommandId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "DocumentName": "AWS-RunShellScript",
+        "DocumentVersion": "",
+        "Comment": "RCE test: whoami",
+        "ExpiresAfter": "2021-02-05T13:37:00.000000+01:00",
+        "Parameters": {
+            "commands": [
+                "whoami"
+            ]
+        },
+        "InstanceIds": [],
+        "Targets": [
+            {
+                "Key": "instanceids",
+                "Values": [
+                    "i-xxxxxxxxxxxxxxxxx"
+                ]
+            }
+        ],
+        "RequestedDateTime": "2021-02-05T13:37:00.000000+01:00",
+        "Status": "Pending",
+        "StatusDetails": "Pending",
+        "OutputS3BucketName": "",
+        "OutputS3KeyPrefix": "",
+        "MaxConcurrency": "50",
+        "MaxErrors": "0",
+        "TargetCount": 0,
+        "CompletedCount": 0,
+        "ErrorCount": 0,
+        "DeliveryTimedOutCount": 0,
+        "ServiceRole": "",
+        "NotificationConfig": {
+            "NotificationArn": "",
+            "NotificationEvents": [],
+            "NotificationType": ""
+        },
+        "CloudWatchOutputConfig": {
+            "CloudWatchLogGroupName": "",
+            "CloudWatchOutputEnabled": false
+        },
+        "TimeoutSeconds": 3600
+    }
+}
+</code></pre></div></div>
+<h2 id="check-command-output">Check command output</h2>
+
+<p>With the previous <code class="highlighter-rouge">CommandId</code> check the output. If the command didn’t finish yet, the <code class="highlighter-rouge">Status</code> will be shown as <code class="highlighter-rouge">pending</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ aws ssm list-command-invocations --command-id "[CommandId]" --details
+{
+    "CommandInvocations": [
+        {
+            "CommandId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "InstanceId": "i-xxxxxxxxxxxxxxxxx",
+            "InstanceName": "",
+            "Comment": "RCE test: whoami",
+            "DocumentName": "AWS-RunShellScript",
+            "DocumentVersion": "",
+            "RequestedDateTime": "2021-02-05T13:37:00.000000+01:00",
+            "Status": "Success",
+            "StatusDetails": "Success",
+            "StandardOutputUrl": "",
+            "StandardErrorUrl": "",
+            "CommandPlugins": [
+                {
+                    "Name": "aws:runShellScript",
+                    "Status": "Success",
+                    "StatusDetails": "Success",
+                    "ResponseCode": 0,
+                    "ResponseStartDateTime": "2021-02-05T13:37:00.000000+01:00",
+                    "ResponseFinishDateTime": "2021-02-05T13:37:00.000000+01:00",
+                    "Output": "root\n",
+                    "StandardOutputUrl": "",
+                    "StandardErrorUrl": "",
+                    "OutputS3Region": "eu-west-1",
+                    "OutputS3BucketName": "",
+                    "OutputS3KeyPrefix": ""
+                }
+            ],
+            "ServiceRole": "",
+            "NotificationConfig": {
+                "NotificationArn": "",
+                "NotificationEvents": [],
+                "NotificationType": ""
+            },
+            "CloudWatchOutputConfig": {
+                "CloudWatchLogGroupName": "",
+                "CloudWatchOutputEnabled": false
+            }
+        }
+    ]
+}
+</code></pre></div></div>
+<p>When the command is succcessfully executed the output is shown in:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CommandInvocations.CommandPlugins.Output
+</code></pre></div></div>
+
+<h1 id="s3-buckets">S3 Buckets</h1>
+
+<p><em>Amazon Simple Storage Service</em> as known as <strong>S3 Bucket</strong> has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web.</p>
 
 <h2 id="search-for-s3-buckets">Search for S3 Buckets</h2>
 
@@ -417,6 +629,8 @@ Non-authoritative answer:
 <ul>
   <li><a href="https://book.hacktricks.xyz/pentesting/pentesting-web/buckets/aws-s3">https://book.hacktricks.xyz/pentesting/pentesting-web/buckets/aws-s3</a></li>
   <li><a href="https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html">https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html</a></li>
+  <li><a href="https://sanderwind.medium.com/escalating-ssrf-to-rce-7c0147371c40">https://sanderwind.medium.com/escalating-ssrf-to-rce-7c0147371c40</a></li>
+  <li><a href="https://github.com/six2dez/pentest-book/blob/dd75c8af72e4906593c744a3aacc4888d7c04430/enumeration/cloud/aws.md#basic-commands-1">https://github.com/six2dez/pentest-book/blob/dd75c8af72e4906593c744a3aacc4888d7c04430/enumeration/cloud/aws.md#basic-commands-1</a></li>
 </ul>
 
 			</article>

