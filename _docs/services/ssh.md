@@ -41,7 +41,7 @@ patator ssh_login host=10.10.10.10 user=FILE0 password=FILE1 0=users.txt  1=pass
 patator ssh_login host=10.10.10.10 user=root password=FILE0 0=pass.txt -x ignore:mesg='Authentication failed'
 ```
 
-# Donwload Files
+# Download Files
 
 To download files we can use `sftp` or `scp`:
 
