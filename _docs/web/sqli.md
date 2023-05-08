@@ -389,7 +389,7 @@ administrator~s3cure
 wiener~peter
 carlos~montoya
 ```
-# From SQLi to RCE
+# From SQLi to RCE (PHP)
 
 Since we are allowed to upload files, we can upload a webshell to the web root.
 
@@ -553,7 +553,7 @@ print(results)
 
 If injecting different boolean conditions makes no difference to the application's response we can force an error using the `1/0`.
 
-Example of a OracleDB query:
+_Example of a OracleDB query:_
 
 ```
 xyz' || (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END) ||'a
