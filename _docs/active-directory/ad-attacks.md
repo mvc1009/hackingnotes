@@ -45,7 +45,7 @@ socks4  127.0.0.1       1080
 
 ; Servers to start
 SMB = Off
-HTTP = On
+HTTP = Off
 ```
 
 ## Perform the attack
