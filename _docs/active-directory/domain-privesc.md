@@ -677,12 +677,14 @@ RSAT is a management component provided by Microsoft to help manage components i
 
 ```powershell
 Get-Module -List -Name GroupPolicy | select -expand ExportedCommands
+Get-WindowsCapability -Name RSAT* -Online | Select name, state
 ```
 
 * Install it by local admin:
 
 ```powershell
 Install-WindowsFeature –Name GPMC
+Add-WindowsCapability -Name RSAT.GroupPolicy* -Online
 ```
 
 * Create a GPO and link it to a OU:
