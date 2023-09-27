@@ -50,6 +50,14 @@ done; wait
 tput cnorm
 ```
 
+Another simple bash port scanner:
+
+```
+#!/bin/bash
+for i in {1..65535}; do (< "/dev/tcp/$1
+/$i") &>/dev/null && { echo; echo "[+] Open Port at: $i"; }  || printf ""; done; echo
+```
+
 # UDP Scanning
 
 Pentesters often forgot to scan for open UDP ports, although UDP scanning can be unrealiable, there are plenty of attack vectors lurking behind open UDP ports.
