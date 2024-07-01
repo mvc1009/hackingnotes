@@ -40,11 +40,12 @@ klist example.ccache
 We can save the ticket on a variable or we can specify it on each command:
 
 > **Note**: pywerview needs the FULL hostname in SPN to work properly.
+
 ```
 export KRB5CCNAME=example.ccache
 ython3 pywerview.py get-netcomputer -t srv-ad.contoso.com -u stormtroopers -k
 
-KRB5CCNAME=example.ccache python3 pywerview.py get-netcomputer -t srv-ad.contoso.com -u stormtroopers -k
+KRB5CCNAME=example.ccache python3 pywerview.py get-netcomputer -t srv-ad -u stormtroopers -k
 ```
 
 
