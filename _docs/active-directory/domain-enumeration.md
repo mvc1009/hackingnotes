@@ -19,6 +19,35 @@ Exists multiple scripts to enumerate the domain.
 * **SharpView**: [https://github.com/tevora-threat/SharpView](https://github.com/tevora-threat/SharpView)
 * **ADSearch**: [https://github.com/tomcarver16/ADSearch](https://github.com/tomcarver16/ADSearch)
 
+# Powerview on Linux
+
+There are some alternatives based on linux systems. 
+
+* [https://github.com/the-useless-one/pywerview](https://github.com/the-useless-one/pywerview)
+
+First we need to obtain a TGT, to do that task we can use `impacket-getTGT`.
+
+```
+impacket-getTGT domain/user:pass -dc-ip 10.10.10.10
+```
+
+Use `klist` to get the info about the ticket.
+
+```
+klist example.ccache
+```
+
+We can save the ticket on a variable or we can specify it on each command:
+
+> **Note**: pywerview needs the FULL hostname in SPN to work properly.
+```
+export KRB5CCNAME=example.ccache
+ython3 pywerview.py get-netcomputer -t srv-ad.contoso.com -u stormtroopers -k
+
+KRB5CCNAME=example.ccache python3 pywerview.py get-netcomputer -t srv-ad.contoso.com -u stormtroopers -k
+```
+
+
 
 # Importing the module
 
