@@ -4,7 +4,7 @@ category: Movil
 order: 1
 ---
 
-# Setup of the environmen
+# Setup of the environment
 
 ## Jailbreak iOS 14 with Checkra1n
 
