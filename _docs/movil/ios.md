@@ -4,7 +4,9 @@ category: Movil
 order: 1
 ---
 
-# Setup of the environment
+Setup of the environment
+
+# Jailbreaks
 
 ## Jailbreak iOS 14 with Checkra1n
 
@@ -51,7 +53,7 @@ sudo ./palera1n-linux-x86_64
 
 > **Note**: If fails and the phone gets stucked on DFU or recovery mode execute the following command: `sudo ./palera1n --exit-recovery`
 
-## Installing Burp certificate
+# Installing Burp certificate
 
 Once the proxy has been configured on the device, open the browser and search for the url `http://burp`. Download the profile.
 
@@ -69,7 +71,7 @@ Finally, we just need to enable and trust with the certificate. Search on settin
 
 ![Burp Certificate](/hackingnotes/images/ios_certi.png)
 
-## Setup openssh server
+# Setup openssh server
 
 Root password should be changed before ssh usage. Execute the following commands to change the password from **NewTerm** software on the iOS device.
 
@@ -82,20 +84,22 @@ New Password: [alpine]
 Retype New Password: [alpine]
 ```
 
-## Installing packages on Sileo 
+# Installing packages
+
+## on Sileo 
 
 In order to make and audit some software is needed:
 
 * **Filza File Manager**: File manager to install ipa files.
 * **Openssh server**
-* **Frida Server**: Hooking software. Package `https://build.frida.re`.
+* **Frida Server**: Hooking software. Repo -> `https://build.frida.re`.
 * **Newterm**: Terminal
-* **Shadow**: Jailbreak bypass. Package `https://ios.jjolano.shadow`.
-* **SSL Kill Switch 3**: SSL pinning bypass. Package `https://repo.misty.moe/apt`.
+* **Shadow**: Jailbreak bypass. Repo -> `https://ios.jjolano.shadow`.
+* **SSL Kill Switch 3**: SSL pinning bypass. Repo -> `https://repo.misty.moe/apt`.
 
-## Installing linux packages
+## on Kali
 
-### Frida Client
+* **Frida Client**:
 
 It's important that the frida server (iphone) version match with frida client (pc).
 
@@ -119,7 +123,7 @@ frida-trace -U "app" -i "*log*"		# functions called
 frida-ios-dump
 ```
 
-### Objection
+* **Objection**:
 
 Objection is an awesome tool that uses frida to hook functions and make bypasses such as ssl pinning or jailbreak detection.
 
@@ -161,7 +165,7 @@ python3 ./dump.py com.example.app
 
 ## SSL Pinning
 
-### With Objection
+* **With Objection**:
 
 Objection can be used with the default scripts.
 
@@ -169,10 +173,19 @@ Objection can be used with the default scripts.
 objection --gadget com.example.app
 com.example.app on (iPhone: 16.7.9) [usb] # ios sslpinning disable
 ```
+* **With SSL Kill Switch 3**:
+
+With the package SSL Kill Switch 3 we can bypass ssl pinning. It can be installed from any package manager.
+Repo: `https://repo.misty.moe/apt`.
 
 ## Jailbreak Detection
 
-### With Liberty Lite
+* **With Shadow**:
+
+With shadow some jailbreak detections can be bypassed.
+Repo: `https://ios.jjolano.shadow`.
+
+
 # Hooking 
 
 ## With Objection
@@ -208,7 +221,7 @@ frida -l script.js -f com.example.app 		# basic hook
 frida -U --no-pause -l script.js -f com.example.app 	# hook before starting the app
 ```
 
-### Python script
+* **Python script**:
 
 ```
 import frida, sys
