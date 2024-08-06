@@ -233,3 +233,7 @@ print('[ * ] Running Frida Demo application')
 script.load()
 sys.stdin.read()
 ```
+
+# References:
+
+* [https://medium.com/@shivayadav2820/unlocking-ios-a-comprehensive-guide-to-penetration-testing-on-apple-devices-2-5df8f4d72930](https://medium.com/@shivayadav2820/unlocking-ios-a-comprehensive-guide-to-penetration-testing-on-apple-devices-2-5df8f4d72930)
