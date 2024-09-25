@@ -53,6 +53,9 @@ sudo ./palera1n-linux-x86_64
 
 > **Note**: If fails and the phone gets stucked on DFU or recovery mode execute the following command: `sudo ./palera1n --exit-recovery`
 
+> **Note**: If wifi does not work afeter jailbreak, try to execute palera1n in safe mode: `sudo ./palera1n -s`
+
+
 # Installing Burp certificate
 
 Once the proxy has been configured on the device, open the browser and search for the url `http://burp`. Download the profile.
